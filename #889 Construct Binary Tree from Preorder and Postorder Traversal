@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+    	List<Integer>preo = new ArrayList<>(), posto = new ArrayList<>();
+    	for (int i: pre) {
+    		preo.add(i);
+    	}
+    	for (int j: post) {
+    		posto.add(j);
+    	}
+    	return getAns(preo, posto);
+    }
+    private TreeNode getAns(List<Integer> pre, List<Integer> post) {
+    	if (pre.isEmpty()== true) {
+    		return null;
+    	}
+    	if (pre.size()==1) {
+    		return new TreeNode(pre.get(0));
+    	}
+    	int i = pre.get(1),j=0;
+    	while (post.get(j)!=i) {
+    		j++;
+    	}
+    	TreeNode root = new TreeNode(pre.get(0));
+    	root.left = getAns(pre.subList(1, j+2),post.subList(0, j+1));
+    	root.right = getAns(pre.subList(j+2, pre.size()),post.subList(j+1, post.size()-1));
+    	return root;
+    }
+}

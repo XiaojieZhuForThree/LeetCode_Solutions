@@ -1,0 +1,24 @@
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        boolean asc = false, des = false;
+        for (int i = 0; i < A.length-1; i++) {
+        	if (A[i] < A[i+1]) {
+        		if (des == true) {
+        			return false;
+        		}
+        		else if (asc == false) {
+        			asc = true;
+        		}
+        	}
+        	else if (A[i] > A[i+1]) {
+        		if (asc == true) {
+        			return false;
+        		}
+        		else if (des == false) {
+        			des = true;
+        		}
+        	}
+        }
+        return true;
+    }
+}

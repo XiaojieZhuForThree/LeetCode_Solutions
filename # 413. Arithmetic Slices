@@ -12,7 +12,7 @@ class Solution {
         	}
         	if (pointer - start >= 2) {
         		int n = pointer-start-1;
-        		ans += (n+1)*(n)/2;             // use arithmetic methods to solve arithmetic problems
+        		ans += (n+1)*(n)/2;             // use arithmetic method to solve arithmetic problems
         	}
         	start = pointer;
         	pointer = start+1;

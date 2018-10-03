@@ -1,0 +1,22 @@
+class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        int ans = 0;
+        if (A.length < 3) {
+        	return 0;
+        }
+        int start = 0, pointer = 1;
+        while (start < A.length-2) {
+        	int diff = A[pointer]-A[start];
+        	while (pointer < A.length-1 && (A[pointer+1]-A[pointer]==diff)) {
+        		pointer++;
+        	}
+        	if (pointer - start >= 2) {
+        		int n = pointer-start-1;
+        		ans += (n+1)*(n)/2;             // use arithmetic methods to solve arithmetic problems
+        	}
+        	start = pointer;
+        	pointer = start+1;
+        }
+        return ans;
+    }
+}

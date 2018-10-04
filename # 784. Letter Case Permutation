@@ -1,0 +1,28 @@
+//用递归方法解。算法复杂度应该是O（2**n），因为每种字母都有大写和小写两种情况。
+
+class Solution {
+    public List<String> letterCasePermutation(String S) {
+        Set<String> ans = new HashSet<>();            //用于储存所有的string情况
+        ans.add(S);                                   //先加上一开始的S
+        newString(S, 0, ans);                         //调用函数
+        return new ArrayList<String>(ans);
+    }
+    private void newString(String S, int i, Set<String> ans) {      //函数（i为S的index）
+    	if (i >= S.length()) {                                        //如果index超过S的长度，返回
+    		return;
+    	}
+    	if (65 <= S.charAt(i) && S.charAt(i) <= 90) {                 //如果index指的是个大写字母，构建新的string
+    		char[] change = S.toCharArray();
+    		change[i] += 32;                                            //把字母变成小写
+    		ans.add(new String(change));                                //构建新的String
+    		newString(new String(change), i+1, ans);                    //用新的String继续递归
+    	}
+    	else if (97 <= S.charAt(i) && S.charAt(i) <= 122) {           //如果index是小写字母，把字母变大写，其他操作同上
+    		char[] change = S.toCharArray();
+    		change[i] -= 32;
+    		ans.add(new String(change));
+    		newString(new String(change), i+1, ans);
+    	}
+		newString(S, i+1, ans);                                 //对原String继续递归
+    }
+}

@@ -1,0 +1,23 @@
+/*之前和美国人约了吃火锅，今儿我给忘了，明天下午我可能会赶不及来参加讨论。所以先把我的思路写在github上。
+假设A数组总和为X， B数组总和为Y， 那么要想找出A中的一个数a, B中的一个数b，使其交换后两数组总和相等，即：
+              X-a+b = Y-b+a， 通过这个公式能得到： b-a = (Y-X)/2, 即： b = a + (Y-X)/2.
+这个题用brute force的复杂度是O(n*m)，但如果使用dictionary或者set的话，会把复杂度降到O(m+n)。用dictionary求解代码如下。
+*/
+class Solution {
+    public int[] fairCandySwap(int[] A, int[] B) {
+        int [] ans = new int[2];                      
+        int diff = Arrays.stream(B).sum()-Arrays.stream(A).sum();       //求出两个数组的和的差值, 即 Y-X。
+        HashMap<Integer, Integer> couple = new HashMap<>();             //建立一个dictionary用于存储可以A数组内的数及其互补数。
+        for (int i : A) {
+        	couple.putIfAbsent(diff/2+i, i);   // 对A里的每一个数i，求 i + (Y-X)/2， 即如果交换i，那么为了满足条件应该换过来的数。并存key-value
+        }
+        for (int j : B) {                   // 对B里的每一个数j，如果j在value里，说明满足配对。
+        	if (couple.containsKey(j)) {
+        		ans[0] = couple.get(j);       //那么把ans[0]存value，ans[1]存key，就是需要的答案。
+        		ans[1] = j;                  
+                break;                    //只要找到一个答案就可以终止操作。
+        	}
+        }
+        return ans;
+    }
+}

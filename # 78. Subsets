@@ -1,0 +1,43 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+    	Stack<Integer> transfer = new Stack<>(); 
+    	for (int i : nums) {
+    		transfer.add(i);
+    	}
+    	return new ArrayList<List<Integer>>(getAns(transfer));
+    }
+    private Set<List<Integer>> getAns(Stack<Integer> nums) {
+    	Set<List<Integer>> ans = new HashSet<List<Integer>>();    	
+    	if (nums.isEmpty() == true) {
+    		ans.add(new ArrayList<Integer>());
+            return ans;
+        }
+    	else {
+    		int i = nums.pop();
+    		Set<List<Integer>> cool = getAns(nums);
+            for (List<Integer> j : cool) {
+                List<Integer> intermediate = new ArrayList<>(j);
+                intermediate.add(i);
+                ans.add(j);
+                ans.add(intermediate);
+    		}
+            return ans;
+    	}
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+    list.add(new ArrayList<>(tempList));
+    for(int i = start; i < nums.length; i++){
+        tempList.add(nums[i]);
+        backtrack(list, tempList, nums, i + 1);
+        tempList.remove(tempList.size() - 1);
+    }
+}

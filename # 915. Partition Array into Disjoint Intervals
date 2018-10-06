@@ -1,0 +1,15 @@
+class Solution {
+    public int partitionDisjoint(int[] A) {
+        int num = 0, lmax = A[0], seenmax = A[0];
+        for (int i = 1; i < A.length; i++) {
+        	if (A[i] < lmax) {
+        		lmax = seenmax;
+        		num = i;
+        	}
+        	else if (A[i] > seenmax) {
+        		seenmax = A[i];
+        	}
+        }
+        return num+1;
+    }
+}

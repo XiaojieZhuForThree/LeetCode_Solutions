@@ -1,0 +1,15 @@
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+    	List<Integer> ans = new ArrayList<Integer>();
+    	for (int i : nums) {
+    		int pointer = Math.abs(i);
+    		if (nums[pointer-1] > 0) {
+    			nums[pointer-1] = -nums[pointer-1];
+    		}
+    		else {
+    			ans.add(pointer);
+    		}
+    	}
+    	return ans;
+    }
+}

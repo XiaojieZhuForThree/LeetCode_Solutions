@@ -1,0 +1,51 @@
+class compare implements Comparator<int[]>{
+	public int compare(int[] a, int[] b) {
+		if (b[0] > a[0]) {
+			return 1;
+		}
+		else if ((b[0] == a[0]) && (b[1] < a[1])) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
+	}
+}
+
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        List<int[]> ans = new ArrayList<>();
+        
+        PriorityQueue<int[]> serve = new PriorityQueue<>(new compare());
+        for (int[] i : people) {
+        	serve.add(i);
+        }
+        while (!serve.isEmpty()) {
+        	int[] j = serve.poll();
+            ans.add(j[1],j); 
+        }
+        return ans.toArray(new int[people.length][2]);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        List<int[]> ans = new ArrayList<>();
+        Arrays.sort(people, new Comparator<int[]>(){
+        	public int compare(int[] a, int[] b) {
+        		if (a[0] == b[0]) {
+        			return a[1]-b[1];
+        		}
+        		else {
+        			return b[0]-a[0];
+        		}
+        	}
+        });
+        for (int[] i : people) {
+        	ans.add(i[1],i);
+        }
+        return ans.toArray(new int[people.length][2]);
+    }
+}

@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Set<List<Integer>> ans = new HashSet<>();
+        Arrays.sort(nums);
+        int pointer1 = 0;
+        while (pointer1 < nums.length-2){
+            int pointer2 = pointer1+1, pointer3 = nums.length-1;
+            while (pointer2 < pointer3){
+                int sum = nums[pointer1]+nums[pointer2]+nums[pointer3];
+                if (sum == 0){
+                    ans.add(new ArrayList<>(Arrays.asList(nums[pointer1],nums[pointer2],nums[pointer3])));
+                    pointer3--;
+                    pointer2++;
+                } else if (sum > 0){
+                    pointer3--;
+                } else{
+                    pointer2++;
+                }
+            }
+            pointer1++;
+        }
+        return new ArrayList<List<Integer>>(ans);
+    }
+}

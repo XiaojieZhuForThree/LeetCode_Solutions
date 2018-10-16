@@ -1,7 +1,7 @@
 class Solution {
 	public int minMeetingRooms(Interval[] intervals) {
-		int ans = intervals.length;
-		if (ans == 0) return 0;
+		int ans = 0;
+		if (intervals.length == 0) return 0;
 		List<Interval> available = new ArrayList<Interval>();
 		available.add(new Interval(intervals[0].end, Integer.MAX_VALUE));
 		available.add(new Interval(Integer.MIN_VALUE, intervals[0].start));		
@@ -10,7 +10,6 @@ class Solution {
 			for (; j < available.size(); j++){
 				Interval slot = available.get(j);
 				if (intervals[i].start >= slot.start && intervals[i].end <= slot.end) {
-					ans--;
 					available.remove(j);
 					available.add(new Interval(slot.start, intervals[i].start));
 					available.add(new Interval(intervals[i].end, slot.end));
@@ -18,6 +17,7 @@ class Solution {
 				}				
 			}
 			if (j == available.size()){
+			ans++;
 			available.add(new Interval(intervals[i].end, Integer.MAX_VALUE));
 			available.add(new Interval(Integer.MIN_VALUE, intervals[i].start));
 			}

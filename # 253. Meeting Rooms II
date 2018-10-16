@@ -1,6 +1,6 @@
 class Solution {
 	public int minMeetingRooms(Interval[] intervals) {
-		int ans = 0;
+		int ans = 1;
 		if (intervals.length == 0) return 0;
 		List<Interval> available = new ArrayList<Interval>();
 		available.add(new Interval(intervals[0].end, Integer.MAX_VALUE));

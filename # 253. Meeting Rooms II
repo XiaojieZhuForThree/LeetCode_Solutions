@@ -16,8 +16,8 @@ class Solution {
 				}				
 			}
 			if (j == available.size()){
-			available.add(new Interval(intervals[i].start, Integer.MAX_VALUE));
-			available.add(new Interval(Integer.MIN_VALUE, intervals[i].end));
+			available.add(new Interval(intervals[i].end, Integer.MAX_VALUE));
+			available.add(new Interval(Integer.MIN_VALUE, intervals[i].start));
 			}
 		}
 		return ans;

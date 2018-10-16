@@ -2,20 +2,22 @@ class Solution {
 	public int minMeetingRooms(Interval[] intervals) {
 		int ans = intervals.length;
 		Set<Interval> available = new HashSet<Interval>();
-		available.add(new Interval(intervals[0].start, Integer.MAX_VALUE));
-		available.add(new Interval(Integer.MIN_VALUE, intervals[0].end));		
+		available.add(new Interval(intervals[0].end, Integer.MAX_VALUE));
+		available.add(new Interval(Integer.MIN_VALUE, intervals[0].start));		
 		for (int i = 1; i < intervals.length; i++) {
-			for (Interval slot : available){
+			int j = 0;
+			for (; j < available.size(); j++){
+				Interval slot = available.get(j);
 				if (intervals[i].start >= slot.start && intervals[i].end <= slot.end) {
 					ans--;
 					available.add(new Interval(slot.start, intervals[i].start));
 					available.add(new Interval(intervals[i].end, slot.end));
 					break;
-				}
-				else {
-					available.add(new Interval(intervals[0].start, Integer.MAX_VALUE));
-					available.add(new Interval(Integer.MIN_VALUE, intervals[0].end));				
-				}
+				}				
+			}
+			if (j == available.size()){
+			available.add(new Interval(intervals[i].start, Integer.MAX_VALUE));
+			available.add(new Interval(Integer.MIN_VALUE, intervals[i].end));
 			}
 		}
 		return ans;

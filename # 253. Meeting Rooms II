@@ -1,7 +1,7 @@
 class Solution {
 	public int minMeetingRooms(Interval[] intervals) {
 		int ans = intervals.length;
-		Set<Interval> available = new HashSet<Interval>();
+		List<Interval> available = new ArrayList<Interval>();
 		available.add(new Interval(intervals[0].end, Integer.MAX_VALUE));
 		available.add(new Interval(Integer.MIN_VALUE, intervals[0].start));		
 		for (int i = 1; i < intervals.length; i++) {

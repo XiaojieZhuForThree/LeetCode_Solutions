@@ -14,10 +14,9 @@ class Solution {
 			return intervals;
 		}
 		Collections.sort(intervals, new Comparator<Interval>() {
-
 			public int compare(Interval o1, Interval o2) {
-                return o1.start-o2.start;
-			}			
+				return o1.start - o2.start;
+			}
 		});
 		int pointer = 0;
 		while (pointer < intervals.size()) {
@@ -27,9 +26,8 @@ class Solution {
 			if (index < intervals.size() && intervals.get(index).start <= end) {
 				compare.end = Math.max(compare.end, intervals.get(index).end);
 				intervals.remove(index);
-			}
-			else {
-				pointer ++;
+			} else {
+				pointer++;
 			}
 		}
 		return intervals;

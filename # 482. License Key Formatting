@@ -1,0 +1,26 @@
+class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        String[] groups = S.split("-");
+        StringBuilder sb = new StringBuilder();
+        for (String i : groups){
+            sb.append(i.toUpperCase());
+            }
+        if (sb.length()<=K) {
+        	return sb.toString();
+        }
+        StringBuilder ans = new StringBuilder();
+        int count = 0;
+        for (int i = sb.length()-1; i >= 0; i--) {
+        	if (count == K) {
+        		ans.append('-');
+        		ans.append(sb.charAt(i));
+        		count = 1;
+        	}
+        	else {
+        		ans.append(sb.charAt(i));
+        		count ++;
+        	}
+        }
+        return ans.reverse().toString();
+    }
+}

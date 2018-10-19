@@ -1,16 +1,17 @@
 class RandomizedSet {
-    HashMap<Integer, Integer> map;
-    ArrayList<Integer> list;
-    
+    List<Integer> list;
+    Map<Integer, Integer> map;
+    Random random;
     /** Initialize your data structure here. */
     public RandomizedSet() {
-        this.map = new HashMap<Integer, Integer>();
-        this.list = new ArrayList<Integer>();
+        this.map = new HashMap<>();
+        this.list = new ArrayList<>();
+        this.random = new Random();
     }
     
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
-        if(!map.containsKey(val)) {
+        if (!map.containsKey(val)){
             map.put(val, list.size());
             list.add(val);
             return true;
@@ -20,13 +21,18 @@ class RandomizedSet {
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
-        if(map.containsKey(val)){
-            int key = map.get(val);
-            int lastElement = list.get(list.size() - 1);
-            map.put(lastElement, key);
-            list.set(key, lastElement);
-            map.remove(val);
-            list.remove(list.size() - 1);
+        if (map.containsKey(val)){
+            int index = map.get(val);
+            if (index == list.size()-1){
+                list.remove(index);
+                map.remove(val);
+            }
+            else{
+                int swap = list.get(list.size()-1);
+                list.set(index, swap);
+                map.put(swap, index);
+                map.remove(val);
+            }
             return true;
         }
         return false;
@@ -34,10 +40,10 @@ class RandomizedSet {
     
     /** Get a random element from the set. */
     public int getRandom() {
-        Random random = new Random();
-        return list.get( random.nextInt(list.size()) );
+        return list.get(random.nextInt(list.size()));
     }
 }
+
 /**
  * Your RandomizedSet object will be instantiated and called as such:
  * RandomizedSet obj = new RandomizedSet();

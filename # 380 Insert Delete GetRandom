@@ -1,3 +1,4 @@
+
 class RandomizedSet {
     List<Integer> list;
     Map<Integer, Integer> map;
@@ -29,6 +30,7 @@ class RandomizedSet {
             }
             else{
                 int swap = list.get(list.size()-1);
+                list.remove(list.size()-1);
                 list.set(index, swap);
                 map.put(swap, index);
                 map.remove(val);

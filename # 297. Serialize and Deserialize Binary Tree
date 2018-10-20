@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+ * left; TreeNode right; TreeNode(int x) { val = x; } }
+ */
+public class Codec {
+
+	// Encodes a tree to a single string.
+	public String serialize(TreeNode root) {
+		if (root == null)
+			return "[]";
+		StringBuilder sb = new StringBuilder("[");
+		Queue<TreeNode> q = new LinkedList<>();
+		q.offer(root);
+		boolean notEmpty = true;
+		while (notEmpty && !q.isEmpty()) {
+			int size = q.size();
+			notEmpty = false;
+			for (int i = 0; i < size; i++) {
+				root = q.poll();
+				if (root == null) {
+					sb.append("null");
+				} else {
+					sb.append(root.val);
+					if (notEmpty || root.left != null || root.right != null)
+						notEmpty = true;
+					q.offer(root.left);
+					q.offer(root.right);
+				}
+				sb.append(",");
+			}
+		}
+		sb.setCharAt(sb.length() - 1, ']');
+		return sb.toString();
+	}
+
+	// Decodes your encoded data to tree.
+	public TreeNode deserialize(String data) {
+		if (data == null || (data = data.substring(1, data.length() - 1)).isEmpty() || data.startsWith("null"))
+			return null;
+		String[] strs = data.split(",");
+		TreeNode root = new TreeNode(Integer.valueOf(strs[0]));
+		Queue<TreeNode> q = new LinkedList<>();
+		q.offer(root);
+		int index = 0;
+		while (index < strs.length - 1) {
+			int size = q.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode cur = q.poll();
+				if (!"null".equals(strs[++index])) {
+					cur.left = new TreeNode(Integer.valueOf(strs[index]));
+					q.offer(cur.left);
+				}
+				if (!"null".equals(strs[++index])) {
+					cur.right = new TreeNode(Integer.valueOf(strs[index]));
+					q.offer(cur.right);
+				}
+			}
+		}
+		return root;
+	}
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));

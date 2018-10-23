@@ -1,5 +1,3 @@
-// not finished yet, will fill the slots later after discrete class!
-
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -11,27 +9,30 @@
  */
 
 public class BSTIterator {
-    TreeNode theRoot;
     Stack<TreeNode> smallests = new Stack<>();
-    private getSeq(TreeNode root){
-        
+
+    public void getIt(TreeNode root) {
+    	while (root != null) {
+    		smallests.push(root);
+    		root = root.left;
+    	}
     }
     public BSTIterator(TreeNode root) {
-        this.theRoot = root;        
-        while (theRoot.left != null){
-            stack.pop(theRoot.left);
-            
-        }
+    	getIt(root);
     }
 
     /** @return whether we have a next smallest number */
     public boolean hasNext() {
-        
+        return !smallests.isEmpty();
     }
 
     /** @return the next smallest number */
     public int next() {
-        
+    	TreeNode now = smallests.pop();
+    	if (now.right != null) {
+    		getIt(now.right);
+    	}
+    	return now.val;
     }
 }
 

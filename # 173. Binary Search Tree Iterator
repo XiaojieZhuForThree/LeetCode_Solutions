@@ -13,9 +13,15 @@
 public class BSTIterator {
     TreeNode theRoot;
     Stack<TreeNode> smallests = new Stack<>();
-    public BSTIterator(TreeNode root) {
-        this.theRoot = root;
+    private getSeq(TreeNode root){
         
+    }
+    public BSTIterator(TreeNode root) {
+        this.theRoot = root;        
+        while (theRoot.left != null){
+            stack.pop(theRoot.left);
+            
+        }
     }
 
     /** @return whether we have a next smallest number */

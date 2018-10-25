@@ -1,0 +1,20 @@
+// key: dynamic programming
+
+class Solution {
+	Set<String> remains = new HashSet<>();
+    public boolean wordBreak(String s, List<String> wordDict) {
+        for (String i : wordDict) {
+        	if (s.equals(i)) {
+        		return true;
+        	}
+        	else if (s.length()>i.length() && s.substring(0,i.length()).equals(i)) {
+        		String remain = s.substring(i.length(), s.length());
+        		if (!remains.contains(remain) && wordBreak(remain, wordDict) == true) {
+            			return true;
+        		}
+    			remains.add(remain);
+        	}
+        }
+        return false;
+    }
+}

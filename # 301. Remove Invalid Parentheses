@@ -1,0 +1,60 @@
+// brute force, dynamic programming, bad solution
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
+class Solution {
+	Set<String> ans = new HashSet<>();
+	Set<String> seen = new HashSet<>();
+	int maxlength = 0;
+
+	private void getAns(String s) {
+		Stack<Character> parenth = new Stack<>();
+		StringBuilder sb = new StringBuilder(s);
+		boolean valid = true;
+		for (int i = 0; i < sb.length(); i++) {
+			if (sb.charAt(i) == '(') {
+				parenth.push(sb.charAt(i));
+			} else if (sb.charAt(i) == ')') {
+				if (!parenth.isEmpty()) {
+					parenth.pop();
+				} else {
+					valid = false;
+					String check = new StringBuilder(sb).deleteCharAt(i).toString();
+					if (!seen.contains(check)) {
+						seen.add(check);
+						getAns(check);
+					}
+				}
+			}
+		}
+		if (parenth.isEmpty() && valid == true) {
+			if (sb.length() > maxlength) {
+				maxlength = sb.length();
+				ans = new HashSet<>();
+				ans.add(sb.toString());
+
+			} else if (sb.length() == maxlength) {
+				ans.add(sb.toString());
+			}
+		} else if (sb.length() > maxlength) {
+			for (int i = 0; i < sb.length(); i++) {
+				if (sb.charAt(i) == '(' || sb.charAt(i) == ')') {
+					String next = new StringBuilder(sb).deleteCharAt(i).toString();
+					if (!seen.contains(next)) {
+						seen.add(next);
+						getAns(next);
+					}
+				}
+			}
+		}
+	}
+
+	public List<String> removeInvalidParentheses(String s) {
+		getAns(s);
+		return new ArrayList<>(ans);
+	}
+}

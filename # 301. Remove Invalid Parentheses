@@ -58,3 +58,77 @@ class Solution {
 		return new ArrayList<>(ans);
 	}
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+a better solution: use dfs method and memoization
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
+class Solution {
+	Set<String> ans = new HashSet<>(), seen = new HashSet<>();
+
+	private boolean isValid(String s) {
+		int count = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				count++;
+			} else if (s.charAt(i) == ')') {
+				if (count == 0)
+					return false;
+				else
+					count--;
+			}
+		}
+		return count == 0;
+	}
+
+	private void getAns(String s, int start, int l, int r) {
+		StringBuilder sb = new StringBuilder(s);
+		if (l == 0 && r == 0 && isValid(s)) {
+			ans.add(s);
+		} else if (r > 0) {
+			for (int i = start; i < sb.length(); i++) {
+				if (sb.charAt(i) == ')') {
+					String check = new StringBuilder(sb).deleteCharAt(i).toString();
+					if (!seen.contains(check)) {
+						getAns(check, i, l, r - 1);
+					}
+				}
+			}
+		} else if (l > 0) {
+			for (int i = start; i < sb.length(); i++) {
+				if (sb.charAt(i) == '(') {
+					String check = new StringBuilder(sb).deleteCharAt(i).toString();
+					if (!seen.contains(check)) {
+						getAns(check, i, l - 1, r);
+					}
+				}
+			}
+		}
+	}
+
+	public List<String> removeInvalidParentheses(String s) {
+		if (isValid(s) == true) {
+			ans.add(s);
+		} else {
+			int l = 0, r = 0;
+			for (int i = 0; i < s.length(); i++) {
+				if (s.charAt(i) == '(')
+					l++;
+				else if (s.charAt(i) == ')') {
+					if (l == 0)
+						r++;
+					else
+						l--;
+				}
+			}
+			getAns(s, 0, l, r);
+		}
+
+		return new ArrayList<>(ans);
+	}
+}

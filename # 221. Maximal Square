@@ -1,0 +1,27 @@
+// Time Limit Exceeded
+
+class Solution {
+	int maxVal = 0;
+
+	public int maximalSquare(char[][] matrix) {
+		rec(matrix, 0, 0);
+		return maxVal;
+	}
+
+	private int rec(char[][] matrix, int i, int j) {
+		if (i >= matrix.length || j >= matrix[0].length) {
+			return 0;
+		}
+		else {
+			int a = rec(matrix, i, j+1);
+			int b = rec(matrix, i+1, j);
+			int c = rec(matrix, i+1, j+1);
+			if (matrix[i][j] == '1') {
+				int sq = 1 + Math.min(a, Math.min(b, c));
+				maxVal = Math.max(maxVal, sq*sq);
+				return sq;
+			}
+			return 0;
+		}
+	}
+}

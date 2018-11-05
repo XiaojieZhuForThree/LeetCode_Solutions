@@ -25,3 +25,34 @@ class Solution {
 		}
 	}
 }
+
+
+// still not working
+class Solution {
+	int maxVal = 0;
+	private int rec(char[][] matrix, int i, int j, Map<int[], Integer> map) {
+		if (i >= matrix.length || j >= matrix[0].length) {
+			return 0;
+		} else {
+			int[] it = { i, j };
+			if (!map.containsKey(it)) {
+				int b = rec(matrix, i, j + 1, map);
+                int a = rec(matrix, i + 1, j + 1, map);
+				int c = rec(matrix, i + 1, j, map);
+				if (matrix[i][j] == '1') {
+					int sq = 1 + Math.min(a, Math.min(b, c));
+					maxVal = Math.max(maxVal, sq * sq);
+					map.put(it, sq);
+				} else {
+					map.put(it, 0);
+				}
+			}
+            return map.get(it);
+		}
+	}
+
+	public int maximalSquare(char[][] matrix) {
+		rec(matrix, 0, 0, new HashMap<int[], Integer>());
+		return maxVal;
+	}
+}

@@ -1,0 +1,30 @@
+import java.util.*;
+
+class Solution {
+	Set<List<Integer>> ans = new HashSet<>();
+
+	private void getAns(int[] candidates, int i, int target, List<Integer> res) {
+		int now = target - candidates[i];
+		if (now == 0) {
+			res.add(candidates[i]);
+			ans.add(res);
+		} else if (now < 0) {
+			return;
+		} else {
+			res.add(candidates[i]);
+			for (int j = i + 1; j < candidates.length; j++) {
+				if (now - candidates[j] >= 0) {
+					getAns(candidates, j, now, new ArrayList<>(res));
+				}
+			}
+		}
+	}
+
+	public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+		Arrays.sort(candidates);
+		for (int i = 0; i < candidates.length; i++) {
+			getAns(candidates, i, target, new ArrayList<>());
+		}
+		return new ArrayList<>(ans);
+	}
+}

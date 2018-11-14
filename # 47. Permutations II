@@ -1,0 +1,21 @@
+class Solution {
+    Set<List<Integer>> ans = new HashSet<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+    	
+    	bfs(nums, new ArrayList<Integer>(nums.length), nums.length);
+    	return new ArrayList<List<Integer>>(ans);
+    }
+    private void bfs(int[] nums, List<Integer> res, int size) {
+    	if (size == 0) {
+    		ans.add(res);
+    	}
+    	for (int i = 0; i < size; i++) {
+    		List<Integer> next = new ArrayList<>(res);
+    		next.add(nums[i]);
+    		int restore = nums[i];
+    		nums[i] = nums[size-1];
+    		bfs(nums, next, size-1);
+    		nums[i] = restore;
+    	}
+    }
+}

@@ -10,12 +10,15 @@ class Solution {
         		}
         	}
         }
-        for (int i = 0; i < matrix.length; i++) {
+        for (int i : delRow) {
         	for (int j = 0; j < matrix[0].length; j++) {
-        		if (delRow.contains(i) || delCol.contains(j)) {
-        			matrix[i][j] = 0;
-        		}
+        		matrix[i][j] = 0;
         	}
-        } 
+        }
+        for (int j : delCol) {
+        	for (int i = 0; i < matrix.length; i++) {
+        		matrix[i][j] = 0;
+        	}
+        }
     }
 }

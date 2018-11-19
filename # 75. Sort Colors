@@ -1,0 +1,20 @@
+class Solution {
+    public void sortColors(int[] nums) {
+        int left = 0, right = nums.length-1, count = 0;
+        while (count < nums.length) {
+        	if (nums[count] == 0 && count > left) {
+        		nums[count] = nums[left];
+        		nums[left] = 0;
+        		left++;
+        	}
+        	else if (nums[count] == 2 && count < right) {
+        		nums[count] = nums[right];
+        		nums[right] = 2;
+        		right--;
+        	}
+        	else {
+        		count ++;
+        	}
+        }
+    }
+}

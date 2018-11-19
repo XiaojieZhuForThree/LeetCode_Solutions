@@ -1,0 +1,24 @@
+class Solution {
+	public void setZeroes(int[][] matrix) {
+		boolean[][] del = new boolean[matrix.length][matrix[0].length];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				if (matrix[i][j] == 0) {
+					for (int m = 0; m < matrix.length; m++) {
+						del[m][j] = true;
+					}
+					for (int n = 0; n < matrix[0].length; n++) {
+						del[i][n] = true;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				if (del[i][j] == true) {
+					matrix[i][j] = 0;
+				}
+			}
+		}
+	}
+}

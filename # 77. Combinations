@@ -1,0 +1,22 @@
+import java.util.*;
+
+class Solution {
+	List<List<Integer>> ans = new ArrayList<>();
+
+	private void getAns(int n, int k, int m, List<Integer> cur) {
+		if (cur.size() == k) {
+			ans.add(new ArrayList<Integer>(cur));
+			return;
+		}
+		for (int i = m + 1; i <= n; i++) {
+			cur.add(i);
+			getAns(n, k, i, cur);
+			cur.remove(cur.size() - 1);
+		}
+	}
+
+	public List<List<Integer>> combine(int n, int k) {
+		getAns(n, k, 0, new ArrayList<Integer>());
+		return new ArrayList<>(ans);
+	}
+}

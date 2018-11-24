@@ -1,57 +1,38 @@
 class Solution {
-    int ans = 0;
-    private void helper(List<String> list, int n, int i, Set<String> no) {
+	int ans = 0;
+	private void helper(int n, int i, int size, Set<Integer> no) {
 		for (int j = 0; j < n; j++) {
-			StringBuilder check  = new StringBuilder();
-			check.append(i);
-			check.append(j);
-			if (!no.contains(check.toString())) {
-				StringBuilder sb = new StringBuilder();
-				for (int p = 0; p < n; p++) {
-					if (p == j) {
-						sb.append('Q');
-					} else {
-						sb.append('.');
-					}
-				}
-				list.add(sb.toString());
-				if (list.size() == n) {
+			if (!no.contains(i*10 + j)) {
+				size ++;
+				if (size == n) {
 					ans++;
-					list.remove(list.size()-1);
+					size--;
 					return;
 				} else {
-					Set<String> next = new HashSet<>(no);
+					Set<Integer> next = new HashSet<>(no);
 					for (int m = i + 1; m < n; m++) {
-						StringBuilder invalid = new StringBuilder();
-						invalid.append(m);
-						invalid.append(j);
-						next.add(invalid.toString());
+						next.add(m*10 + j);
 					}
 					int k = j - 1, x = j + 1, l = i + 1, y = i + 1;
 					while (k >= 0 && l < n) {
-						StringBuilder invalid = new StringBuilder();
-						invalid.append(l);
-						invalid.append(k);
-						next.add(invalid.toString());
+						next.add(l*10 + k);
 						k--;
 						l++;
 					}
 					while (x < n && y < n) {
-						StringBuilder invalid = new StringBuilder();
-						invalid.append(y);
-						invalid.append(x);
-						next.add(invalid.toString());
+						next.add(y*10 + x);
 						x++;
 						y++;
 					}
-					helper(list, n, i + 1, next);
-					list.remove(list.size()-1);
+					helper(n, i + 1, size, next);
+					size--;
 				}
 			}
 		}
 	}
-    public int totalNQueens(int n) {
-        helper(new ArrayList<String>(), n, 0, new HashSet<String>());
-        return ans;
-    }
+
+	public int totalNQueens(int n) {
+		helper(n, 0, 0, new HashSet<Integer>());
+		return ans;
+	}
 }

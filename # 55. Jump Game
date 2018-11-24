@@ -1,0 +1,24 @@
+class Solution {
+	boolean ans = false;
+
+	private void dfs(int[] nums, int init, Set<Integer> seen) {
+		if (!seen.contains(init)) {
+			seen.add(init);
+			if (init + nums[init] >= nums.length-1) {
+				ans = true;
+			} else {
+				for (int i = 1; i <= nums[init]; i++) {
+					if (nums[init] - nums[init + i] < i) {
+						dfs(nums, init + i, seen);
+					}
+				}
+			}
+		}
+	}
+
+	public boolean canJump(int[] nums) {
+		dfs(nums, 0, new HashSet<Integer>());
+		return ans;
+	}
+
+}

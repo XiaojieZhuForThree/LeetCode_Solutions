@@ -1,0 +1,26 @@
+class Solution {
+    public static String solution(String parentheses) {
+    	int left = 0;
+    	StringBuilder ans = new StringBuilder();
+    	for (char i : parentheses.toCharArray()) {
+    		if (i == '(') {
+    			left++;
+    		}
+    		else {
+    			if (left > 0) {
+    				left --;
+    			}
+    			else {
+    				ans.append('(');
+    			}
+    		}
+    	}
+    	ans.append(parentheses);
+    	while (left > 0) {
+    		ans.append(')');
+    		left--;
+    	}
+    	return ans.toString();
+    }
+}
+

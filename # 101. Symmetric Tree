@@ -1,0 +1,67 @@
+//Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+//
+//For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+//
+//    1
+//   / \
+//  2   2
+// / \ / \
+//3  4 4  3
+//But the following [1,2,2,null,3,null,3] is not:
+//    1
+//   / \
+//  2   2
+//   \   \
+//   3    3
+
+import java.util.*;
+
+// Definition for a binary tree node.
+class TreeNode {
+	int val;
+	TreeNode left;
+	TreeNode right;
+
+	TreeNode(int x) {
+		val = x;
+	}
+}
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+        	Queue<TreeNode> nextQueue = new LinkedList<>();
+        	Deque<Integer> deque = new ArrayDeque<>();
+        	while (!queue.isEmpty()) {
+        		TreeNode thisOne = queue.remove();
+        		if (thisOne.left != null) {
+            		deque.addLast(thisOne.left.val);
+            		nextQueue.add(thisOne.left);
+        		}
+        		else {
+        			deque.addLast(Integer.MAX_VALUE);
+        		}
+        		if (thisOne.right != null) {
+            		deque.addLast(thisOne.right.val);
+            		nextQueue.add(thisOne.right);
+        		}
+        		else {
+        			deque.addLast(Integer.MAX_VALUE);
+        		}        		
+        	}
+        	if (checker(deque) == false)	return false;
+        	queue = nextQueue;
+        }
+        return true;
+    }
+    private boolean checker(Deque<Integer> deque) {
+    	if (deque.size()%2 == 1) return false;
+    	while (!deque.isEmpty()) {
+    		if (!deque.removeFirst().equals(deque.removeLast())) return false;
+    		continue;
+    	}
+    	return true;
+    }
+}

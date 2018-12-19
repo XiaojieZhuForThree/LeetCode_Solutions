@@ -1,15 +1,15 @@
 class Solution {
 	Map<Integer, Integer> map = new HashMap<>();
 	int i = 1;
+
 	public int numSquares(int n) {
 		for (; i * i <= n; i++) {
-			map.put(i*i, 1);
+			map.put(i * i, 1);
 		}
 		if (i * i == n) {
 			return 1;
-		}
-		else {
-			return rec(n);			
+		} else {
+			return rec(n);
 		}
 	}
 
@@ -20,12 +20,9 @@ class Solution {
 		if (map.containsKey(n)) {
 			return map.get(n);
 		}
-		int ans = n, t = i;
-		for (; t > 0; t--) {
-			if (t * t <= n) {
-				ans = Math.min(ans, 1 + rec(n - t * t));				
-			}
-
+		int ans = n;
+		for (int i = 1; i*i <= n; i++) {
+			ans = Math.min(ans, 1 + rec(n - i * i));
 		}
 		map.put(n, ans);
 		return ans;

@@ -1,31 +1,29 @@
 class Solution {
-    public int[] plusOne(int[] digits) {
-        boolean add = dfs(digits, digits.length-1);
-        if(add == false) {
-        	return digits;
-        }
-        else {
-        	int[] newOne = new int[digits.length+1];
-			newOne[0] = 1;
-			for (int i = 1; i < newOne.length; i++) {
-				newOne[i] = digits[i-1];
-			}
-			return newOne;
-        }
-    }
-    private boolean dfs(int[] digits, int index) {
+	private boolean rec(int[] digits, int index) {
 		if (index < 0) {
 			return true;
+		} else {
+			digits[index]++;
+			if (digits[index] == 10) {
+				digits[index] = 0;
+				return rec(digits, --index);
+			} else {
+				return false;
+			}
 		}
-		else {
-	    	digits[index] ++;
-	    	if (digits[index] == 10) {
-	    		digits[index] = 0;
-	    		return dfs(digits, --index);
-	    	}
-	    	else {
-	    		return false;
-	    	}
+	}
+
+	public int[] plusOne(int[] digits) {
+		boolean add = rec(digits, digits.length - 1);
+		if (add == false) {
+			return digits;
+		} else {
+			int[] newOne = new int[digits.length + 1];
+			newOne[0] = 1;
+			for (int i = 1; i < newOne.length; i++) {
+				newOne[i] = digits[i - 1];
+			}
+			return newOne;
 		}
-    }
+	}
 }

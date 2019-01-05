@@ -1,0 +1,17 @@
+class Solution {
+    public void rotate(int[] nums, int k) {
+    	k %= nums.length;
+        int[] replace = new int[k];
+        int j = 0;
+        for (int i = nums.length-k; i < nums.length; i++) {
+        	replace[j] = nums[i];
+        	j++;
+        }
+        for (int m = nums.length-1; m >= k; m--) {
+        	nums[m] = nums[m-k];
+        }
+        for (int x = 0; x < k; x++) {
+        	nums[x] = replace[x];
+        }
+    }
+}

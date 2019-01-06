@@ -1,0 +1,14 @@
+class Solution {
+    int ans = 0;
+    public int maxProfit(int k, int[] prices) {
+
+        
+    }
+    private void rec(int k, int[] prices) {
+    	if (prices == null || prices.length == 0 || prices.length == 1) {
+    		return;
+    	}
+    	int left = 0, right = 1;
+    	
+    }
+}

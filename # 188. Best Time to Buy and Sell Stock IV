@@ -1,14 +1,22 @@
 class Solution {
     int ans = 0;
     public int maxProfit(int k, int[] prices) {
-
-        
+        rec(k, prices, 0);
+        return ans;
     }
-    private void rec(int k, int[] prices) {
+    private int rec(int k, int[] prices, int i) {
     	if (prices == null || prices.length == 0 || prices.length == 1) {
-    		return;
+    		return 0;
     	}
-    	int left = 0, right = 1;
-    	
+    	int profit = 0;
+    	for (; i < prices.length-1; i++) {
+    		for (int j = i+1; j < prices.length; j++) {
+    			if (prices[j] > prices[i] && k > 0) {
+    				profit = Math.max(profit, prices[j] -prices[i] + rec(k-1, prices, j));
+    				ans = Math.max(ans, profit);
+    			}
+    		}
+    	}
+    	return profit;
     }
 }

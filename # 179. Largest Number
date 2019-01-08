@@ -1,25 +1,49 @@
-import java.util.*;
-
 class Solution {
-    public String largestNumber(int[] nums) {
-		PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>(){
-
+	public String largestNumber(int[] nums) {
+		PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
 			public int compare(String arg0, String arg1) {
-				int index1 = Math.min(arg0.length(), arg1.length());
-				int index2 = Math.max(arg0.length(), arg1.length());
+				boolean change = false;
+				if (arg0.length() > arg1.length()) {
+					String tmp = arg0;
+					arg0 = arg1;
+					arg1 = tmp;
+					change = true;
+				}
+				int index1 = arg0.length();
+				int index2 = arg1.length();
 				for (int i = 0; i < index1; i++) {
 					if (arg0.charAt(i) != arg1.charAt(i)) {
-						return arg0.charAt(i) - arg1.charAt(i);
+						if (change == true) {
+							return -(arg1.charAt(i) - arg0.charAt(i));
+						} else {
+							return arg1.charAt(i) - arg0.charAt(i);
+						}
 					}
 				}
 				for (int i = index1; i < index2; i++) {
-					if (arg0.charAt(i) != arg1.charAt(i)) {
-						return arg0.charAt(i) - arg1.charAt(i);
+					for (int j = 0; j < index1; j++) {
+						if (arg0.charAt(j) != arg1.charAt(i)) {
+							if (change == true) {
+								return -(arg1.charAt(i) - arg0.charAt(j));
+							} else {
+								return arg1.charAt(i) - arg0.charAt(j);
+							}
+						}
 					}
 				}
+				return 0;
 			}
-			
-        }) ;
-        
-    }
+		});
+		for (int i : nums) {
+			pq.add(Integer.toString(i));
+		}
+		StringBuilder sb = new StringBuilder();
+		while (!pq.isEmpty()) {
+			sb.append(pq.remove());
+		}
+		if (sb.length() > 0 && sb.charAt(0) == '0') {
+			return new String("0");
+		}
+		return sb.toString();
+	}
 }

@@ -4,35 +4,16 @@ class Solution {
 	public String largestNumber(int[] nums) {
 		PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
 			public int compare(String arg0, String arg1) {
-				boolean change = false;
+				if (arg0.contentEquals(arg1)) return 0;
 				if (arg0.length() > arg1.length()) {
-					String tmp = arg0;
-					arg0 = arg1;
-					arg1 = tmp;
-					change = true;
+					return -compare(arg1, arg0);
 				}
-				for (int i = 0; i < arg1.length(); i++) {
-					if (i < arg0.length()) {
-						if (arg0.charAt(i) != arg1.charAt(i)) {
-							if (change == true) {
-								return -(arg1.charAt(i) - arg0.charAt(i));
-							} else {
-								return arg1.charAt(i) - arg0.charAt(i);
-							}
-						}
-					} else {
-						for (int j = 0; j < arg0.length(); j++) {
-							if (arg0.charAt(j) != arg1.charAt(i)) {
-								if (change == true) {
-									return -(arg1.charAt(i) - arg0.charAt(j));
-								} else {
-									return arg1.charAt(i) - arg0.charAt(j);
-								}
-							}
-						}
+				for (int i = 0; i < arg0.length(); i++) {
+					if (arg0.charAt(i) != arg1.charAt(i)) {
+						return arg1.charAt(i) - arg0.charAt(i);
 					}
 				}
-				return 0;
+				return compare(arg0, arg1.substring(arg0.length()));
 			}
 		});
 		for (int i : nums) {

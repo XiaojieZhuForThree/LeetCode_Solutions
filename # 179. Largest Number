@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
 	public String largestNumber(int[] nums) {
 		PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
@@ -9,24 +11,23 @@ class Solution {
 					arg1 = tmp;
 					change = true;
 				}
-				int index1 = arg0.length();
-				int index2 = arg1.length();
-				for (int i = 0; i < index1; i++) {
-					if (arg0.charAt(i) != arg1.charAt(i)) {
-						if (change == true) {
-							return -(arg1.charAt(i) - arg0.charAt(i));
-						} else {
-							return arg1.charAt(i) - arg0.charAt(i);
-						}
-					}
-				}
-				for (int i = index1; i < index2; i++) {
-					for (int j = 0; j < index1; j++) {
-						if (arg0.charAt(j) != arg1.charAt(i)) {
+				for (int i = 0; i < arg1.length(); i++) {
+					if (i < arg0.length()) {
+						if (arg0.charAt(i) != arg1.charAt(i)) {
 							if (change == true) {
-								return -(arg1.charAt(i) - arg0.charAt(j));
+								return -(arg1.charAt(i) - arg0.charAt(i));
 							} else {
-								return arg1.charAt(i) - arg0.charAt(j);
+								return arg1.charAt(i) - arg0.charAt(i);
+							}
+						}
+					} else {
+						for (int j = 0; j < arg0.length(); j++) {
+							if (arg0.charAt(j) != arg1.charAt(i)) {
+								if (change == true) {
+									return -(arg1.charAt(i) - arg0.charAt(j));
+								} else {
+									return arg1.charAt(i) - arg0.charAt(j);
+								}
 							}
 						}
 					}

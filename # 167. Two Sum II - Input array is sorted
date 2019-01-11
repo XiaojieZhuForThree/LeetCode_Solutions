@@ -11,11 +11,9 @@ class Solution {
                 ans[0] = left+1;
                 ans[1] = right+1;
                 break;
-            }
-            else if (target < sum){
+            } else if (target < sum){
                 right--;
-            }
-            else {
+            }else {
                 left++;
             }
         }

@@ -3,8 +3,10 @@ class Solution {
         StringBuilder ans = new StringBuilder();
         int div = numberator / denominator;
         int remainder = numberator % denominator;
+        ans.append(div);
         if (remainder == 0){
-            ans.append(div);
+            return ans.toString();
         }
+        Set<Integer> seen = new HashSet<>();
     }
 }

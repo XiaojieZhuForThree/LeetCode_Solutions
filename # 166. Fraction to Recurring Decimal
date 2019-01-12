@@ -1,25 +1,40 @@
 class Solution {
-	public String fractionToDecimal(int numerator, int denominator) {
-        long a = numerator, b = denominator, m = a % b;  //a分子,b分母,m余数
-        Map<Long, Integer> map = new HashMap<>();
-        if (m == 0)
-            return a / b + "";
-        StringBuilder sb = new StringBuilder();
-        if (a * b < 0)
-            sb.append('-');
-        a = Math.abs(a);
-        b = Math.abs(b);
-        sb.append(a / b).append('.');
-        m = a % b;
-        map.put(m, sb.length());
-        while (m != 0) {
-            a = m * 10;
-            sb.append(a / b);
-            m = a % b;
-            if (map.containsKey(m))
-                return sb.insert((int) map.get(m), '(').append(')').toString();
-            map.put(m, sb.length());
+public String fractionToDecimal(int numerator, int denominator) {
+        if (denominator == 0) {
+            try {
+                throw new Exception("denominator can't be zero");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return sb.toString();
+        if (numerator == 0)
+            return "0";
+
+        StringBuilder builder = new StringBuilder();
+        if ((numerator > 0 && denominator < 0) || (numerator < 0 && denominator > 0)) {
+            builder.append('-');
+        }
+
+        // numerator/denominator may overflow
+        long num = Math.abs((long) numerator);
+        long den = Math.abs((long) denominator);
+        builder.append(num / den);
+        num %= den;
+        if (num == 0)
+            return builder.toString();
+        builder.append('.');
+        Map<Long, Integer> map = new HashMap<>();
+        while (num != 0 && !map.containsKey(num)) {
+            map.put(num, builder.length());
+            num *= 10;
+            builder.append(num / den);
+            num %= den;
+        }
+        if (map.containsKey(num)) {
+            int tmp = map.get(num);
+            builder.insert(tmp, '(');
+            builder.append(')');
+        }
+        return builder.toString();
     }
 }

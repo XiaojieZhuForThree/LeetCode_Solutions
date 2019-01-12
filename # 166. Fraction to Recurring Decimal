@@ -1,5 +1,10 @@
 class Solution {
     public String fractionToDecimal(int numerator, int denominator) {
-        int integer = numberator / denominator;
+        StringBuilder ans = new StringBuilder();
+        int div = numberator / denominator;
+        int remainder = numberator % denominator;
+        if (remainder == 0){
+            ans.append(div);
+        }
     }
 }

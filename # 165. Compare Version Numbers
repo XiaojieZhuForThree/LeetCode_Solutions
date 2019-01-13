@@ -1,0 +1,35 @@
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        int startOne = 0;
+        int startTwo = 0;
+        while(true) {
+            int[] one = get(version1, startOne);
+            int[] two = get(version2, startTwo);
+
+            int v1 = one[0];
+            int v2 = two[0];
+            
+            startOne = one[1];
+            startTwo = two[1];
+            
+            if(v1 != v2) {
+                return v1 < v2?-1:1;
+            }
+            if(startOne == version1.length() && startTwo == version2.length()) {
+                return 0;
+            }
+        }
+    }
+    int[] get(String str, int start) {
+        int val = 0;
+        int i = start;
+        for(i = start; i <str.length(); i++) {
+            
+            if (str.charAt(i) == '.') {
+                return new int[] {val, i+1};
+            }
+            val = val * 10 + (str.charAt(i)-'0');
+        }
+        return new int[] {val, i};
+    }
+}

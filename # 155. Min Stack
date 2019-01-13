@@ -1,0 +1,43 @@
+class MinStack {
+    int minVal;
+    Stack<Integer> values;
+    /** initialize your data structure here. */
+    public MinStack() {
+        this.minVal = Integer.MAX_VALUE;
+        this.values = new Stack<Integer>();
+    }
+    
+    public void push(int x) {
+        if (x <= minVal){
+            values.push(minVal);
+            minVal = x;
+        }
+        values.push(x);
+    }
+    
+    public void pop() {
+        if (values.isEmpty()){
+            return;
+        }
+        if (values.pop() == minVal){
+            minVal = values.pop();
+        }
+    }
+    
+    public int top() {
+        return values.peek();
+    }
+    
+    public int getMin() {
+        return minVal;
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */

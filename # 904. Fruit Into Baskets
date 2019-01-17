@@ -1,12 +1,23 @@
 class Solution {
     public int totalFruit(int[] tree) {
-        int res = 0, cur = 0, count_b = 0, a = 0, b = 0;
-        for (int c : tree) {
-            cur = c == a || c == b ? cur + 1 : count_b + 1;
-            count_b = c == b ? count_b + 1 : 1;
-            if (b != c) {a = b; b = c;}
-            res = Math.max(res, cur);
+        int ans = 0, a = Integer.MAX_VALUE, b = Integer.MAX_VALUE, count_b = 0, cur = 0;
+        for (int f : tree) {
+            if (f == a || f == b){
+                cur++;
+            }
+            else {
+                cur = count_b + 1;
+            }
+            if (f == b){
+                count_b ++;
+            }
+            else {
+                count_b = 1;
+                a = b;
+                b = f;
+            }
+            ans = Math.max(ans, cur);
         }
-        return res;        
+        return ans;
     }
 }

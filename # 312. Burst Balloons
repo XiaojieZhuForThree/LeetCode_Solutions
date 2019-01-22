@@ -11,7 +11,7 @@ class Solution {
         int[][] dp = new int[a.length][a.length];
         
         for (int len = 0; len < n; len++) {
-            for (int i = 1; i + len <=n; i++) {
+            for (int i = 1; i + len <= n; i++) {
                 int j = i + len;
                 for (int k = i; k <= j; k++) {
                     dp[i][j] = Math.max(dp[i][j], dp[i][k-1] + dp[k+1][j] + a[k]*a[i-1]*a[j+1]);

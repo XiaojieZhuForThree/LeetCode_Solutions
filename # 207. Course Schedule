@@ -1,11 +1,32 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (numCourses == null) return true;
-        if (prerequisites == null || prerequisites.length == 0) return false;
-        for (int[] i : prerequisites) {
-            if (i[0] < 0 || i[0] >= numCourses || i[1] < 0 || i[1] >= numCourses){
-                return false;
-            }
-        } 
-    }
+	public boolean canFinish(int numCourses, int[][] prerequisites) {
+		List<Integer>[] adj = new ArrayList[numCourses];
+		for (int i = 0; i < numCourses; i++) {
+			adj[i] = new ArrayList<Integer>();
+		}
+		for (int[] pre : prerequisites) {
+			adj[pre[1]].add(pre[0]);
+		}
+		int[] status = new int[numCourses]; // 0: unvisited, 1:visiting, 2: visited
+		for (int i = 0; i < numCourses; i++) {
+			if (status[i] == 0) {
+				if (dfs(i, adj, status) == false)
+					return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean dfs(int root, List<Integer>[] adj, int[] status) {
+		status[root] = 1;
+		for (int neighbor : adj[root]) {
+			if (status[neighbor] == 0) {
+				if (dfs(neighbor, adj, status) == false)
+					return false;
+			} else if (status[neighbor] == 1)
+				return false;
+		}
+		status[root] = 2;
+		return true;
+	}
 }

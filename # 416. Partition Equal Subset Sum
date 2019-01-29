@@ -18,6 +18,6 @@ class Solution {
                 halfSum = cur;
             }
         }
-        return false;
+        return halfSum == target;
     }
 }

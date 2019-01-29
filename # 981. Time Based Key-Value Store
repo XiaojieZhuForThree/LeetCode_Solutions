@@ -1,0 +1,54 @@
+class TimeMap {
+	Map<String, String> map;
+	Map<String, Set<Integer>> time;
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        this.map = new HashMap<String, String>();
+        this.time = new HashMap<String, Set<Integer>>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(key);
+    	sb.append(timestamp);
+    	map.put(sb.toString(), value);
+    	if (time.containsKey(key)){
+    		time.get(key).add(timestamp);
+    	}
+    	else {
+            Set<Integer> set = new HashSet<>();
+            set.add(timestamp);
+    		time.put(key, set);
+    	}
+    }
+    
+    public String get(String key, int timestamp) {
+    	StringBuilder sb = new StringBuilder();
+    	if (time.containsKey(key)){
+	        if (time.get(key).contains(timestamp)){
+	        	sb.append(key);
+	    		sb.append(timestamp);
+	        }
+	        else {
+	        	int max = Integer.MIN_VALUE;
+	        	for (int i : time.get(key)){
+	        		if (i < timestamp){
+	        			max = Math.max(max, i);
+	        		}
+	        	}
+                if (max == Integer.MIN_VALUE) return "";
+        		sb.append(key);
+        		sb.append(max);
+       		}
+       		return map.get(sb.toString());
+	    }
+	    return "";
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */

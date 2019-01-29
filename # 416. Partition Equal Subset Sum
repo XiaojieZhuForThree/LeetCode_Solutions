@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return false;
+        }
+        int sum = 0;
+        for (int i : nums){
+            sum += i;
+        }
+        if (sum % 2 == 1) return false;
+        int target = sum / 2;
+        int halfSum = 0;
+        Arrays.sort(nums);
+        for (int i = nums.length-1; i >= 0; i--){
+            int cur = halfSum + nums[i];
+            if (cur == target) return true;
+            else if (cur < target){
+                halfSum = cur;
+            }
+        }
+        return false;
+    }
+}

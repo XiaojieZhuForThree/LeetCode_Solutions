@@ -58,3 +58,24 @@ class Solution2 {
         return dp[volumn];
     }
 }
+
+class Solution3 {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int num : nums) sum += num;
+        if (sum % 2 == 1) return false;
+        return dfs(nums, 0, sum / 2);
+    }
+
+    private boolean dfs(int[] nums, int index, int target) {
+        if (target == 0) return true;
+        if (target < 0 || index == nums.length) return false;
+        if (dfs(nums, index  + 1, target - nums[index])) return true;
+		// if meet duplicate number, index move one step.
+        int j = index + 1;
+        while (j < nums.length && nums[j] == nums[index]) {
+            j++;
+        }
+        return dfs(nums, j, target);
+    }
+}

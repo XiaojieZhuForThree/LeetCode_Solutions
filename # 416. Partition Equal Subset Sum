@@ -12,18 +12,18 @@ class Solution {
     }
     private boolean helper(int[] nums, int target){
     	Set<Integer> set = new HashSet<>();
-    	set.add(nums[0]);
-    	for (int i = 1; i < nums.length; i++){
-    		if (nums[i] == target) return true;
-    		else if (nums[i] > target) return false;
-    		else if (set.contains(target - nums[i])) return true;
+    	for (int i : nums){
+    		if (i == target) return true;
+    		else if (i > target) return false;
+    		else if (set.contains(target - i)) return true;
     		else {
     			Set<Integer> newSet = new HashSet<>(set);
     			for (int j : set){
-                    if (nums[i] + j < target){
-    				    newSet.add(nums[i] + j);                        
+                    if (i + j < target){
+    				    newSet.add(i + j);                        
                     }
     			}
+    			newSet.add(i);
     			set = newSet;
     		}
     	}

@@ -20,7 +20,9 @@ class Solution {
     		else {
     			Set<Integer> newSet = new HashSet<>(set);
     			for (int j : set){
-    				newSet.add(nums[i] + j);
+                    if (nums[i] + j < target){
+    				    newSet.add(nums[i] + j);                        
+                    }
     			}
     			set = newSet;
     		}

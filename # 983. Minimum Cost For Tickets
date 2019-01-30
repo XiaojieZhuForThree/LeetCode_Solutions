@@ -1,0 +1,30 @@
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        return helper(days, costs, 0);
+    }
+    private int helper(int[] days, int[] costs, int index) {
+        if (index >= days.length){
+            return 0;
+        }
+        boolean index1 = false, index2 = false, index3 = false;
+        int val1 = costs[2] * 365, val2 = costs[2] * 365, val3 = costs[2] * 365;
+        for (int i = index; i < days.length; i++){
+            if (index1 && index2 && index3){
+                break;
+            }
+            if (index1 == false && days[i] >= days[index] + 1){
+                val1 = costs[0] + helper(days, costs, i);
+                index1 = true;
+            }
+            else if (index2 == false && days[i] >= days[index] + 7) {
+                val2 = costs[1] + helper(days, costs, i);
+                index2 = true;
+            }
+            else if (index3 == false && days[i] >= days[index] + 30) {
+                val3 = costs[3] + helper(days, costs, i);
+                index3 = true;                
+            }
+        }
+        return Math.min(val1, Math.min(val2, val3));
+    }
+}

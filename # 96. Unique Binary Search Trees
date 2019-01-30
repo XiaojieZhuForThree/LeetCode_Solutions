@@ -1,0 +1,17 @@
+class Solution {
+    public int numTrees(int n) {
+        if ( n < 1 ) return 0;
+        if (n == 1) return 1;
+        return helper(0, n);
+    }
+    private int helper(int start, int end) {
+        if (start >= end){
+            return 1;
+        }
+        int ans = 0;
+        for (int i = start; i < end; i++){
+            ans += helper(start, i) * helper(i+1, end);
+        }
+        return ans;
+    }
+}

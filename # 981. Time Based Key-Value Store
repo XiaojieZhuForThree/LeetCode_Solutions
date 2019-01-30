@@ -1,10 +1,12 @@
 class TimeMap {
 	Map<String, String> map;
-	Map<String, Set<Integer>> time;
+	Map<String, List<Integer>> time;
+    Map<String, Set<Integer>> seen;
     /** Initialize your data structure here. */
     public TimeMap() {
         this.map = new HashMap<String, String>();
-        this.time = new HashMap<String, Set<Integer>>();
+        this.time = new HashMap<String, List<Integer>>();
+        this.seen = new HashMap<String, Set<Integer>>();
     }
     
     public void set(String key, String value, int timestamp) {
@@ -12,31 +14,38 @@ class TimeMap {
     	sb.append(key);
     	sb.append(timestamp);
     	map.put(sb.toString(), value);
-    	if (time.containsKey(key)){
+    	if (seen.containsKey(key)){
     		time.get(key).add(timestamp);
+            seen.get(key).add(timestamp);
     	}
     	else {
+            List<Integer> list = new ArrayList<>();
             Set<Integer> set = new HashSet<>();
+            list.add(timestamp);
             set.add(timestamp);
-    		time.put(key, set);
+    		time.put(key, list);
+            seen.put(key, set);
     	}
     }
     
     public String get(String key, int timestamp) {
     	StringBuilder sb = new StringBuilder();
     	if (time.containsKey(key)){
-	        if (time.get(key).contains(timestamp)){
+	        if (seen.get(key).contains(timestamp)){
 	        	sb.append(key);
 	    		sb.append(timestamp);
 	        }
+            else if (time.get(key).get(0) > timestamp){
+                return "";
+            }
 	        else {
-	        	int max = Integer.MIN_VALUE;
-	        	for (int i : time.get(key)){
-	        		if (i < timestamp){
-	        			max = Math.max(max, i);
+                int max = 0;
+	        	for (int i =  time.get(key).size()-1; i >= 0; i--){
+	        		if (time.get(key).get(i) <= timestamp){
+	        			max = time.get(key).get(i);
+                        break;
 	        		}
 	        	}
-                if (max == Integer.MIN_VALUE) return "";
         		sb.append(key);
         		sb.append(max);
        		}

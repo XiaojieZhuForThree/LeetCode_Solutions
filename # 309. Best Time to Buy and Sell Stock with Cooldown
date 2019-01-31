@@ -1,0 +1,24 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length <= 1) {
+            return 0;
+        }
+        int[] sell = new int[prices.length];
+        int[] buy = new int[prices.length];
+        for (int i = 0; i < prices.length; i++) {
+            
+        }
+    }
+    private int helper(int[] prices, int index, int profit, boolean bought, boolean cooldown) {
+        if (index >= prices.length) {
+            return profit;
+        }
+        else if (cooldown == true) {
+            return helper(prices, index + 1; profit, false, false);
+        }
+        else if (bought == true){
+            return Math.min(helper(prices, index+1, profit - prices[index], true, false),
+                           helper(prices, index+1, profit, true, false))
+        }
+    }
+}

@@ -2,7 +2,13 @@ class Solution {
     public String getPermutation(int n, int k) {
         
     }
-    private int helper(int n, int k) {
+    private int helper(int n, int m, int k, Set<Integer> used) {
+        int[] list = new int[m];
+        for (int i = 1; i <= m; i++) {
+            if (!used.contains(i)) {
+                list[i] = 
+            }
+        }
         int div = getFac(n - 1);
         int seq = k / div;
         int remainder = k % div;

@@ -14,10 +14,10 @@ class Solution {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         boolean reverse = false;
+        Deque<Integer> deque = new ArrayDeque<>();
         while (!queue.isEmpty()) {
-            Deque<Integer> deque = new ArrayDeque<>();
-            Queue<TreeNode> nextQueue = new LinkedList<>();
-            while (!queue.isEmpty()) {
+            int length = queue.size(), count = 0;
+            while (count < length) {
                 TreeNode pop = queue.remove();
                 if (reverse){
                     deque.addFirst(pop.val);
@@ -25,14 +25,15 @@ class Solution {
                     deque.addLast(pop.val);
                 }
                 if (pop.left != null){
-                    nextQueue.add(pop.left);
+                    queue.add(pop.left);
                 }
                 if (pop.right != null) {
-                    nextQueue.add(pop.right);
-                }                                       
+                    queue.add(pop.right);
+                } 
+                count++;
             }
             ans.add(new ArrayList<>(deque));
-            queue = nextQueue;
+            deque.clear();
             reverse = !reverse;
         }
         return ans;

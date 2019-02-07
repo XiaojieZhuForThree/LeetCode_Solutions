@@ -16,3 +16,46 @@ class Solution {
         return dumb[k-1];
     }
 }
+
+//binary search
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        int nrow = matrix.length;
+        int ncol = matrix[0].length;
+        
+        int start = matrix[0][0];
+        int end = matrix[nrow-1][ncol-1];
+        
+        while(start + 1 < end){
+            int mid = start + (end - start) / 2;
+            if(countLessEqual(matrix, mid) >= k){
+                end = mid;
+            }else{
+                start = mid;
+            }
+        }
+        
+        if(countLessEqual(matrix, start) >= k){
+            return start;
+        }
+        
+        return end;
+        
+    }
+    
+    //starts from bottom left corner
+    public int countLessEqual(int[][] matrix, int value) {
+        int cnt = 0;
+        
+        int i = matrix.length - 1, j = 0;
+        while(i >= 0 && j < matrix[0].length){
+            if(matrix[i][j] > value){
+                i--;
+            }else{
+                cnt += i + 1;
+                j++;
+            }
+        }
+        return cnt;
+    }
+}

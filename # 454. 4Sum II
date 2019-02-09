@@ -15,9 +15,7 @@ class Solution {
         for (int k = 0; k < C.length; k++) {
             for (int l = 0; l < D.length; l++) {
                 int reverseKey = -C[k] - D[l];
-                if (map.containsKey(reverseKey)){
-                    ans += map.get(reverseKey);
-                }
+                ans += map.getOrDefault(reverseKey, 0);
             }
         }
         return ans;

@@ -7,14 +7,16 @@ class Solution {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < A.length; i++) {
             for (int j = 0; j < B.length; j++) {
-                map.put(A[i] + B[j], map.getOrDefault(A[i] + B[j], 0) + 1);
+                int key = A[i] + B[j];
+                map.put(key, map.getOrDefault(key, 0) + 1);
             }
         }
         
         for (int k = 0; k < C.length; k++) {
             for (int l = 0; l < D.length; l++) {
-                if (map.containsKey(-C[k] - D[l])){
-                    ans += map.get(-C[k] - D[l]);
+                int reverseKey = -C[k] - D[l];
+                if (map.containsKey(reverseKey)){
+                    ans += map.get(reverseKey);
                 }
             }
         }

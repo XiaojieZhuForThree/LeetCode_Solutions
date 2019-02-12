@@ -1,0 +1,9 @@
+class Solution {
+    public int calculate(String s) {
+        s.replaceAll("\\s","");
+        int cur = 0;
+        for (char i : s) {
+            
+        }
+    }
+}

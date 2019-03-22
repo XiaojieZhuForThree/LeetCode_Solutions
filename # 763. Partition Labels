@@ -1,0 +1,37 @@
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        List<Integer> ans = new ArrayList<>();
+        if (S == null || S.length() == 0) {
+            return ans;
+        }
+        Map<Character, Integer> map = new HashMap<>();
+        for (char i : S.toCharArray()) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        int j = 0;
+        while (j < S.length()) {
+            if (map.get(S.charAt(j)) == 1) {
+                ans.add(1);
+                j++;
+            }
+            else {
+                Set<Character> set = new HashSet<>();
+                set.add(S.charAt(j));
+                int start = j, end = j;
+                int remaining = map.get(S.charAt(j));
+                while (remaining > 0) {
+                    if (set.contains(S.charAt(end))) {
+                        remaining--;
+                        end++;
+                    } else {
+                        set.add(S.charAt(end));
+                        remaining += map.get(S.charAt(end));
+                    }
+                }
+                ans.add(end - start);
+                j = end;
+            }
+        }
+        return ans;
+    }
+}

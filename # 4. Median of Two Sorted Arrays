@@ -45,10 +45,17 @@ class Solution {
         }
         if (nums1.length == nums2.length) {
             if (nums1[0] >= nums2[nums2.length - 1]) {
-                return double((nums1[0] + nums2[nums2.length - 1]) / 2);
+                return (double)((nums1[0] + nums2[nums2.length - 1]) / 2);
             } else if (nums1[nums1.length - 1] <= nums2[0]) {
-                return double((nums2[0] + nums1[nums1.length - 1]) / 2);
+                return (double)((nums2[0] + nums1[nums1.length - 1]) / 2);
             }
+        }
+        if (nums1.length == nums2.length + 1) {
+            if (nums1[0] >= nums2[nums2.length - 1]) {
+                return (double)(nums1[0]);
+            } else if (nums1[nums1.length - 1] <= nums2[0]) {
+                return (double)(nums1[nums1.length - 1]);
+            }            
         }
         int left = 0, right = nums1.length - 1;
         int total = nums1.length + nums2.length;
@@ -60,7 +67,7 @@ class Solution {
             } else if (leftlen + nums2.length + 1 < (nums1.length - leftlen) {
                 left = mid + 1;
             } else {
-                int index2 = (total / 2) - leftlen - 1;
+                int index2 = (total / 2) - leftlen;
             }
         }
     }

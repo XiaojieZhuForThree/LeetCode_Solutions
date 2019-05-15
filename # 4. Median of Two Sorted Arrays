@@ -29,6 +29,20 @@ class Solution {
             } else {
                 return (double)(nums2[mid]);
             }
+        } else if (nums2 == null || nums2.length == 0) {
+            int mid = (nums1.length - 1) / 2;
+            if (nums1.length % 2 == 0) {
+                int sum = nums1[mid] + nums1[mid + 1];
+                return (double)(sum / 2);
+            } else {
+                return (double)(nums1[mid]);
+            }
         }
+        if (nums1.length < nums2.length) {
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+        }
+        
     }
 }

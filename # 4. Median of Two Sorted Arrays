@@ -43,6 +43,10 @@ class Solution {
             nums1 = nums2;
             nums2 = temp;
         }
-        
+        int left = 0, right = nums1.length - 1;
+        int total = nums1.length + nums2.length;
+        while (left < right) {
+            
+        }
     }
 }

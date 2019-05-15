@@ -53,7 +53,15 @@ class Solution {
         int left = 0, right = nums1.length - 1;
         int total = nums1.length + nums2.length;
         while (left < right) {
-            
+            int mid = (left + right) / 2;
+            int leftlen = mid + 1;
+            if (leftlen > (nums1.length - leftlen + nums2.length + 1)) {
+                right = mid;
+            } else if (leftlen + nums2.length + 1 < (nums1.length - leftlen) {
+                left = mid + 1;
+            } else {
+                int index2 = (total / 2) - leftlen - 1;
+            }
         }
     }
 }

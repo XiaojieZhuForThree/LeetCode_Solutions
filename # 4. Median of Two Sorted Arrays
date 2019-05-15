@@ -26,7 +26,7 @@ class Solution {
             nums1 = nums2;
             nums2 = temp;
         }
-        int left = -1, right = nums1.length;
+        int left = -2, right = nums1.length+1;
         int total = nums1.length + nums2.length;
         int pt1, pt2, pt3, pt4;
         while (left < right) {

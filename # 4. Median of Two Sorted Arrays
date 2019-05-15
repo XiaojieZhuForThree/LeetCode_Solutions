@@ -33,8 +33,26 @@ class Solution {
         boolean loop = true;
         int total = nums1.length + nums2.length;
         int start = 0, end = nums1.length - 1;
+        int pt1, pt2, pt3, pt4;
+        int ans1, ans2;
         while (loop) {
-            int pt1 = 
+            pt1 = (start + end) / 2;
+            pt2 = pt1 + 1;
+            pt3 = total - (pt1 + 1) - 1;
+            pt4 = pt3 + 1;
+            int maxmin1 = pt1 < 0 ? Integer.MIN_VALUE : nums1[pt1];
+            int maxmin2 = pt3 < 0 ? Integer.MIN_VALUE : nums1[pt3];
+            int minmax1 = pt3 >= nums1.length ? Integer.MAX_VALUE : nums1[pt3];
+            int minmax2 = pt4 >= nums2.length ? Integer.MAX_VALUE : nums1[pt4];
+            if (maxmin1 > minmax2) {
+                end = pt1;                
+            } else if (maxmin2 > minmax1) {
+                start = pt2;
+            } else {
+                ans1 = Math.max(maxmin1, maxmin2);
+                ans2 = Math.min(minmax1, minmax2);
+                loop = false;
+            }
         }
     }
 }

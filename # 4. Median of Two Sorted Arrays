@@ -43,6 +43,13 @@ class Solution {
             nums1 = nums2;
             nums2 = temp;
         }
+        if (nums1.length == nums2.length) {
+            if (nums1[0] >= nums2[nums2.length - 1]) {
+                return double((nums1[0] + nums2[nums2.length - 1]) / 2);
+            } else if (nums1[nums1.length - 1] <= nums2[0]) {
+                return double((nums2[0] + nums1[nums1.length - 1]) / 2);
+            }
+        }
         int left = 0, right = nums1.length - 1;
         int total = nums1.length + nums2.length;
         while (left < right) {

@@ -21,54 +21,17 @@ The median is (2 + 3)/2 = 2.5
 
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        if (nums1 == null || nums1.length == 0) {
-            int mid = (nums2.length - 1) / 2;
-            if (nums2.length % 2 == 0) {
-                int sum = nums2[mid] + nums2[mid + 1];
-                return (double)(sum / 2);
-            } else {
-                return (double)(nums2[mid]);
-            }
-        } else if (nums2 == null || nums2.length == 0) {
-            int mid = (nums1.length - 1) / 2;
-            if (nums1.length % 2 == 0) {
-                int sum = nums1[mid] + nums1[mid + 1];
-                return (double)(sum / 2);
-            } else {
-                return (double)(nums1[mid]);
-            }
-        }
         if (nums1.length < nums2.length) {
             int[] temp = nums1;
             nums1 = nums2;
             nums2 = temp;
         }
-        if (nums1.length == nums2.length) {
-            if (nums1[0] >= nums2[nums2.length - 1]) {
-                return (double)((nums1[0] + nums2[nums2.length - 1]) / 2);
-            } else if (nums1[nums1.length - 1] <= nums2[0]) {
-                return (double)((nums2[0] + nums1[nums1.length - 1]) / 2);
-            }
-        }
-        if (nums1.length == nums2.length + 1) {
-            if (nums1[0] >= nums2[nums2.length - 1]) {
-                return (double)(nums1[0]);
-            } else if (nums1[nums1.length - 1] <= nums2[0]) {
-                return (double)(nums1[nums1.length - 1]);
-            }            
-        }
-        int left = 0, right = nums1.length - 1;
+        int left = -1, right = nums1.length;
         int total = nums1.length + nums2.length;
+        int pt1, pt2, pt3, pt4;
         while (left < right) {
             int mid = (left + right) / 2;
-            int leftlen = mid + 1;
-            if (leftlen > (nums1.length - leftlen + nums2.length + 1)) {
-                right = mid;
-            } else if (leftlen + nums2.length + 1 < (nums1.length - leftlen) {
-                left = mid + 1;
-            } else {
-                int index2 = (total / 2) - leftlen;
-            }
+            
         }
     }
 }

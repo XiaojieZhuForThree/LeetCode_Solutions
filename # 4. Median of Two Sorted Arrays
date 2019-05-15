@@ -30,15 +30,11 @@ class Solution {
         } else if (nums2 == null || nums2.length == 0) {
             return nums1.length % 2 == 0 ? (double)(nums1[nums1.length / 2] + nums1[nums1.length / 2 + 1])/2 : (double)nums1[nums1.length / 2];
         }
-        double ans = 0;
-        if (nums1.length < nums2.length) {
-            int[] temp = nums1;
-            nums1 = nums2;
-            nums2 = temp;
-        }
+        boolean loop = true;
         int total = nums1.length + nums2.length;
-        int start = 0, end = nums1.length;
-        int mid = (start + end) / 2;
-        
+        int start = 0, end = nums1.length - 1;
+        while (loop) {
+            int pt1 = 
+        }
     }
 }

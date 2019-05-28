@@ -29,20 +29,33 @@ piles.length is even.
 sum(piles) is odd.
 ```
 class Solution {
+    Map<int[], Integer> map = new HashMap<>();
     public boolean stoneGame(int[] piles) {
-        int sum = 0;
+        int sum = 0, end = piles.length - 1;
         for (int i : piles) {
             sum += i;
         }
         sum /= 2;
-        return helper(piles, 0, piles.length-1, 0, sum);
+    if ((piles[0] + helper(piles, 2, end) > sum) && (piles[0] + helper(piles, 1, end - 1) > sum)) return true;
+    else if ((piles[end] + helper(piles, 0, end - 2) > sum) && (piles[end] + helper(piles, 1, end - 1) > sum)) return true;
+    return false;        
     }
-    public boolean helper(int[] piles, int start, int end, int already, int sum) {
-        if (already > sum) {
-            return true;
-        }   else if (start >= end) {
-            return false;
-        } 
-        return helper(piles, start + 2, end, already + piles[start], sum) || helper(piles, start + 1, end - 1, already + piles[start], sum) || helper(piles, start, end-2, already + piles[end], sum) || helper(piles, start + 1, end - 1, already + piles[end], sum);
+    public int helper(int[] piles, int start, int end) {
+        int[] key = new int[] {start, end};
+        if (map.containsKey(key)){
+            return map.get(key);
+        }
+        int ans = 0;
+        if (end - start == 1) {
+            ans = Math.max(piles[start], piles[end]);
+        } else {
+            int val1 = piles[start] + helper(piles, start + 2, end);
+            int val2 = piles[start] + helper(piles, start + 1, end - 1);
+            int val3 = piles[end] + helper(piles, start, end - 2);
+            int val4 = piles[end] + helper(piles, start + 1, end - 1);
+            ans = Math.max(Math.max(val1, val2), Math.max(val3, val4));
+        }
+        map.put(key, ans);
+        return map.get(key);
     }
 }

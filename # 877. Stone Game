@@ -28,8 +28,34 @@ piles.length is even.
 1 <= piles[i] <= 500
 sum(piles) is odd.
 ```
+
+1.
 class Solution {
     public boolean stoneGame(int[] piles) {
         return true;
+    }
+}
+
+
+2.
+class Solution {
+    public boolean stoneGame(int[] piles) {
+	// If pile length is even, Alex can choose either the odd or even pile to pick
+        if (piles == null || piles.length == 0 || (piles.length & 1) == 0) {
+            return true;
+        }
+        int n = piles.length;
+        // dp[i][j] represents the first taker of piles i to j can win the second taker dp[i][j] score
+        int[][] dp = new int[n][n];
+        for (int i = n; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (i == j) {
+                    dp[i][j] = piles[j];
+                } else {
+                    dp[i][j] = Math.max(piles[j] - dp[i][j - 1], piles[i] - dp[i + 1][j]);
+                }
+            }
+        }
+        return dp[0][n - 1] > 0;
     }
 }

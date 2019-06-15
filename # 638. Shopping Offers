@@ -48,24 +48,27 @@ class Solution {
             int optimal = Integer.MAX_VALUE;
             for (int i = 0; i < price.size(); i++) {
                 if (list.get(i) >= 1){
-                    List<Integer> prevList = new ArrayList<>(list);
-                    prevList.set(i, list.get(i) - 1);
-                    optimal = Math.min(helper(price, special, prevList) + price.get(i), optimal);                    
+                    list.set(i, list.get(i) - 1);
+                    optimal = Math.min(helper(price, special, list) + price.get(i), optimal);      
+                    list.set(i, list.get(i) + 1);
                 }
             }
             for (List<Integer> j : special) {
-                List<Integer> prevList = new ArrayList<>(list);
                 boolean coulduse = true;
                 for (int y = 0; y < list.size(); y++) {
                     if (list.get(y) < j.get(y)) {
                         coulduse = false;
+                        break;
                     }
                 }
                 if (coulduse == true) {
                     for (int x = 0; x < j.size() - 1; x++) {
-                        prevList.set(x, list.get(x) - j.get(x));
+                        list.set(x, list.get(x) - j.get(x));
                     }
-                    optimal = Math.min(helper(price, special, prevList) + j.get(j.size() - 1), optimal);  
+                    optimal = Math.min(helper(price, special, list) + j.get(j.size() - 1), optimal);  
+                    for (int x = 0; x < j.size() - 1; x++) {
+                        list.set(x, list.get(x) + j.get(x));
+                    }                    
                 }
             }
             map.put(list, optimal);

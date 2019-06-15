@@ -34,29 +34,39 @@ You are not allowed to buy more items than you want, even if that would lower th
 class Solution {
     Map<List<Integer>, Integer> map = new HashMap<>();
     public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        List<Integer> init = new ArrayList<>(needs);
+        for (int i = 0; i < init.size(); i++) {
+            init.set(i, 0);
+        }
+        map.put(init, 0);
         return helper(price, special, needs);
     }
     public int helper(List<Integer> price, List<List<Integer>> special, List<Integer> list) {
         if (map.containsKey(list)) {
             return map.get(list);
         } else {
-            for (int i : list) {
-                if (i < 0) {
-                    return Integer.MAX_VALUE;
-                }
-            }
             int optimal = Integer.MAX_VALUE;
             for (int i = 0; i < price.size(); i++) {
-                List<Integer> prevList = new ArrayList<>(list);
-                prevList.set(i, list.get(i) - 1);
-                optimal = Math.min(helper(price, special, prevList) + price.get(i), optimal);
+                if (list.get(i) >= 1){
+                    List<Integer> prevList = new ArrayList<>(list);
+                    prevList.set(i, list.get(i) - 1);
+                    optimal = Math.min(helper(price, special, prevList) + price.get(i), optimal);                    
+                }
             }
             for (List<Integer> j : special) {
                 List<Integer> prevList = new ArrayList<>(list);
-                for (int x = 0; x < j.size() - 1; x++) {
-                    prevList.set(x, list.get(x) - j.get(x));
+                boolean coulduse = true;
+                for (int y = 0; y < list.size(); y++) {
+                    if (list.get(y) < j.get(y)) {
+                        coulduse = false;
+                    }
                 }
-                optimal = Math.min(helper(price, special, prevList) + j.get(j.size() - 1), optimal);
+                if (coulduse == true) {
+                    for (int x = 0; x < j.size() - 1; x++) {
+                        prevList.set(x, list.get(x) - j.get(x));
+                    }
+                    optimal = Math.min(helper(price, special, prevList) + j.get(j.size() - 1), optimal);  
+                }
             }
             map.put(list, optimal);
             return map.get(list);

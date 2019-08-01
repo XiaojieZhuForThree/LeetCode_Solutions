@@ -1,0 +1,23 @@
+class Solution {
+    public int longestArithSeqLength(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
+        map.put(0, new HashMap<Integer, Integer>());
+        int maxLen = 1;
+        for (int i = 1; i < A.length; i++){
+            Map<Integer, Integer> occur = new HashMap<>();
+            for (int j = i - 1; j >= 0; j--) {  
+                int diff = A[i] - A[j];
+                if (!occur.containsKey(diff)){
+                    Map<Integer, Integer> prevOccur = map.get(j);
+                    occur.put(diff, prevOccur.getOrDefault(diff, 1) + 1);
+                }
+                maxLen = Math.max(maxLen, occur.get(diff));
+            }
+            map.put(i, occur);
+        }
+        return maxLen;
+    }
+}

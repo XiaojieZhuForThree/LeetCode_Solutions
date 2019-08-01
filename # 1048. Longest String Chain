@@ -1,0 +1,55 @@
+class Solution {
+    public int longestStrChain(String[] words) {
+        if (words == null || words.length == 0){
+            return 0;
+        }
+        
+        Arrays.sort(words, new Comparator<String>() {
+            public int compare(String o1, String o2) {
+                return o1.length() - o2.length();
+            }
+        });
+        
+        int ans = 1;
+        Map<String, Integer> map = new HashMap<>();
+        Map<Integer, Set<String>> groups = new HashMap<>();
+        for (String i : words){
+            map.put(i, 1);
+            if (groups.containsKey(i.length())){
+                groups.get(i.length()).add(i);
+            } else{
+                Set<String> set = new HashSet<>();
+                set.add(i);
+                groups.put(i.length(), set);
+            }       
+        }
+        for(int i = 1; i < words.length; i++) {
+            Set<String> prev = groups.getOrDefault(words[i].length() - 1, new HashSet<>());
+            for (String j : prev){
+                if (isChain(words[i], j)){
+                    map.put(words[i], Math.max(map.get(words[i]), map.get(j) + 1));
+                    ans = Math.max(ans, map.get(words[i]));
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public boolean isChain(String j, String i) {
+        int[] chars = new int[26];
+        int count = 0;
+        for (char m : j.toCharArray()) {
+            chars[m - 'a']++;
+            count ++;
+        }
+        for (char n : i.toCharArray()){
+            if (chars[n - 'a'] == 0){
+                return false;
+            } else {
+                chars[n - 'a']--;
+                count--;
+            }
+        }
+        return count == 1;
+    }
+}

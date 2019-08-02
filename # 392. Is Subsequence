@@ -17,17 +17,19 @@ class Solution {
     }
 }
 
+
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        int i = 0, j = 0;
-        while (i < s.length() && j < t.length()) {
-            if (s.charAt(i) == t.charAt(j)) {
+        int i = 0, j = 0, sl = s.length(), tl = t.length();
+        char[] sc = s.toCharArray(), tc = t.toCharArray();
+        while (i < sl && j < tl) {
+            if (sc[i] == tc[j]) {
                 i++;
                 j++;
             } else {
                 j++;
             }
         }
-        return i == s.length();
+        return i == sl;
     }
 }

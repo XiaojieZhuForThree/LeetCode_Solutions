@@ -1,0 +1,24 @@
+class Solution {
+    public int countNumbersWithUniqueDigits(int n) {
+        if (n == 0) {
+            return 1;
+        }
+        if (n == 1) {
+            return 10;
+        }
+        int[] prev = new int[11];
+        prev[1] = 10;
+        for (int i = 2; i < 11; i++) {
+            prev[i] = prev[i-1] + ffac(i);
+        }
+        return n > 10 ? prev[10] : prev[n];
+    }
+    public int ffac(int n) {
+        int i = 9;
+        int val = 9;
+        for (int t = n-1; t > 0; t--) {
+            val *= i--;
+        }
+        return val;
+    }
+}

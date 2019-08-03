@@ -1,0 +1,25 @@
+class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+        if (nums.length < 3) {
+            return true;
+        }
+        int i = nums.length;
+        int[][] dp = new int[i][i];
+        return helper(nums, 0, i-1, dp) >= Math.max(helper(nums, 1, i-1, dp), helper(nums, 0, i-2, dp));
+    }
+        int helper(int[] nums, int l, int r, int[][] dp) {
+            if (dp[l][r] != 0) {
+                return dp[l][r];
+            }
+            if (l == r) {
+                dp[l][r] = nums[l];
+            } else if (l == r - 1) {
+                dp[l][r] = Math.max(nums[l], nums[r]);
+            } else {
+                int val1 = nums[l] + Math.min(helper(nums, l + 2, r, dp), helper(nums, l + 1, r - 1, dp));
+                int val2 = nums[r] + Math.min(helper(nums, l, r - 2, dp), helper(nums, l + 1, r - 1, dp));
+                dp[l][r] = Math.max(val1, val2);             
+            } 
+            return dp[l][r];
+        }
+}

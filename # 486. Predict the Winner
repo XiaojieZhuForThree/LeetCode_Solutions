@@ -5,7 +5,7 @@ class Solution {
         }
         int i = nums.length;
         int[][] dp = new int[i][i];
-        return helper(nums, 0, i-1, dp) >= Math.max(helper(nums, 1, i-1, dp), helper(nums, 0, i-2, dp));
+        return helper(nums, 0, i-1, dp) >= Math.min(helper(nums, 1, i-1, dp), helper(nums, 0, i-2, dp));
     }
         int helper(int[] nums, int l, int r, int[][] dp) {
             if (dp[l][r] != 0) {

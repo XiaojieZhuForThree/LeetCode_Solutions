@@ -1,0 +1,31 @@
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int[] container = new int[10002];
+        int count = 0;
+        Map<int[], Integer> map = new HashMap<>();
+        map.put(container, 0);
+        Set<Integer> set = new HashSet<>();
+        for (int i : nums) {
+            container[i]++;
+            set.add(i);
+        }
+        return helper(map, container, set);
+    }
+    public int helper(Map<int[], Integer> map, int[] arr, Set<Integer> set) {
+        if (map.containsKey(arr)) {
+            return map.get(arr);
+        }
+        int ans = 0;
+        for (int i : set) {
+            if (arr[i] > 0) {
+                int val = i * arr[i];
+                int c1 = arr[i], c2 = arr[i - 1], c3 = arr[i + 1];
+                arr[i] = 0; arr[i - 1] = 0; arr[i + 1] = 0;
+                ans = Math.max(ans, val + helper(map, arr, set));
+                arr[i] = c1; arr[i - 1] = c2; arr[i + 1] = c3;
+            }
+        }
+        map.put(arr, ans);
+        return ans;
+    }
+}

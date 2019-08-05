@@ -1,7 +1,7 @@
 class Solution {
     public double largestSumOfAverages(int[] A, int K) {
         double[][] dp = new double[A.length][K];
-        int[][][] prev = new int[A.length][K][2];
+        double[][][] prev = new double[A.length][K][2];
         for (int i = 0; i < A.length; i++) {
             for (int k = 0; k < K; k++) {
                 if (i == 0) {
@@ -9,14 +9,14 @@ class Solution {
                     prev[i][k][0] = A[0];
                     prev[i][k][1] = 1;
                 } else if (k == 0) {
-                    dp[i][k] = dp[i-1][k] - (double)prev[i-1][k][0]/prev[i-1][k][1];
+                    dp[i][k] = dp[i-1][k] - prev[i-1][k][0]/prev[i-1][k][1];
                     prev[i][k][0] = prev[i-1][k][0] + A[i];
                     prev[i][k][1] = prev[i-1][k][1] + 1;
-                    dp[i][k] += (double)prev[i][k][0]/prev[i][k][1];
+                    dp[i][k] += prev[i][k][0]/prev[i][k][1];
                 } else {
                     double val1 = dp[i-1][k-1] + A[i];
-                    double val2 = dp[i-1][k] - (double)prev[i-1][k][0]/prev[i-1][k][1];
-                    val2 += (double)(prev[i-1][k][0] + A[i])/(prev[i-1][k][1]+1);
+                    double val2 = dp[i-1][k] - prev[i-1][k][0]/prev[i-1][k][1];
+                    val2 += (prev[i-1][k][0] + A[i])/(prev[i-1][k][1]+1);
                     if (val2 > val1) {
                         prev[i][k][0] = prev[i-1][k][0] + A[i];
                         prev[i][k][1] = prev[i-1][k][1] + 1;

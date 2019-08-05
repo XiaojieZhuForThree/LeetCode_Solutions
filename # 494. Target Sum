@@ -15,3 +15,22 @@ class Solution {
         return helper(nums, S , index+1, sum + nums[index]) + helper(nums, S, index + 1, sum - nums[index]);
     }
 }
+
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        if (nums == null || nums.length == 0 || S > 1000 || S < -1000) {
+            return 0;
+        }
+        int[][] dp = new int[nums.length][2002];
+        dp[0][1000 - nums[0]] = nums[0] == 0 ? 2 : 1;
+        dp[0][1000 + nums[0]] = nums[0] == 0 ? 2 : 1;
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j <= 2000; j++) {
+                int val1 = j - nums[i] < 0 ? 0 : dp[i-1][j - nums[i]];
+                int val2 = j + nums[i] > 2000 ? 0 : dp[i-1][j + nums[i]];
+                dp[i][j] = val1 + val2;
+            }
+        }
+        return dp[nums.length-1][1000+S];
+    }
+}

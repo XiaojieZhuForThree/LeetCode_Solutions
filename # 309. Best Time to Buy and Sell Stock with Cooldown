@@ -1,23 +1,17 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        if (prices == null || prices.length <= 1) return 0;
-        int maxVal = Integer.MIN_VALUE;
-        int m = prices.length;
-        int[] buy = new int[m];
-        int[] nobuy = new int[m];
-        int[] sell = new int[m];
-        int[] nosell = new int[m];
-        buy[0] = -prices[0];
-        buy[1] = -prices[1];
-        sell[0] = 0;
-        sell[1] = prices[1] - prices[0];
-        for (int i = 2; i < prices.length; i++) {
-            nobuy[i] = maxVal;
-            nosell[i] = maxVal;
-            buy[i] = Math.max(sell[i-2] - prices[i], nobuy[i-1] - prices[i]);
-            sell[i] = Math.max(buy[i-1] + prices[i], nosell[i-1] + prices[i]);
-            maxVal = Math.max(maxVal, Math.max(buy[i], sell[i]));
+        if (prices == null || prices.length == 0) {
+            return 0;
         }
-        return maxVal;
+        int days = prices.length;
+        int[] holds = new int[days+1];
+        int[] outs = new int[days+1];
+        holds[1] = -prices[0];
+        outs[1] = 0;
+        for (int i = 2; i <= days; i++) {
+            holds[i] = Math.max(holds[i-1], outs[i-2] - prices[i-1]);
+            outs[i] = Math.max(outs[i-1], holds[i-1] + prices[i-1]);
+        }
+        return outs[days];
     }
 }

@@ -1,31 +1,15 @@
 class Solution {
-    public int lastStoneWeightII(int[] stones) {
-        return helper(stones, 0);
-    }
-    public int helper(int[] stones, int zeroCount) {
-        Arrays.sort(stones);
-        if (zeroCount == stones.length) {
-            return 0;
+    public int lastStoneWeightII(int[] A) {
+        boolean[] dp = new boolean[1501];
+        dp[0] = true;
+        int sumA = 0;
+        for (int a : A) {
+            sumA += a;
+            for (int i = sumA; i >= a; --i)
+                dp[i] |= dp[i - a];
         }
-        if (zeroCount == stones.length-1) {
-            return stones[stones.length-1];
-        }
-        int min = Integer.MAX_VALUE;
-        for (int i = zeroCount; i < stones.length-1; i++) {
-            for (int j = i+1; j < stones.length; j++) {
-                int mediate = stones[i];
-                stones[j] -= stones[i];
-                stones[i] = 0;
-                if (stones[i] == 0) {
-                    min = Math.min(min, helper(stones, zeroCount+1));
-                }
-                else {
-                    min = Math.min(min, helper(stones, zeroCount));
-                }
-                stones[j] += mediate;
-                stones[i] = mediate;
-            }
-        }
-        return min;
+        for (int i = sumA / 2; i > 0; --i)
+            if (dp[i]) return sumA - i - i;
+        return 0;
     }
 }

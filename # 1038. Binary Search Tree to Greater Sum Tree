@@ -61,3 +61,27 @@ class Solution {
         return root;
     }
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode bstToGst(TreeNode root) {
+        helper(root, 0);
+        return root;
+    }
+    public int helper(TreeNode root, int sum) {
+        if (root == null) {
+            return sum;
+        }
+        root.val += helper(root.right, sum);
+        return helper(root.left, root.val);
+    }
+}

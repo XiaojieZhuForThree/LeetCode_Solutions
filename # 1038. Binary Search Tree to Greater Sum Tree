@@ -28,3 +28,36 @@ class Solution {
         helper(root.right, stack);
     }
 }
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode bstToGst(TreeNode root) {
+        Stack<TreeNode> store = new Stack<>(), save = new Stack<>();
+        TreeNode dummy = root;
+        while (!save.isEmpty() || dummy != null){
+            if (dummy == null){
+                dummy = save.pop();
+                store.push(dummy);
+                dummy = dummy.right;
+            } else {
+                save.push(dummy);
+                dummy = dummy.left;
+            }
+        }
+        int val = 0;
+        while (!store.isEmpty()) {
+            TreeNode cur = store.pop();
+            cur.val += val;
+            val = cur.val;
+        }
+        return root;
+    }
+}

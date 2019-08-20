@@ -1,0 +1,19 @@
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        Arrays.sort(deck);
+        if (deck == null || deck.length < 3) {
+            return deck;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(deck[deck.length-1]);
+        for (int i = deck.length - 2; i >= 0; i--) {
+            int rep = queue.remove();
+            queue.add(rep);
+            queue.add(deck[i]);
+        }
+        for (int i = queue.size()-1; i >= 0; i--) {
+            deck[i] = queue.remove();
+        }
+        return deck;
+    }
+}

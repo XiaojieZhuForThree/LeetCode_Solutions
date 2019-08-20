@@ -1,23 +1,18 @@
 class Solution {
     public String removeDuplicates(String S) {
-        Stack<Character> stack = new Stack();
+        Deque<Character> deque = new ArrayDeque();
         for (char c : S.toCharArray()) {
-            if (!stack.isEmpty()) {
-                char s = stack.peek();
-                if (s == c) {
-                    stack.pop();
-                }
-                else {
-                    stack.push(c);
-                }
+            char s = deque.isEmpty() ? ' ' : deque.peekLast();
+            if (s == c) {
+                deque.pollLast();
             } else {
-                stack.push(c);
+                deque.addLast(c);
             }
         }
         StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
+        while (!deque.isEmpty()) {
+            sb.append(deque.pollFirst());
         }
-        return sb.reverse().toString();
+        return sb.toString();
     }
 }

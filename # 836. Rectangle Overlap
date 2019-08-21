@@ -1,19 +1,5 @@
 class Solution {
     public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
-        return helper(rec1, rec2) || helper(rec2, rec1);
-    }
-    public boolean helper(int[] rec1, int[] rec2) {
-        int leftmost = rec1[0], rightmost = rec1[2], bottommost = rec1[1], uppermost = rec1[3];
-        int[][]coords = new int[4][2];
-        coords[0][0] = rec2[0]; coords[0][1] = rec2[1];
-        coords[1][0] = rec2[2]; coords[1][1] = rec2[1];
-        coords[2][0] = rec2[0]; coords[2][1] = rec2[3];
-        coords[3][0] = rec2[2]; coords[3][1] = rec2[3];
-        for (int[] coord : coords) {
-            if (coord[0] > leftmost && coord[0] < rightmost && coord[1] > bottommost && coord[1] < uppermost) {
-                return true;
-            }
-        }
-        return false;
+        return !(rec2[2] <= rec1[0] || rec2[0] >= rec1[2] || rec2[3] <= rec1[1] || rec2[1] >= rec1[3]);
     }
 }

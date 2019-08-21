@@ -1,0 +1,26 @@
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        boolean[] visited = new boolean[rooms.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[0] = true;
+        helper(rooms, 0, visited, queue);
+        while (!queue.isEmpty()) {
+            int i = queue.poll();
+            helper(rooms, i, visited, queue);
+        }
+        boolean ans = true;
+        for (boolean i : visited){
+            ans &= i;
+        }
+        return ans;
+    }
+    
+    public void helper(List<List<Integer>> rooms, int i, boolean[] visited, Queue<Integer> queue) {
+        for (int j : rooms.get(i)) {
+            if (!visited[j]) {
+                visited[j] = true;
+                queue.add(j);
+            }
+        }
+    }
+}

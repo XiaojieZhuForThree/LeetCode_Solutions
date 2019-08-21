@@ -30,3 +30,32 @@ class Solution {
         return ans;
     }
 }
+
+
+class Solution {
+    public int[] numsSameConsecDiff(int N, int K) {
+        if (N == 1) {
+            return new int[] {0,1,2,3,4,5,6,7,8,9};
+        }
+        Set<Integer> intBag = new HashSet<>();
+        for (int i = 1; i < 10; i++) {
+            intBag.add(i);
+        }
+        for (int i = 1; i < N; i++) {
+            Set<Integer> next = new HashSet<>();
+            for (int j : intBag) {
+                int lastDig = j % 10;
+                int target1 = lastDig + K;
+                int target2 = lastDig - K;
+                if (target1 < 10) {
+                    next.add(j * 10 + target1);
+                }
+                if (target2 >= 0) {
+                    next.add(j * 10 + target2);
+                }
+            }
+            intBag = next;
+        }
+        return intBag.stream().mapToInt(j->j).toArray();
+    }
+}

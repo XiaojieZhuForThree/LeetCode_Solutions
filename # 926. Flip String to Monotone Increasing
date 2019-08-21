@@ -21,24 +21,19 @@ class Solution {
 
 class Solution {
     public int minFlipsMonoIncr(String S) {
-        if(S == null || S.length() <= 0 )
-            return 0;
-
-        char[] sChars = S.toCharArray();
-        int flipCount = 0;
-        int onesCount = 0;
-
-        for(int i=0; i<sChars.length; i++){
-            if(sChars[i] == '0'){
-                if(onesCount == 0) continue;
-                else flipCount++;
-            }else{
-                onesCount++;
+        int flip = 0, ones = 0;
+        for (char i : S.toCharArray()) {
+            if (i == '0') {
+                if (ones == 0) {
+                    continue;
+                } else {
+                    flip ++;
+                }
+            } else {
+                ones++;
             }
-            if(flipCount > onesCount){
-                flipCount = onesCount;
-            }
+            flip = Math.min(flip, ones);
         }
-        return flipCount;
+        return flip;
     }
 }

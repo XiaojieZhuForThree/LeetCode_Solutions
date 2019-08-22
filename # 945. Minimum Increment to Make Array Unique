@@ -1,0 +1,28 @@
+class Solution {
+    public int minIncrementForUnique(int[] A) {
+        if (A == null || A.length < 2) {
+            return 0;
+        } 
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : A) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int i : map.keySet()) {
+            pq.add(i);
+        }
+        int ans = 0;
+        while (!pq.isEmpty()) {
+            int target = pq.poll();
+            if (map.get(target) > 1) {
+                int times = map.get(target) - 1;
+                ans += times;
+                if (!map.containsKey(target + 1)) {
+                    pq.add(target + 1);
+                }
+                map.put(target + 1, map.getOrDefault(target + 1, 0) + times);
+            }
+        }
+        return ans;
+    }
+}

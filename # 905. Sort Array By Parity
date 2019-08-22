@@ -1,0 +1,16 @@
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int init = 0, end = A.length -1;
+        while (init < end) {
+            if (A[init] % 2 == 1) {
+                int intermediate = A[end];
+                A[end] = A[init];
+                A[init] = intermediate;
+                end--;
+            } else {
+                init++;
+            }
+        }
+        return A;
+    }
+}

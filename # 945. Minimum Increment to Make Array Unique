@@ -26,3 +26,15 @@ class Solution {
         return ans;
     }
 }
+
+class Solution {
+    public int minIncrementForUnique(int[] A) {
+        Arrays.sort(A);
+        int ans = 0, goal = 0;
+        for (int i : A) {
+            ans += Math.max(goal - i, 0);
+            goal = Math.max(i, goal) + 1;
+        }
+        return ans;
+    }
+}

@@ -28,3 +28,17 @@ class Solution {
         return (res + mod) % mod;
     }
 }
+
+
+class Solution {
+    public int distinctSubseqII(String S) {
+        int[] ends = new int[26];
+        int ans = 0, mod = (int)1e9 + 7;
+        for (char c : S.toCharArray()) {
+            int cur = (1 + ans - ends[c-'a'] + mod) % mod;
+            ans = (ans + cur) % mod;
+            ends[c-'a'] = (ends[c-'a'] + cur) % mod;
+        }
+        return ans;
+    }
+}

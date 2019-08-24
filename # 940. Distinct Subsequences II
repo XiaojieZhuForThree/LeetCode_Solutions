@@ -1,9 +1,17 @@
 class Solution {
     public int distinctSubseqII(String S) {
-        long end[] = new long[26], mod = (long)1e9 + 7;
-        for (char c : S.toCharArray())
-            end[c - 'a'] = Arrays.stream(end).sum()%mod + 1;
-        return (int)(Arrays.stream(end).sum() % mod);
+        int[] dp = new int[S.length()];
+        int[] ends = new int[26];
+        Arrays.fill(dp, 1);
+        int ans = 0, mod = (int)1e9 + 7;
+        for (int i = 0; i < S.length(); i++) {
+            int index = S.charAt(i) - 'a';
+            dp[i] += ans - ends[index];
+            dp[i] = (dp[i] + mod) % mod;
+            ans = (ans + dp[i]) % mod;
+            ends[index] = (ends[index] + dp[i]) % mod;
+        }
+        return ans;
     }
 }
 

@@ -1,0 +1,28 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1) {
+            return s;
+        }
+        StringBuilder[] sbs = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++) {
+            sbs[i] = new StringBuilder();
+        }
+        int pointer = 0;
+        boolean up = true;
+        for (char c : s.toCharArray()) {
+            if (up) {
+                sbs[pointer++].append(c); 
+            } else {
+                sbs[pointer--].append(c);
+            }
+            if (pointer == 0 || pointer == numRows - 1) {
+                up = !up;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (StringBuilder i : sbs) {
+            sb.append(i);
+        }
+        return sb.toString();
+    }
+}

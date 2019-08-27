@@ -28,3 +28,51 @@ class Solution {
         return build.toString();
     }
 }
+
+
+
+class Solution {
+            
+    String[] nums = new String[] {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", 
+                                     "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", 
+                                     "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    String[] tens = new String[] {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        
+    public String less100(int num) {
+            if (num < 20) {
+                return nums[num];
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append(tens[num / 10]);
+            if (num % 10 != 0) {
+                sb.append(" ");
+                sb.append(nums[num % 10]);
+            }
+            return sb.toString().trim();
+        }
+    
+    public String numberToWords(int num) {
+        if (num < 100) return less100(num);
+        StringBuilder ans = new StringBuilder();
+        if (num >= 1000000000) {
+            ans.append(numberToWords(num / 1000000000) + " Billion ");
+            num %= 1000000000;
+        }
+        if (num >= 1000000) {
+            ans.append(numberToWords(num / 1000000) + " Million ");
+            num %= 1000000;            
+        }
+        if (num >= 1000) {
+            ans.append(numberToWords(num / 1000) + " Thousand ");
+            num %= 1000;            
+        }
+        if (num >= 100) {
+            ans.append(numberToWords(num / 100) + " Hundred ");
+            num %= 100;            
+        }
+        if (num != 0) {
+            ans.append(less100(num));
+        }
+        return ans.toString().trim();
+    }
+}

@@ -38,3 +38,41 @@ class Solution {
         return nextSet.size() > endSet.size() ? search(endSet, nextSet, dict, count) : search(nextSet, endSet, dict, count);
     }
 }
+
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Queue<String> start = new LinkedList<>();
+        //Set<String> end = new HashSet<>();
+        start.add(beginWord);
+        //end.append(endWord);
+        Set<String> dict = new HashSet<>(wordList);
+        if (!dict.contains(endWord)) {
+            return 0;
+        }
+        int ans = 0;
+        while (dict.size() != 0 && start.size() != 0){
+            ans++;
+            dict.removeAll(start);
+            int i = start.size()-1;
+            for (; i >= 0; i--) {
+                String word = start.poll();
+                char[] chars = word.toCharArray();
+                for (int j = 0; j < chars.length; j++){
+                    char change = chars[j];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[j] = c;
+                        String form = new String(chars);
+                        if (form.equals(endWord)){
+                            return ans+1;
+                        } else if (dict.contains(form)){
+                            start.add(form);
+                        }
+                    }
+                    chars[j] = change;
+                }
+            }
+        }
+        return 0;
+    }
+}

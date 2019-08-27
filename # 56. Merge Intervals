@@ -33,3 +33,36 @@ class Solution {
 		return intervals;
 	}
 }
+
+
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>(){
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        boolean[] removed = new boolean[intervals.length];
+        int no = 0;
+        int s = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] compare = intervals[i];
+            int[] ref = intervals[s];
+            if (compare[0] <= ref[1]) {
+                ref[1] = Math.max(compare[1], ref[1]);
+                removed[i] = true;
+                no++;
+            } else {
+                s = i;
+            }
+        }
+        int[][] ans = new int[intervals.length - no][2];
+        int index = 0;
+        for (int i = 0; i < intervals.length; i++) {
+            if (!removed[i]) {
+                ans[index++] = intervals[i];
+            }
+        }
+        return ans;
+    }
+}

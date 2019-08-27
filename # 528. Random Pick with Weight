@@ -1,0 +1,34 @@
+class Solution {
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    int acc = 0, l, r;
+    int[] weights;
+    Random rand = new Random();
+    public Solution(int[] w) {
+        weights = new int[w.length];
+        for (int i = 0; i < w.length; i++) {
+            acc += w[i];
+            weights[i] = acc;
+        }
+    }
+    
+    public int pickIndex() {
+        int ind = rand.nextInt(acc);
+        l = 0;
+        r = weights.length;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (weights[mid] > ind) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */

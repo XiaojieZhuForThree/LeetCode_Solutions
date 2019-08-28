@@ -18,3 +18,32 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public double myPow(double x, int n) {
+        if (n == 0 || x == 1.0) return 1.0;
+        if (x == -1.0) return n % 2 == 1 ? x : -x;
+        double base = x;
+        double prev = x;
+        if (n > 0) {
+            for(int i = 1; i < n; i++) {
+                x *= base;
+                if (x == prev) {
+                    break;
+                }
+                prev = x;
+            }
+            return x;
+        } else {
+            for (int i = -1; i > n; i--) {
+                x *= base;
+                if (x == prev) {
+                    break;
+                }
+                prev = x;
+            }
+            return 1/x;
+        }
+    }
+}

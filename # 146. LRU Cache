@@ -70,3 +70,97 @@ class LRUCache {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+
+class LRUCache {
+    int cap;
+    Map<Integer, DoubleLinkedNode> cache;
+    DoubleLinkedNode least, recent;
+    
+    public LRUCache(int capacity) {
+        cap = capacity;
+        cache = new HashMap<>();
+        least = null;
+        recent = null;
+    }
+    
+    public int get(int key) {
+        if (cache.containsKey(key)) {
+            DoubleLinkedNode target = cache.get(key);
+            target.update();
+            return target.val;
+        }
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        if (cache.containsKey(key)) {
+            DoubleLinkedNode target = cache.get(key);
+            target.val = value;
+            target.update();
+        } else {
+            if (cap == 0) {
+                return;
+            }
+            if (cache.size() == cap) {
+                cache.remove(least.key);
+                least.delete();
+            }
+            DoubleLinkedNode newNode = new DoubleLinkedNode(key, value);
+            newNode.append();
+            cache.put(key, newNode);
+        }
+    }
+    class DoubleLinkedNode {
+        int key;
+        int val;
+        DoubleLinkedNode left = null, right = null;
+
+        DoubleLinkedNode(int key, int val) {
+            this.key = key;
+            this.val = val;
+        }
+        void append() {
+            if (recent == null) {
+                recent = this;
+                least = this;
+            } else {
+                recent.right = this;
+                this.left = recent;
+                this.right = null;
+                recent = this;
+            }
+        }
+        void update() {
+            if (this == recent) {
+                return;
+            } else {
+                if (this != least) {
+                    this.left.right = this.right;
+                } else {
+                    least = this.right;
+                }
+                this.right.left = this.left;
+                this.append();
+            }
+
+        }
+        void delete() {
+            if (this == recent) {
+                least = null;
+                recent = null;
+            } else {
+                least = least.right;
+                least.left = null;                
+            }
+        }
+    }
+}
+
+
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

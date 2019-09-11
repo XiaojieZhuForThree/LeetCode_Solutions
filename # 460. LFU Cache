@@ -1,0 +1,59 @@
+class LFUCache {
+    Map<Integer, Integer> vals;
+    Map<Integer, Integer> counts;
+    Map<Integer, LinkedHashSet<Integer>> freqs;
+    int cap;
+    int min = 1;
+    public LFUCache(int capacity) {
+        cap = capacity;
+        vals = new HashMap<>();
+        counts = new HashMap<>();
+        freqs = new HashMap<>();
+        freqs.put(1, new LinkedHashSet<>());
+    }
+    
+    public int get(int key) {
+        if (!vals.containsKey(key)) {
+            return -1;
+        }
+        int count = counts.get(key);
+        counts.put(key, count+1);
+        freqs.get(count).remove(key);
+        if (!freqs.containsKey(count+1)) {
+            freqs.put(count+1, new LinkedHashSet<>());
+        }
+        freqs.get(count+1).add(key);
+        if (freqs.get(min).size() == 0) {
+            min++;
+        }
+        return vals.get(key);
+    }
+    
+    public void put(int key, int value) {
+        if (cap <= 0) {
+            return;
+        }
+        if (vals.containsKey(key)) {
+            vals.put(key, value);
+            get(key);
+            return;
+        }
+        if (vals.size() >= cap) {
+            int removed = freqs.get(min).iterator().next();
+            freqs.get(min).remove(removed);
+            counts.remove(removed);
+            vals.remove(removed);
+        }
+        vals.put(key, value);
+        counts.put(key, 1);
+        min = 1;
+        freqs.get(min).add(key);
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

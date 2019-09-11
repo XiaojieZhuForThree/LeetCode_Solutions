@@ -1,0 +1,60 @@
+class Solution {
+    public boolean isNumber(String s) {
+        boolean canBeSign = true, hasEpsilon = false, hasDecimalPoint = false, hasNumber = false, hasEpsilonNumber = false;
+        char[] charArray = s.trim().toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            char c = charArray[i];
+            switch (c) {
+                case '+':
+                case '-':
+                    if (!canBeSign) {
+                        return false;
+                    }
+                    canBeSign = false;
+                    break;
+
+                case '.':
+                    if (hasDecimalPoint || hasEpsilon) {
+                        return false;
+                    }
+                    hasDecimalPoint = true;
+                    canBeSign = false;
+                    break;
+
+                case 'e':
+                    if (hasEpsilon || !hasNumber) {
+                        return false;
+                    }
+                    hasEpsilon = canBeSign = true;
+                    break;
+
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    if (hasEpsilon) {
+                        hasEpsilonNumber = true;
+                    } else {
+                        hasNumber = true;
+                    }
+                    canBeSign = false;
+                    break;
+
+                default:
+                    return false;
+            }
+        }
+
+        if (hasEpsilon && !hasEpsilonNumber || !hasNumber) {
+            return false;
+        }
+
+        return true;
+    }
+}

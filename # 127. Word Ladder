@@ -77,3 +77,38 @@ class Solution {
         return 0;
     }
 }
+
+
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> set = new HashSet<>();
+        Set<String> wordSet = new HashSet<>(wordList);
+        set.add(beginWord);
+        int res = 1;
+        while (!set.isEmpty()) {
+            if (set.contains(endWord)) {
+                return res;
+            }
+            res++;
+            Set<String> nextSet = new HashSet<>();
+            for (String imd : set) {
+                StringBuilder sb = new StringBuilder(imd);
+                for (int i = 0; i < sb.length(); i++) {
+                    char init = sb.charAt(i);
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        sb.setCharAt(i, c);
+                        String test = sb.toString();
+                        if (wordSet.contains(test) && !set.contains(test)) {
+                            nextSet.add(test);
+                            wordSet.remove(test);
+                        }
+                    }
+                    sb.setCharAt(i, init);
+                }
+            }
+            set = nextSet;
+        }
+        return 0;
+    }
+}

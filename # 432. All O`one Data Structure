@@ -1,0 +1,151 @@
+class AllOne {
+    class Node {
+        Node prev, next;
+        int val;
+        Set<String> keys;
+        
+        Node(int value, String key){
+            val = value;
+            keys = new HashSet<>();
+            keys.add(key);
+        }
+    }
+    
+    Node head, tail, cur;
+    Map<String, Node> keyMap;
+    
+    /** Initialize your data structure here. */
+    public AllOne() {
+        keyMap = new HashMap<>();
+        head = null;
+        tail = null;
+    }
+    
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+        if (tail == null) {
+            cur = new Node(1, key);
+            head = cur;
+            tail = cur;
+            keyMap.put(key, cur);
+        } else if (!keyMap.containsKey(key)) {
+            if (tail.val == 1) {
+                tail.keys.add(key);
+                keyMap.put(key, cur);
+            } else {
+                cur = new Node(1, key);
+                cur.prev = tail;
+                tail.next = cur;
+                tail = cur;
+                keyMap.put(key, cur);
+            }
+        } else {
+            cur = keyMap.get(key);
+            if (cur.prev != null) {
+                if (cur.prev.val == cur.val + 1) {
+                    cur.prev.keys.add(key);
+                    cur.keys.remove(key);
+                    keyMap.put(key, cur.prev);
+                    checkEmpty(cur);
+                } else {
+                    Node newNode = new Node(cur.val + 1, key);
+                    newNode.prev = cur.prev;
+                    cur.prev.next = newNode;
+                    newNode.next = cur;
+                    cur.prev = newNode;
+                    cur.keys.remove(key);
+                    keyMap.put(key, newNode);
+                    checkEmpty(cur);                    
+                }
+            } else {
+                head = new Node(cur.val + 1, key);
+                head.next = cur;
+                cur.prev = head;
+                cur.keys.remove(key);
+                keyMap.put(key, head);
+                checkEmpty(cur);
+            }
+        }
+    }
+    
+    /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+    public void dec(String key) {
+        if (head == null || !keyMap.containsKey(key)) {
+            return;
+        }
+        cur = keyMap.get(key);
+        if (cur.next != null) {
+            if (cur.next.val == cur.val - 1) {
+                cur.next.keys.add(key);
+                cur.keys.remove(key);
+                keyMap.put(key, cur.next);
+                checkEmpty(cur);
+            } else {
+                Node newNode = new Node(cur.val-1, key);
+                newNode.next = cur.next;
+                cur.next.prev = newNode;
+                newNode.prev = cur;
+                cur.next = newNode;
+                cur.keys.remove(key);
+                keyMap.put(key, newNode);
+                checkEmpty(cur);
+            }
+        } else {
+            if (cur.val == 1) {
+                cur.keys.remove(key);
+                keyMap.remove(key);
+                checkEmpty(cur);
+            } else {
+                tail = new Node(cur.val, key);
+                tail.prev = cur;
+                cur.next = tail;
+                cur.keys.remove(key);
+                keyMap.put(key, tail);
+                checkEmpty(cur);
+            }
+        }
+    }
+    
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+        if (head == null) {
+            return "";
+        }
+        return head.keys.iterator().next();
+    }
+    
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+        if (tail == null) {
+            return "";
+        }
+        return tail.keys.iterator().next();
+    }
+    
+    void checkEmpty(Node cur) {
+        if (cur.keys.isEmpty()) {
+            if (cur.prev == null && cur.next == null) {
+                head = null;
+                tail = null;
+            } else if (cur.prev == null) {
+                head = cur.next;
+                head.prev = null;
+            } else if (cur.next == null) {
+                tail = cur.prev;
+                tail.next = null;
+            } else {
+                cur.prev.next = cur.next;
+                cur.next.prev = cur.prev;
+            }
+        }
+    }
+}
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne obj = new AllOne();
+ * obj.inc(key);
+ * obj.dec(key);
+ * String param_3 = obj.getMaxKey();
+ * String param_4 = obj.getMinKey();
+ */

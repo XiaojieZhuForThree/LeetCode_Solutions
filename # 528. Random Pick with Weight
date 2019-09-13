@@ -59,3 +59,31 @@ class Solution {
  * Solution obj = new Solution(w);
  * int param_1 = obj.pickIndex();
  */
+
+
+class Solution {
+    Random rand;
+    int[] weights;
+    public Solution(int[] w) {
+        rand = new Random();
+        for (int i = 1; i < w.length; i++) {
+            w[i] += w[i-1];
+        }
+        weights = w;
+    }
+    
+    public int pickIndex() {
+        int weight = rand.nextInt(weights[weights.length-1])+1;
+        int index = Arrays.binarySearch(weights, weight);
+        if (index < 0) {
+            return -index-1;
+        }
+        return index;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */

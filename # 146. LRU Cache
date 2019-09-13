@@ -229,3 +229,96 @@ class LRUCache {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+
+class LRUCache {
+    Map<Integer, Node> map;
+    int cap;
+    int used;
+    Node recent, least;
+    public LRUCache(int capacity) {
+        cap = capacity;
+        used = 0;
+        map = new HashMap<>();
+        recent = null;
+        least = null;
+    }
+    
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        Node target = map.get(key);
+        arrange(target);
+        return target.val;
+    }
+    
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            map.get(key).val = value;
+            arrange(map.get(key));
+        } else {
+            Node target = new Node(value, key);
+            if (used >= cap) {
+                map.remove(least.key);
+                deleteLast();
+                used--;
+            }
+            map.put(key, target);
+            arrange(target);
+            used++;
+        }
+    }
+    
+    public void arrange(Node node) {
+        if (recent == null && least == null) {
+            recent = node;
+            least = node;
+            least.next = recent;
+            recent.prev = least;
+            return;
+        } else if (node == recent) {
+            return;
+        } else if (node == least) {
+            least = least.next;
+            least.prev = null;
+            recent.next = node;
+            node.prev = recent;
+            recent = node;
+        } else if (node.prev == null && node.next == null) {
+            recent.next = node;
+            node.prev = recent;
+            recent = node;
+        } else {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+            recent.next = node;
+            node.next = null;
+            node.prev = recent;
+            recent = node;
+        }
+    }
+    public void deleteLast() {
+        if (least != null) {
+            least = least.next;
+            least.prev = null;
+        }
+    }    
+    
+    class Node {
+        int val;
+        int key;
+        Node prev;
+        Node next;
+        Node(int val, int key) {
+            this.val = val;
+            this.key = key;
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

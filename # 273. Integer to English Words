@@ -76,3 +76,43 @@ class Solution {
         return ans.toString().trim();
     }
 }
+
+
+class Solution {
+    public String numberToWords(int num) {
+        if (num == 0) {
+            return "Zero";
+        }
+        String[] decs = new String[]{"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        String[] singles = new String[]{"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"};
+        String[] bigger = new String[] {"Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        List<String> sb = new ArrayList();
+        if (num >= 1000000000) {
+            sb.add(numberToWords(num / 1000000000));
+            sb.add("Billion");
+            num %= 1000000000;
+        } if (num >= 1000000) {
+            sb.add(numberToWords(num / 1000000));
+            sb.add("Million");
+            num %= 1000000;
+        } if (num >= 1000) {
+            sb.add(numberToWords(num / 1000));
+            sb.add("Thousand");
+            num %= 1000;
+        } if (num >= 100) {
+            sb.add(numberToWords(num / 100));
+            sb.add("Hundred");
+            num %= 100;
+        } if (num >= 20) {
+            sb.add(bigger[(num / 10) - 2]);
+            if (num % 10 != 0) {
+                sb.add(numberToWords(num % 10));                
+            }
+        } else if (num > 10) {
+            sb.add(decs[num-11]);
+        } else if (num > 0) {
+            sb.add(singles[num - 1]);
+        }
+        return String.join(" ", sb);
+    }
+}

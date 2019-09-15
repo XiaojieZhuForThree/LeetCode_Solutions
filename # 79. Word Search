@@ -1,0 +1,34 @@
+class Solution {
+    boolean[][] visited;
+    public boolean exist(char[][] board, String word) {
+        visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs(i, j, 0, board, word)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean dfs(int i, int j, int index, char[][] board, String word) {
+        if (!checkBound(i, j, board) || visited[i][j] || word.charAt(index) != board[i][j]) {
+            return false;
+        }
+        visited[i][j] = true;
+        if (index == word.length()-1) {
+            return true;
+        }
+        index++;
+        if (dfs(i+1, j, index, board, word) || dfs(i-1, j, index, board, word) || dfs(i, j+1, index, board, word) || dfs(i, j-1, index, board, word)) {
+            return true;
+        }
+        visited[i][j] = false;
+        return false;
+    }
+    
+    boolean checkBound(int i, int j, char[][] board) {
+        return i < board.length && i >= 0 && j < board[0].length && j >= 0;
+    }
+}

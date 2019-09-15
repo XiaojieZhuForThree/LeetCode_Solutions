@@ -94,3 +94,49 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Set<String> set = new HashSet<>(wordList);
+        Queue<List<String>> queue = new ArrayDeque<>();
+        List<String> list = new ArrayList<>();
+        list.add(beginWord);
+        queue.offer(list);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Set<String> removed = new HashSet<>();
+            for (int i = 0; i < size; i++) {
+                List<String> cur = queue.poll();
+                String lastWord = cur.get(cur.size() - 1);
+                for (int j = 0; j < lastWord.length(); j++) {
+                    char[] array = lastWord.toCharArray();
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        array[j] = c;
+                        String next = new String(array);
+                        if (set.contains(next)) {
+                            removed.add(next);
+                            cur.add(next);
+                            queue.offer(new ArrayList<>(cur));
+                            cur.remove(cur.size()-1);
+                        }
+                    }
+                }
+            }
+            if (removed.contains(endWord)) {
+                break;
+            }
+            for (String s : removed) {
+                set.remove(s);
+            }
+        }
+        List<List<String>>res = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            list = queue.poll();
+            if (list.get(list.size() - 1).equals(endWord)) {
+                res.add(list);
+            }
+        }
+        return res;
+    }
+}

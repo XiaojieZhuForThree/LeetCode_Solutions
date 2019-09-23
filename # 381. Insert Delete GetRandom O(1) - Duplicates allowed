@@ -1,0 +1,57 @@
+class RandomizedCollection {
+    Map<Integer, HashSet<Integer>> posMap;
+    List<Integer> list;
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+        posMap = new HashMap<>();
+        list = new ArrayList<>();
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public boolean insert(int val) {
+        boolean res = false;
+        int insertIndex = list.size();
+        list.add(val);
+        if (!posMap.containsKey(val)) {
+            posMap.put(val, new HashSet<>());
+            res = true;
+        }
+        posMap.get(val).add(insertIndex);
+        return res;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public boolean remove(int val) {
+        if (!posMap.containsKey(val)) {
+            return false;
+        }
+        int removedIndex = posMap.get(val).iterator().next();
+        posMap.get(val).remove(removedIndex);
+        int lastIndex = list.size()-1;
+        int affectedValue = list.get(lastIndex);
+        list.set(removedIndex, affectedValue);
+        list.remove(lastIndex);
+        if (lastIndex != removedIndex) {
+            HashSet posSet = posMap.get(affectedValue);
+            posSet.remove(lastIndex);
+            posSet.add(removedIndex);
+        }
+        if (posMap.get(val).isEmpty()){
+            posMap.remove(val);
+        }
+        return true;
+    }
+    
+    /** Get a random element from the collection. */
+    public int getRandom() {
+        return list.get(((int)(Math.random()*list.size())));
+    }
+}
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection obj = new RandomizedCollection();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */

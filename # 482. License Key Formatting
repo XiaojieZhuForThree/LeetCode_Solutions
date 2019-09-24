@@ -24,3 +24,32 @@ class Solution {
         return ans.reverse().toString();
     }
 }
+
+
+class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        for (char c : S.toCharArray()) {
+            if (c == '-') {
+                continue;
+            } else if ('a' <= c && c <= 'z') {
+                stack.push(Character.toUpperCase(c));
+            } else {
+                stack.push(c);
+            }
+        }
+        int seg = 0;
+        while (!stack.isEmpty()) {
+            if (seg == K) {
+                sb.append('-');
+                seg = 0;
+            } else {
+                sb.append(stack.pop());
+                seg++;
+            }
+            
+        }
+        return sb.reverse().toString();
+    }
+}

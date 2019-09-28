@@ -1,7 +1,7 @@
 // key: dynamic programming
 
 class Solution {
-	Set<String> remains = new HashSet<>();
+    Set<String> remains = new HashSet<>();
     public boolean wordBreak(String s, List<String> wordDict) {
         for (String i : wordDict) {
         	if (s.equals(i)) {
@@ -16,5 +16,21 @@ class Solution {
         	}
         }
         return false;
+    }
+}
+
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length()+1];
+        dp[0] = true;
+        for (int i = 0; i <= s.length(); i++) {
+            for (String word : wordDict) {
+                if (word.length() <= i && dp[i-word.length()] && word.equals(s.substring(i-word.length(), i))) {
+                    dp[i] = true;
+                }
+            }
+        }
+        return dp[s.length()];
     }
 }

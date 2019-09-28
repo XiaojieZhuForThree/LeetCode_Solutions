@@ -9,26 +9,25 @@ class Solution {
             graph[edge.get(1)].add(edge.get(0));
         }
         boolean[] visited = new boolean[n];
-        int[] order = new int[n];
-        List<List<Integer>> res = new ArrayList<>();
-        int[] uuid = new int[1];
-        dfs(graph, -1, 0, visited, order, uuid, res);
-        return res;
+        int[] low = new int[n];
+        List<List<Integer>>ans = new ArrayList<>();
+        dfs(graph, -1, 0, 0, visited, low, ans);
+        return ans;
     }
-    private void dfs(List<Intaeger>[] graph, int pre, int src, boolean[] visited, int[] order, int[] uuid, List<List<Integer>> res) {
-        visited[src] = true;
-        order[src] = uuid[0]++;
-        int orig_order = order[src];
-        for (int i : graph[src]) {
-            if (i == pre) {
+    private void dfs(List<Integer>[]graph, int prev, int cur, int id, boolean[] visited, int[] low, List<List<Integer>>ans) {
+        visited[cur] = true;
+        low[cur] = id++;
+        int now = low[cur];
+        for (int i : graph[cur]) {
+            if (i == prev) {
                 continue;
-            }
+            } 
             if (!visited[i]) {
-                dfs(graph, src, i, visited, order, uuid, res);
+                dfs(graph, cur, i, id, visited, low, ans);
             }
-            order[src] = Math.min(order[src], order[i]);
-            if (orig_order < order[i]) {
-                res.add(Arrays.asList(src, i));
+            low[cur] = Math.min(low[cur], low[i]);
+            if (now < low[i]) {
+                ans.add(Arrays.asList(cur, i));
             }
         }
     }

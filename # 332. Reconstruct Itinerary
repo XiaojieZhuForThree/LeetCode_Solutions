@@ -1,0 +1,26 @@
+class Solution {
+    Map<String, Queue<String>> orderedmap = new HashMap<>();
+    List<String> itr = new LinkedList<>();
+    
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String, String> ordered = new HashMap<>();
+        Set<String> airports = new HashSet<>();
+        for (int i = 0; i < tickets.size(); i++) {
+            List<String> items = tickets.get(i);
+            String depart = items.get(0);
+            String arrival = items.get(1);
+            if (!orderedmap.containsKey(depart)) {
+                orderedmap.put(depart, new PriorityQueue<String>());
+            }
+            orderedmap.get(depart).add(arrival);
+        }
+        dfs("JFK");
+        return itr;
+    }
+    void dfs(String start) {
+        while (orderedmap.containsKey(start) && !orderedmap.get(start).isEmpty()) {
+            dfs(orderedmap.get(start).poll());
+        }
+        itr.add(0, start);
+    }
+}

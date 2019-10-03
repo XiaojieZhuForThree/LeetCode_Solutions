@@ -31,3 +31,37 @@ class Solution {
         return ans;
     }
 }
+
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> ans = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return ans;
+        }
+        helper(matrix, ans, 0, matrix[0].length-1, 0, matrix.length-1);
+        return ans;
+    }
+    void helper(int[][] matrix, List<Integer> list, int s, int e, int u, int d) {
+        if (s > e || u > d) {
+            return;
+        }
+        for (int i = s; i <= e; i++) {
+            list.add(matrix[u][i]);
+        }
+        for (int j = u + 1; j <= d; j++) {
+            list.add(matrix[j][e]);
+        }
+        if (d > u) {
+            for (int t = e - 1; t >= s; t--) {
+                list.add(matrix[d][t]);
+            }          
+        }
+        if (e > s) {
+            for (int x = d - 1; x >= u + 1; x--) {
+                list.add(matrix[x][s]);
+            }  
+        }
+        helper(matrix, list, s+1, e-1, u+1, d-1);
+    }
+}

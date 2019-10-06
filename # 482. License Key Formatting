@@ -53,3 +53,21 @@ class Solution {
         return sb.reverse().toString();
     }
 }
+
+class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        String t = S.toUpperCase().replaceAll("-","");
+        StringBuilder sb = new StringBuilder();
+        int count = K;
+        for (int i = t.length()-1; i >= 0; i--) {
+            char c = t.charAt(i);
+            sb.append(c);
+            count--;
+            if(count == 0 && i > 0) {
+                sb.append('-');
+                count = K;
+            }
+        }
+        return sb.reverse().toString();
+    }
+}

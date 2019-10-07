@@ -1,0 +1,29 @@
+class Solution {
+    public int oddEvenJumps(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        boolean[][] dp = new boolean[A.length][2];
+        dp[A.length-1][0] = true;
+        dp[A.length-1][1] = true;
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(A[A.length-1], A.length-1);
+        for (int i = A.length-2; i >= 0; i--) {
+            Integer maxInd = map.floorKey(A[i]), minInd = map.ceilingKey(A[i]);
+            if (maxInd != null && dp[map.get(maxInd)][1]) {
+                dp[i][0] = true;
+            }
+            if (minInd != null && dp[map.get(minInd)][0]) {
+                dp[i][1] = true;
+            }
+            map.put(A[i], i);
+        }
+        int ans = 0;
+        for (int i = 0; i < A.length; i++) {
+            if (dp[i][1]) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+}

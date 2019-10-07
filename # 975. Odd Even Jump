@@ -27,3 +27,32 @@ class Solution {
         return ans;
     }
 }
+
+
+class Solution {
+    public int oddEvenJumps(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(A[A.length-1], A.length-1);
+        int ans = 0;
+        boolean[][] dp = new boolean[A.length][2];
+        dp[A.length-1][0] = true;
+        dp[A.length-1][1] = true;
+        for (int i = A.length - 1; i >= 0; i--) {
+            Integer maxmin = map.ceilingKey(A[i]), minmax = map.floorKey(A[i]);
+            if (maxmin != null) {
+                dp[i][0] = dp[map.get(maxmin)][1];
+            }
+            if (minmax != null) {
+                dp[i][1] = dp[map.get(minmax)][0];
+            }
+            if (dp[i][0]) {
+                ans++;
+            }
+            map.put(A[i], i);
+        }
+        return ans;
+    }
+}

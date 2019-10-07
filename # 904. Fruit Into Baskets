@@ -21,3 +21,26 @@ class Solution {
         return ans;
     }
 }
+
+class Solution {
+    public int totalFruit(int[] tree) {
+        int last = -1;
+        int second = -1;
+        int curMax = 0, lastCount = 0, max = 0;
+        for (int fruit : tree) {
+            if (fruit == last || fruit == second) {
+                curMax ++;
+            } else {
+                curMax = lastCount + 1;
+            } if (fruit == last) {
+                lastCount++;
+            } else{
+                lastCount = 1;
+                second = last;
+                last = fruit;
+            }
+            max = Math.max(max, curMax);
+        }
+        return max;
+    }
+}

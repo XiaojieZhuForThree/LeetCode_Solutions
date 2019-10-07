@@ -1,0 +1,27 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+        int A = 0, B = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : secret.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        for (int i = 0; i < secret.length(); i++) {
+            if (secret.charAt(i) == guess.charAt(i)) {
+                A++;
+            }
+            if (map.containsKey(guess.charAt(i))) {
+                B++;
+                map.put(guess.charAt(i), map.get(guess.charAt(i))-1);
+                if (map.get(guess.charAt(i)) == 0) {
+                    map.remove(guess.charAt(i));
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(A);
+        sb.append('A');
+        sb.append(B-A);
+        sb.append('B');
+        return sb.toString();
+    }
+}

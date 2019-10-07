@@ -97,3 +97,62 @@ class Solution {
         return ans;
     }
 }
+
+/**
+ * // This is the Master's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Master {
+ *     public int guess(String word) {}
+ * }
+ */
+class Solution {
+    public void findSecretWord(String[] wordlist, Master master) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < wordlist.length; i++) {
+            set.add(i);
+        }
+        while (!set.isEmpty()) {
+            int min = Integer.MAX_VALUE;
+            int index = -1;
+            for (int i : set) {
+                int max = maxSub(i, wordlist, set);
+                if (max < min) {
+                    min = max;
+                    index = i;
+                }
+            }
+            int val = master.guess(wordlist[index]);
+            if (val == 6) {
+                return;
+            }
+            Set<Integer> next = new HashSet<>();
+            for (int i : set) {
+                if (compare(wordlist[i], wordlist[index])==val) {
+                    next.add(i);
+                }
+            }
+            set = next;
+        }
+    }
+    int maxSub(int i, String[] wordlist, Set<Integer> set) {
+        int[] bucket = new int[6];
+        int max = 0;
+        for (int j : set) {
+            if (!(wordlist[j].equals(wordlist[i]))) {
+                int index = compare(wordlist[i], wordlist[j]);
+                bucket[index]++;
+                max = Math.max(max, bucket[index]);
+            }
+        }
+        return max;
+    }
+    int compare(String s, String t) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == t.charAt(i)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+}

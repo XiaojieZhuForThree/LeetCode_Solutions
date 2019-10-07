@@ -22,3 +22,28 @@ class Solution {
         return eSet.size();
     }
 }
+
+
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        Set<String> set = new HashSet<>();
+        for (String email : emails) {
+            StringBuilder sb = new StringBuilder();
+            String[] sep = email.split("@");
+            String local = sep[0];
+            for (char c : local.toCharArray()) {
+                if (c == '.') {
+                    continue;
+                } else if (c == '+') {
+                    break;
+                } else {
+                    sb.append(c);
+                }
+            }
+            sb.append('@');
+            sb.append(sep[1]);
+            set.add(sb.toString());
+        }
+        return set.size();
+    }
+}

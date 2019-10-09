@@ -20,3 +20,38 @@ class Solution {
         return dp[m-1][nums.length-1];
     }
 }
+
+
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        long left = 0;
+        long right = Long.MAX_VALUE;
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            if (isValid(nums, m, mid)) {
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+        return (int)left;
+    }
+    boolean isValid(int[] nums, int m, long maxSum) {
+        int curSum = 0, count = 1;
+        for (int num : nums) {
+            if (num > maxSum) {
+                return false;
+            }
+            if (num + curSum <= maxSum) {
+                curSum += num;
+            } else {
+                curSum = num;
+                count++;
+            }
+            if (count > m) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

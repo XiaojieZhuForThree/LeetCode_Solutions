@@ -55,3 +55,36 @@ class Solution {
         return true;
     }
 }
+
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int left = 0, right = Integer.MAX_VALUE;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (isValid(nums, m, mid)) {
+                right = mid;
+            } else {
+                left = mid+1;
+            }
+        }
+        return left;
+    }
+    boolean isValid(int[] nums, int m, int maxSum) {
+        int curSum = 0, count = 1;
+        for (int num : nums) {
+            if (num > maxSum) {
+                return false;
+            }
+            if (num + curSum <= maxSum) {
+                curSum += num;
+            } else {
+                curSum = num;
+                count++;
+            }
+            if (count > m) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

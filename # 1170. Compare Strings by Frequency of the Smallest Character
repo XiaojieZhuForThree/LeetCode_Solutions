@@ -29,3 +29,38 @@ class Solution {
         return counts[min-'a'];
     }
 }
+
+
+class Solution {
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] ans = new int[queries.length];
+        int[] wordsC = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            wordsC[i] = helper(words[i]);
+        }
+        for (int i = 0; i < queries.length; i++) {
+            int m = 0;
+            int val = helper(queries[i]);
+            for (int j : wordsC) {
+                if (val < j) {
+                    m ++;
+                }
+            }
+            ans[i] = m;
+        }
+        return ans;
+    }
+    int helper(String s) {
+        char min = 'z';
+        int count = 0;
+        for (char c : s.toCharArray()) {
+            if (c == min) {
+                count++;
+            } else if (c < min) {
+                min = c;
+                count = 1;
+            }
+        }
+        return count;
+    }
+}

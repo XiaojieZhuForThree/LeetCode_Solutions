@@ -1,60 +1,66 @@
 class Solution {
     public List<String> braceExpansionII(String expression) {
-        String s = expression;
-        boolean mult = false;   // this is a flag to determine whether to multiply or to add
-        Stack<List<String>> stack = new Stack<>();  // the key to the problem is to use the stack to store lists
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+        if (expression == null || expression.length() == 0) {
+            return new ArrayList<String>();
+        }
+        Stack<List<String>> stack = new Stack<>();
+        boolean mult = false;
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
             if (c == '{') {
-                int j = i, p = 1;
-                while (p != 0) {
+                int j = i, par = 1;
+                while (par != 0) {
                     j++;
-                    if (s.charAt(j) == '{') {
-                        p++;
-                    } else if (s.charAt(j) == '}') {
-                        p--;
+                    if (expression.charAt(j) == '{') {
+                        par++;
+                    } else if (expression.charAt(j) == '}') {
+                        par--;
                     }
                 }
-                List<String> slist = braceExpansionII(s.substring(i+1, j));
+                List<String> list = braceExpansionII(expression.substring(i+1, j));
                 if (mult) {
-                    stack.push(merge(stack.pop(), slist));
+                    stack.push(multiply(stack.pop(), list));
                 } else {
-                    stack.push(slist);
+                    stack.push(list);
                 }
                 i = j;
                 mult = true;
-            } else if (Character.isLetter(c)){
-                List<String> slist = new ArrayList<>();
-                slist.add(Character.toString(c));
+            } else if (Character.isLetter(c)) {
+                List<String> list = new ArrayList<>();
+                list.add(Character.toString(c));
                 if (mult) {
-                    stack.push(merge(stack.pop(), slist));
+                    stack.push(multiply(stack.pop(), list));
                 } else {
-                    stack.push(slist);
+                    stack.push(list);
                 }
                 mult = true;
-            }
-            if (c == ',') {
+            } else if (c == ',') {
                 mult = false;
             }
-        } 
-        Set<String> res = new HashSet<>();
+        }
+        Set<String> set = new HashSet<>();
         while (!stack.isEmpty()) {
-            for (String l : stack.pop()) {
-                res.add(l);
+            for (String i : stack.pop()) {
+                set.add(i);
             }
         }
         List<String> ans = new ArrayList<>();
-        ans.addAll(res);
+        ans.addAll(set);
         Collections.sort(ans);
         return ans;
     }
-    List<String> merge(List<String> l1, List<String> l2) {
-        List<String> list = new ArrayList<>();
-        for (String s1 : l1) {
-            for (String s2 : l2) {
-                list.add(s1 + s2);
+    List<String> multiply(List<String> l1, List<String> l2) {
+        Set<String> set = new HashSet<>();
+        for (String i : l1) {
+            for (String j : l2) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(i);
+                sb.append(j);
+                set.add(sb.toString());
             }
         }
+        List<String> list = new ArrayList<>();
+        list.addAll(set);
         return list;
     }
 }

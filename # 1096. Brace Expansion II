@@ -7,7 +7,7 @@ class Solution {
             char c = s.charAt(i);
             if (c == '{') {
                 int j = i, p = 1;
-                while (s.charAt(j) != '}' || p != 0) {
+                while (p != 0) {
                     j++;
                     if (s.charAt(j) == '{') {
                         p++;

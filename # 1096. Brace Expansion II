@@ -1,8 +1,8 @@
 class Solution {
     public List<String> braceExpansionII(String expression) {
         String s = expression;
-        boolean mult = false;
-        Stack<List<String>> stack = new Stack<>();
+        boolean mult = false;   // this is a flag to determine whether to multiply or to add
+        Stack<List<String>> stack = new Stack<>();  // the key to the problem is to use the stack to store lists
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == '{') {

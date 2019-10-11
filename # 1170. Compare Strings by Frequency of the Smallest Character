@@ -102,3 +102,40 @@ class Solution {
         return count;
     }
 }
+
+class Solution {
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] ans = new int[queries.length];
+        int[] wordsC = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            wordsC[i] = helper(words[i]);
+        }
+        Arrays.sort(wordsC);
+        for (int i = 0; i < queries.length; i++) {
+            int val = helper(queries[i]);
+            int idx = Arrays.binarySearch(wordsC, val);
+            if (idx >= 0) {
+                while (idx < wordsC.length && wordsC[idx] == val) {
+                    idx++;
+                }
+            } else {
+                idx = -idx-1;
+            }
+            ans[i] = wordsC.length-idx;
+        }
+        return ans;
+    }
+    int helper(String s) {
+        char min = 'z';
+        int count = 0;
+        for (char c : s.toCharArray()) {
+            if (c == min) {
+                count++;
+            } else if (c < min) {
+                min = c;
+                count = 1;
+            }
+        }
+        return count;
+    }
+}

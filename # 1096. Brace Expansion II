@@ -33,7 +33,7 @@ class Solution {
                 }
                 mult = true;
             }
-            if (c == ',' || i == s.length() - 1) {
+            if (c == ',') {
                 mult = false;
             }
         } 

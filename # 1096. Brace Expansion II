@@ -1,0 +1,60 @@
+class Solution {
+    public List<String> braceExpansionII(String expression) {
+        String s = expression;
+        boolean mult = false;
+        Stack<List<String>> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '{') {
+                int j = i, p = 1;
+                while (s.charAt(j) != '}' || p != 0) {
+                    j++;
+                    if (s.charAt(j) == '{') {
+                        p++;
+                    } else if (s.charAt(j) == '}') {
+                        p--;
+                    }
+                }
+                List<String> slist = braceExpansionII(s.substring(i+1, j));
+                if (mult) {
+                    stack.push(merge(stack.pop(), slist));
+                } else {
+                    stack.push(slist);
+                }
+                i = j;
+                mult = true;
+            } else if (Character.isLetter(c)){
+                List<String> slist = new ArrayList<>();
+                slist.add(Character.toString(c));
+                if (mult) {
+                    stack.push(merge(stack.pop(), slist));
+                } else {
+                    stack.push(slist);
+                }
+                mult = true;
+            }
+            if (c == ',' || i == s.length() - 1) {
+                mult = false;
+            }
+        } 
+        Set<String> res = new HashSet<>();
+        while (!stack.isEmpty()) {
+            for (String l : stack.pop()) {
+                res.add(l);
+            }
+        }
+        List<String> ans = new ArrayList<>();
+        ans.addAll(res);
+        Collections.sort(ans);
+        return ans;
+    }
+    List<String> merge(List<String> l1, List<String> l2) {
+        List<String> list = new ArrayList<>();
+        for (String s1 : l1) {
+            for (String s2 : l2) {
+                list.add(s1 + s2);
+            }
+        }
+        return list;
+    }
+}

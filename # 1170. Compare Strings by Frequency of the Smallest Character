@@ -1,0 +1,31 @@
+class Solution {
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] ans = new int[queries.length];
+        int[] wordsC = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            wordsC[i] = helper(words[i]);
+        }
+        for (int i = 0; i < queries.length; i++) {
+            int m = 0;
+            int val = helper(queries[i]);
+            for (int j : wordsC) {
+                if (val < j) {
+                    m ++;
+                }
+            }
+            ans[i] = m;
+        }
+        return ans;
+    }
+    int helper(String s) {
+        char min = 'z';
+        int[] counts = new int[26];
+        for (char c : s.toCharArray()) {
+            counts[c-'a'] ++;
+            if (c < min) {
+                min = c;
+            }
+        }
+        return counts[min-'a'];
+    }
+}

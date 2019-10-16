@@ -8,22 +8,21 @@
  * }
  */
 class Solution {
-    int ans = 0;
+    int maxDiam = 0;
     public int diameterOfBinaryTree(TreeNode root) {
-    	getAns(root);
-    	return ans;
+        if (root == null) {
+            return 0;
+        }
+        helper(root);
+        return maxDiam;
     }
-    private int getAns(TreeNode root) {
-        if (root == null) return 0;
-        else if (root.left == null && root.right == null) {
-        	return 1;
+    private int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
-        else {
-        	int left = getAns(root.left);
-        	int right = getAns(root.right);
-        	ans = Math.max(ans, left + right);
-        	return Math.max(left, right)+1;
-        	
-        }
+        int leftD = helper(root.left), rightD = helper(root.right);
+        int curDiam = leftD + rightD;
+        maxDiam = Math.max(maxDiam, curDiam);
+        return 1 + Math.max(leftD, rightD);
     }
 }

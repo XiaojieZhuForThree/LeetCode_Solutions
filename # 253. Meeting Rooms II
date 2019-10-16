@@ -1,25 +1,24 @@
 class Solution {
-	public int minMeetingRooms(Interval[] intervals) {
-		int ans = 0;
-		if (intervals.length == 0) return 0;
-		List<Interval> available = new ArrayList<Interval>();		
-		for (int i = 0; i < intervals.length; i++) {
-			int j = 0;
-			for (; j < available.size(); j++){
-				Interval slot = available.get(j);
-				if (intervals[i].start >= slot.start && intervals[i].end <= slot.end) {
-					available.remove(j);
-					available.add(new Interval(slot.start, intervals[i].start));
-					available.add(new Interval(intervals[i].end, slot.end));
-					break;
-				}				
-			}
-			if (j == available.size()){
-				ans++;
-				available.add(new Interval(intervals[i].end, Integer.MAX_VALUE));
-				available.add(new Interval(Integer.MIN_VALUE, intervals[i].start));
-			}
-		}
-		return ans;
-	}
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        int[] startT = new int[intervals.length];
+        int[] endT = new int[intervals.length];
+        for (int i = 0; i < intervals.length; i++) {
+            startT[i] = intervals[i][0];
+            endT[i] = intervals[i][1];
+        }
+        Arrays.sort(startT);
+        Arrays.sort(endT);
+        int rooms = 0, endIndex = 0;
+        for (int i = 0; i < intervals.length; i++) {
+            rooms++;
+            if (startT[i] >= endT[endIndex]) {
+                rooms--;
+                endIndex++;
+            }
+        }
+        return rooms;
+    }
 }

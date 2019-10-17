@@ -1,0 +1,47 @@
+class Solution {
+    class UF {
+        int[] parents;
+        int[] children;
+        public UF(int N) {
+            parents = new int[N];
+            children = new int[N];
+            for (int i = 0; i < N; i++) {
+                parents[i] = i;
+                children[i] = 1;
+            }
+        }
+        public int find(int n) {
+            if (parents[n] == n) {
+                return n;
+            }
+            parents[n] = find(parents[n]);
+            return parents[n];
+        }
+        public void union(int a, int b) {
+            int parA = find(a);
+            int parB = find(b);
+            if (parA != parB) {
+                parents[parA] = parB;
+                children[parB] += children[parA];
+                children[parA] = 1;
+            }
+        }
+    }
+    public int removeStones(int[][] stones) {
+        UF uf = new UF(stones.length);
+        for (int i = 1; i < stones.length; i++) {
+            int[] curStone = stones[i];
+            for (int j = 0; j < i; j++) {
+                int[] prevStone = stones[j];
+                if (curStone[0] == prevStone[0] || curStone[1] == prevStone[1]) {
+                    uf.union(i, j);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i : uf.children) {
+            ans += i-1;
+        }
+        return ans;
+    }
+}

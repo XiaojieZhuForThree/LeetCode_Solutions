@@ -1,0 +1,52 @@
+class Solution {
+    class UF {
+        int[] parents;
+        int islands;
+        public UF(int N) {
+            islands = 0;
+            parents = new int[N];
+            for (int i = 0; i < N; i++) {
+                parents[i] = i;
+            }
+        }
+        public int find(int n) {
+            if (parents[n] == n) {
+                return n;
+            }
+            parents[n] = find(parents[n]);
+            return parents[n];
+        }
+        public void union(int a, int b) {
+            int parA = find(a), parB = find(b);
+            if (parA != parB) {
+                parents[parA] = parB;
+                islands--;
+            }
+        }
+    }
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        UF uf = new UF(m * n);
+        List<Integer> list = new ArrayList<>();
+        int[][] mat = new int[m][n];
+        int[] dx = new int[] {-1, 1, 0, 0};
+        int[] dy = new int[] {0, 0, -1, 1};
+        for (int i = 0; i < positions.length; i++) {
+            int[] pos = positions[i];
+            int x = pos[0], y = pos[1];
+            if (mat[x][y] == 0) {
+                mat[x][y] = 1;
+                uf.islands++;                
+            }
+            for (int j = 0; j < 4; j++) {
+                int cx = x + dx[j], cy = y + dy[j];
+                if (cx < 0 || cx >= m || cy < 0 || cy >= n) {
+                    continue;
+                } else if (mat[cx][cy] == 1) {
+                    uf.union(x*n + y, cx*n + cy);
+                }
+            }
+            list.add(uf.islands);
+        }
+        return list;
+    }
+}

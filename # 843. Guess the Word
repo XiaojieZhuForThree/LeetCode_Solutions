@@ -156,3 +156,63 @@ class Solution {
         return ans;
     }
 }
+
+
+/**
+ * // This is the Master's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Master {
+ *     public int guess(String word) {}
+ * }
+ */
+class Solution {
+    public void findSecretWord(String[] wordlist, Master master) {
+        List<String> list = new ArrayList<>();
+        for (String word : wordlist) {
+            list.add(word);
+        }
+        for (int i = 0; i < 10; i++) {
+            int min = Integer.MAX_VALUE;
+            String target = "";
+            for (String word : list) {
+                if (minmax(word, list) < min) {
+                    min = minmax(word, list);
+                    target = word;
+                }
+            }
+            int guess = master.guess(target);
+            if (guess == 6) {
+                return;
+            } else {
+                List<String> newList = new ArrayList<>();
+                for (String word : list) {
+                    if (match(word, target) == guess) {
+                        newList.add(word);
+                    }
+                }
+                list = newList;
+            }
+        }
+    }
+    private int match(String o1, String o2) {
+        int match = 0;
+        for (int i = 0; i < o1.length(); i++) {
+            if (o1.charAt(i) == o2.charAt(i)) {
+                match++;
+            }
+        }
+        return match;
+    }
+    private int minmax(String word, List<String> list) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (String ref : list) {
+            int mat = match(word, ref);
+            map.put(mat, map.getOrDefault(mat, 0) + 1);
+        }
+        for (int key : map.keySet()) {
+            max = Math.max(max, map.get(key));
+        }
+        return max;
+    }
+}

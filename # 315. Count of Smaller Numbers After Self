@@ -45,3 +45,52 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> ans = new ArrayList<>();
+        int[] index = new int[nums.length];
+        int[] counts = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            index[i] = i;
+        }
+        mergeSort(nums, index, counts, 0, nums.length-1);
+        for (int i : counts) {
+            ans.add(i);
+        }
+        return ans;
+    }
+    private void mergeSort(int[] nums, int[] index, int[] counts, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+        int mid = (l + r) / 2;
+        mergeSort(nums, index, counts, l, mid);
+        mergeSort(nums, index, counts, mid+1, r);
+        merge(nums, index, counts, l, mid, mid + 1, r);
+    }
+    private void merge(int[] nums, int[] index, int[] counts, int l1, int r1, int l2, int r2) {
+        int[] tmp = new int[r2 - l1 + 1];
+        int init = l1;
+        int start = 0;
+        int count = 0;
+        while (l1 <= r1 || l2 <= r2) {
+            if (l1 > r1) {
+                tmp[start++] = index[l2++];
+            } else if (l2 > r2) {
+                counts[index[l1]] += count;
+                tmp[start++] = index[l1++];
+            } else if (nums[index[l1]] > nums[index[l2]]) {
+                tmp[start++] = index[l2++];
+                count++;
+            } else {
+                counts[index[l1]] += count;
+                tmp[start++] = index[l1++];                
+            }
+        }
+        for (int i = 0; i < tmp.length; i++) {
+            index[init + i] = tmp[i];
+        }
+    }
+}

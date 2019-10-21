@@ -64,3 +64,72 @@ class Solution {
         return list;
     }
 }
+
+
+class Solution {
+    public List<String> braceExpansionII(String expression) {
+        Set<String> set = new HashSet<>();
+        Stack<List<String>> stack = new Stack<>();
+        int i = 0, j = 0;
+        boolean flag = false;
+        while (i < expression.length()) {
+            if (expression.charAt(i) == '{') {
+                int count = 1;
+                j = i;
+                while (count != 0) {
+                    j++;
+                    if (expression.charAt(j) == '{') {
+                        count++;
+                    } else if (expression.charAt(j) == '}') {
+                        count--;
+                    }
+                }
+                List<String> part = braceExpansionII(expression.substring(i+1, j));
+                if (flag) {
+                    List<String> merge = merge(stack.pop(), part);
+                    stack.push(merge);
+                } else {
+                    stack.push(part);
+                }
+                i = j + 1;
+                flag = true;
+            } else if ('a' <= expression.charAt(i) && expression.charAt(i) <= 'z') {
+                List<String> part = new ArrayList<>();
+                part.add(Character.toString(expression.charAt(i)));
+                if (flag) {
+                    List<String> merge = merge(stack.pop(), part);
+                    stack.push(merge);
+                } else {
+                    stack.push(part);
+                }
+                flag = true;
+                i++;
+            } else if (expression.charAt(i) == ','){
+                flag = false;
+                i++;
+            }
+        }
+        while (!stack.isEmpty()) {
+            for (String str : stack.pop()) {
+                set.add(str);
+            }
+        }
+        List<String> ans = new ArrayList<>();
+        ans.addAll(set);
+        Collections.sort(ans);
+        return ans;
+    }
+    private List<String> merge(List<String> o1, List<String> o2) {
+        List<String> res = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (String i : o1) {
+            for (String j : o2) {
+                sb.append(i);
+                sb.append(j);
+                res.add(sb.toString());
+                sb = new StringBuilder();
+            }
+        }
+        return res;
+    }
+}

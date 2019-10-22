@@ -27,3 +27,34 @@ class Solution {
         return part >= K;
     }
 }
+
+
+class Solution {
+    public int maximizeSweetness(int[] sweetness, int K) {
+        int sum = 0;
+        for (int i : sweetness) {
+            sum += i;
+        }
+        int min = 0, max = sum;
+        while (min <= max) {
+            int mid = min + (max - min) / 2;
+            if (checkValid(sweetness, K + 1, mid)) {
+                min = mid + 1;
+            } else {
+                max = mid - 1;
+            }
+        }
+        return min-1;
+    }
+    private boolean checkValid(int[] sweetness, int K, int mid) {
+        int cur = 0, part = 0;
+        for (int i : sweetness) {
+            cur += i;
+            if (cur >= mid) {
+                cur = 0;
+                part++;
+            }
+        }
+        return part >= K;
+    }
+}

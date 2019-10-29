@@ -133,3 +133,65 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public List<String> braceExpansionII(String expression) {
+        Stack<List<String>> stack = new Stack<>();
+        boolean flag = false;
+        for (int i = 0; i < expression.length(); i++) {
+            if (expression.charAt(i) == '{') {
+                int pair = 1, j = i+1;
+                while (pair != 0) {
+                    if (expression.charAt(j) == '{') {
+                        pair++;
+                    } else if (expression.charAt(j) == '}') {
+                        pair--;
+                    }
+                    j++;
+                }
+                List<String> list = braceExpansionII(expression.substring(i+1, j-1));
+                if (flag) {
+                    stack.push(merge(stack.pop(), list));
+                } else {
+                    stack.push(list);
+                }
+                flag = true;
+                i = j-1;
+            } else if ('a'<= expression.charAt(i) && expression.charAt(i) <= 'z') {
+                List<String> list = new ArrayList<>();
+                list.add(Character.toString(expression.charAt(i)));
+                if (flag) {
+                    stack.push(merge(stack.pop(), list));
+                } else {
+                    stack.push(list);
+                }
+                flag = true;
+            } else if (expression.charAt(i) == ',') {
+                flag = false;
+            }
+        }
+        Set<String> set = new HashSet<>();
+        while (!stack.isEmpty()) {
+            for (String i : stack.pop()) {
+                set.add(i);
+            }            
+        }
+        List<String> ans = new ArrayList<>(set);
+        Collections.sort(ans);
+        return ans;
+    }
+    private List<String> merge(List<String> l1, List<String> l2) {
+        List<String> res = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (String i : l1) {
+            for (String j : l2) {
+                sb.append(i);
+                sb.append(j);
+                res.add(sb.toString());
+                sb = new StringBuilder();
+            }
+        }
+        return res;
+    }
+}

@@ -1,36 +1,37 @@
 class Solution {
-    int[] valid = {0, 1, 6, 8, 9}; 
-    int[] reverse = {0, 1, 2, 3, 4, 5, 9, 7, 8, 6};
-    int res = 0;
+    int ans = 0;
     public int confusingNumberII(int N) {
-        dfs(0, N);
-        return res;
-    }
-    public void dfs(int n, int N) {
-        if (isValid(n)) {
-            res++;
+        int[] rotate = {0, 1, 6, 8, 9};
+        int[] match = {0, 1, 9, 8, 6};
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < rotate.length; i++) {
+            map.put(rotate[i], match[i]);
         }
-        for (int i = 0; i < valid.length; i++) {
-            if (i == 0 && n == 0){
+        dfs(0, N, map);
+        return ans;
+    }
+    private void dfs(int i, int N, Map<Integer, Integer> map) {
+        if (isConfusing(i, map)) {
+            ans++;
+        }
+        for (int j : map.keySet()) {
+            if (j == 0 && i == 0) {
                 continue;
-            }
-            int d = valid[i];
-            if ((Integer.MAX_VALUE - d) / 10 < n || n * 10 + d > N) {
+            } else if ((Integer.MAX_VALUE - j) / 10 < i || i * 10 + j > N) {
                 continue;
+            } else {
+                dfs(i * 10 + j, N, map);
             }
-            dfs(n * 10 + d, N);
         }
     }
-    public boolean isValid(int n){
-        long rev = 0;
-        int prev = n;
-        while (n != 0) {
-            int d = n % 10;
+    private boolean isConfusing(int i, Map<Integer, Integer> map) {
+        int rev = 0, prev = i;
+        while (i != 0) {
+            int j = i % 10;
             rev *= 10;
-            rev += reverse[d];
-            n /= 10;
+            rev += map.get(j);
+            i /= 10;
         }
         return rev != prev;
-        
     }
 }

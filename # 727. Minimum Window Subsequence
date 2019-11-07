@@ -1,0 +1,27 @@
+class Solution {
+    String ans = "";
+    int minLen = Integer.MAX_VALUE;
+    public String minWindow(String S, String T) {
+        for (int i = 0; i < S.length(); i++) {
+            if (S.charAt(i) == T.charAt(0)) {
+                dfs(S, T, i);
+            }
+        }
+        return ans;
+    }
+    private void dfs(String S, String T, int i){
+        int j = 0, init = i;
+        while (j < T.length() && i < S.length()) {
+            if (S.charAt(i) == T.charAt(j)) {
+                j++;
+            }
+            i++;
+        }
+        if (j == T.length()) {
+            if (i - init < minLen) {
+                minLen = i - init;
+                ans = S.substring(init, i);
+            }
+        }
+    }
+}

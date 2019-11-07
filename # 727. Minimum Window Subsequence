@@ -25,3 +25,43 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public String minWindow(String S, String T) {
+        int right = 0, minLength = Integer.MAX_VALUE;
+        String res = "";
+        while (right < S.length()) {
+            int tIndex = 0;
+            while (right < S.length()) {
+                if (S.charAt(right) == T.charAt(tIndex)) {
+                    tIndex++;
+                }
+                if (tIndex == T.length()) {
+                    break;
+                }
+                right++;
+            }
+            if (right == S.length()) {
+                break;
+            }
+            int left = right;
+            tIndex = T.length() - 1;
+            while (left >= 0) {
+                if (S.charAt(left) == T.charAt(tIndex)) {
+                    tIndex--;
+                }
+                if (tIndex < 0) {
+                    break;
+                }
+                left--;
+            }
+            if (right - left + 1 < minLength) {
+                minLength = right - left + 1;
+                res = S.substring(left, right+1);
+            }
+            right = left + 1;
+        }
+        return res;
+    }
+}

@@ -65,3 +65,38 @@ class Solution {
         return res;
     }
 }
+
+
+
+class Solution {
+    public String minWindow(String S, String T) {
+        int[][] dp = new int[S.length()][T.length()];
+        for (int[] tmp : dp) {
+            Arrays.fill(tmp, -1);
+        }
+        for (int i = 0; i < S.length(); i++) {
+            if (S.charAt(i) == T.charAt(0)) {
+                dp[i][0] = i;
+            }
+        }
+        for (int j = 1; j < T.length(); j++) {
+            int tmp = -1;
+            for (int i = 0; i < S.length(); i++) {
+                if (S.charAt(i) == T.charAt(j)) {
+                    dp[i][j] = tmp;
+                }
+                tmp = Math.max(tmp, dp[i][j-1]);
+            }
+        }
+        int minLength = Integer.MAX_VALUE, minStart = -1;
+        for (int i = 0; i < S.length(); i++) {
+            if (i - dp[i][T.length() - 1] + 1 < minLength) {
+                if (dp[i][T.length() - 1] != -1) {
+                    minLength = i - dp[i][T.length() - 1] + 1;
+                    minStart = dp[i][T.length() - 1];
+                }
+            }
+        }
+        return minStart == -1 ? "" : S.substring(minStart, minStart + minLength);
+    }
+}

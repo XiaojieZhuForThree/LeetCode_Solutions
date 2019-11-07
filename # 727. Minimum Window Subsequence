@@ -100,3 +100,36 @@ class Solution {
         return minStart == -1 ? "" : S.substring(minStart, minStart + minLength);
     }
 }
+
+
+
+class Solution {
+    public String minWindow(String S, String T) {
+        char[] s = S.toCharArray(), t = T.toCharArray();
+        String ans = "";
+        int i = 0, ti = 0, slen = s.length, tlen = t.length, anslen = Integer.MAX_VALUE;
+        while (i < slen) {
+            if (s[i] == t[ti]) {
+                ti++;
+                if (ti == tlen) {
+                    int end = i + 1;
+                    ti--;
+                    while (ti >= 0) {
+                        if (s[i] == t[ti]) {
+                            ti--;
+                        }
+                        i--;
+                    }
+                    i++;
+                    ti++;
+                    if (end - i < anslen) {
+                        anslen = end - i;
+                        ans = S.substring(i, end); 
+                    }
+                }
+            }
+            i++;
+        }
+        return ans;
+    }
+}

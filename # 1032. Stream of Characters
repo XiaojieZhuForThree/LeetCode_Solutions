@@ -90,3 +90,57 @@ class StreamChecker {
  * StreamChecker obj = new StreamChecker(words);
  * boolean param_1 = obj.query(letter);
  */
+
+
+class TrieNode {
+    TrieNode[] children;
+    boolean isWord;
+    
+    public TrieNode() {
+        children = new TrieNode[26];
+        isWord = false;
+    }
+}
+
+class StreamChecker {
+    TrieNode root;
+    StringBuilder sb;
+    public StreamChecker(String[] words) {
+        root = new TrieNode();
+        sb = new StringBuilder();
+        for (String word : words) {
+            TrieNode dummy = root;
+            for (int i = word.length()-1; i >= 0; i--) {
+                char c = word.charAt(i);
+                if (dummy.children[c-'a'] == null) {
+                    dummy.children[c-'a'] = new TrieNode();
+                }
+                dummy = dummy.children[c-'a'];
+            }
+            dummy.isWord = true;
+        }
+    }
+    
+    public boolean query(char letter) {
+        sb.append(letter);
+        TrieNode dummy = root;
+        for (int i = sb.length()-1; i >= 0; i--) {
+            char c = sb.charAt(i);
+            if (dummy.children[c-'a'] == null) {
+                return false;
+            } else {
+                dummy = dummy.children[c-'a'];
+                if (dummy.isWord) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * StreamChecker obj = new StreamChecker(words);
+ * boolean param_1 = obj.query(letter);
+ */

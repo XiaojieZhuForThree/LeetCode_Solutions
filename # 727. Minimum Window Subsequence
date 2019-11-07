@@ -142,3 +142,40 @@ class Solution {
         return ans;
     }
 }
+
+
+class Solution {
+    public String minWindow(String S, String T) {
+        int m = S.length(), n = T.length();
+        int[][] dp = new int[m+1][n+1];
+        for (int[] i : dp) {
+            Arrays.fill(i, -1);
+        }
+        for (int i = 1; i <= m; i++) {
+            if (S.charAt(i-1) == T.charAt(0)) {
+                dp[i][1] = i-1;
+            } else {
+                dp[i][1] = dp[i-1][1];
+            }
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 2; j <= n; j++) {
+                if (S.charAt(i-1) == T.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        int start = 0, len = Integer.MAX_VALUE;
+        for (int i = 1; i <= m; i++) {
+            if (dp[i][n] != -1) {
+                if (i - dp[i][n] < len) {
+                    len = i - dp[i][n];
+                    start = dp[i][n];
+                }
+            }
+        }
+        return len == Integer.MAX_VALUE ? "" : S.substring(start, start + len);
+    }
+}

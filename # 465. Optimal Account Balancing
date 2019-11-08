@@ -1,0 +1,28 @@
+class Solution {
+    public int minTransfers(int[][] transactions) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int[] t : transactions) {
+            map.put(t[0], map.getOrDefault(t[0], 0) - t[2]);
+            map.put(t[1], map.getOrDefault(t[1], 0) + t[2]);
+        }
+        List<Integer> list = new ArrayList<>(map.values());
+        return dfs(0, list);
+    }
+    private int dfs(int n, List<Integer> list) {
+        while (n < list.size() && list.get(n) == 0) {
+            n++;
+        }
+        if (n == list.size()) {
+            return 0;
+        }
+        int cnt = Integer.MAX_VALUE;
+        for (int i = n + 1; i < list.size(); i++) {
+            if (list.get(i) * list.get(n) < n) {
+                list.set(i, list.get(i) + list.get(n));
+                cnt = Math.min(cnt, 1 + dfs(n+1, list));
+                list.set(i, list.get(i) - list.get(n));
+            }
+        }
+        return cnt;
+    }
+}

@@ -21,18 +21,18 @@ class Solution {
         dfs(0, 0, 0, new HashSet<>(), robot);
     }
     private void dfs(int r, int c, int dir, Set<String> visited, Robot robot) {
-        String pos = r + "|" + c;
-        if (!visited.contains(pos)) {
-            visited.add(pos);
+        String s = r + ", " + c;
+        if (!visited.contains(s)) {
             robot.clean();
+            visited.add(s);
             for (int i = dir; i < dir + 4; i++) {
                 if (robot.move()) {
                     dfs(r + dirs[i % 4][0], c + dirs[i % 4][1], i % 4, visited, robot);
                     robot.turnRight();
                     robot.turnRight();
                     robot.move();
-                    robot.turnRight();
-                    robot.turnRight();
+                    robot.turnLeft();
+                    robot.turnLeft();
                 }
                 robot.turnRight();
             }

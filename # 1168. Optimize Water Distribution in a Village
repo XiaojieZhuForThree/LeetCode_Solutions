@@ -1,59 +1,47 @@
 class Solution {
     public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
-        int[] table = new int[n + 1];
-        for (int i = 0; i < n + 1; i++) {
-          table[i] = i;
-        }
-
-        Arrays.sort(pipes, new Comparator<int[]>() {
-          @Override
-          public int compare(int[] a, int[] b) {
-            return a[2] - b[2];
-          }
-        });
-
-        int totalCost = 0;
-
+        int[] pars = new int[n];
+        int ans = 0;
         for (int i = 0; i < n; i++) {
-          totalCost += wells[i];
+            pars[i] = i;
+            ans += wells[i];
         }
-
-        for (int i = 0; i < pipes.length; i++) {
-          int[] pipe = pipes[i];
-          int c = pipe[2];
-          int n1 = find(table, pipe[0]);
-          int n2 = find(table, pipe[1]);
-
-          if (n1 == n2) {
-            continue;
-          }
-
-          if (wells[n1 - 1] > c || wells[n2 - 1] > c) {
-            // union if 
-            if (wells[n1 - 1] > wells[n2 - 1]) {
-              union(table, n2, n1);
-              totalCost += c;
-              totalCost -= wells[n1 - 1];
-            } else {
-              union(table, n1, n2);
-              totalCost += c;
-              totalCost -= wells[n2 - 1];
+        Arrays.sort(pipes, new Comparator<int[]>(){
+            public int compare(int[] o1, int[] o2){
+                return o1[2] - o2[2];
             }
-          }
+        });
+        for (int[] i : pipes) {
+            int a = i[0], b = i[1];
+            int n1 = find(a-1, pars), n2 = find(b-1, pars);
+            if (n1 == n2) {
+                continue;
+            } else {
+                if (wells[n1] > i[2] || wells[n2] > i[2]) {
+                    if (wells[n1] < wells[n2]) {
+                        union(n1, n2, pars);
+                        ans -= wells[n2];
+                        ans += i[2];
+                    } else {
+                        union(n2, n1, pars);
+                        ans -= wells[n1];
+                        ans += i[2];                        
+                    }
+                }
+            }
         }
-        return totalCost;
-      }
-
-      private void union(int[] table, int a, int b) {
-        int n1 = find(table, a);
-        int n2 = find(table, b);
-        table[n2] = n1;
-      }
-
-      private int find(int[] table, int a) {
-        if (a != table[a]) {
-          table[a] = find(table, table[a]);
+        return ans;
+    }
+    private void union(int a, int b, int[] pars) {
+        int n1 = pars[a], n2 = pars[b];
+        if (n1 != n2) {
+            pars[n2] = n1;
         }
-        return table[a];
-      }
+    }
+    private int find(int n, int[] pars) {
+        if (n != pars[n]) {
+            pars[n] = find(pars[n], pars);
+        }
+        return pars[n];
+    }
 }

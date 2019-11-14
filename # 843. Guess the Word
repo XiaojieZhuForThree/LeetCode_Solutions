@@ -6,6 +6,45 @@
  * }
  */
 class Solution {
+    public void findSecretWord(String[] w, Master m) {
+        List<String> list = new ArrayList<>();
+        for (String i : w) {
+            list.add(i);
+        }
+        for (int i = 0; i < 10; i++) {
+            int j = m.guess(list.get(0));
+            if (j == list.get(0).length()) {
+                return;
+            }
+            List<String> nlist = new ArrayList<>();
+            for (String s : list) {
+                if (!s.equals(list.get(0)) && comp(list.get(0), s) == j) {
+                    nlist.add(s);
+                }
+            }
+            Collections.sort(nlist);
+            list = nlist;
+        }
+    }
+    private int comp(String a, String b) {
+        int m = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) == b.charAt(i)) {
+                m++;
+            }
+        }
+        return m;
+    }
+}
+
+/**
+ * // This is the Master's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Master {
+ *     public int guess(String word) {}
+ * }
+ */
+class Solution {
     public void findSecretWord(String[] wordlist, Master master) {
         List<String> list = new ArrayList<>(Arrays.asList(wordlist));
         for (int i = 0; i < 10; i++) {

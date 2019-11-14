@@ -1,155 +1,68 @@
 class TrieNode {
     Map<Character, TrieNode> children;
-    Map<String, Integer> counts;
-    boolean isWord;
-    
-    public TrieNode() {
-        children = new HashMap<>();
-        counts = new HashMap<>();   // used to facilitate getting the top 3 sentences.
-        isWord = false;
-    }
-}
-class Pair {
-    String s;
-    int c;
-    
-    public Pair(String s, int c) {
-        this.s = s;
-        this.c = c;
-    }
-}
-class AutocompleteSystem {
-    TrieNode root;
-    String prefix;
-    public AutocompleteSystem(String[] sentences, int[] times) {
-        root = new TrieNode();
-        prefix = "";
-        for (int i = 0; i < sentences.length; i++) {
-            add(sentences[i], times[i]);
-        }
-    }
-    private void add(String s, int cnt) {
-        TrieNode dummy = root;
-        for (char c : s.toCharArray()) {
-            TrieNode next = dummy.children.get(c);
-            if (next == null) {
-                next = new TrieNode();
-                dummy.children.put(c, next);
-            }
-            dummy = next;
-            dummy.counts.put(s, dummy.counts.getOrDefault(s, 0) + cnt);
-        }
-        dummy.isWord = true;
-    }
-    public List<String> input(char c) {
-        if (c == '#') {
-            add(prefix, 1);
-            prefix = "";
-            return new ArrayList<>();
-        }
-        prefix += c;
-        TrieNode dummy = root;
-        for (char ch : prefix.toCharArray()) {
-            TrieNode next = dummy.children.get(ch);
-            if (next == null) {
-                return new ArrayList<>();
-            }
-            dummy = next;
-        }
-        PriorityQueue<Pair> pq = new PriorityQueue<>(new Comparator<Pair>(){
-            public int compare(Pair o1, Pair o2) {
-                if (o1.c == o2.c) {
-                    return o1.s.compareTo(o2.s);
-                }
-                return o2.c - o1.c;
-            }
-        });
-        for (String s : dummy.counts.keySet()) {
-            pq.add(new Pair(s, dummy.counts.get(s)));
-        }
-        List<String> res = new ArrayList<String>();
-        for (int i = 0; i < 3 && !pq.isEmpty(); i++) {
-            res.add(pq.poll().s);
-        }
-        return res;
-    }
-}
-
-/**
- * Your AutocompleteSystem object will be instantiated and called as such:
- * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
- * List<String> param_1 = obj.input(c);
- */
-
-
-class TrieNode {
-    Map<Character, TrieNode> children;
     Set<String> set;
-    public TrieNode() {
+    public TrieNode(){
         children = new HashMap<>();
         set = new HashSet<>();
     }
 }
 class AutocompleteSystem {
-    TrieNode root;
-    String prefix;
-    Map<String, Integer> counts;
-    
+    TrieNode trie = new TrieNode();
+    Map<String, Integer> records = new HashMap<>();
+    StringBuilder sb = new StringBuilder();
     public AutocompleteSystem(String[] sentences, int[] times) {
-        root = new TrieNode();
-        counts = new HashMap<>();
-        prefix = "";
         for (int i = 0; i < sentences.length; i++) {
-            counts.put(sentences[i], times[i]);
-            update(sentences[i]);
-        }
-    }
-
-    private void update(String s) {
-        TrieNode dummy = root;
-        for (char c : s.toCharArray()) {
-            TrieNode next = dummy.children.get(c);
-            if (next == null) {
-                next = new TrieNode();
-                dummy.children.put(c, next);
+            records.put(sentences[i], times[i]);
+            TrieNode root = trie;
+            for (char c : sentences[i].toCharArray()) {
+                if (!root.children.containsKey(c)) {
+                    root.children.put(c, new TrieNode());
+                }
+                root = root.children.get(c);
+                root.set.add(sentences[i]);
             }
-            next.set.add(s);
-            dummy = next;
         }
     }
     
     public List<String> input(char c) {
+        List<String> ans = new ArrayList<>();
         if (c == '#') {
-            counts.put(prefix, counts.getOrDefault(prefix, 0) + 1);
-            update(prefix);
-            prefix = "";
-            return new ArrayList<>();
-        }
-        prefix += c;
-        TrieNode dummy = root;
-        for (char ch : prefix.toCharArray()) {
-            TrieNode next = dummy.children.get(ch);
-            if (next == null) {
-                return new ArrayList<>();
+            String generated = sb.toString();
+            records.put(generated, records.getOrDefault(generated, 0) + 1);
+            sb = new StringBuilder();
+            TrieNode root = trie;
+            for (char i : generated.toCharArray()) {
+                if (!root.children.containsKey(i)) {
+                    root.children.put(i, new TrieNode());
+                }
+                root = root.children.get(i);
+                root.set.add(generated);
             }
-            dummy = next;
+            return ans;
+        }
+        sb.append(c);
+        TrieNode root = trie;
+        for (char i : sb.toString().toCharArray()) {
+            if (!root.children.containsKey(i)) {
+                return ans;
+            }
+            root = root.children.get(i);
         }
         PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>(){
-            public int compare (String o1, String o2) {
-                if (counts.get(o1) == counts.get(o2)) {
-                    return o1.compareTo(o2);
+            public int compare(String o1, String o2) {
+                if (records.get(o1) !=records.get(o2)) {
+                    return records.get(o2)-records.get(o1);
                 }
-                return counts.get(o2) - counts.get(o1);
+                return o1.compareTo(o2);
             }
         });
-        for (String str : dummy.set) {
-            pq.offer(str);
+        for (String i : root.set) {
+            pq.add(i);
         }
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 3 && !pq.isEmpty(); i++) {
-            list.add(pq.poll());
+        while (!pq.isEmpty() && ans.size() < 3) {
+            ans.add(pq.poll());
         }
-        return list;
+        return ans;
     }
 }
 

@@ -1,0 +1,29 @@
+class Solution {
+    public int shortestWay(String source, String target) {
+        char[] tc = target.toCharArray();
+        char[] sc = source.toCharArray();
+        Set<Character> set = new HashSet<>();
+        for (char c : sc) {
+            set.add(c);
+        }
+        int s = 0;
+        int ans = 0;
+        for (char c : tc) {
+            if (!set.contains(c)) {
+                return -1;
+            }
+            while (s < sc.length && sc[s] != c) {
+                s++;
+            }
+            if (s == sc.length) {
+                s = 0;
+                ans++;
+                while (s < sc.length && sc[s] != c) {
+                    s++;
+                }
+            }
+            s++;
+        }
+        return s != 0 ? ans + 1 : ans;
+    }
+}

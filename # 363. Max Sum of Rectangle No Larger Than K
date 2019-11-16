@@ -1,0 +1,27 @@
+class Solution {
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int max = Integer.MIN_VALUE;
+        int m = matrix.length, n = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                matrix[i][j] += matrix[i][j-1];
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                TreeSet<Integer> set = new TreeSet<>();
+                set.add(0);
+                int sum = 0;
+                for (int t = 0; t < m; t++) {
+                    sum += matrix[t][j] - (i > 0 ? matrix[t][i-1] : 0);
+                    Integer base = set.ceiling(sum-k);
+                    if (base != null) {
+                        max = Math.max(max, sum - base);
+                    }
+                    set.add(sum);
+                }
+            }
+        }
+        return max;
+    }
+}

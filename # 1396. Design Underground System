@@ -1,0 +1,50 @@
+import java.util.*;
+
+public class Question1396 {
+	class UndergroundSystem {
+		Map<Integer, String> start;
+		Map<Integer, Integer> in;
+		Map<String, Integer> startEndTime;
+		Map<String, Integer> startEndCus;
+
+		public UndergroundSystem() {
+			start = new HashMap<>();
+			in = new HashMap<>();
+			startEndTime = new HashMap<>();
+			startEndCus = new HashMap<>();
+		}
+
+		public void checkIn(int id, String stationName, int t) {
+			start.put(id, stationName);
+			in.put(id, t);
+		}
+
+		public void checkOut(int id, String stationName, int t) {
+			StringBuilder domain = new StringBuilder();
+			domain.append(start.get(id));
+			domain.append("-");
+			domain.append(stationName);
+			String dom = domain.toString();
+			startEndTime.put(dom, startEndTime.getOrDefault(dom, 0) + t - in.get(id));
+			startEndCus.put(dom, startEndCus.getOrDefault(dom, 0) + 1);
+		}
+
+		public double getAverageTime(String startStation, String endStation) {
+			StringBuilder domain = new StringBuilder();
+			domain.append(startStation);
+			domain.append("-");
+			domain.append(endStation);
+			String dom = domain.toString();
+			int time = startEndTime.getOrDefault(dom, 0);
+			int cus = startEndCus.getOrDefault(dom, 1);
+			return (double) time / cus;
+		}
+	}
+
+	/**
+	 * Your UndergroundSystem object will be instantiated and called as such:
+	 * UndergroundSystem obj = new UndergroundSystem();
+	 * obj.checkIn(id,stationName,t); obj.checkOut(id,stationName,t); double param_3
+	 * = obj.getAverageTime(startStation,endStation);
+	 */
+}

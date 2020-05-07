@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Question1396 {
+
 	class UndergroundSystem {
 		Map<Integer, String> start;
 		Map<Integer, Integer> enter;

@@ -5,13 +5,13 @@ public class Question1396 {
 		Map<Integer, String> start;
 		Map<Integer, Integer> in;
 		Map<String, Integer> startEndTime;
-		Map<String, Integer> startEndCus;
+		Map<String, Integer> startEndNum;
 
 		public UndergroundSystem() {
 			start = new HashMap<>();
 			in = new HashMap<>();
 			startEndTime = new HashMap<>();
-			startEndCus = new HashMap<>();
+			startEndNum = new HashMap<>();
 		}
 
 		public void checkIn(int id, String stationName, int t) {
@@ -26,7 +26,7 @@ public class Question1396 {
 			domain.append(stationName);
 			String dom = domain.toString();
 			startEndTime.put(dom, startEndTime.getOrDefault(dom, 0) + t - in.get(id));
-			startEndCus.put(dom, startEndCus.getOrDefault(dom, 0) + 1);
+			startEndNum.put(dom, startEndNum.getOrDefault(dom, 0) + 1);
 		}
 
 		public double getAverageTime(String startStation, String endStation) {
@@ -36,8 +36,8 @@ public class Question1396 {
 			domain.append(endStation);
 			String dom = domain.toString();
 			int time = startEndTime.getOrDefault(dom, 0);
-			int cus = startEndCus.getOrDefault(dom, 1);
-			return (double) time / cus;
+			int num = startEndNum.getOrDefault(dom, 1);
+			return (double) time / num;
 		}
 	}
 

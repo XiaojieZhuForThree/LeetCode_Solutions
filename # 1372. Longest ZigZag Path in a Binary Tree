@@ -1,0 +1,51 @@
+
+public class Question1372 {
+	class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode() {
+		}
+
+		TreeNode(int val) {
+			this.val = val;
+		}
+
+		TreeNode(int val, TreeNode left, TreeNode right) {
+			this.val = val;
+			this.left = left;
+			this.right = right;
+		}
+	}
+
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		int max;
+
+		public int longestZigZag(TreeNode root) {
+			dfs(root.left, 0, 1);
+			dfs(root.right, 1, 1);
+			return max;
+		}
+
+		private void dfs(TreeNode node, int dir, int height) {
+			if (node == null) {
+				return;
+			}
+			max = Math.max(max, height);
+			if (dir == 0) {
+				dfs(node.left, 0, 1);
+				dfs(node.right, 1, height + 1);
+			} else {
+				dfs(node.left, 0, height + 1);
+				dfs(node.right, 1, 1);
+			}
+		}
+	}
+}

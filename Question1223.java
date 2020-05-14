@@ -1,0 +1,60 @@
+
+public class Question1223 {
+	class Solution1 {
+		public int dieSimulator(int n, int[] rollMax) {
+			int mod = (int) (1e9 + 7);
+			int[][] dp = new int[n + 1][7];
+			for (int i = 0; i < 6; i++) {
+				dp[1][i] = 1;
+			}
+			dp[0][6] = 1;
+			dp[1][6] = 6;
+			int total = 0, totalCurNum = 0;
+			for (int i = 2; i <= n; i++) {
+				total = 0;
+				for (int j = 0; j < 6; j++) {
+					totalCurNum = 0;
+					for (int k = 1; k <= rollMax[j] && i >= k; k++) {
+						totalCurNum += (dp[i - k][6] - dp[i - k][j] + mod) % mod;
+						totalCurNum %= mod;
+					}
+					total += totalCurNum;
+					total %= mod;
+					dp[i][j] = totalCurNum;
+				}
+				dp[i][6] = total;
+			}
+			return dp[n][6];
+		}
+	}
+
+	class Solution2 {
+		int mod = (int) (1e9 + 7);
+
+		public int dieSimulator(int n, int[] rollMax) {
+			int[][][] dp = new int[n + 1][7][16];
+			return dfs(n, 0, 0, rollMax, dp);
+		}
+
+		public int dfs(int left, int tail, int num, int[] rollMax, int[][][] dp) {
+			if (left == 0) {
+				return 1;
+			}
+			if (dp[left][tail][num] > 0) {
+				return dp[left][tail][num];
+			}
+			int ans = 0;
+			for (int i = 1; i <= 6; i++) {
+				if (i != tail) {
+					ans += dfs(left - 1, i, 1, rollMax, dp);
+					ans %= mod;
+				} else if (rollMax[i - 1] >= num + 1) {
+					ans += dfs(left - 1, i, num + 1, rollMax, dp);
+					ans %= mod;
+				}
+			}
+			dp[left][tail][num] = ans;
+			return ans;
+		}
+	}
+}

@@ -1,0 +1,31 @@
+import java.util.*;
+
+public class Question846 {
+	class Solution {
+		public boolean isNStraightHand(int[] hand, int W) {
+			int n = hand.length;
+			if (n % W != 0) {
+				return false;
+			}
+			Map<Integer, Integer> map = new TreeMap<>();
+			for (int i : hand) {
+				map.put(i, map.getOrDefault(i, 0) + 1);
+			}
+			while (!map.isEmpty()) {
+				int init = map.keySet().iterator().next();
+				for (int j = 1; j < W; j++) {
+					int nkey = init + j;
+					if (!map.containsKey(nkey) || map.get(nkey) < map.get(init)) {
+						return false;
+					}
+					map.put(nkey, map.get(nkey) - map.get(init));
+					if (map.get(nkey) == 0) {
+						map.remove(nkey);
+					}
+					map.remove(init);
+				}
+			}
+			return true;
+		}
+	}
+}

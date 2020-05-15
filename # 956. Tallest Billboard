@@ -1,3 +1,4 @@
+```
 import java.util.Arrays;
 
 public class Question956 {
@@ -24,3 +25,4 @@ public class Question956 {
 		}
 	}
 }
+```

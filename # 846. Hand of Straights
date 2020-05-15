@@ -1,7 +1,8 @@
 import java.util.*;
 
 public class Question846 {
-	class Solution {
+
+	class Solution1 {
 		public boolean isNStraightHand(int[] hand, int W) {
 			int n = hand.length;
 			if (n % W != 0) {
@@ -24,6 +25,32 @@ public class Question846 {
 					}
 					map.remove(init);
 				}
+			}
+			return true;
+		}
+	}
+	
+	class Solution2 {
+		public boolean isNStraightHand(int[] hand, int W) {
+			if (hand.length % W != 0) {
+				return false;
+			}
+			Arrays.sort(hand);
+			Map<Integer, Integer> map = new HashMap<>();
+			for (int i : hand) {
+				map.put(i, map.getOrDefault(i, 0) + 1);
+			}
+			for (int i : hand) {
+				if (map.get(i) == 0) {
+					continue;
+				}
+				for (int j = 1; j < W; j++) {
+					if (!map.containsKey(i + j) || map.get(i + j) < map.get(i)) {
+						return false;
+					}
+					map.put(i + j, map.get(i + j) - map.get(i));
+				}
+				map.put(i, 0);
 			}
 			return true;
 		}

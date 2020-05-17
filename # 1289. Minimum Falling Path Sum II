@@ -1,0 +1,26 @@
+
+public class Question1289 {
+	class Solution1 {
+		public int minFallingPathSum(int[][] arr) {
+			int n = arr.length;
+			int[][] dp = new int[n + 1][n + 1];
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= n; j++) {
+					int val = Integer.MAX_VALUE;
+					for (int m = 1; m <= n; m++) {
+						if (m == j) {
+							continue;
+						}
+						val = Math.min(val, dp[i - 1][m] + arr[i - 1][j - 1]);
+					}
+					dp[i][j] = val;
+				}
+			}
+			int ans = Integer.MAX_VALUE;
+			for (int i = 1; i <= n; i++) {
+				ans = Math.min(ans, dp[n][i]);
+			}
+			return ans;
+		}
+	}
+}

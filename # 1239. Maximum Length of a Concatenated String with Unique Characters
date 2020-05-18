@@ -1,0 +1,54 @@
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+class Solution {
+	int ans = 0;
+
+	public int maxLength(List<String> arr) {
+		dfs(arr, 0, new HashSet<Character>(), 0);
+		return ans;
+	}
+
+	private void dfs(List<String> arr, int i, Set<Character> seen, int len) {
+		if (i == arr.size()) {
+			ans = Math.max(ans, len);
+			return;
+		}
+		String s = arr.get(i);
+		if (!checkUnique(s)) {
+			dfs(arr, i + 1, seen, len);
+			return;
+		}
+		boolean noOverLap = true;
+		for (char c : s.toCharArray()) {
+			if (seen.contains(c)) {
+				noOverLap = false;
+				break;
+			}
+		}
+		if (noOverLap) {
+			dfs(arr, i + 1, seen, len);
+			for (char c : s.toCharArray()) {
+				seen.add(c);
+			}
+			dfs(arr, i + 1, seen, len + s.length());
+			for (char c : s.toCharArray()) {
+				seen.remove(c);
+			}
+		} else {
+			dfs(arr, i + 1, seen, len);
+		}
+	}
+
+	private boolean checkUnique(String s) {
+		Set<Character> set = new HashSet<>();
+		for (char c : s.toCharArray()) {
+			if (set.contains(c)) {
+				return false;
+			}
+			set.add(c);
+		}
+		return true;
+	}
+}

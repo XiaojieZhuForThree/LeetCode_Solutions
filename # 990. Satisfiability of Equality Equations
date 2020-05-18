@@ -1,0 +1,90 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class Question990 {
+
+	class UF {
+		char[] par;
+
+		public UF() {
+			par = new char[26];
+			for (char c = 'a'; c <= 'z'; c++) {
+				par[c - 'a'] = c;
+			}
+		}
+
+		public void union(char a, char b) {
+			char ap = find(a), bp = find(b);
+			par[ap - 'a'] = bp;
+		}
+
+		public char find(char c) {
+			if (par[c - 'a'] != c) {
+				par[c - 'a'] = find(par[c - 'a']);
+			}
+			return par[c - 'a'];
+		}
+	}
+
+	class Solution1 {
+		public boolean equationsPossible(String[] equations) {
+			UF uf = new UF();
+			Map<Character, Set<Character>> uneq = new HashMap<>();
+			for (String eq : equations) {
+				char a = eq.charAt(0), b = eq.charAt(3), determine = eq.charAt(1);
+				char ap = uf.find(a), bp = uf.find(b);
+				if (determine == '!') {
+					if (ap == bp) {
+						return false;
+					}
+					if (!uneq.containsKey(ap)) {
+						uneq.put(ap, new HashSet<Character>());
+					}
+					if (!uneq.containsKey(bp)) {
+						uneq.put(bp, new HashSet<Character>());
+					}
+					uneq.get(ap).add(bp);
+					uneq.get(bp).add(ap);
+				} else {
+					if (uneq.containsKey(ap) && uneq.get(ap).contains(bp)) {
+						return false;
+					} else if (uneq.containsKey(bp) && uneq.get(bp).contains(ap)) {
+						return false;
+					} else {
+						uf.union(ap, bp);
+						if (uneq.containsKey(ap)) {
+							if (!uneq.containsKey(bp)) {
+								uneq.put(bp, new HashSet<Character>());
+							}
+							uneq.get(bp).addAll(uneq.get(ap));
+						}
+					}
+				}
+			}
+			return true;
+		}
+	}
+
+	class Solution2 {
+		public boolean equationsPossible(String[] equations) {
+			UF uf = new UF();
+			for (String eq : equations) {
+				char c1 = eq.charAt(0), c2 = eq.charAt(3), determine = eq.charAt(1);
+				if (determine == '=') {
+					uf.union(c1, c2);
+				}
+			}
+			for (String eq : equations) {
+				char c1 = eq.charAt(0), c2 = eq.charAt(3), determine = eq.charAt(1);
+				if (determine == '!') {
+					if (uf.find(c1) == uf.find(c2)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

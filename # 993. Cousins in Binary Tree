@@ -1,0 +1,32 @@
+
+public class Question993 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		public boolean isCousins(TreeNode root, int x, int y) {
+			int[] level = new int[101];
+			int[] par = new int[101];
+			helper(level, par, root, 0);
+			return level[x] == level[y] && par[x] != par[y];
+		}
+
+		private void helper(int[] level, int[] par, TreeNode node, int dep) {
+			if (node == null) {
+				return;
+			}
+			level[node.val] = dep;
+			if (node.left != null) {
+				par[node.left.val] = node.val;
+			}
+			if (node.right != null) {
+				par[node.right.val] = node.val;
+			}
+			helper(level, par, node.left, dep + 1);
+			helper(level, par, node.right, dep + 1);
+		}
+	}
+}

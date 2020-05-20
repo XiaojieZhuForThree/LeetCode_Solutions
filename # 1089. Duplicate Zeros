@@ -72,11 +72,10 @@ public class Question1089 {
 					if (j < arr.length) {
 						arr[j] = 0;
 					}
-					j--;
-					if (j < arr.length) {
-						arr[j] = 0;
+					if (j - 1 < arr.length) {
+						arr[j - 1] = 0;
 					}
-					j--;
+					j -= 2;
 				}
 			}
 		}

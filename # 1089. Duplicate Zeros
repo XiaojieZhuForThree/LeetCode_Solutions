@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Question1089 {
-	class Solution {
+	class Solution1 {
 		public void duplicateZeros(int[] arr) {
 			Queue<Integer> stack = new LinkedList<>();
 			for (int i : arr) {
@@ -21,6 +21,64 @@ public class Question1089 {
 				}
 			}
 			return;
+		}
+	}
+
+	class Solution2 {
+		public void duplicateZeros(int[] arr) {
+			int zeros = 0;
+			for (int i : arr) {
+				if (i == 0) {
+					zeros++;
+				}
+			}
+			int len = arr.length + zeros;
+			for (int i = arr.length - 1, j = len - 1; i < j; i--, j--) {
+				if (arr[i] != 0) {
+					if (j < arr.length) {
+						arr[j] = arr[i];
+					}
+				} else {
+					if (j < arr.length) {
+						arr[j] = arr[i];
+					}
+					j--;
+					if (j < arr.length) {
+						arr[j] = arr[i];
+					}
+				}
+			}
+		}
+	}
+
+	class Solution3 {
+		public void duplicateZeros(int[] arr) {
+			int zeros = 0;
+			for (int i : arr) {
+				if (i == 0) {
+					zeros++;
+				}
+			}
+
+			int i = arr.length, j = arr.length + zeros - 1;
+			while (i > 0) {
+				i--;
+				if (arr[i] != 0) {
+					if (j < arr.length) {
+						arr[j] = arr[i];
+					}
+					j--;
+				} else {
+					if (j < arr.length) {
+						arr[j] = 0;
+					}
+					j--;
+					if (j < arr.length) {
+						arr[j] = 0;
+					}
+					j--;
+				}
+			}
 		}
 	}
 }

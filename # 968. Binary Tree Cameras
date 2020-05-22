@@ -6,26 +6,27 @@ public class Question968 {
 	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
 	 * = left; this.right = right; } }
 	 */
-	class Solution1 {
+	class Solution {
 		int ans = 0;
 
 		public int minCameraCover(TreeNode root) {
-			if (dfs(root) == 1) {
+			int status = dfs(root);
+			if (status == 1) {
 				ans++;
 			}
 			return ans;
 		}
 
-		// 0 -> no need, 1 -> no cam, 2 -> has cam
 		private int dfs(TreeNode node) {
 			if (node == null) {
 				return 0;
 			}
-			int left = dfs(node.left), right = dfs(node.right);
-			if (left == 1 || right == 1) {
+			int l = dfs(node.left), r = dfs(node.right);
+			if (l == 1 || r == 1) {
 				ans++;
 				return 2;
-			} else if (left == 2 || right == 2) {
+			}
+			if (l == 2 || r == 2) {
 				return 0;
 			}
 			return 1;

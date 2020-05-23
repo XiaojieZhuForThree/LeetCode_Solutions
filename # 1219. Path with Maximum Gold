@@ -1,0 +1,35 @@
+
+public class Question1219 {
+	class Solution {
+		int ans = 0;
+		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+		public int getMaximumGold(int[][] grid) {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] > 0) {
+						dfs(grid, i, j, 0);
+					}
+				}
+			}
+			return ans;
+		}
+
+		private void dfs(int[][] grid, int i, int j, int cur) {
+			cur += grid[i][j];
+			ans = Math.max(ans, cur);
+			int gold = grid[i][j];
+			grid[i][j] = 0;
+			for (int[] dir : dirs) {
+				int ni = i + dir[0], nj = j + dir[1];
+				if (ni < 0 || ni >= grid.length || nj < 0 || nj >= grid[0].length || grid[ni][nj] == 0) {
+					continue;
+				}
+				if (grid[ni][nj] != 0) {
+					dfs(grid, ni, nj, cur);
+				}
+			}
+			grid[i][j] = gold;
+		}
+	}
+}

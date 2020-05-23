@@ -1,0 +1,18 @@
+import java.util.Arrays;
+
+public class Question1402 {
+	class Solution {
+		public int maxSatisfaction(int[] satisfaction) {
+			Arrays.sort(satisfaction);
+			int cur = 0, total = 0;
+			for (int i = satisfaction.length - 1; i >= 0; i--) {
+				cur += satisfaction[i];
+				if (cur < 0) {
+					break;
+				}
+				total += cur;
+			}
+			return total;
+		}
+	}
+}

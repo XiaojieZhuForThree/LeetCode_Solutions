@@ -1,0 +1,35 @@
+
+public class Question1300 {
+	class Solution {
+		public int findBestValue(int[] arr, int target) {
+			int max = Integer.MIN_VALUE;
+			for (int i : arr) {
+				max = Math.max(max, i);
+			}
+			int l = 0, r = max, diff = Integer.MAX_VALUE, ans = Integer.MAX_VALUE;
+			while (l <= r) {
+				int mid = l + (r - l) / 2;
+				int newSum = computeNewSum(arr, mid);
+				if (newSum < target) {
+					l = mid + 1;
+				} else {
+					r = mid - 1;
+				}
+				int newDiff = Math.abs(target - newSum);
+				if (diff > newDiff || diff == newDiff && ans > mid) {
+					ans = mid;
+					diff = newDiff;
+				}
+			}
+			return ans;
+		}
+
+		private int computeNewSum(int[] arr, int mid) {
+			int ans = 0;
+			for (int i : arr) {
+				ans += Math.min(i, mid);
+			}
+			return ans;
+		}
+	}
+}

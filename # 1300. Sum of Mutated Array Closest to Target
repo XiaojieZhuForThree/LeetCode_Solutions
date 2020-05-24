@@ -1,6 +1,7 @@
+import java.util.Arrays;
 
 public class Question1300 {
-	class Solution {
+	class Solution1 {
 		public int findBestValue(int[] arr, int target) {
 			int max = Integer.MIN_VALUE;
 			for (int i : arr) {
@@ -28,6 +29,24 @@ public class Question1300 {
 			int ans = 0;
 			for (int i : arr) {
 				ans += Math.min(i, mid);
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		public int findBestValue(int[] arr, int target) {
+			Arrays.sort(arr);
+			int i = 0, n = arr.length;
+			while (i < n && target > arr[i] * (n - i)) {
+				target -= arr[i++];
+			}
+			if (n == i) {
+				return arr[n - 1];
+			}
+			int ans = target / (n - i);
+			if (target - ans * (n - i) > (n - i) * (ans + 1) - target) {
+				ans++;
 			}
 			return ans;
 		}

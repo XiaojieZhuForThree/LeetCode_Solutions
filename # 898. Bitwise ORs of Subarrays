@@ -1,0 +1,29 @@
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question898 {
+	class Solution {
+		public int subarrayBitwiseORs(int[] A) {
+			if (A == null || A.length == 0) {
+				return 0;
+			}
+			Set<Integer> set = new HashSet<>();
+			Set<Integer> prevSub = new HashSet<>();
+
+			set.add(A[0]);
+			prevSub.add(A[0]);
+			for (int i = 1; i < A.length; i++) {
+				int cur = A[i];
+				Set<Integer> curSub = new HashSet<>();
+				curSub.add(cur);
+				set.add(cur);
+				for (int j : prevSub) {
+					curSub.add(cur | j);
+					set.add(cur | j);
+				}
+				prevSub = curSub;
+			}
+			return set.size();
+		}
+	}
+}

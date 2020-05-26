@@ -1,3 +1,5 @@
+package problems;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -53,29 +55,28 @@ public class Question1089 {
 
 	class Solution3 {
 		public void duplicateZeros(int[] arr) {
-			int zeros = 0;
+			int cnt = 0;
 			for (int i : arr) {
 				if (i == 0) {
-					zeros++;
+					cnt++;
 				}
 			}
-
-			int i = arr.length, j = arr.length + zeros - 1;
-			while (i > 0) {
-				i--;
-				if (arr[i] != 0) {
-					if (j < arr.length) {
-						arr[j] = arr[i];
+			int pt1 = arr.length - 1, pt2 = arr.length + cnt - 1;
+			for (; pt1 >= 0; pt1--) {
+				if (arr[pt1] == 0) {
+					if (pt2 < arr.length) {
+						arr[pt2] = 0;
 					}
-					j--;
+					pt2--;
+					if (pt2 < arr.length) {
+						arr[pt2] = 0;
+					}
+					pt2--;
 				} else {
-					if (j < arr.length) {
-						arr[j] = 0;
+					if (pt2 < arr.length) {
+						arr[pt2] = arr[pt1];
 					}
-					if (j - 1 < arr.length) {
-						arr[j - 1] = 0;
-					}
-					j -= 2;
+					pt2--;
 				}
 			}
 		}

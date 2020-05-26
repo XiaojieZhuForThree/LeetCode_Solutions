@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Problem1110 {
+public class Question1110 {
 	/**
 	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
 	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }

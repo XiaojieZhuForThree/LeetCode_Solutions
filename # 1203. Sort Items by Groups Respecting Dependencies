@@ -1,98 +1,99 @@
+package problems;
+
 import java.util.*;
 
 public class Question1203 {
 	class Solution {
 		public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
-			Map<Integer, Set<Integer>> groupMembers = getGroupMembers(m, group);
+			Map<Integer, Set<Integer>> groups = getGroups(group, m);
 			Map<Integer, Set<Integer>> groupGraph = getGroupGraph(group, beforeItems);
-			List<Integer> topoGroup = topoSort(groupGraph, groupMembers.keySet());
-			List<Integer> elems = new ArrayList<>();
-			for (int gp : topoGroup) {
-				Map<Integer, Set<Integer>> elemGraph = getElemGraph(groupMembers.get(gp), beforeItems);
-				List<Integer> topoElem = topoSort(elemGraph, groupMembers.get(gp));
-				elems.addAll(topoElem);
+			List<Integer> topoGroups = topoSort(groupGraph, groups.keySet());
+			List<Integer> res = new ArrayList<>();
+			for (int i : topoGroups) {
+				Map<Integer, Set<Integer>> itemGraph = getItemGraph(groups.get(i), beforeItems);
+				List<Integer> topoItems = topoSort(itemGraph, groups.get(i));
+				res.addAll(topoItems);
 			}
-			if (elems.size() != n) {
+			if (res.size() != n) {
 				return new int[] {};
 			}
 			int[] ans = new int[n];
 			for (int i = 0; i < n; i++) {
-				ans[i] = elems.get(i);
+				ans[i] = res.get(i);
 			}
 			return ans;
 		}
 
-		private Map<Integer, Set<Integer>> getElemGraph(Set<Integer> eles, List<List<Integer>> beforeItems) {
-			Map<Integer, Set<Integer>> ans = new HashMap<>();
-			for (int i : eles) {
-				for (int j : beforeItems.get(i)) {
-					if (eles.contains(j)) {
-						ans.putIfAbsent(j, new HashSet<>());
-						ans.get(j).add(i);
+		private Map<Integer, Set<Integer>> getItemGraph(Set<Integer> items, List<List<Integer>> beforeItems) {
+			Map<Integer, Set<Integer>> map = new HashMap<>();
+			for (int i : items) {
+				List<Integer> prevs = beforeItems.get(i);
+				for (int prev : prevs) {
+					if (items.contains(prev)) {
+						map.putIfAbsent(prev, new HashSet<>());
+						map.get(prev).add(i);
 					}
 				}
 			}
-			return ans;
+			return map;
 		}
 
-		private List<Integer> topoSort(Map<Integer, Set<Integer>> graph, Set<Integer> elements) {
-			List<Integer> ans = new ArrayList<>();
-			Map<Integer, Integer> indegree = new HashMap<>();
-			for (int ele : elements) {
-				indegree.put(ele, 0);
+		private List<Integer> topoSort(Map<Integer, Set<Integer>> graph, Set<Integer> nodes) {
+			List<Integer> list = new ArrayList<>();
+			Map<Integer, Integer> indegrees = new HashMap<>();
+			for (int i : nodes) {
+				indegrees.put(i, 0);
 			}
 			for (int i : graph.keySet()) {
 				for (int j : graph.get(i)) {
-					indegree.put(j, indegree.get(j) + 1);
+					indegrees.put(j, indegrees.get(j) + 1);
 				}
 			}
-			Stack<Integer> stack = new Stack<>();
-			for (int i : indegree.keySet()) {
-				if (indegree.get(i) == 0) {
-					stack.push(i);
+			Deque<Integer> deque = new ArrayDeque<>();
+			for (int i : indegrees.keySet()) {
+				if (indegrees.get(i) == 0) {
+					deque.offer(i);
 				}
 			}
-			while (!stack.isEmpty()) {
-				int node = stack.pop();
-				ans.add(node);
-				if (!graph.containsKey(node)) {
-					continue;
-				}
-				for (int i : graph.get(node)) {
-					indegree.put(i, indegree.get(i) - 1);
-					if (indegree.get(i) == 0) {
-						stack.push(i);
+			while (!deque.isEmpty()) {
+				int key = deque.poll();
+				list.add(key);
+				if (graph.containsKey(key)) {
+					for (int j : graph.get(key)) {
+						indegrees.put(j, indegrees.get(j) - 1);
+						if (indegrees.get(j) == 0) {
+							deque.offer(j);
+						}
 					}
 				}
 			}
-			return ans;
+			return list;
+		}
+
+		private Map<Integer, Set<Integer>> getGroups(int[] group, int m) {
+			Map<Integer, Set<Integer>> map = new HashMap<>();
+			for (int i = 0; i < group.length; i++) {
+				int gp = group[i] == -1 ? m++ : group[i];
+				map.putIfAbsent(gp, new HashSet<>());
+				map.get(gp).add(i);
+				group[i] = gp;
+			}
+			return map;
 		}
 
 		private Map<Integer, Set<Integer>> getGroupGraph(int[] group, List<List<Integer>> beforeItems) {
-			Map<Integer, Set<Integer>> ans = new HashMap<>();
+			Map<Integer, Set<Integer>> map = new HashMap<>();
 			for (int i = 0; i < group.length; i++) {
-				int curGroup = group[i];
-				for (int j : beforeItems.get(i)) {
-					int preGroup = group[j];
-					if (curGroup == preGroup) {
+				List<Integer> prevs = beforeItems.get(i);
+				for (int prev : prevs) {
+					if (group[prev] == group[i]) {
 						continue;
 					}
-					ans.putIfAbsent(preGroup, new HashSet<Integer>());
-					ans.get(preGroup).add(curGroup);
+					map.putIfAbsent(group[prev], new HashSet<>());
+					map.get(group[prev]).add(group[i]);
 				}
 			}
-			return ans;
-		}
-
-		private Map<Integer, Set<Integer>> getGroupMembers(int m, int[] group) {
-			Map<Integer, Set<Integer>> ans = new HashMap<>();
-			for (int i = 0; i < group.length; i++) {
-				int gp = group[i] == -1 ? m++ : group[i];
-				group[i] = gp;
-				ans.putIfAbsent(gp, new HashSet<Integer>());
-				ans.get(gp).add(i);
-			}
-			return ans;
+			return map;
 		}
 	}
 }

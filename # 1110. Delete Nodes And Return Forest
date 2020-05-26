@@ -1,46 +1,56 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        Set<Integer> set = new HashSet<>();
-        for (int i : to_delete) {
-            set.add(i);
-        }
-        Set<TreeNode> roots = new HashSet<>();
-        roots.add(root);
-        helper(root, set, roots);
-        List<TreeNode> ans = new ArrayList<>();
-        for (TreeNode node : roots) {
-            ans.add(node);
-        }
-        return ans;
-    }
+package problems;
 
-    private void helper(TreeNode root, Set<Integer> set, Set<TreeNode> roots) {
-        if (root == null) return;
-        helper(root.left, set, roots);
-        helper(root.right, set, roots);
-        if (root.left != null && set.contains(root.left.val)) {
-            root.left = null;
-        }
-        if (root.right != null && set.contains(root.right.val)) {
-            root.right = null;
-        }
-        if (set.contains(root.val)) {
-            roots.remove(root);
-            if (root.left != null) {
-                roots.add(root.left);
-            }
-            if (root.right != null) {
-                roots.add(root.right);
-            }
-        }
-    }
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Problem1110 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+			List<TreeNode> ans = new ArrayList<>();
+			Set<TreeNode> set = new HashSet<>();
+			Set<Integer> delete = new HashSet<>();
+			for (int i : to_delete) {
+				delete.add(i);
+			}
+			dfs(root, set, delete);
+			for (TreeNode tn : set) {
+				ans.add(tn);
+			}
+			if (!delete.contains(root.val)) {
+				ans.add(root);
+			}
+			return ans;
+		}
+
+		private void dfs(TreeNode node, Set<TreeNode> set, Set<Integer> delete) {
+			if (node == null) {
+				return;
+			}
+			dfs(node.left, set, delete);
+			dfs(node.right, set, delete);
+			if (delete.contains(node.val)) {
+				if (node.left != null && !delete.contains(node.left.val)) {
+					set.add(node.left);
+				}
+				if (node.right != null && !delete.contains(node.right.val)) {
+					set.add(node.right);
+				}
+			} else {
+				if (node.left != null && delete.contains(node.left.val)) {
+					node.left = null;
+				}
+				if (node.right != null && delete.contains(node.right.val)) {
+					node.right = null;
+				}
+			}
+		}
+	}
 }

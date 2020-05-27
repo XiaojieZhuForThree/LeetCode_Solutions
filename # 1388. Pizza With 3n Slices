@@ -1,0 +1,29 @@
+package problems;
+
+import java.util.Arrays;
+
+public class Question1388 {
+	class Solution {
+		public int maxSizeSlices(int[] slices) {
+			int m = slices.length, n = m / 3;
+			int[] slices1 = Arrays.copyOfRange(slices, 0, m - 1);
+			int[] slices2 = Arrays.copyOfRange(slices, 1, m);
+			return Math.max(helper(slices1, n), helper(slices2, n));
+		}
+
+		private int helper(int[] arr, int n) {
+			int m = arr.length;
+			int[][] dp = new int[m + 1][n + 1];
+			for (int i = 1; i <= m; i++) {
+				for (int j = 1; j <= n; j++) {
+					if (i == 1) {
+						dp[i][j] = arr[0];
+					} else {
+						dp[i][j] = Math.max(dp[i - 1][j], dp[i - 2][j - 1] + arr[i - 1]);
+					}
+				}
+			}
+			return dp[m][n];
+		}
+	}
+}

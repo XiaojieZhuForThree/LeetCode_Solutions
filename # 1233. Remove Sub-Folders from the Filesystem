@@ -12,30 +12,29 @@ import java.util.Set;
 public class Question1233 {
 	class Solution1 {
 		public List<String> removeSubfolders(String[] folder) {
-			Set<String> set = new HashSet<>();
 			Arrays.sort(folder, new Comparator<String>() {
 				public int compare(String a, String b) {
-					return a.length() - b.length();
+					return Integer.compare(a.length(), b.length());
 				}
 			});
-
-			for (String f : folder) {
+			Set<String> set = new HashSet<>();
+			for (String s : folder) {
 				StringBuilder sb = new StringBuilder();
-				boolean cont = false;
-				for (char c : f.toCharArray()) {
+				boolean isSub = false;
+				for (char c : s.toCharArray()) {
 					if (c == '/') {
 						if (set.contains(sb.toString())) {
-							cont = true;
+							isSub = true;
 							break;
 						}
 					}
 					sb.append(c);
 				}
-				if (!cont) {
-					set.add(f);
+				if (!isSub) {
+					set.add(s);
 				}
 			}
-			return new ArrayList<>(set);
+			return new ArrayList<String>(set);
 		}
 	}
 

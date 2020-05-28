@@ -4,10 +4,10 @@ public class Question1103 {
 	class Solution {
 		public int[] distributeCandies(int candies, int num_people) {
 			int[] ans = new int[num_people];
-			int i = 0, n = num_people, quotion = 0;
+			int quota = 0, i = 0;
 			while (candies > 0) {
-				ans[i++ % n] += Math.min(candies, ++quotion);
-				candies -= quotion;
+				ans[i++ % num_people] += Math.min(candies, ++quota);
+				candies -= quota;
 			}
 			return ans;
 		}

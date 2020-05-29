@@ -7,30 +7,34 @@ public class Question1419 {
 	class Solution {
 		public int minNumberOfFrogs(String croakOfFrogs) {
 			int ans = 0;
-			Map<Character, Integer> map = new HashMap<>();
-			int[] count = new int[5];
+			Map<Character, Integer> map = new HashMap<>(); // to reference each char in croak
+			int[] count = new int[5]; // to record the occurrence of each char
 			String s = "croak";
 			int n = 0;
 			for (char c : s.toCharArray()) {
 				map.put(c, n++);
 			}
 			for (char c : croakOfFrogs.toCharArray()) {
-				if (c == 'c') {
+				if (c == 'c') { // 'c' means we need to add a new frog
 					count[0]++;
 					ans = Math.max(ans, count[0]);
 					continue;
 				}
 				int cur = map.get(c);
+				// if the previous character does not occurs more than the current one,
+				// it means that the string will not be valid
 				if (count[cur - 1] <= count[cur]) {
 					return -1;
 				}
 				count[cur]++;
+				// 'k' means we finish one croak, thus we delete one frog
 				if (c == 'k') {
 					for (int i = 0; i < 5; i++) {
 						count[i]--;
 					}
 				}
 			}
+			// one final check
 			return count[0] == 0 ? ans : -1;
 		}
 	}

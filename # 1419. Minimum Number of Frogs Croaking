@@ -21,7 +21,7 @@ public class Question1419 {
 					continue;
 				}
 				int cur = map.get(c);
-				// if the previous character does not occurs more than the current one,
+				// if the previous character does not occur more than the current one,
 				// it means that the string will not be valid
 				if (count[cur - 1] <= count[cur]) {
 					return -1;

@@ -17,7 +17,7 @@ public class Question1419 {
 			for (char c : croakOfFrogs.toCharArray()) {
 				if (c == 'c') { // 'c' means we need to add a new frog
 					count[0]++;
-					ans = Math.max(ans, count[0]);
+					ans = Math.max(ans, count[0]); // update the answer
 					continue;
 				}
 				int cur = map.get(c);

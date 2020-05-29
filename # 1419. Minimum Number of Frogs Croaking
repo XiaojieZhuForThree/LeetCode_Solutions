@@ -1,0 +1,37 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1419 {
+	class Solution {
+		public int minNumberOfFrogs(String croakOfFrogs) {
+			int ans = 0;
+			Map<Character, Integer> map = new HashMap<>();
+			int[] count = new int[5];
+			String s = "croak";
+			int n = 0;
+			for (char c : s.toCharArray()) {
+				map.put(c, n++);
+			}
+			for (char c : croakOfFrogs.toCharArray()) {
+				if (c == 'c') {
+					count[0]++;
+					ans = Math.max(ans, count[0]);
+					continue;
+				}
+				int cur = map.get(c);
+				if (count[cur - 1] <= count[cur]) {
+					return -1;
+				}
+				count[cur]++;
+				if (c == 'k') {
+					for (int i = 0; i < 5; i++) {
+						count[i]--;
+					}
+				}
+			}
+			return count[0] == 0 ? ans : -1;
+		}
+	}
+}

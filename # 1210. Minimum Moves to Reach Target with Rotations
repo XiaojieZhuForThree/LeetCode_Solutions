@@ -6,15 +6,25 @@ import java.util.LinkedList;
 import java.util.Set;
 
 public class Question1210 {
+	class Node {
+		int x, y, status;
+
+		public Node(int x, int y, int status) {
+			this.x = x;
+			this.y = y;
+			this.status = status;
+		}
+	}
+
 	class Solution {
 		public int minimumMoves(int[][] grid) {
-			Deque<Head> deque = new LinkedList<>();
+			Deque<Node> deque = new LinkedList<>();
 			Set<String> visited = new HashSet<>();
-			deque.offer(new Head(0, 1, 0));
+			deque.offer(new Node(0, 1, 0));
 			deque.offer(null);
 			int ans = 0, n = grid.length;
 			while (!deque.isEmpty()) {
-				Head cur = deque.pollFirst();
+				Node cur = deque.poll();
 				if (cur == null) {
 					if (!deque.isEmpty()) {
 						deque.offer(null);
@@ -25,22 +35,22 @@ public class Question1210 {
 					if (x == n - 1 && y == n - 1 && status == 0) {
 						return ans;
 					}
-					String key = cur.x + ":" + cur.y + ":" + cur.status;
+					String key = x + ":" + y + ":" + status;
 					if (visited.contains(key)) {
 						continue;
 					}
 					visited.add(key);
 					if (canRight(x, y, status, grid)) {
-						deque.offer(new Head(x, y + 1, status));
+						deque.offer(new Node(x, y + 1, status));
 					}
 					if (canDown(x, y, status, grid)) {
-						deque.offer(new Head(x + 1, y, status));
+						deque.offer(new Node(x + 1, y, status));
 					}
 					if (status == 0 && canRotate(x, y, grid)) {
-						deque.offer(new Head(x + 1, y - 1, 1));
+						deque.offer(new Node(x + 1, y - 1, 1));
 					}
 					if (status == 1 && canRev(x, y, grid)) {
-						deque.offer(new Head(x - 1, y + 1, 0));
+						deque.offer(new Node(x - 1, y + 1, 0));
 					}
 				}
 			}
@@ -87,16 +97,6 @@ public class Question1210 {
 				return true;
 			}
 			return false;
-		}
-
-		class Head {
-			int x, y, status;
-
-			public Head(int x, int y, int status) {
-				this.x = x;
-				this.y = y;
-				this.status = status;
-			}
 		}
 	}
 }

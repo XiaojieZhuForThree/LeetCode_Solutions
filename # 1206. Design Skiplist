@@ -1,9 +1,11 @@
+package problems;
+
 import java.util.Random;
 
 public class Question1206 {
 	class SLNode {
 		int val;
-		SLNode left, right, up, down;
+		SLNode up, down, left, right;
 
 		public SLNode(int val) {
 			this.val = val;
@@ -18,9 +20,9 @@ public class Question1206 {
 		public Skiplist() {
 			head = new SLNode(Integer.MIN_VALUE);
 			tail = new SLNode(Integer.MAX_VALUE);
-			rand = new Random();
 			head.right = tail;
 			tail.left = head;
+			rand = new Random();
 		}
 
 		public boolean search(int target) {
@@ -29,23 +31,23 @@ public class Question1206 {
 		}
 
 		public void add(int num) {
-			SLNode pre = bottomFind(num);
-			SLNode node = new SLNode(num);
-			connect(pre, node);
+			SLNode prev = bottomFind(num);
+			SLNode cur = new SLNode(num);
+			connect(prev, cur);
 			int i = 0;
 			while (rand.nextDouble() < 0.5) {
 				if (i == level) {
-					addNewLevel();
+					addLevel();
 				}
-				while (pre.up == null) {
-					pre = pre.left;
+				while (prev.up == null) {
+					prev = prev.left;
 				}
-				pre = pre.up;
-				SLNode nNode = new SLNode(num);
-				connect(pre, nNode);
-				nNode.down = node;
-				node.up = nNode;
-				node = nNode;
+				prev = prev.up;
+				SLNode newNode = new SLNode(num);
+				connect(prev, newNode);
+				newNode.down = cur;
+				cur.up = newNode;
+				cur = newNode;
 				i++;
 			}
 		}
@@ -63,10 +65,10 @@ public class Question1206 {
 			return true;
 		}
 
-		private SLNode bottomFind(int target) {
+		private SLNode bottomFind(int num) {
 			SLNode node = head;
 			while (true) {
-				while (node.right.val <= target) {
+				while (node.right.val <= num) {
 					node = node.right;
 				}
 				if (node.down == null) {
@@ -77,24 +79,25 @@ public class Question1206 {
 			return node;
 		}
 
-		private void connect(SLNode a, SLNode b) {
-			SLNode c = a.right;
-			c.left = b;
-			b.right = c;
-			a.right = b;
-			b.left = a;
+		private void connect(SLNode prev, SLNode cur) {
+			SLNode prevRight = prev.right;
+			prev.right = cur;
+			cur.left = prev;
+			cur.right = prevRight;
+			prevRight.left = cur;
 		}
 
-		private void addNewLevel() {
-			SLNode a = new SLNode(Integer.MIN_VALUE), b = new SLNode(Integer.MAX_VALUE);
-			a.right = b;
-			b.left = a;
-			a.down = head;
-			head.up = a;
-			b.down = tail;
-			tail.up = b;
-			head = a;
-			tail = b;
+		private void addLevel() {
+			SLNode newHead = new SLNode(Integer.MIN_VALUE);
+			SLNode newTail = new SLNode(Integer.MAX_VALUE);
+			newHead.right = newTail;
+			newTail.left = newHead;
+			newHead.down = head;
+			head.up = newHead;
+			newTail.down = tail;
+			tail.up = newTail;
+			head = newHead;
+			tail = newTail;
 			level++;
 		}
 	}

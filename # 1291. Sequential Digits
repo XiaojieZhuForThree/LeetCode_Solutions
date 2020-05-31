@@ -1,0 +1,44 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question1291 {
+	class Solution {
+		public List<Integer> sequentialDigits(int low, int high) {
+			int i = 1, lowBound = 0, highBound = 0;
+			while (i * 10 <= low) {
+				i *= 10;
+				lowBound++;
+				highBound++;
+			}
+			while (i * 10 <= high) {
+				i *= 10;
+				highBound++;
+			}
+			List<Integer> list = new ArrayList<>();
+			generateNums(list, lowBound, highBound, low, high);
+			return list;
+		}
+
+		private void generateNums(List<Integer> list, int lB, int hB, int low, int high) {
+			for (int b = lB; b <= hB; b++) {
+				for (int i = 1; i <= 9; i++) {
+					int pos = 0;
+					int num = i, trace = i;
+					while (pos < b && trace < 9) {
+						num *= 10;
+						num += ++trace;
+						pos++;
+					}
+					if (pos < b) {
+						continue;
+					}
+					if (num >= low && num <= high) {
+						list.add(num);
+					}
+				}
+			}
+		}
+	}
+}

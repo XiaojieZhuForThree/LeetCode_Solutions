@@ -1,3 +1,4 @@
+package problems;
 
 public class Question1223 {
 	class Solution1 {
@@ -54,6 +55,37 @@ public class Question1223 {
 				}
 			}
 			dp[left][tail][num] = ans;
+			return ans;
+		}
+	}
+
+	class Solution3 {
+		public int dieSimulator(int n, int[] rollMax) {
+			int[][] dp = new int[n + 1][6];
+			for (int i = 0; i < 6; i++) {
+				dp[0][i] = 1;
+			}
+			for (int i = 1; i < n; i++) {
+				for (int j = 0; j < 6; j++) {
+					int max = rollMax[j];
+					if (i < max) {
+						dp[i][j] = 1;
+					}
+					for (int m = 1; m <= max && i - m >= 0; m++) {
+						for (int t = 0; t < 6; t++) {
+							if (t != j) {
+								dp[i][j] += dp[i - m][t];
+								dp[i][j] %= (1e9 + 7);
+							}
+						}
+					}
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < 6; i++) {
+				ans += dp[n - 1][i];
+				ans %= (1e9 + 7);
+			}
 			return ans;
 		}
 	}

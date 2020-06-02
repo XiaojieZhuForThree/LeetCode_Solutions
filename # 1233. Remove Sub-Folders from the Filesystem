@@ -39,47 +39,40 @@ public class Question1233 {
 	}
 
 	class Solution2 {
-		private class TrieNode {
-			boolean hasEnd;
-			Map<String, TrieNode> children;
-
-			TrieNode() {
-				hasEnd = false;
-				children = new HashMap<>();
-			}
-
-			boolean insert(String[] nodes) {
-				TrieNode node = this;
-				boolean isSub = false;
-				for (String sf : nodes) {
-					if (!node.children.containsKey(sf)) {
-						node.children.put(sf, new TrieNode());
-					}
-					node = node.children.get(sf);
-					if (node.hasEnd) {
-						isSub = true;
-					}
-				}
-				node.hasEnd = true;
-				return isSub;
-			}
-		}
-
 		public List<String> removeSubfolders(String[] folder) {
 			TrieNode root = new TrieNode();
-			List<String> list = new ArrayList<>();
-			Arrays.sort(folder, new Comparator<String>() {
-				public int compare(String a, String b) {
-					return a.length() - b.length();
-				}
-			});
+			Arrays.sort(folder);
+			List<String> ans = new ArrayList<>();
 			for (String s : folder) {
-				String[] nodes = s.substring(1).split("/");
-				if (!root.insert(nodes)) {
-					list.add(s);
+				if (!root.generateTrie(s.substring(1).split("/"))) {
+					ans.add(s);
 				}
 			}
-			return list;
+			return ans;
+		}
+	}
+
+	class TrieNode {
+		String word;
+		boolean isFinal;
+		Map<String, TrieNode> next;
+
+		public TrieNode() {
+			isFinal = false;
+			next = new HashMap<>();
+		}
+
+		public boolean generateTrie(String[] words) {
+			TrieNode node = this;
+			for (String w : words) {
+				node.next.putIfAbsent(w, new TrieNode());
+				if (node.next.get(w).isFinal) {
+					return true;
+				}
+				node = node.next.get(w);
+			}
+			node.isFinal = true;
+			return false;
 		}
 	}
 }

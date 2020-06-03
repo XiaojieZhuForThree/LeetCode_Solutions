@@ -1,20 +1,20 @@
 package problems;
 
+import java.util.Arrays;
+
 public class Question1262 {
 	class Solution {
 		public int maxSumDivThree(int[] nums) {
-			int[][] dp = new int[nums.length + 1][3];
-			for (int i = 1; i <= nums.length; i++) {
-				int num = nums[i - 1];
+			int[] dp = new int[3];
+			for (int i = 0; i < nums.length; i++) {
+				int[] dp1 = dp.clone(); // or you can use Arrays.copyOf(dp, 3);
 				for (int j = 0; j < 3; j++) {
-					dp[i][j] = dp[i - 1][j];
+					int cur = nums[i] + dp[j];
+					dp1[cur % 3] = Math.max(dp1[cur % 3], cur);
 				}
-				for (int j = 0; j < 3; j++) {
-					int cur = num + dp[i - 1][j];
-					dp[i][cur % 3] = Math.max(dp[i][cur % 3], cur);
-				}
+				dp = dp1;
 			}
-			return dp[nums.length][0];
+			return dp[0];
 		}
 	}
 }

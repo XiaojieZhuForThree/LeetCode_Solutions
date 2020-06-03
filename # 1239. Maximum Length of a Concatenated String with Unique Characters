@@ -1,54 +1,53 @@
+package problems;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class Solution {
-	int ans = 0;
+public class Question1239 {
+	class Solution {
+		private int ans = 0;
 
-	public int maxLength(List<String> arr) {
-		dfs(arr, 0, new HashSet<Character>(), 0);
-		return ans;
-	}
+		public int maxLength(List<String> arr) {
+			dfs(arr, 0, 0, new HashSet<>());
+			return ans;
+		}
 
-	private void dfs(List<String> arr, int i, Set<Character> seen, int len) {
-		if (i == arr.size()) {
-			ans = Math.max(ans, len);
-			return;
-		}
-		String s = arr.get(i);
-		if (!checkUnique(s)) {
-			dfs(arr, i + 1, seen, len);
-			return;
-		}
-		boolean noOverLap = true;
-		for (char c : s.toCharArray()) {
-			if (seen.contains(c)) {
-				noOverLap = false;
-				break;
+		private void dfs(List<String> arr, int curLen, int i, Set<Character> seen) {
+			if (i == arr.size()) {
+				ans = Math.max(curLen, ans);
+				return;
 			}
-		}
-		if (noOverLap) {
-			dfs(arr, i + 1, seen, len);
+			String s = arr.get(i);
+			if (!isValid(s)) {
+				dfs(arr, curLen, i + 1, seen);
+				return;
+			}
+			for (char c : s.toCharArray()) {
+				if (seen.contains(c)) {
+					dfs(arr, curLen, i + 1, seen);
+					return;
+				}
+			}
+			dfs(arr, curLen, i + 1, seen);
 			for (char c : s.toCharArray()) {
 				seen.add(c);
 			}
-			dfs(arr, i + 1, seen, len + s.length());
+			dfs(arr, curLen + s.length(), i + 1, seen);
 			for (char c : s.toCharArray()) {
 				seen.remove(c);
 			}
-		} else {
-			dfs(arr, i + 1, seen, len);
 		}
-	}
 
-	private boolean checkUnique(String s) {
-		Set<Character> set = new HashSet<>();
-		for (char c : s.toCharArray()) {
-			if (set.contains(c)) {
-				return false;
+		private boolean isValid(String s) {
+			Set<Character> set = new HashSet<>();
+			for (char c : s.toCharArray()) {
+				if (set.contains(c)) {
+					return false;
+				}
+				set.add(c);
 			}
-			set.add(c);
+			return true;
 		}
-		return true;
 	}
 }

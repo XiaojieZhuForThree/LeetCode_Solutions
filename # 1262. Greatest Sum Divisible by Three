@@ -7,7 +7,7 @@ public class Question1262 {
 		public int maxSumDivThree(int[] nums) {
 			int[] dp = new int[3];
 			for (int i = 0; i < nums.length; i++) {
-				int[] dp1 = dp.clone(); // or you can use Arrays.copyOf(dp, 3);
+				int[] dp1 = dp.clone(); // or you can use Arrays.copyOf(dp, 3), which is faster
 				for (int j = 0; j < 3; j++) {
 					int cur = nums[i] + dp[j];
 					dp1[cur % 3] = Math.max(dp1[cur % 3], cur);

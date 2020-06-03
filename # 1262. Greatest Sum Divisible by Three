@@ -1,21 +1,20 @@
+package problems;
+
 public class Question1262 {
 	class Solution {
-	    public int maxSumDivThree(int[] nums) {
-	        int[][] dp = new int[nums.length][3];
-	        int start = nums[0];
-	        int pos = start % 3;
-	        dp[0][pos] = start;
-	        for (int i = 1; i < nums.length; i++) {
-	            for (int k = 0; k < 3; k++) {
-	                dp[i][k] = dp[i-1][k];
-	            }
-	            for (int m = 0; m < 3; m++) {
-	                int base = dp[i-1][m] + nums[i];
-	                int mod = base % 3;
-	                dp[i][mod] = Math.max(dp[i][mod], base);
-	            }
-	        }
-	        return dp[nums.length-1][0];
-	    }
+		public int maxSumDivThree(int[] nums) {
+			int[][] dp = new int[nums.length + 1][3];
+			for (int i = 1; i <= nums.length; i++) {
+				int num = nums[i - 1];
+				for (int j = 0; j < 3; j++) {
+					dp[i][j] = dp[i - 1][j];
+				}
+				for (int j = 0; j < 3; j++) {
+					int cur = num + dp[i - 1][j];
+					dp[i][cur % 3] = Math.max(dp[i][cur % 3], cur);
+				}
+			}
+			return dp[nums.length][0];
+		}
 	}
 }

@@ -1,13 +1,16 @@
+package problems;
 
 public class Question1266 {
 	class Solution {
 		public int minTimeToVisitAllPoints(int[][] points) {
+			if (points.length == 1) {
+				return 0;
+			}
 			int ans = 0;
 			for (int i = 1; i < points.length; i++) {
-				int[] p1 = points[i - 1];
-				int[] p2 = points[i];
-				int dis1 = Math.abs(p1[0] - p2[0]), dis2 = Math.abs(p1[1] - p2[1]);
-				ans += Math.max(dis1, dis2);
+				int[] pt1 = points[i - 1], pt2 = points[i];
+				int l1 = Math.abs(pt1[0] - pt2[0]), l2 = Math.abs(pt1[1] - pt2[1]);
+				ans += Math.max(l1, l2);
 			}
 			return ans;
 		}

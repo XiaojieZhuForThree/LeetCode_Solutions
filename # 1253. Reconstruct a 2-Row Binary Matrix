@@ -6,37 +6,36 @@ import java.util.List;
 public class Question1253 {
 	class Solution {
 		public List<List<Integer>> reconstructMatrix(int upper, int lower, int[] colsum) {
-			int cur1 = upper, cur2 = lower, sum1 = 0;
+			int up = upper, low = lower, supply = 0;
 			for (int i : colsum) {
 				if (i == 2) {
-					cur1--;
-					cur2--;
+					up--;
+					low--;
 				} else if (i == 1) {
-					sum1++;
+					supply++;
 				}
 			}
-			if (cur1 < 0 || cur2 < 0 || cur1 + cur2 != sum1) {
+			if (up < 0 || low < 0 || up + low != supply) {
 				return new ArrayList<>();
 			}
-			List<List<Integer>> ans = new ArrayList<>();
 			List<Integer> row1 = new ArrayList<>(), row2 = new ArrayList<>();
 			for (int i : colsum) {
-				if (i == 0) {
-					row1.add(0);
-					row2.add(0);
-				} else if (i == 2) {
+				if (i == 2) {
 					row1.add(1);
 					row2.add(1);
-				} else if (cur1 > 0) {
+				} else if (i == 0) {
+					row1.add(0);
+					row2.add(0);
+				} else if (up > 0) {
 					row1.add(1);
 					row2.add(0);
-					cur1--;
+					up--;
 				} else {
 					row1.add(0);
 					row2.add(1);
-					cur2--;
 				}
 			}
+			List<List<Integer>> ans = new ArrayList<>();
 			ans.add(row1);
 			ans.add(row2);
 			return ans;

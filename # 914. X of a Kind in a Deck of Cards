@@ -1,0 +1,32 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question914 {
+	class Solution {
+		public boolean hasGroupsSizeX(int[] deck) {
+			Map<Integer, Integer> map = new HashMap<>();
+			for (int i : deck) {
+				map.put(i, map.getOrDefault(i, 0) + 1);
+			}
+			int min = 10000;
+			for (int i : map.values()) {
+				min = Math.min(min, i);
+			}
+			for (int i = min; i >= 2; i--) {
+				boolean valid = true;
+				for (int j : map.values()) {
+					if (!(j % i == 0)) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+}

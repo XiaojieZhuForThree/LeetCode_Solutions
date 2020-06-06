@@ -1,0 +1,18 @@
+package problems;
+
+public class Question1043 {
+	class Solution {
+		public int maxSumAfterPartitioning(int[] A, int K) {
+			int n = A.length;
+			int[][] dp = new int[n + 1][K + 2];
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= K; j++) {
+					dp[i][j] = Math.max(dp[i - 1][j - 1], A[i - 1]);
+					int curVal = dp[i][j] * Math.min(i, j) + (i >= j ? dp[i - j][K + 1] : 0);
+					dp[i][K + 1] = Math.max(dp[i][K + 1], curVal);
+				}
+			}
+			return dp[n][K + 1];
+		}
+	}
+}

@@ -1,3 +1,5 @@
+package problems;
+
 import java.util.PriorityQueue;
 
 public class Question1289 {
@@ -29,34 +31,33 @@ public class Question1289 {
 		public int minFallingPathSum(int[][] arr) {
 			int n = arr.length;
 			int[][] dp = new int[n][n];
-			for (int i = 0; i < n; i++) {
-				dp[0][i] = arr[0][i];
-			}
+			dp[0] = arr[0];
 			for (int i = 1; i < n; i++) {
-				dp[i - 1] = getPrev(dp[i - 1]);
+				dp[i - 1] = getMin(dp[i - 1]);
 				for (int j = 0; j < n; j++) {
 					dp[i][j] = dp[i - 1][j] + arr[i][j];
 				}
 			}
 			int ans = Integer.MAX_VALUE;
-			for (int i = 0; i < n; i++) {
-				ans = Math.min(ans, dp[n - 1][i]);
+			for (int i : dp[n - 1]) {
+				ans = Math.min(ans, i);
 			}
 			return ans;
 		}
 
-		private int[] getPrev(int[] row) {
-			int[] ans = new int[row.length];
+		private int[] getMin(int[] arr) {
+			int n = arr.length;
+			int[] ans = new int[n];
 			ans[0] = Integer.MAX_VALUE;
-			int min = row[0];
-			for (int i = 1; i < row.length; i++) {
+			int min = arr[0];
+			for (int i = 1; i < n; i++) {
 				ans[i] = min;
-				min = Math.min(min, row[i]);
+				min = Math.min(min, arr[i]);
 			}
-			min = row[row.length - 1];
-			for (int i = row.length - 2; i >= 0; i--) {
+			min = arr[n - 1];
+			for (int i = n - 2; i >= 0; i--) {
 				ans[i] = Math.min(ans[i], min);
-				min = Math.min(min, row[i]);
+				min = Math.min(min, arr[i]);
 			}
 			return ans;
 		}
@@ -64,30 +65,16 @@ public class Question1289 {
 
 	class Solution3 {
 		public int minFallingPathSum(int[][] arr) {
-			int n = arr.length;
 			PriorityQueue<Integer> pq = new PriorityQueue<>();
-			for (int i = 0; i < n; i++) {
-				pq.offer(arr[0][i]);
-				if (pq.size() > 2) {
-					int i1 = pq.poll(), i2 = pq.poll(), i3 = pq.poll();
-					pq.offer(i1);
-					pq.offer(i2);
-				}
+			for (int i : arr[0]) {
+				pq.offer(i);
 			}
-			for (int i = 1; i < n; i++) {
-				int s1 = pq.poll(), s2 = pq.poll();
-				for (int j = 0; j < n; j++) {
-					if (arr[i - 1][j] == s1) {
-						arr[i][j] += s2;
-					} else {
-						arr[i][j] += s1;
-					}
+			for (int i = 1; i < arr.length; i++) {
+				int small1 = pq.poll(), small2 = pq.poll();
+				pq.clear();
+				for (int j = 0; j < arr.length; j++) {
+					arr[i][j] += small1 == arr[i - 1][j] ? small2 : small1;
 					pq.offer(arr[i][j]);
-					if (pq.size() > 2) {
-						int i1 = pq.poll(), i2 = pq.poll(), i3 = pq.poll();
-						pq.offer(i1);
-						pq.offer(i2);
-					}
 				}
 			}
 			return pq.poll();

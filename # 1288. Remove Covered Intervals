@@ -18,11 +18,10 @@ public class Question1288 {
 			int right = intervals[0][1];
 			for (int i = 1; i < intervals.length; i++) {
 				int[] interval = intervals[i];
-				int curRight = interval[1];
-				if (curRight <= right) {
+				if (interval[1] <= right) {
 					ans--;
 				} else {
-					right = curRight;
+					right = interval[1];
 				}
 			}
 			return ans;

@@ -6,39 +6,37 @@ import java.util.List;
 public class Question1291 {
 	class Solution {
 		public List<Integer> sequentialDigits(int low, int high) {
-			int i = 1, lowBound = 0, highBound = 0;
-			while (i * 10 <= low) {
-				i *= 10;
-				lowBound++;
-				highBound++;
+			List<Integer> ans = new ArrayList<>();
+			int test = 1, lB = 0, hB = 0;
+			while (test <= low) {
+				test *= 10;
+				lB++;
+				hB++;
 			}
-			while (i * 10 <= high) {
-				i *= 10;
-				highBound++;
+			while (test <= high) {
+				test *= 10;
+				hB++;
 			}
-			List<Integer> list = new ArrayList<>();
-			generateNums(list, lowBound, highBound, low, high);
-			return list;
+			for (; lB <= hB; lB++) {
+				ans.addAll(getSeq(lB, low, high));
+			}
+			return ans;
 		}
 
-		private void generateNums(List<Integer> list, int lB, int hB, int low, int high) {
-			for (int b = lB; b <= hB; b++) {
-				for (int i = 1; i <= 9; i++) {
-					int pos = 0;
-					int num = i, trace = i;
-					while (pos < b && trace < 9) {
-						num *= 10;
-						num += ++trace;
-						pos++;
-					}
-					if (pos < b) {
-						continue;
-					}
-					if (num >= low && num <= high) {
-						list.add(num);
-					}
+		private List<Integer> getSeq(int bound, int low, int high) {
+			List<Integer> ans = new ArrayList<>();
+			for (int i = 1; i < 10; i++) {
+				int j = i, dig = 0, val = 0;
+				while (dig < bound && j < 10) {
+					val = val * 10 + j;
+					dig++;
+					j++;
+				}
+				if (dig == bound && low <= val && val <= high) {
+					ans.add(val);
 				}
 			}
+			return ans;
 		}
 	}
 }

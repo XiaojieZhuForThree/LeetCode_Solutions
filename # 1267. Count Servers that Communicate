@@ -1,0 +1,65 @@
+package problems;
+
+public class Question1267 {
+	class Solution1 {
+		public int countServers(int[][] grid) {
+			int ans = 0;
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1 && isConnected(grid, i, j)) {
+						ans++;
+					}
+				}
+			}
+			return ans;
+		}
+
+		private boolean isConnected(int[][] grid, int i, int j) {
+			for (int xi = i + 1; xi < grid.length; xi++) {
+				if (grid[xi][j] == 1) {
+					return true;
+				}
+			}
+			for (int xi = i - 1; xi >= 0; xi--) {
+				if (grid[xi][j] == 1) {
+					return true;
+				}
+			}
+			for (int xj = j + 1; xj < grid[0].length; xj++) {
+				if (grid[i][xj] == 1) {
+					return true;
+				}
+			}
+			for (int xj = j - 1; xj >= 0; xj--) {
+				if (grid[i][xj] == 1) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	class Solution2 {
+		public int countServers(int[][] grid) {
+			int[] rows = new int[grid.length];
+			int[] cols = new int[grid[0].length];
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1) {
+						rows[i]++;
+						cols[j]++;
+					}
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1) {
+						ans += (rows[i] > 1 || cols[j] > 1) ? 1 : 0;
+					}
+				}
+			}
+			return ans;
+		}
+	}
+}

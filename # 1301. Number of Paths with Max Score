@@ -1,39 +1,54 @@
+package problems;
+
 import java.util.List;
 
 public class Question1301 {
 	class Solution {
 		public int[] pathsWithMaxScore(List<String> board) {
 			int[] ans = new int[2];
-			int[][] dp = new int[board.size()][board.get(0).length()];
-			long[][] paths = new long[board.size()][board.get(0).length()];
-			int[][] dirs = { { 1, 0 }, { 0, 1 }, { 1, 1 } };
-			paths[board.size() - 1][board.get(0).length() - 1] = 1;
-			for (int i = board.size() - 1; i >= 0; i--) {
-				for (int j = board.get(0).length() - 1; j >= 0; j--) {
+			int m = board.size(), n = board.get(0).length();
+			String s1 = "0" + board.get(0).substring(1);
+			String s2 = board.get(m - 1).substring(0, n - 1) + "0";
+			board.set(0, s1);
+			board.set(m - 1, s2);
+			int[][] maxVals = new int[m][n];
+			int[][] maxPaths = new int[m][n];
+			maxPaths[m - 1][n - 1] = 1;
+			int[][] dirs = new int[][] { { 1, 0 }, { 0, 1 }, { 1, 1 } };
+			for (int i = m - 1; i >= 0; i--) {
+				for (int j = n - 1; j >= 0; j--) {
 					char c = board.get(i).charAt(j);
-					if (c == 'X' || c == 'S') {
-						dp[i][j] = 0;
+					if (c == 'X') {
+						continue;
 					}
-					int val = c == 'E' ? 0 : Character.getNumericValue(c);
+					int val = c - '0';
+					int maxVal = Integer.MIN_VALUE;
 					for (int[] dir : dirs) {
-						int ii = i + dir[0], jj = j + dir[1];
-						if (ii < board.size() && jj < board.size() && board.get(ii).charAt(jj) != 'X') {
-							dp[i][j] = Math.max(dp[i][j], val + dp[ii][jj]);
+						int ni = i + dir[0], nj = j + dir[1];
+						if (ni >= m || nj >= n || board.get(ni).charAt(nj) == 'X') {
+							continue;
 						}
+						maxVal = Math.max(maxVal, maxVals[ni][nj]);
 					}
+					if (maxVal == Integer.MIN_VALUE) {
+						continue;
+					}
+					maxVals[i][j] = val + maxVal;
+
 					for (int[] dir : dirs) {
-						int ii = i + dir[0], jj = j + dir[1];
-						if (ii < board.size() && jj < board.size() && board.get(ii).charAt(jj) != 'X') {
-							if (dp[ii][jj] == dp[i][j] - val) {
-								paths[i][j] += paths[ii][jj];
-								paths[i][j] %= (1e9 + 7);
-							}
+						int ni = i + dir[0], nj = j + dir[1];
+						if (ni >= m || nj >= n || board.get(ni).charAt(nj) == 'X') {
+							continue;
+						}
+						if (maxVals[ni][nj] == maxVal) {
+							maxPaths[i][j] += maxPaths[ni][nj];
+							maxPaths[i][j] %= (1e9 + 7);
 						}
 					}
 				}
 			}
-			ans[0] = dp[0][0];
-			ans[1] = (int) (paths[0][0] % (1e9 + 7));
+			ans[0] = maxVals[0][0];
+			ans[1] = maxPaths[0][0];
 			return ans[1] == 0 ? new int[] { 0, 0 } : ans;
 		}
 	}

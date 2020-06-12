@@ -1,0 +1,60 @@
+package problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question1284 {
+	class Solution {
+		int ans = Integer.MAX_VALUE;
+		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 0, 0 } };
+
+		public int minFlips(int[][] mat) {
+			dfs(mat, new HashSet<>(), 0);
+			return ans == Integer.MAX_VALUE ? -1 : ans;
+		}
+
+		private void dfs(int[][] mat, Set<Integer> set, int steps) {
+			int m = mat.length, n = mat[0].length;
+			if (check(mat)) {
+				ans = Math.min(ans, steps);
+				return;
+			}
+			if (set.size() == m * n) {
+				return;
+			}
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (set.contains(i * m + j)) {
+						continue;
+					}
+					for (int[] dir : dirs) {
+						int ni = i + dir[0], nj = j + dir[1];
+						if (ni >= 0 && ni < m && nj >= 0 && nj < n) {
+							mat[ni][nj] = mat[ni][nj] == 0 ? 1 : 0;
+						}
+					}
+					set.add(i * m + j);
+					dfs(mat, set, steps + 1);
+					for (int[] dir : dirs) {
+						int ni = i + dir[0], nj = j + dir[1];
+						if (ni >= 0 && ni < m && nj >= 0 && nj < n) {
+							mat[ni][nj] = mat[ni][nj] == 0 ? 1 : 0;
+						}
+					}
+					set.remove(i * m + j);
+				}
+			}
+		}
+
+		private boolean check(int[][] mat) {
+			for (int i = 0; i < mat.length; i++) {
+				for (int j : mat[i]) {
+					if (j == 1) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

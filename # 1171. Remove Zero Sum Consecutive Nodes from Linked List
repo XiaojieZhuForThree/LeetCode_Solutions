@@ -1,0 +1,39 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1171 {
+	/**
+	 * Definition for singly-linked list. public class ListNode { int val; ListNode
+	 * next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val,
+	 * ListNode next) { this.val = val; this.next = next; } }
+	 */
+	class Solution {
+		public ListNode removeZeroSumSublists(ListNode head) {
+			ListNode top = new ListNode(0);
+			top.next = head;
+			Map<Integer, ListNode> pos = new HashMap<>();
+			pos.put(0, top);
+			int cumulate = 0;
+			while (head != null) {
+				cumulate += head.val;
+				if (pos.containsKey(cumulate)) {
+					ListNode prev = pos.get(cumulate);
+					ListNode dummy = prev.next;
+					int cur = cumulate;
+					while (dummy != head) {
+						cur += dummy.val;
+						pos.remove(cur);
+						dummy = dummy.next;
+					}
+					prev.next = head.next;
+				} else {
+					pos.put(cumulate, head);
+				}
+				head = head.next;
+			}
+			return top.next;
+		}
+	}
+}

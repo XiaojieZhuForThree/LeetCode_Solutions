@@ -1,0 +1,30 @@
+package problems;
+
+public class Question985 {
+	class Solution {
+		public int[] sumEvenAfterQueries(int[] A, int[][] queries) {
+			int cur = 0;
+			for (int i : A) {
+				if (i % 2 == 0) {
+					cur += i;
+				}
+			}
+			int[] ans = new int[queries.length];
+
+			for (int i = 0; i < queries.length; i++) {
+				int[] q = queries[i];
+				int prev = A[q[1]], after = prev + q[0];
+				if (prev % 2 == 0 && after % 2 == 0) {
+					cur += q[0];
+				} else if (prev % 2 == 0 && after % 2 != 0) {
+					cur -= prev;
+				} else if (prev % 2 != 0 && after % 2 == 0) {
+					cur += after;
+				}
+				A[q[1]] = after;
+				ans[i] = cur;
+			}
+			return ans;
+		}
+	}
+}

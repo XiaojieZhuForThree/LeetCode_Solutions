@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Question1462 {
-	class Solution {
+	class Solution1 {
 		public List<Boolean> checkIfPrerequisite(int n, int[][] P, int[][] Q) {
 			Map<Integer, Set<Integer>> pars = new HashMap<>();
 			Map<Integer, Set<Integer>> kids = new HashMap<>();
@@ -31,6 +31,47 @@ public class Question1462 {
 				ans.add(pars.get(q[1]).contains(q[0]) || kids.get(q[0]).contains(q[1]));
 			}
 			return ans;
+		}
+	}
+
+	class Solution2 {
+		boolean[][] dp, visited;
+
+		public List<Boolean> checkIfPrerequisite(int n, int[][] P, int[][] Q) {
+			dp = new boolean[n][n];
+			visited = new boolean[n][n];
+			List<List<Integer>> graph = new ArrayList<>();
+			for (int i = 0; i < n; i++) {
+				graph.add(new ArrayList<>());
+			}
+			for (int[] p : P) {
+				graph.get(p[0]).add(p[1]);
+			}
+			List<Boolean> ans = new ArrayList<>();
+			for (int[] q : Q) {
+				ans.add(dfs(graph, q[0], q[1]));
+			}
+			return ans;
+		}
+
+		private boolean dfs(List<List<Integer>> graph, int src, int dst) {
+			if (visited[src][dst]) {
+				return dp[src][dst];
+			}
+
+			if (src == dst) {
+				return true;
+			}
+			for (int next : graph.get(src)) {
+				if (dfs(graph, next, dst)) {
+					visited[src][dst] = true;
+					dp[src][dst] = true;
+					return true;
+				}
+			}
+			visited[src][dst] = true;
+			dp[src][dst] = false;
+			return false;
 		}
 	}
 }

@@ -1,0 +1,36 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question1462 {
+	class Solution {
+		public List<Boolean> checkIfPrerequisite(int n, int[][] P, int[][] Q) {
+			Map<Integer, Set<Integer>> pars = new HashMap<>();
+			Map<Integer, Set<Integer>> kids = new HashMap<>();
+			for (int i = 0; i < n; i++) {
+				pars.put(i, new HashSet<>());
+				kids.put(i, new HashSet<>());
+			}
+			for (int[] i : P) {
+				pars.get(i[1]).add(i[0]);
+				for (int j : pars.get(i[0])) {
+					pars.get(i[1]).add(j);
+				}
+				kids.get(i[0]).add(i[1]);
+				for (int m : kids.get(i[1])) {
+					kids.get(i[0]).add(m);
+				}
+			}
+			List<Boolean> ans = new ArrayList<>();
+			for (int[] q : Q) {
+				ans.add(pars.get(q[1]).contains(q[0]) || kids.get(q[0]).contains(q[1]));
+			}
+			return ans;
+		}
+	}
+}

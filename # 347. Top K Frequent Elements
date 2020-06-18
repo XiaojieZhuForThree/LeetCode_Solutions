@@ -1,27 +1,90 @@
-class Solution {
-	Map<Integer, Integer> map = new HashMap<>();
+package problems;
 
-	public List<Integer> topKFrequent(int[] nums, int k) {
-		Queue<Integer> ranks = new PriorityQueue<>(new Comparator<Integer>() {
-			public int compare(Integer arg0, Integer arg1) {
-				return map.get(arg0).compareTo(map.get(arg1));
-			}
-		});
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
-		int seq = 0;
-		for (int i : nums) {
-			map.put(i, map.getOrDefault(i, 0) + 1);
-		}
-        
-		for (int x : map.keySet()) {
-			if (seq < k) {
-				ranks.add(x);
-				seq++;
-			} else if (map.get(x) > map.get(ranks.peek())) {
-				ranks.add(x);
-				ranks.poll();
+public class Question347 {
+	class Solution1 {
+		public int[] topKFrequent(int[] nums, int k) {
+			int[] ans = new int[k];
+			Map<Integer, Integer> freq = new HashMap<>();
+			for (int i : nums) {
+				freq.put(i, freq.getOrDefault(i, 0) + 1);
 			}
+			List<Integer>[] list = new List[nums.length + 1];
+			for (int key : freq.keySet()) {
+				int f = freq.get(key);
+				if (list[f] == null) {
+					list[f] = new ArrayList<>();
+				}
+				list[f].add(key);
+			}
+			int j = 0;
+			for (int i = nums.length; i >= 0; i--) {
+				if (list[i] != null) {
+					for (int m : list[i]) {
+						if (j == k) {
+							return ans;
+						}
+						ans[j++] = m;
+					}
+				}
+			}
+			return ans;
 		}
-		return new ArrayList<>(ranks);
+	}
+
+	class Solution2 {
+		public int[] topKFrequent(int[] nums, int k) {
+			int[] ans = new int[k];
+			Map<Integer, Integer> freq = new HashMap<>();
+			for (int i : nums) {
+				freq.put(i, freq.getOrDefault(i, 0) + 1);
+			}
+			TreeMap<Integer, List<Integer>> bucket = new TreeMap<>((a, b) -> b - a);
+			for (int key : freq.keySet()) {
+				int f = freq.get(key);
+				bucket.putIfAbsent(f, new ArrayList<>());
+				bucket.get(f).add(key);
+			}
+			int t = 0;
+			for (int i : bucket.keySet()) {
+				for (int j : bucket.get(i)) {
+					if (t == k) {
+						return ans;
+					}
+					ans[t++] = j;
+				}
+			}
+			return ans;
+		}
+	}
+
+	class Solution3 {
+		public int[] topKFrequent(int[] nums, int k) {
+			int[] ans = new int[k];
+			Map<Integer, Integer> freq = new HashMap<>();
+			for (int i : nums) {
+				freq.put(i, freq.getOrDefault(i, 0) + 1);
+			}
+			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));
+
+			for (int i : freq.keySet()) {
+
+				pq.offer(i);
+				if (pq.size() > k) {
+					pq.poll();
+				}
+			}
+			int j = 0;
+			while (!pq.isEmpty()) {
+				ans[j++] = pq.poll();
+			}
+			return ans;
+		}
 	}
 }

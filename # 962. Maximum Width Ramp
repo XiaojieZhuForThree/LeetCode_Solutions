@@ -1,0 +1,61 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.TreeMap;
+
+public class Question962 {
+	class Solution1 {
+		public int maxWidthRamp(int[] A) {
+			int ans = 0;
+			int n = A.length;
+			for (int i = 0; i < n - 1; i++) {
+				for (int j = n - 1; j > i; j--) {
+					if (A[i] <= A[j]) {
+						ans = Math.max(ans, j - i);
+						break;
+					}
+				}
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		public int maxWidthRamp(int[] A) {
+			int n = A.length;
+			int ans = 0;
+			TreeMap<Integer, Integer> map = new TreeMap<>();
+			map.put(A[n - 1], n - 1);
+			for (int i = n - 2; i >= 0; i--) {
+				int val = A[i];
+				if (map.ceilingKey(val) == null) {
+					map.put(val, i);
+				} else {
+					int comp = map.ceilingKey(val);
+					ans = Math.max(ans, map.get(comp) - i);
+					map.put(val, map.get(comp));
+				}
+			}
+			return ans;
+		}
+	}
+
+	class Solution3 {
+		public int maxWidthRamp(int[] A) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			int n = A.length, ans = 0;
+			for (int i = 0; i < n; i++) {
+				if (stack.isEmpty() || A[stack.peekLast()] > A[i]) {
+					stack.offer(i);
+				}
+			}
+			for (int i = n - 1; i >= 0; i--) {
+				while (!stack.isEmpty() && A[stack.peekLast()] <= A[i]) {
+					ans = Math.max(ans, i - stack.pollLast());
+				}
+			}
+			return ans;
+		}
+	}
+}

@@ -1,0 +1,82 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1028 {
+	class Solution {
+		public TreeNode recoverFromPreorder(String S) {
+			if (S == null || S.length() == 0) {
+				return null;
+			}
+			int i = 0;
+			while (i < S.length() && S.charAt(i) != '-') {
+				i++;
+			}
+			int init = Integer.parseInt(S.substring(0, i));
+			TreeNode head = new TreeNode(init);
+			Deque<TreeNode> stack = new ArrayDeque<>();
+			stack.offer(head);
+			int dep = 0;
+			StringBuilder sb = new StringBuilder();
+			for (; i < S.length(); i++) {
+				if (Character.isDigit(S.charAt(i))) {
+					if (i == S.length() - 1 || S.charAt(i + 1) == '-') {
+						sb.append(S.charAt(i));
+						int val = Integer.parseInt(sb.toString());
+						TreeNode node = new TreeNode(val);
+						while (stack.size() > dep) {
+							stack.pollLast();
+						}
+						TreeNode par = stack.peekLast();
+						if (par.left != null) {
+							par.right = node;
+						} else {
+							par.left = node;
+						}
+						stack.offer(node);
+						sb = new StringBuilder();
+						dep = 0;
+					} else {
+						sb.append(S.charAt(i));
+					}
+				} else {
+					dep++;
+				}
+			}
+			return head;
+		}
+	}
+
+	class Solution_Beta {
+		public TreeNode recoverFromPreorder(String S) {
+			if (S == null || S.length() == 0) {
+				return null;
+			}
+			Deque<TreeNode> stack = new ArrayDeque<>();
+			int dep = 0, val = 0;
+			for (int i = 0; i < S.length();) {
+				for (dep = 0; S.charAt(i) == '-'; i++) {
+					dep++;
+				}
+				for (val = 0; i < S.length() && S.charAt(i) != '-'; i++) {
+					val = val * 10 + (S.charAt(i) - '0');
+				}
+				TreeNode node = new TreeNode(val);
+				while (stack.size() > dep) {
+					stack.pollLast();
+				}
+				if (!stack.isEmpty()) {
+					TreeNode par = stack.peekLast();
+					if (par.left != null) {
+						par.right = node;
+					} else {
+						par.left = node;
+					}
+				}
+				stack.offer(node);
+			}
+			return stack.pollFirst();
+		}
+	}
+}

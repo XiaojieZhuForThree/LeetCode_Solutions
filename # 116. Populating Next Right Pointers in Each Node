@@ -1,16 +1,70 @@
-/**
- * Definition for binary tree with next pointer.
- * public class TreeLinkNode {
- *     int val;
- *     TreeLinkNode left, right, next;
- *     TreeLinkNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public void connect(TreeLinkNode root) {
-        
-    }
-    private void link(TreeLinkNode root1, TreeLinkNode root2) {
-        root1.next = root2;
-    }
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question116 {
+
+	class Solution1 {
+		public Node connect(Node root) {
+			if (root == null) {
+				return null;
+			}
+			Deque<Node> queue = new ArrayDeque<>();
+			queue.offer(root);
+			while (!queue.isEmpty()) {
+				int size = queue.size();
+				for (int i = 0; i < size; i++) {
+					Node node = queue.pollFirst();
+					if (i < size - 1) {
+						node.next = queue.peekFirst();
+					}
+					if (node.left != null) {
+						queue.offer(node.left);
+					}
+					if (node.right != null) {
+						queue.offer(node.right);
+					}
+				}
+			}
+			return root;
+		}
+	}
+
+	class Solution2 {
+		public Node connect(Node root) {
+			Node lev = root;
+			while (lev != null) {
+				Node cur = lev;
+				while (cur != null) {
+					if (cur.left != null) {
+						cur.left.next = cur.right;
+					}
+					if (cur.right != null && cur.next != null) {
+						cur.right.next = cur.next.left;
+					}
+					cur = cur.next;
+				}
+				lev = lev.left;
+			}
+			return root;
+		}
+	}
+
+	class Solution3 {
+		public Node connect(Node root) {
+			if (root == null) {
+				return null;
+			}
+			if (root.left != null) {
+				root.left.next = root.right;
+			}
+			if (root.right != null && root.next != null) {
+				root.right.next = root.next.left;
+			}
+			connect(root.left);
+			connect(root.right);
+			return root;
+		}
+	}
 }

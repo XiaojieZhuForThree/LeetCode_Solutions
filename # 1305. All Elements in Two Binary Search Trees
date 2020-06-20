@@ -1,0 +1,52 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question1305 {
+
+	class Solution {
+		public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+			List<Integer> l1 = new ArrayList<>(), l2 = new ArrayList<>();
+			fillList(root1, l1);
+			fillList(root2, l2);
+			return merge(l1, l2);
+		}
+
+		private void fillList(TreeNode root, List<Integer> list) {
+			if (root == null) {
+				return;
+			}
+			fillList(root.left, list);
+			list.add(root.val);
+			fillList(root.right, list);
+		}
+
+		private List<Integer> merge(List<Integer> l1, List<Integer> l2) {
+			if (l1 == null || l1.size() == 0) {
+				return l2;
+			}
+			if (l2 == null || l2.size() == 0) {
+				return l1;
+			}
+			List<Integer> ans = new ArrayList<>();
+			int m = l1.size(), n = l2.size();
+			for (int i = 0, j = 0; i < m && j < n;) {
+				if (l1.get(i) < l2.get(j)) {
+					ans.add(l1.get(i));
+					i++;
+				} else {
+					ans.add(l2.get(j));
+					j++;
+				}
+				if (i == m) {
+					ans.addAll(l2.subList(j, n));
+				}
+				if (j == n) {
+					ans.addAll(l1.subList(i, m));
+				}
+			}
+			return ans;
+		}
+	}
+}

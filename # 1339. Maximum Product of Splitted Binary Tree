@@ -1,43 +1,35 @@
+package problems;
+
 public class Question1339 {
 	class Solution {
-	    long maxVal = Integer.MIN_VALUE;
-	    public int maxProduct(TreeNode root) {
-	        getSum(root);
-	        long total = root.val;
-	        helper(root, total);
-	        return (int)(maxVal % (int)(1e9 + 7));
-	    }
-	    private void helper(TreeNode node, long total) {
-	        if (node == null) {
-	            return;
-	        }
-	        if (node.left == null && node.right == null) {
-	            return;
-	        }
-	        if (node.left != null) {
-	            helper(node.left, total);
-	            maxVal = Math.max(maxVal, (total - node.left.val) * node.left.val);
-	        }
-	        if (node.right != null) {
-	            helper(node.right, total);
-	            maxVal = Math.max(maxVal, (total - node.right.val) * node.right.val);
-	        }
-	    }
-	    private void getSum(TreeNode node) {
-	        if (node == null) {
-	            return;
-	        }
-	        if (node.left == null && node.right == null) {
-	            return;
-	        }
-	        getSum(node.left);
-	        getSum(node.right);
-	        if (node.left != null) {
-	            node.val += node.left.val;
-	        }
-	        if (node.right != null) {
-	            node.val += node.right.val;
-	        }
-	    }
+		long ans = Integer.MIN_VALUE;
+		long sum;
+
+		public int maxProduct(TreeNode root) {
+			sum = sum(root);
+			helper(root);
+			return (int) (ans % (long) (1e9 + 7));
+		}
+
+		private long sum(TreeNode node) {
+			if (node == null) {
+				return 0;
+			}
+			return node.val + sum(node.left) + sum(node.right);
+		}
+
+		private void helper(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			helper(node.left);
+			helper(node.right);
+			int nl = node.left == null ? 0 : node.left.val;
+			int nr = node.right == null ? 0 : node.right.val;
+			long val1 = ((sum - nl) * nl);
+			long val2 = ((sum - nr) * nr);
+			ans = Math.max(ans, Math.max(val1, val2));
+			node.val = node.val + nl + nr;
+		}
 	}
 }

@@ -1,0 +1,13 @@
+package problems;
+
+public class Question1344 {
+	class Solution {
+		public double angleClock(int h, int m) {
+			double hAngle = 360 * (h / 12.0) + 30 * (m / 60.0);
+			double mAngle = 360 * (m / 60.0);
+			double val1 = Math.abs(mAngle - hAngle);
+			double val2 = 360 - val1;
+			return Math.min(val1, val2);
+		}
+	}
+}

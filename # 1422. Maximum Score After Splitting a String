@@ -1,0 +1,24 @@
+package problems;
+
+public class Question1422 {
+	class Solution {
+		public int maxScore(String s) {
+			int c1 = 0;
+			for (char c : s.toCharArray()) {
+				if (c == '1') {
+					c1++;
+				}
+			}
+			int max = 0, l0 = 0, r1 = c1;
+			for (int i = 0; i < s.length() - 1; i++) {
+				if (s.charAt(i) == '0') {
+					l0++;
+				} else {
+					r1--;
+				}
+				max = Math.max(max, l0 + r1);
+			}
+			return max;
+		}
+	}
+}

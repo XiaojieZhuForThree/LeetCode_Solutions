@@ -2,7 +2,7 @@ package problems;
 
 public class Question1339 {
 	class Solution {
-		long ans = Integer.MIN_VALUE;
+		long ans = Long.MIN_VALUE;
 		long sum;
 
 		public int maxProduct(TreeNode root) {

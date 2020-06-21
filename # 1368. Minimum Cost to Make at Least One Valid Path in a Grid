@@ -1,0 +1,43 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
+public class Question1368 {
+	class Solution {
+		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+		public int minCost(int[][] grid) {
+			int m = grid.length, n = grid[0].length, cost = 0;
+			Deque<int[]> queue = new ArrayDeque<>();
+			int[][] dp = new int[m][n];
+			for (int[] i : dp) {
+				Arrays.fill(i, Integer.MAX_VALUE);
+			}
+			dfs(grid, dp, 0, 0, cost, queue);
+			while (!queue.isEmpty()) {
+				cost++;
+				for (int i = queue.size(); i > 0; i--) {
+					int[] cur = queue.poll();
+					for (int[] dir : dirs) {
+						dfs(grid, dp, cur[0] + dir[0], cur[1] + dir[1], cost, queue);
+					}
+				}
+			}
+			return dp[m - 1][n - 1];
+		}
+
+		private void dfs(int[][] grid, int[][] dp, int i, int j, int cost, Deque<int[]> queue) {
+			int m = grid.length, n = grid[0].length;
+			if (i < 0 || i >= m || j < 0 || j >= n || dp[i][j] != Integer.MAX_VALUE) {
+				return;
+			}
+			dp[i][j] = cost;
+			queue.offer(new int[] { i, j });
+			int sign = grid[i][j] - 1;
+			int ni = i + dirs[sign][0], nj = j + dirs[sign][1];
+			dfs(grid, dp, ni, nj, cost, queue);
+		}
+	}
+}

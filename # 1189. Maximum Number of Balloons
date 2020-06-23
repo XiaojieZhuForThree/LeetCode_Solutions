@@ -1,0 +1,29 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1189 {
+	class Solution {
+		public int maxNumberOfBalloons(String text) {
+			Map<Character, Integer> map = new HashMap<>();
+			for (char c : "balon".toCharArray()) {
+				map.put(c, 0);
+			}
+			for (char c : text.toCharArray()) {
+				if (map.containsKey(c)) {
+					map.put(c, map.get(c) + 1);
+				}
+			}
+			int ans = Integer.MAX_VALUE;
+			for (char c : map.keySet()) {
+				if (c == 'l' || c == 'o') {
+					ans = Math.min(ans, map.get(c) / 2);
+				} else {
+					ans = Math.min(ans, map.get(c));
+				}
+			}
+			return ans;
+		}
+	}
+}

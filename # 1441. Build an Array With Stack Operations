@@ -1,0 +1,26 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question1441 {
+	class Solution {
+		public List<String> buildArray(int[] target, int n) {
+			List<String> ans = new ArrayList<>();
+			for (int i = 0, j = 1; i < target.length; i++) {
+				if (target[i] > j) {
+					for (int k = j; k < target[i]; k++) {
+						ans.add("Push");
+						ans.add("Pop");
+					}
+					ans.add("Push");
+					j = target[i] + 1;
+				} else {
+					ans.add("Push");
+					j++;
+				}
+			}
+			return ans;
+		}
+	}
+}

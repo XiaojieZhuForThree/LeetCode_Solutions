@@ -1,0 +1,59 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1302 {
+	class Solution1 {
+		public int deepestLeavesSum(TreeNode root) {
+			Deque<TreeNode> queue = new ArrayDeque<>();
+			queue.offer(root);
+			int ans = 0;
+			while (!queue.isEmpty()) {
+				ans = 0;
+				for (int i = queue.size(); i > 0; i--) {
+					TreeNode node = queue.poll();
+					ans += node.val;
+					if (node.left != null) {
+						queue.offer(node.left);
+					}
+					if (node.right != null) {
+						queue.offer(node.right);
+					}
+				}
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		int level = Integer.MIN_VALUE, sum;
+
+		public int deepestLeavesSum(TreeNode root) {
+			dfs(root, 0);
+			helper(root, 0);
+			return sum;
+		}
+
+		private void dfs(TreeNode node, int depth) {
+			if (node == null) {
+				level = Math.max(depth - 1, level);
+				return;
+			}
+			dfs(node.left, depth + 1);
+			dfs(node.right, depth + 1);
+		}
+
+		private void helper(TreeNode node, int depth) {
+			if (node == null) {
+				return;
+			}
+			if (depth == level) {
+				sum += node.val;
+				return;
+			}
+			helper(node.left, depth + 1);
+			helper(node.right, depth + 1);
+		}
+	}
+}

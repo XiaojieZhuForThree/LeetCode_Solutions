@@ -1,0 +1,22 @@
+package problems;
+
+public class Question1347 {
+	class Solution {
+		public int minSteps(String s, String t) {
+			int[] chs = new int[26];
+			for (char c : s.toCharArray()) {
+				chs[c - 'a']++;
+			}
+			int ans = 0;
+			for (char c : t.toCharArray()) {
+				if (chs[c - 'a'] > 0) {
+					chs[c - 'a']--;
+				}
+			}
+			for (int i : chs) {
+				ans += i;
+			}
+			return ans;
+		}
+	}
+}

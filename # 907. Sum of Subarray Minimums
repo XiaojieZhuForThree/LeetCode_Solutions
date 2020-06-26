@@ -6,33 +6,30 @@ import java.util.Deque;
 public class Question907 {
 	class Solution {
 		public int sumSubarrayMins(int[] A) {
-			int res = 0, n = A.length, mod = (int) (1e9 + 7);
-			Deque<Integer> deque = new ArrayDeque<>();
+			int n = A.length;
 			int[] left = new int[n], right = new int[n];
+			Deque<Integer> deque = new ArrayDeque<>();
 			for (int i = 0; i < n; i++) {
-				left[i] = i + 1;
-				right[i] = n - i;
-			}
-			for (int i = 0; i < n; i++) {
-				while (!deque.isEmpty() && A[deque.peekLast()] > A[i]) {
+				while (!deque.isEmpty() && A[deque.peekLast()] >= A[i]) {
 					deque.pollLast();
 				}
 				left[i] = deque.isEmpty() ? i + 1 : i - deque.peekLast();
 				deque.offer(i);
 			}
 			deque.clear();
-			for (int i = 0; i < n; i++) {
+			for (int i = n - 1; i >= 0; i--) {
 				while (!deque.isEmpty() && A[deque.peekLast()] > A[i]) {
-					right[deque.peekLast()] = i - deque.peekLast();
 					deque.pollLast();
 				}
+				right[i] = deque.isEmpty() ? n - i : deque.peekLast() - i;
 				deque.offer(i);
 			}
+			int ans = 0, mod = (int) (1e9 + 7);
 			for (int i = 0; i < n; i++) {
-				res += (A[i] * left[i] * right[i]) % mod;
-				res %= mod;
+				ans += (A[i] * left[i] * right[i]) % mod;
+				ans %= mod;
 			}
-			return res;
+			return ans;
 		}
 	}
 }

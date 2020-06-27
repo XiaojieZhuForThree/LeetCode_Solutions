@@ -1,0 +1,19 @@
+package problems;
+
+public class Question930 {
+	class Solution {
+		public int numSubarraysWithSum(int[] A, int S) {
+			int n = A.length, ans = 0, psum = 0;
+			int[] cnt = new int[n + 1];
+			cnt[0] = 1;
+			for (int i : A) {
+				psum += i;
+				if (psum >= S) {
+					ans += cnt[psum - S];
+				}
+				cnt[psum]++;
+			}
+			return ans;
+		}
+	}
+}

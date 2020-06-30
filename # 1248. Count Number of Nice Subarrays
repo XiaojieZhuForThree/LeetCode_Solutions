@@ -1,0 +1,48 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question1248 {
+	class Solution1 {
+		public int numberOfSubarrays(int[] nums, int k) {
+			List<Integer> list = new ArrayList<>();
+			int n = nums.length;
+			for (int i = 0; i < n; i++) {
+				if (nums[i] % 2 == 1) {
+					list.add(i);
+				}
+			}
+			if (list.size() < k) {
+				return 0;
+			}
+			int ans = 0;
+			int l = 0, r = k - 1;
+			for (; r < list.size(); r++) {
+				int ln = l == 0 ? list.get(l) + 1 : list.get(l) - list.get(l - 1);
+				int rn = r == list.size() - 1 ? n - list.get(r) : list.get(r + 1) - list.get(r);
+				ans += ln * rn;
+				l++;
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		public int numberOfSubarrays(int[] nums, int k) {
+			return atMost(nums, k) - atMost(nums, k - 1);
+		}
+
+		private int atMost(int[] A, int k) {
+			int ans = 0, i = 0, n = A.length;
+			for (int j = 0; j < n; j++) {
+				k -= A[j] % 2;
+				while (k < 0) {
+					k += A[i++] % 2;
+				}
+				ans += j - i + 1;
+			}
+			return ans;
+		}
+	}
+}

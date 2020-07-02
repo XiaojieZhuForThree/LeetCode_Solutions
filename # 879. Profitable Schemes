@@ -10,7 +10,7 @@ public class Question879 {
 				int g = group[k], p = profit[k];
 				for (int i = P; i >= 0; i--) {
 					for (int j = G - g; j >= 0; j--) {
-						dp[Math.min(i + p, P)][j + g] = dp[Math.min(i + p, P)][j + g] + dp[i][j];
+						dp[Math.min(i + p, P)][j + g] += dp[i][j];
 						dp[Math.min(i + p, P)][j + g] %= mod;
 					}
 				}

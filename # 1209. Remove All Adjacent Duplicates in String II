@@ -1,0 +1,37 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1209 {
+	class Solution {
+		public String removeDuplicates(String s, int k) {
+			Deque<Character> stack = new ArrayDeque<>();
+			Deque<Integer> cnts = new ArrayDeque<>();
+			int cnt = 0;
+			for (char c : s.toCharArray()) {
+				if (stack.isEmpty() || c != stack.peekLast()) {
+					stack.offerLast(c);
+					cnt = 1;
+					cnts.offerLast(cnt);
+				} else {
+					cnt++;
+					stack.offerLast(c);
+					cnts.offerLast(cnt);
+					if (cnt == k) {
+						for (int i = cnt; i > 0; i--) {
+							stack.pollLast();
+							cnts.pollLast();
+						}
+						cnt = cnts.isEmpty() ? 0 : cnts.peekLast();
+					}
+				}
+			}
+			StringBuilder sb = new StringBuilder();
+			for (char c : stack) {
+				sb.append(c);
+			}
+			return sb.toString();
+		}
+	}
+}

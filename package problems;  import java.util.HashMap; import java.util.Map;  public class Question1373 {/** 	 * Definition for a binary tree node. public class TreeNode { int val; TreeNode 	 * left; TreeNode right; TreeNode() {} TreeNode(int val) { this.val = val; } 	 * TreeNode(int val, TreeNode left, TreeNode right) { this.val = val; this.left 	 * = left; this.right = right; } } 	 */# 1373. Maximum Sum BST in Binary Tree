@@ -1,0 +1,56 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1373 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		int ans = Integer.MIN_VALUE;
+		Map<TreeNode, Integer> map = new HashMap<>();
+		Map<TreeNode, Integer> max = new HashMap<>();
+		Map<TreeNode, Integer> min = new HashMap<>();
+
+		public int maxSumBST(TreeNode root) {
+			helper(root);
+			return Math.max(ans, 0);
+		}
+
+		private boolean helper(TreeNode node) {
+			if (node == null) {
+				return true;
+			}
+			if (node.left == null && node.right == null) {
+				ans = Math.max(ans, node.val);
+				map.put(node, node.val);
+				max.put(node, node.val);
+				min.put(node, node.val);
+				return true;
+			}
+			boolean left = helper(node.left), right = helper(node.right);
+			if (left && right) {
+
+				boolean leftCond = node.left == null || max.get(node.left) < node.val;
+				boolean rightCond = node.right == null || min.get(node.right) > node.val;
+				if (leftCond && rightCond) {
+					int val1 = map.containsKey(node.left) ? map.get(node.left) : 0;
+					int val2 = map.containsKey(node.right) ? map.get(node.right) : 0;
+					int sum = node.val + val1 + val2;
+					ans = Math.max(ans, sum);
+					map.put(node, sum);
+					int minVal = node.left == null ? node.val : min.get(node.left);
+					int maxVal = node.right == null ? node.val : max.get(node.right);
+					max.put(node, maxVal);
+					min.put(node, minVal);
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+}

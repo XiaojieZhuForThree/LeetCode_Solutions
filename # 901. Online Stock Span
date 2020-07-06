@@ -1,0 +1,34 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
+public class Question901 {
+	class StockSpanner {
+		Deque<Integer> stack;
+		List<Integer> list;
+
+		public StockSpanner() {
+			stack = new ArrayDeque<>();
+			list = new ArrayList<>();
+		}
+
+		public int next(int price) {
+			list.add(price);
+			while (!stack.isEmpty() && list.get(stack.peekLast()) <= price) {
+				stack.pollLast();
+			}
+			int ans = stack.isEmpty() ? list.size() : list.size() - stack.peekLast() - 1;
+			stack.offer(list.size() - 1);
+			return ans;
+
+		}
+	}
+
+	/**
+	 * Your StockSpanner object will be instantiated and called as such:
+	 * StockSpanner obj = new StockSpanner(); int param_1 = obj.next(price);
+	 */
+}

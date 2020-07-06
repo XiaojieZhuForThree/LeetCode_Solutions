@@ -1,0 +1,65 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+public class Question895 {
+	class FreqStack {
+		TreeMap<Integer, TreeSet<Integer>> freq;
+		Map<Integer, Integer> numFreq;
+		Map<Integer, Deque<Integer>> numPos;
+		int pos;
+
+		public FreqStack() {
+			freq = new TreeMap<>();
+			numFreq = new HashMap<>();
+			numPos = new HashMap<>();
+			pos = 0;
+		}
+
+		public void push(int x) {
+			numFreq.put(x, numFreq.getOrDefault(x, 0) + 1);
+			if (freq.containsKey(numFreq.get(x) - 1)) {
+				freq.get(numFreq.get(x) - 1).remove(x);
+			}
+			numPos.putIfAbsent(x, new ArrayDeque<>());
+			numPos.get(x).offer(pos++);
+			freq.putIfAbsent(numFreq.get(x),
+					new TreeSet<>((a, b) -> numPos.get(a).peekLast() - numPos.get(b).peekLast()));
+			freq.get(numFreq.get(x)).add(x);
+		}
+
+		public int pop() {
+			int topFreq = freq.lastKey();
+			TreeSet<Integer> cands = freq.get(topFreq);
+			int cand = cands.last();
+			cands.remove(cand);
+			if (cands.size() == 0) {
+				freq.remove(topFreq);
+			}
+			numFreq.put(cand, topFreq - 1);
+			if (numFreq.get(cand) == 0) {
+				numFreq.remove(cand);
+			}
+			numPos.get(cand).pollLast();
+			if (numPos.get(cand).isEmpty()) {
+				numPos.remove(cand);
+			}
+			if (topFreq > 1) {
+				freq.putIfAbsent(topFreq - 1,
+						new TreeSet<>((a, b) -> numPos.get(a).peekLast() - numPos.get(b).peekLast()));
+				freq.get(topFreq - 1).add(cand);
+			}
+			return cand;
+		}
+	}
+
+	/**
+	 * Your FreqStack object will be instantiated and called as such: FreqStack obj
+	 * = new FreqStack(); obj.push(x); int param_2 = obj.pop();
+	 */
+}

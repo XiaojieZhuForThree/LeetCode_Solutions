@@ -1,0 +1,52 @@
+package problems;
+
+public class Question1254 {
+	class Solution {
+		int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+		boolean isIsland = true;
+
+		public int closedIsland(int[][] grid) {
+			int m = grid.length, n = grid[0].length;
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (grid[i][j] == 0) {
+						for (int[] dir : dirs) {
+							int ni = i + dir[0], nj = j + dir[1];
+							if (ni < 0 || ni >= m || nj < 0 || nj >= n) {
+								grid[i][j] = -1;
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+			int ans = 0;
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (grid[i][j] == 0) {
+						isIsland = true;
+						dfs(grid, i, j);
+						ans += isIsland ? 1 : 0;
+					}
+				}
+			}
+			return ans;
+		}
+
+		private void dfs(int[][] grid, int i, int j) {
+			int m = grid.length, n = grid[0].length;
+			if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == 1) {
+				return;
+			}
+			if (grid[i][j] == -1) {
+				isIsland = false;
+				return;
+			}
+			grid[i][j] = 1;
+			for (int[] dir : dirs) {
+				dfs(grid, i + dir[0], j + dir[1]);
+			}
+		}
+	}
+}

@@ -1,0 +1,33 @@
+package problems;
+
+public class Question917 {
+	class Solution {
+		public String reverseOnlyLetters(String S) {
+			if (S == null || S.length() == 0) {
+				return S;
+			}
+			char[] charS = S.toCharArray();
+			for (int i = 0, j = charS.length - 1; i < j;) {
+				char ci = charS[i], cj = charS[j];
+				if (Character.isLetter(ci) && Character.isLetter(cj)) {
+					swap(charS, i, j, ci, cj);
+					i++;
+					j--;
+				} else if (!Character.isLetter(ci) && Character.isLetter(cj)) {
+					i++;
+				} else if (Character.isLetter(ci) && !Character.isLetter(cj)) {
+					j--;
+				} else {
+					i++;
+					j--;
+				}
+			}
+			return new String(charS);
+		}
+
+		private void swap(char[] charS, int i, int j, char ci, char cj) {
+			charS[j] = ci;
+			charS[i] = cj;
+		}
+	}
+}

@@ -1,0 +1,40 @@
+package problems;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1296 {
+	class Solution {
+		public boolean isPossibleDivide(int[] nums, int k) {
+			Arrays.sort(nums);
+			Map<Integer, Integer> map = new HashMap<>();
+			int cnt = 0;
+			for (int i = 0; i < nums.length;) {
+				cnt++;
+				int j = i;
+				while (j < nums.length && nums[j] == nums[i]) {
+					j++;
+				}
+				map.put(nums[i], j - i);
+				if (cnt == k) {
+					if (!map.containsKey(nums[i] - k + 1)) {
+						return false;
+					}
+					int deduct = map.get(nums[i] - k + 1);
+					for (int m = nums[i] - k + 1; m <= nums[i]; m++) {
+						if (!map.containsKey(m) || map.get(m) < deduct) {
+							return false;
+						}
+						map.put(m, map.get(m) - deduct);
+						if (map.get(m) == 0) {
+							cnt--;
+						}
+					}
+				}
+				i = j;
+			}
+			return map.get(nums[nums.length - 1]) == 0;
+		}
+	}
+}

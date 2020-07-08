@@ -1,0 +1,29 @@
+package problems;
+
+public class Question1342 {
+	class Solution1 {
+		public int numberOfSteps(int num) {
+			int steps = 0;
+			while (num != 0) {
+				steps++;
+				if (num % 2 == 0) {
+					num /= 2;
+				} else {
+					num -= 1;
+				}
+			}
+			return steps;
+		}
+	}
+
+	class Solution2 {
+		public int numberOfSteps(int num) {
+			int steps = 0;
+			while (num != 0) {
+				steps += num % 2 == 0 || num == 1 ? 1 : 2;
+				num >>= 1;
+			}
+			return steps;
+		}
+	}
+}

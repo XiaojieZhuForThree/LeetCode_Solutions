@@ -1,0 +1,20 @@
+package problems;
+
+public class Question1304 {
+	class Solution {
+		public int[] sumZero(int n) {
+			int[] ans = new int[n];
+			int i = 0, val = 1;
+			if (n % 2 == 1) {
+				ans[i++] = 0;
+			}
+			while (i < n - 1) {
+				ans[i] = val;
+				ans[i + 1] = -val;
+				val++;
+				i += 2;
+			}
+			return ans;
+		}
+	}
+}

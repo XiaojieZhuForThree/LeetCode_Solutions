@@ -1,0 +1,25 @@
+package problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question1306 {
+	class Solution {
+		public boolean canReach(int[] arr, int start) {
+			return dfs(arr, start, new HashSet<>());
+		}
+
+		private boolean dfs(int[] arr, int pos, Set<Integer> visited) {
+			int n = arr.length;
+			if (pos >= n || pos < 0 || visited.contains(pos)) {
+				return false;
+			}
+			if (arr[pos] == 0) {
+				return true;
+			}
+			int steps = arr[pos];
+			visited.add(pos);
+			return dfs(arr, pos + steps, visited) || dfs(arr, pos - steps, visited);
+		}
+	}
+}

@@ -1,0 +1,36 @@
+package problems;
+
+public class Question1433 {
+	class Solution {
+		public boolean checkIfCanBreak(String s1, String s2) {
+			return helper(s1, s2) || helper(s2, s1);
+		}
+
+		boolean helper(String s1, String s2) {
+			int[] cs1 = new int[26], cs2 = new int[26];
+			for (char c : s1.toCharArray()) {
+				cs1[c - 'a']++;
+			}
+			for (char c : s2.toCharArray()) {
+				cs2[c - 'a']++;
+			}
+			for (int i = 25, j = 25; i >= 0; i--) {
+				if (cs1[i] == 0) {
+					continue;
+				}
+				while (cs1[i] > 0) {
+					if (j < i) {
+						return false;
+					} else if (cs1[i] >= cs2[j]) {
+						cs1[i] -= cs2[j];
+						j--;
+					} else {
+						cs2[j] -= cs1[i];
+						cs1[i] = 0;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

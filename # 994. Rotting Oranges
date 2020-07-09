@@ -1,0 +1,45 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question994 {
+	class Solution {
+		public int orangesRotting(int[][] grid) {
+			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+			Deque<int[]> queue = new ArrayDeque<>();
+			int m = grid.length, n = grid[0].length;
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (grid[i][j] == 2) {
+						queue.offer(new int[] { i, j });
+					}
+				}
+			}
+			int ans = queue.isEmpty() ? 0 : -1;
+			while (!queue.isEmpty()) {
+				ans++;
+				for (int i = queue.size(); i > 0; i--) {
+					int[] pos = queue.poll();
+					int x = pos[0], y = pos[1];
+					for (int[] dir : dirs) {
+						int nx = x + dir[0], ny = y + dir[1];
+						if (nx < 0 || nx >= m || ny < 0 || ny >= n || grid[nx][ny] != 1) {
+							continue;
+						}
+						queue.offer(new int[] { nx, ny });
+						grid[nx][ny] = 2;
+					}
+				}
+			}
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (grid[i][j] == 1) {
+						return -1;
+					}
+				}
+			}
+			return ans;
+		}
+	}
+}

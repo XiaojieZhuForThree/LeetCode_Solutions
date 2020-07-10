@@ -1,0 +1,29 @@
+package problems;
+
+public class Question1160 {
+	class Solution {
+		public int countCharacters(String[] words, String chars) {
+			int[] counts = new int[26];
+			for (char c : chars.toCharArray()) {
+				counts[c - 'a']++;
+			}
+			int ans = 0;
+			for (String word : words) {
+				if (canForm(word, counts.clone())) {
+					ans += word.length();
+				}
+			}
+			return ans;
+		}
+
+		private boolean canForm(String word, int[] counts) {
+			for (char c : word.toCharArray()) {
+				if (counts[c - 'a'] <= 0) {
+					return false;
+				}
+				counts[c - 'a']--;
+			}
+			return true;
+		}
+	}
+}

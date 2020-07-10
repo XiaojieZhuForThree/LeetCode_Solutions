@@ -1,0 +1,49 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question1036 {
+	class Solution {
+		int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+		public boolean isEscapePossible(int[][] blocked, int[] source, int[] target) {
+			Set<String> blocks = new HashSet<>();
+
+			for (int[] i : blocked) {
+				String key = i[0] + "," + i[1];
+				blocks.add(key);
+			}
+			return bfs(blocks, source, target) && bfs(blocks, target, source);
+		}
+
+		private boolean bfs(Set<String> blocks, int[] source, int[] target) {
+			Set<String> visited = new HashSet<>();
+			visited.add(source[0] + "," + source[1]);
+			Deque<int[]> queue = new ArrayDeque<>();
+			queue.offer(source);
+			while (!queue.isEmpty()) {
+				if (visited.size() == 20000) {
+					return true;
+				}
+				int[] cur = queue.poll();
+				for (int[] dir : dirs) {
+					int nx = cur[0] + dir[0], ny = cur[1] + dir[1];
+					String key = nx + "," + ny;
+					if (nx < 0 || nx >= 1000000 || ny < 0 || ny >= 1000000 || visited.contains(key)
+							|| blocks.contains(key)) {
+						continue;
+					}
+					if (nx == target[0] && ny == target[1]) {
+						return true;
+					}
+					queue.offer(new int[] { nx, ny });
+					visited.add(key);
+				}
+			}
+			return false;
+		}
+	}
+}

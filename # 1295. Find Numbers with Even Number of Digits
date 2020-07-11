@@ -1,0 +1,24 @@
+package problems;
+
+public class Question1295 {
+	class Solution {
+		public int findNumbers(int[] nums) {
+			int ans = 0;
+			for (int i : nums) {
+				if (evenDigs(i)) {
+					ans++;
+				}
+			}
+			return ans;
+		}
+
+		private boolean evenDigs(int i) {
+			int dig = 0;
+			while (i > 0) {
+				dig++;
+				i /= 10;
+			}
+			return dig % 2 == 0;
+		}
+	}
+}

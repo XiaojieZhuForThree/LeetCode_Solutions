@@ -1,0 +1,45 @@
+package problems;
+
+public class Question1457 {
+	class Solution {
+		int ans = 0;
+
+		public int pseudoPalindromicPaths(TreeNode root) {
+			dfs(root, new int[9]);
+			return ans;
+		}
+
+		private void dfs(TreeNode node, int[] container) {
+			if (node == null) {
+				return;
+			}
+			container[node.val - 1]++;
+			if (node.left == null && node.right == null) {
+				if (verified(container)) {
+					ans++;
+				}
+			}
+			dfs(node.left, container);
+			dfs(node.right, container);
+			container[node.val - 1]--;
+			return;
+		}
+
+		private boolean verified(int[] container) {
+			boolean once = false;
+			for (int i : container) {
+				if (i == 0) {
+					continue;
+				}
+				if (i % 2 == 1) {
+					if (!once) {
+						once = true;
+					} else {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

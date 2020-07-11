@@ -1,0 +1,49 @@
+package problems;
+
+public class Question980 {
+	class Solution {
+		int ans = 0, countZero = 0;
+		int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+		public int uniquePathsIII(int[][] grid) {
+			int m = grid.length, n = grid[0].length;
+			int si = 0, sj = 0;
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (grid[i][j] == 1) {
+						si = i;
+						sj = j;
+					} else if (grid[i][j] == 0) {
+						countZero++;
+					}
+				}
+			}
+			dfs(grid, si, sj, 0);
+			return ans;
+		}
+
+		private void dfs(int[][] grid, int i, int j, int cnt) {
+			if (grid[i][j] == 2) {
+				if (cnt == countZero) {
+					ans++;
+				}
+				return;
+			}
+			for (int[] dir : dirs) {
+				int ni = i + dir[0], nj = j + dir[1];
+				if (ni < 0 || ni >= grid.length || nj < 0 || nj >= grid[0].length) {
+					continue;
+				}
+				if (grid[ni][nj] == 0) {
+					grid[ni][nj] = 3;
+					dfs(grid, ni, nj, cnt + 1);
+					grid[ni][nj] = 0;
+				}
+				if (grid[ni][nj] == 2) {
+					dfs(grid, ni, nj, cnt);
+				}
+			}
+			return;
+		}
+	}
+}

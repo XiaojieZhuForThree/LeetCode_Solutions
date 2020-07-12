@@ -1,0 +1,22 @@
+package problems;
+
+public class Question925 {
+	class Solution {
+		public boolean isLongPressedName(String name, String typed) {
+			int pt1 = 0, pt2 = 0;
+			for (; pt1 < name.length(); pt1++) {
+				if (pt2 >= typed.length() || name.charAt(pt1) != typed.charAt(pt2)) {
+					return false;
+				}
+				if (pt1 + 1 == name.length() || name.charAt(pt1 + 1) != name.charAt(pt1)) {
+					while (pt2 < typed.length() && typed.charAt(pt2) == name.charAt(pt1)) {
+						pt2++;
+					}
+				} else {
+					pt2++;
+				}
+			}
+			return pt2 == typed.length();
+		}
+	}
+}

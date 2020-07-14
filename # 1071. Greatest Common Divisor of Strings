@@ -1,0 +1,51 @@
+package problems;
+
+public class Question1071 {
+	class Solution1 {
+		public String gcdOfStrings(String str1, String str2) {
+			if (str1.length() < str2.length()) {
+				return gcdOfStrings(str2, str1);
+			}
+			int j = str2.length();
+			while (j > 0) {
+				String pattern = str2.substring(0, j);
+				if (isGCD(str2, pattern) && isGCD(str1, pattern)) {
+					return pattern;
+				}
+				j--;
+			}
+			return "";
+		}
+
+		private boolean isGCD(String str, String pattern) {
+			int i = str.length(), j = pattern.length();
+			if (!(i % j == 0)) {
+				return false;
+			}
+			for (int m = 0; m < i;) {
+				if (!pattern.equals(str.substring(m, m + j))) {
+					return false;
+				}
+				m += j;
+			}
+			return true;
+		}
+	}
+
+	class Solution2 {
+		public String gcdOfStrings(String str1, String str2) {
+			if (!(str1 + str2).equals(str2 + str1))
+				return "";
+
+			int gcdVal = gcd(str1.length(), str2.length());
+			return str2.substring(0, gcdVal);
+		}
+
+		private int gcd(int p, int q) {
+			if (q == 0)
+				return p;
+			else
+				return gcd(q, p % q);
+		}
+	}
+}

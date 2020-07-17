@@ -1,0 +1,39 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question1415 {
+	class Solution {
+		public String getHappyString(int n, int k) {
+			List<Integer> happyString = generateHappyString(n);
+			if (happyString.size() < k) {
+				return "";
+			}
+			int ans = happyString.get(k - 1);
+			StringBuilder sb = new StringBuilder();
+			for (; ans > 0;) {
+				sb.append((char) ('a' + (ans % 10) - 1));
+				ans /= 10;
+			}
+			return sb.reverse().toString();
+		}
+
+		private List<Integer> generateHappyString(int n) {
+			if (n == 1) {
+				return List.of(1, 2, 3);
+			}
+			List<Integer> prevHappyString = generateHappyString(n - 1);
+			List<Integer> happyString = new ArrayList<>();
+			for (int i : prevHappyString) {
+				for (int j = 1; j < 4; j++) {
+					if (i % 10 == j) {
+						continue;
+					}
+					happyString.add(i * 10 + j);
+				}
+			}
+			return happyString;
+		}
+	}
+}

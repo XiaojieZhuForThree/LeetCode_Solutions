@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 public class Question1140 {
 	class Solution {
-		int ans = 0;
 		int[][] dp;
 
 		public int stoneGameII(int[] piles) {

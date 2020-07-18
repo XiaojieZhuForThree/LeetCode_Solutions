@@ -17,7 +17,7 @@ public class Question1140 {
 		}
 
 		private int dfs(int[] piles, int sum, int M, int i) {
-			String key = "M" + M + "," + "i" + i;
+			String key = M + "," + i;
 			if (map.containsKey(key)) {
 				return map.get(key);
 			}

@@ -1,13 +1,10 @@
 package problems;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Question1140 {
 	class Solution {
 		int ans = 0;
-		Map<String, Integer> map = new HashMap<>();
 		int[][] dp;
 
 		public int stoneGameII(int[] piles) {

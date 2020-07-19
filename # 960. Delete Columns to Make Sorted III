@@ -1,0 +1,31 @@
+package problems;
+
+import java.util.Arrays;
+
+public class Question960 {
+	class Solution {
+		public int minDeletionSize(String[] A) {
+			int m = A.length, n = A[0].length();
+			int[] dp = new int[n];
+			Arrays.fill(dp, 1);
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < i; j++) {
+					for (int k = 0; k < m; k++) {
+						String s = A[k];
+						if (s.charAt(j) > s.charAt(i)) {
+							break;
+						}
+						if (k == m - 1) {
+							dp[i] = Math.max(dp[i], dp[j] + 1);
+						}
+					}
+				}
+			}
+			int max = 0;
+			for (int i : dp) {
+				max = Math.max(i, max);
+			}
+			return n - max;
+		}
+	}
+}

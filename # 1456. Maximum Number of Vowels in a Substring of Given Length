@@ -1,0 +1,22 @@
+package problems;
+
+import java.util.Set;
+
+public class Question1456 {
+	class Solution {
+		public int maxVowels(String s, int k) {
+			Set<Character> set = Set.of('a', 'e', 'i', 'o', 'u');
+			int ans = 0, prev = 0;
+			for (int i = 0; i < s.length(); i++) {
+				if (set.contains(s.charAt(i))) {
+					prev++;
+				}
+				if (i > k - 1 && set.contains(s.charAt(i - k))) {
+					prev--;
+				}
+				ans = Math.max(ans, prev);
+			}
+			return ans;
+		}
+	}
+}

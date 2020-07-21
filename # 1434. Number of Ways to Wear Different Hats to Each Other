@@ -1,0 +1,47 @@
+package problems;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question1434 {
+	class Solution {
+		int ans = 0;
+		int numP;
+		long mod = 1000000007;
+		long[][] dp;
+		Map<Integer, Set<Integer>> map;
+
+		public int numberWays(List<List<Integer>> hats) {
+			numP = hats.size();
+			dp = new long[1 << numP + 1][41];
+			for (long[] arr : dp) {
+				Arrays.fill(arr, -1);
+			}
+			map = new HashMap<>();
+			for (int p = 0; p < numP; p++) {
+				map.put(p, new HashSet<>(hats.get(p)));
+			}
+			return (int) helper(0, 1);
+		}
+
+		private long helper(int p, int h) {
+			if (h == 41) {
+				return p == ((1 << numP) - 1) ? 1 : 0;
+			}
+			if (dp[p][h] != -1) {
+				return dp[p][h];
+			}
+			long ans = helper(p, h + 1) % mod;
+			for (int i = 0; i < numP; i++) {
+				if ((p & (1 << i)) == 0 && map.get(i).contains(h)) {
+					ans = (ans + helper(p | (1 << i), h + 1)) % mod;
+				}
+			}
+			return dp[p][h] = ans;
+		}
+	}
+}

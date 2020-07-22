@@ -6,15 +6,15 @@ import java.util.Map;
 public class Question560 {
 	class Solution {
 		public int subarraySum(int[] nums, int k) {
+			int sum = 0, ans = 0;
 			Map<Integer, Integer> map = new HashMap<>();
 			map.put(0, 1);
-			int prev = 0, ans = 0;
 			for (int i : nums) {
-				prev += i;
-				if (map.containsKey(prev - k)) {
-					ans += map.get(prev - k);
+				sum += i;
+				if (map.containsKey(sum - k)) {
+					ans += map.get(sum - k);
 				}
-				map.put(prev, map.getOrDefault(prev, 0) + 1);
+				map.put(sum, map.getOrDefault(sum, 0) + 1);
 			}
 			return ans;
 		}

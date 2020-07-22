@@ -1,0 +1,45 @@
+package problems;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question1125 {
+	class Solution {
+		public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
+			int m = req_skills.length, n = people.size();
+			Map<Integer, Set<Integer>> map = new HashMap<>();
+			map.put(0, new HashSet<>());
+			Map<String, Integer> ref = new HashMap<>();
+			for (int i = 0; i < req_skills.length; i++) {
+				ref.put(req_skills[i], i);
+			}
+			for (int i = 0; i < n; i++) {
+				int num = 0;
+				for (String s : people.get(i)) {
+					int index = ref.get(s);	
+					int add = 1 << index;
+					num = num | add;
+				}
+				for (int j = 0; j < (1 << m); j++) {
+					if (map.containsKey(j)) {	
+						int newSeq = j | num;
+						if (!map.containsKey(newSeq) || map.get(newSeq).size() > 1 + map.get(j).size()) {
+							Set<Integer> set = new HashSet<>(map.get(j));
+							set.add(i);
+							map.put(newSeq, set);
+						}
+					}	
+				}
+			}
+			int[] ans = new int[map.get((1 << m) - 1).size()];
+			int i = 0;
+			for (int j : map.get((1 << m) - 1)) {
+				ans[i++] = j;
+			}
+			return ans;
+		}
+	}
+}

@@ -1,0 +1,31 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question870 {
+	class Solution {
+		public int[] advantageCount(int[] A, int[] B) {
+			Arrays.sort(A);
+			int[] C = B.clone();
+			Arrays.sort(C);
+			int i = 0, j = A.length - 1;
+			Map<Integer, Deque<Integer>> map = new HashMap<>();
+			for (int m = C.length - 1; m >= 0; m--) {
+				map.putIfAbsent(C[m], new ArrayDeque<>());
+				if (A[j] > C[m]) {
+					map.get(C[m]).offer(A[j--]);
+				} else {
+					map.get(C[m]).offer(A[i++]);
+				}
+			}
+			for (int x = 0; x < B.length; x++) {
+				A[x] = map.get(B[x]).poll();
+			}
+			return A;
+		}
+	}
+}

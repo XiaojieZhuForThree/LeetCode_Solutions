@@ -1,0 +1,28 @@
+package problems;
+
+public class Question1504 {
+	class Solution {
+		public int numSubmat(int[][] mat) {
+			int m = mat.length, n = mat[0].length;
+			for (int i = 0; i < m; i++) {
+				for (int j = 1; j < n; j++) {
+					mat[i][j] += mat[i][j - 1];
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < n; i++) {
+				for (int j = i; j < n; j++) {
+					int[] dp = new int[m + 1];
+					for (int k = 1; k <= m; k++) {
+						int ones = mat[k - 1][j] - (i == 0 ? 0 : mat[k - 1][i - 1]);
+						if (ones == j - i + 1) {
+							dp[k] = dp[k - 1] + 1;
+							ans += dp[k];
+						}
+					}
+				}
+			}
+			return ans;
+		}
+	}
+}

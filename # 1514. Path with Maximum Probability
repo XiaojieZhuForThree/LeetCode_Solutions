@@ -1,0 +1,54 @@
+package problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class Question1514 {
+	class Solution {
+		double max = 0.0;
+
+		public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+			Map<Integer, List<int[]>> graph = new HashMap<>();
+			for (int i = 0; i < edges.length; i++) {
+				int[] edge = edges[i];
+				int a = edge[0], b = edge[1];
+				graph.putIfAbsent(a, new ArrayList<>());
+				graph.putIfAbsent(b, new ArrayList<>());
+				graph.get(a).add(new int[] { b, i });
+				graph.get(b).add(new int[] { a, i });
+			}
+			PriorityQueue<double[]> pq = new PriorityQueue<>((a, b) -> Double.compare(a[0], b[0]));
+			pq.offer(new double[] { 0.0, (double) start });
+			return dijkstra(end, graph, succProb, new boolean[n], pq);
+		}
+
+		private double dijkstra(int end, Map<Integer, List<int[]>> graph, double[] succProb, boolean[] visited,
+				PriorityQueue<double[]> pq) {
+			while (!pq.isEmpty()) {
+				double[] pair = pq.poll();
+				int node = (int) (pair[1]);
+				if (visited[node]) {
+					continue;
+				}
+				if (node == end) {
+					return Math.pow(10, -pair[0]);
+				}
+				visited[node] = true;
+				if (!graph.containsKey(node)) {
+					continue;
+				}
+				for (int i = 0; i < graph.get(node).size(); i++) {
+					int[] nP = graph.get(node).get(i);
+					if (!visited[nP[0]]) {
+						double[] nPair = new double[] { pair[0] - Math.log10(succProb[nP[1]]), (double) nP[0] };
+						pq.offer(nPair);
+					}
+				}
+			}
+			return 0.0;
+		}
+	}
+}

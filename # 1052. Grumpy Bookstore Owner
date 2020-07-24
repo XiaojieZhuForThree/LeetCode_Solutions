@@ -1,0 +1,27 @@
+package problems;
+
+public class Question1052 {
+	class Solution {
+		public int maxSatisfied(int[] customers, int[] grumpy, int X) {
+			int val = 0, n = customers.length;
+			for (int i = 0; i < n; i++) {
+				if (i < X || grumpy[i] == 0) {
+					val += customers[i];
+				}
+			}
+			int max = val;
+			for (int i = 1; i <= n - X; i++) {
+				int newVal = val;
+				if (grumpy[i - 1] == 1) {
+					newVal -= customers[i - 1];
+				}
+				if (grumpy[i + X - 1] == 1) {
+					newVal += customers[i + X - 1];
+				}
+				max = Math.max(max, newVal);
+				val = newVal;
+			}
+			return max;
+		}
+	}
+}

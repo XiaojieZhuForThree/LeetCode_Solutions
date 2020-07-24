@@ -1,0 +1,21 @@
+package problems;
+
+public class Question1184 {
+	class Solution {
+		public int distanceBetweenBusStops(int[] distance, int start, int destination) {
+			if (start > destination) {
+				return distanceBetweenBusStops(distance, destination, start);
+			}
+			int n = distance.length;
+			for (int i = 1; i < n; i++) {
+				distance[i] += distance[i - 1];
+			}
+			int sum = distance[n - 1];
+			if (start == destination) {
+				return 0;
+			}
+			int val = distance[destination - 1] - (start == 0 ? 0 : distance[start - 1]);
+			return Math.min(val, sum - val);
+		}
+	}
+}

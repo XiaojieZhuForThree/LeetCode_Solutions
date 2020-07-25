@@ -1,0 +1,26 @@
+package problems;
+
+public class Question1252 {
+	class Solution {
+		public int oddCells(int n, int m, int[][] indices) {
+			int[][] mat = new int[n][m];
+			for (int[] index : indices) {
+				for (int j = 0; j < m; j++) {
+					mat[index[0]][j]++;
+				}
+				for (int i = 0; i < n; i++) {
+					mat[i][index[1]]++;
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < m; j++) {
+					if (mat[i][j] % 2 == 1) {
+						ans++;
+					}
+				}
+			}
+			return ans;
+		}
+	}
+}

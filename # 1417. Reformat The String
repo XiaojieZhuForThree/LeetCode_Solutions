@@ -1,0 +1,36 @@
+package problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1417 {
+	class Solution {
+		public String reformat(String s) {
+			Deque<Character> digQueue = new ArrayDeque<>(), charQueue = new ArrayDeque<>();
+			for (char c : s.toCharArray()) {
+				if (Character.isDigit(c)) {
+					digQueue.offer(c);
+				} else {
+					charQueue.offer(c);
+				}
+			}
+			if (Math.abs(digQueue.size() - charQueue.size()) > 1) {
+				return "";
+			}
+			return formString(digQueue, charQueue);
+		}
+
+		private String formString(Deque<Character> q1, Deque<Character> q2) {
+			if (q1.size() < q2.size()) {
+				return formString(q2, q1);
+			}
+			StringBuilder sb = new StringBuilder();
+			Deque<Character> q = q1;
+			while (!q1.isEmpty() || !q2.isEmpty()) {
+				sb.append(q.poll());
+				q = q == q1 ? q2 : q1;
+			}
+			return sb.toString();
+		}
+	}
+}

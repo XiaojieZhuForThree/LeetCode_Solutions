@@ -1,12 +1,11 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1392 {
 	class Solution {
 		public String longestPrefix(String s) {
-			int n = s.length();
-			int[] lps = new int[n];
+			int lps[] = new int[s.length()];
 			int i = 0, j = 1;
-			while (j < n) {
+			while (j < s.length()) {
 				if (s.charAt(j) == s.charAt(i)) {
 					lps[j] = i + 1;
 					j++;
@@ -19,7 +18,7 @@ public class Question1392 {
 					}
 				}
 			}
-			return s.substring(0, lps[n - 1]);
+			return s.substring(0, lps[s.length() - 1]);
 		}
 	}
 }

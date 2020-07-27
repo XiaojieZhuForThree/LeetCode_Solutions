@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1487 {
+	class Solution {
+		public String[] getFolderNames(String[] names) {
+			Map<String, Integer> map = new HashMap<>();
+			for (int i = 0; i < names.length; i++) {
+				String s = names[i];
+				if (!map.containsKey(s)) {
+					map.put(s, 1);
+				} else {
+					int version = map.get(s);
+					String ns = s + "(" + version + ")";
+					while (map.containsKey(ns)) {
+						version++;
+						ns = s + "(" + version + ")";
+					}
+					names[i] = ns;
+					map.put(ns, 1);
+					map.put(s, version + 1);
+				}
+			}
+			return names;
+		}
+	}
+}

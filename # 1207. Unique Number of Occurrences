@@ -1,0 +1,21 @@
+package com.leetcode.problems;
+
+public class Question1207 {
+	class Solution {
+		public boolean uniqueOccurrences(int[] arr) {
+			int n = arr.length;
+			int[] bucket = new int[2001];
+			for (int i : arr) {
+				bucket[i + 1000]++;
+			}
+			boolean[] seen = new boolean[n];
+			for (int i : bucket) {
+				if (i != 0 && seen[i]) {
+					return false;
+				}
+				seen[i] = true;
+			}
+			return true;
+		}
+	}
+}

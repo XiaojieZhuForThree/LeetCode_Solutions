@@ -1,0 +1,34 @@
+package com.leetcode.problems;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1438 {
+	class Solution {
+		public int longestSubarray(int[] nums, int limit) {
+			Deque<Integer> incrQueue = new ArrayDeque<>();
+			Deque<Integer> decrQueue = new ArrayDeque<>();
+			int start = 0, end = 0;
+			int n = nums.length;
+			for (; end < n; end++) {
+				while (!decrQueue.isEmpty() && decrQueue.peekLast() < nums[end]) {
+					decrQueue.pollLast();
+				}
+				while (!incrQueue.isEmpty() && incrQueue.peekLast() > nums[end]) {
+					incrQueue.pollLast();
+				}
+				incrQueue.offerLast(nums[end]);
+				decrQueue.offerLast(nums[end]);
+				if (decrQueue.peekFirst() - incrQueue.peekFirst() > limit) {
+					if (decrQueue.peekFirst() == nums[start]) {
+						decrQueue.pollFirst();
+					}
+					if (incrQueue.peekFirst() == nums[start]) {
+						incrQueue.pollFirst();
+					}
+					start++;
+				}
+			}
+			return end - start;
+		}
+	}
+}

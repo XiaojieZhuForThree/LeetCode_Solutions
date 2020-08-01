@@ -1,0 +1,48 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1472 {
+	class BrowserHistory {
+		Deque<String> stack;
+		Deque<String> queue;
+		String url;
+
+		public BrowserHistory(String homepage) {
+			stack = new ArrayDeque<>();
+			queue = new ArrayDeque<>();
+			url = homepage;
+		}
+
+		public void visit(String url) {
+			stack.offerLast(this.url);
+			this.url = url;
+			queue.clear();
+		}
+
+		public String back(int steps) {
+			while (!stack.isEmpty() && steps > 0) {
+				queue.offerFirst(url);
+				url = stack.pollLast();
+				steps--;
+			}
+			return url;
+		}
+
+		public String forward(int steps) {
+			while (!queue.isEmpty() && steps > 0) {
+				stack.offerLast(url);
+				url = queue.pollFirst();
+				steps--;
+			}
+			return url;
+		}
+	}
+
+	/**
+	 * Your BrowserHistory object will be instantiated and called as such:
+	 * BrowserHistory obj = new BrowserHistory(homepage); obj.visit(url); String
+	 * param_2 = obj.back(steps); String param_3 = obj.forward(steps);
+	 */
+}

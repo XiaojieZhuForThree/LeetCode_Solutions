@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
+
+public class Question1488 {
+	class Solution {
+		public int[] avoidFlood(int[] rains) {
+			Map<Integer, Integer> occurs = new HashMap<>();
+			TreeSet<Integer> slots = new TreeSet<>();
+			int n = rains.length;
+			int[] ans = new int[n];
+			for (int i = 0; i < n; i++) {
+				int val = rains[i];
+				if (val == 0) {
+					slots.add(i);
+				} else if (!occurs.containsKey(val)) {
+					occurs.put(val, i);
+					ans[i] = -1;
+				} else {
+					int lakePos = occurs.get(val);
+					Integer slot = slots.higher(lakePos);
+					if (slot == null) {
+						return new int[] {};
+					}
+					ans[slot] = val;
+					ans[i] = -1;
+					occurs.put(val, i);
+					slots.remove(slot);
+				}
+			}
+			for (int i = 0; i < n; i++) {
+				if (ans[i] == 0) {
+					ans[i] = 1;
+				}
+			}
+			return ans;
+		}
+	}
+}

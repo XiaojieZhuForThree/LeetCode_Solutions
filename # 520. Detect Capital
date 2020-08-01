@@ -1,6 +1,6 @@
 package com.leetcode.problems;
 
-public class Week1Aug01 {
+public class Question520 {
 	class Solution {
 		public boolean detectCapitalUse(String word) {
 			int cnt = 0;

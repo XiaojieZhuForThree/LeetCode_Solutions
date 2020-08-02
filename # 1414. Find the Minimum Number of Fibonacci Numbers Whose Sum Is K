@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+
+public class Question1414 {
+	class Solution {
+		public int findMinFibonacciNumbers(int k) {
+			List<Integer> fibsList = new ArrayList<>();
+			fibsList.add(1);
+			fibsList.add(1);
+			int val = 1;
+			while (val < k) {
+				int n = fibsList.size();
+				val = fibsList.get(n - 1) + fibsList.get(n - 2);
+				fibsList.add(val);
+			}
+			return greedy(k, new TreeSet<>(fibsList));
+		}
+
+		private int greedy(int k, TreeSet<Integer> fibs) {
+			if (k == 0) {
+				return 0;
+			}
+			return 1 + greedy(k - fibs.floor(k), fibs);
+		}
+	}
+}

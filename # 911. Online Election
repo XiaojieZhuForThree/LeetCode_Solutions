@@ -1,0 +1,37 @@
+package com.leetcode.problems;
+
+import java.util.TreeMap;
+
+public class Question911 {
+	class TopVotedCandidate {
+		int mostVote;
+		int[] polls;
+		TreeMap<Integer, Integer> qPool;
+
+		public TopVotedCandidate(int[] persons, int[] times) {
+			int n = times.length;
+			qPool = new TreeMap<>();
+			polls = new int[5000];
+			mostVote = persons[0];
+			polls[persons[0]]++;
+			qPool.put(times[0], mostVote);
+			for (int i = 1; i < n; i++) {
+				polls[persons[i]]++;
+				if (polls[persons[i]] >= polls[mostVote]) {
+					mostVote = persons[i];
+				}
+				qPool.put(times[i], mostVote);
+			}
+		}
+
+		public int q(int t) {
+			return qPool.floorEntry(t).getValue();
+		}
+	}
+
+	/**
+	 * Your TopVotedCandidate object will be instantiated and called as such:
+	 * TopVotedCandidate obj = new TopVotedCandidate(persons, times); int param_1 =
+	 * obj.q(t);
+	 */
+}

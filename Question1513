@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+public class Question1513 {
+	class Solution1 {
+		int mod = 1000000007;
+
+		public int numSub(String s) {
+			int n = s.length();
+			int ans = 0;
+			int[] dp = new int[n + 1];
+			for (int i = 1; i <= n; i++) {
+				char c = s.charAt(i - 1);
+				if (c == '0') {
+					dp[i] = 0;
+				} else {
+					dp[i] = 1 + dp[i - 1];
+					ans += dp[i];
+					ans %= mod;
+				}
+			}
+			return ans;
+		}
+	}
+	class Solution2 {
+	    int mod = 1000000007;
+	    public int numSub(String s) {
+	        int ans = 0, cnt = 0;
+	        for (char c : s.toCharArray()) {
+	            cnt = c == '1' ? cnt + 1 : 0;
+	            ans += cnt;
+	            ans %= mod;
+	        }
+	        return ans;
+	    }
+	}
+}

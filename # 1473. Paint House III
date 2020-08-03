@@ -1,0 +1,62 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question1473 {
+	class Solution {
+		int MAX = 100000000;
+
+		public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
+			int[][][] dp = new int[m][n][target + 1];
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					Arrays.fill(dp[i][j], -1);
+				}
+			}
+			int ans = dfs(houses, cost, m, n, target, 0, 0, -1, dp);
+			return ans == MAX ? -1 : ans;
+		}
+
+		private int dfs(int[] houses, int[][] cost, int m, int n, int target, int curHouse, int curTarget,
+				int lastNbhColor, int[][][] dp) {
+			if (curHouse == m) {
+				if (curTarget == target) {
+					return 0;
+				}
+				return MAX;
+			}
+			if (curTarget > target) {
+				return MAX;
+			}
+			if (lastNbhColor != -1) {
+				if (dp[curHouse][lastNbhColor][curTarget] != -1) {
+					return dp[curHouse][lastNbhColor][curTarget];
+				}
+			}
+			int minCost = MAX;
+			for (int c = 0; c < n; c++) {
+				boolean available = false;
+				if (houses[curHouse] != 0) {
+					if (houses[curHouse] != c + 1) {
+						continue;
+					} else {
+						available = true;
+					}
+				}
+				if (c != lastNbhColor) {
+					int val = dfs(houses, cost, m, n, target, curHouse + 1, curTarget + 1, c, dp)
+							+ (available ? 0 : cost[curHouse][c]);
+					minCost = Math.min(minCost, val);
+				} else {
+					int val = dfs(houses, cost, m, n, target, curHouse + 1, curTarget, c, dp)
+							+ (available ? 0 : cost[curHouse][c]);
+					minCost = Math.min(minCost, val);
+				}
+			}
+			if (lastNbhColor != -1) {
+				dp[curHouse][lastNbhColor][curTarget] = minCost;
+			}
+			return minCost;
+		}
+	}
+}

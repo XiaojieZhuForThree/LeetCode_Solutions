@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+public class Question125 {
+	class Solution {
+		public boolean isPalindrome(String s) {
+			int n = s.length();
+			String testS = s.toLowerCase();
+			int l = 0, r = n - 1;
+			while (l <= r) {
+				char leftChar = testS.charAt(l), rightChar = testS.charAt(r);
+				if (!Character.isAlphabetic(leftChar) && !Character.isDigit(leftChar)) {
+					l++;
+				} else if (!Character.isAlphabetic(rightChar) && !Character.isDigit(rightChar)) {
+					r--;
+				} else if (leftChar != rightChar) {
+					return false;
+				} else {
+					l++;
+					r--;
+				}
+			}
+			return true;
+		}
+	}
+}

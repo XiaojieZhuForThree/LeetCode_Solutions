@@ -1,0 +1,73 @@
+package com.leetcode.problems;
+
+public class Question211 {
+	class WordDictionary {
+
+		class TrieNode {
+			TrieNode[] alphabet;
+			boolean isWord;
+
+			public TrieNode() {
+				alphabet = new TrieNode[26];
+			}
+
+			public void addWord(String word) {
+				TrieNode dummy = this;
+				for (char c : word.toCharArray()) {
+					if (dummy.alphabet[c - 'a'] == null) {
+						dummy.alphabet[c - 'a'] = new TrieNode();
+					}
+					dummy = dummy.alphabet[c - 'a'];
+				}
+				dummy.isWord = true;
+			}
+
+			public boolean search(String word, int index) {
+				if (index == word.length()) {
+					return isWord;
+				}
+				boolean ans = false;
+				char c = word.charAt(index);
+				if (c == '.') {
+					for (TrieNode node : alphabet) {
+						if (node != null) {
+							ans |= node.search(word, index + 1);
+						}
+					}
+					return ans;
+				} else if (alphabet[c - 'a'] == null) {
+					return false;
+				} else {
+					TrieNode node = alphabet[c - 'a'];
+					return node.search(word, index + 1);
+				}
+			}
+		}
+
+		/** Initialize your data structure here. */
+		TrieNode root;
+
+		public WordDictionary() {
+			root = new TrieNode();
+		}
+
+		/** Adds a word into the data structure. */
+		public void addWord(String word) {
+			root.addWord(word);
+		}
+
+		/**
+		 * Returns if the word is in the data structure. A word could contain the dot
+		 * character '.' to represent any one letter.
+		 */
+		public boolean search(String word) {
+			return root.search(word, 0);
+		}
+	}
+
+	/**
+	 * Your WordDictionary object will be instantiated and called as such:
+	 * WordDictionary obj = new WordDictionary(); obj.addWord(word); boolean param_2
+	 * = obj.search(word);
+	 */
+}

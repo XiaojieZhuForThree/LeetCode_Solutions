@@ -1,0 +1,21 @@
+package com.leetcode.problems;
+
+public class Question1423 {
+	class Solution {
+		public int maxScore(int[] cardPoints, int k) {
+			int sum = 0;
+			int ans = 0;
+			int n = cardPoints.length;
+			for (int i = 0; i < k; i++) {
+				sum += cardPoints[i];
+			}
+			ans = sum;
+			for (int i = 0; i < k; i++) {
+				sum -= cardPoints[k - 1 - i];
+				sum += cardPoints[n - 1 - i];
+				ans = Math.max(ans, sum);
+			}
+			return ans;
+		}
+	}
+}

@@ -1,0 +1,59 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class Question987 {
+	class Solution {
+		public List<List<Integer>> verticalTraversal(TreeNode root) {
+			Map<TreeNode, int[]> map = new HashMap<>();
+			dfs(root, 0, 0, map);
+			PriorityQueue<TreeNode> pq = new PriorityQueue<>(new Comparator<TreeNode>() {
+
+				@Override
+				public int compare(TreeNode n1, TreeNode n2) {
+					int[] coordN1 = map.get(n1), coordN2 = map.get(n2);
+					if (coordN1[0] != coordN2[0]) {
+						return coordN1[0] - coordN2[0];
+					} else if (coordN1[1] != coordN2[1]) {
+						return coordN2[1] - coordN1[1];
+					} else {
+						return n1.val - n2.val;
+					}
+				}
+			});
+			
+			for (TreeNode node : map.keySet()) {
+				pq.offer(node);
+			}
+			List<List<Integer>> ans = new ArrayList<>();
+			List<Integer> holder = new ArrayList<>();
+			while (!pq.isEmpty()) {
+				TreeNode node = pq.poll();
+				holder.add(node.val);
+				if (!pq.isEmpty()) {
+					TreeNode next = pq.peek();
+					if (map.get(node)[0] != map.get(next)[0]) {
+						ans.add(holder);
+						holder = new ArrayList<>();
+					}
+				}
+			}
+			ans.add(holder);
+			return ans;
+		}
+
+		private void dfs(TreeNode node, int x, int y, Map<TreeNode, int[]> map) {
+			if (node == null) {
+				return;
+			}
+			map.put(node, new int[] { x, y });
+			dfs(node.left, x - 1, y - 1, map);
+			dfs(node.right, x + 1, y - 1, map);
+		}
+	}
+}

@@ -1,0 +1,42 @@
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+public class Question1029 {
+	class Solution {
+		public int twoCitySchedCost(int[][] costs) {
+			int sumA = 0, sumB = 0, cntA = 0, cntB = 0;
+			PriorityQueue<Integer> pqA = new PriorityQueue<>(), pqB = new PriorityQueue<>();
+			for (int[] cost : costs) {
+				int diff = Math.abs(cost[0] - cost[1]);
+				if (cost[0] > cost[1]) {
+					sumB += cost[1];
+					cntB++;
+					pqB.offer(diff);
+				} else {
+					sumA += cost[0];
+					cntA++;
+					pqA.offer(diff);
+				}
+			}
+			int sum = sumA + sumB;
+			if (cntB == cntA) {
+				return sum;
+			}
+			if (cntA > cntB) {
+				while (cntA > cntB) {
+					sum += pqA.poll();
+					cntA--;
+					cntB++;
+				}
+			} else {
+				while (cntB > cntA) {
+					sum += pqB.poll();
+					cntA++;
+					cntB--;
+				}
+			}
+			return sum;
+		}
+	}
+}

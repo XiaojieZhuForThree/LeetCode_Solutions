@@ -1,0 +1,32 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question954 {
+	class Solution {
+		public boolean canReorderDoubled(int[] A) {
+			Map<Integer, Integer> map = new HashMap<>();
+			for (int i : A) {
+				map.put(i, map.getOrDefault(i, 0) + 1);
+			}
+			for (int i : map.keySet()) {
+				if (map.containsKey(i * 2) && map.get(i * 2) > 0) {
+					int val1 = map.get(i), val2 = map.get(i * 2);
+					int sub = Math.min(val1, val2);
+					map.put(i, val1 - sub);
+					map.put(i * 2, val2 - sub);
+				} else if (i % 2 == 0 && map.containsKey(i / 2) && map.get(i / 2) > 0) {
+					int val1 = map.get(i), val2 = map.get(i / 2);
+					int sub = Math.min(val1, val2);
+					map.put(i, val1 - sub);
+					map.put(i / 2, val2 - sub);
+				}
+				if (map.get(i) > 0) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

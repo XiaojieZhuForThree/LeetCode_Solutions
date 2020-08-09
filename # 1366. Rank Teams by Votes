@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Comparator;
+import java.util.HashMap;
+
+public class Question1366 {
+	class Solution {
+		public String rankTeams(String[] votes) {
+			Map<Character, int[]> ranks = new HashMap<>();
+			for (String vote : votes) {
+				for (int i = 0; i < vote.length(); i++) {
+					char team = vote.charAt(i);
+					ranks.putIfAbsent(team, new int[vote.length()]);
+					ranks.get(team)[i]++;
+				}
+			}
+			PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
+				@Override
+				public int compare(Character a, Character b) {
+					int[] rankOfA = ranks.get(a), rankOfB = ranks.get(b);
+					for (int i = 0; i < rankOfA.length; i++) {
+						if (rankOfA[i] != rankOfB[i]) {
+							return rankOfB[i] - rankOfA[i];
+						}
+					}
+					return a - b;
+				}
+			});
+			for (Character c : ranks.keySet()) {
+				pq.offer(c);
+			}
+			StringBuilder sb = new StringBuilder();
+			while (!pq.isEmpty()) {
+				sb.append(pq.poll());
+			}
+			return sb.toString();
+		}
+	}
+}

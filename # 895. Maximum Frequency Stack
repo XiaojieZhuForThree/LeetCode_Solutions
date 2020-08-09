@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -7,31 +7,33 @@ import java.util.Map;
 
 public class Question895 {
 	class FreqStack {
-		Map<Integer, Integer> freq;
-		Map<Integer, Deque<Integer>> pos;
-		int maxFreq;
+		Map<Integer, Deque<Integer>> stackMap;
+		Map<Integer, Integer> freqs;
+		int mostFreq;
 
 		public FreqStack() {
-			freq = new HashMap<>();
-			pos = new HashMap<>();
-			maxFreq = 0;
+			stackMap = new HashMap<>();
+			freqs = new HashMap<>();
+			mostFreq = 0;
 		}
 
 		public void push(int x) {
-			freq.put(x, freq.getOrDefault(x, 0) + 1);
-			int f = freq.get(x);
-			pos.putIfAbsent(f, new ArrayDeque<>());
-			pos.get(f).offer(x);
-			maxFreq = Math.max(f, maxFreq);
+			freqs.put(x, freqs.getOrDefault(x, 0) + 1);
+			int freq = freqs.get(x);
+			stackMap.putIfAbsent(freq, new ArrayDeque<>());
+			stackMap.get(freq).offerLast(x);
+			if (freq > mostFreq) {
+				mostFreq = freq;
+			}
 		}
 
 		public int pop() {
-			int ans = pos.get(maxFreq).pollLast();
-			freq.put(ans, freq.get(ans) - 1);
-			if (pos.get(maxFreq).isEmpty()) {
-				maxFreq--;
+			int val = stackMap.get(mostFreq).pollLast();
+			if (stackMap.get(mostFreq).isEmpty()) {
+				mostFreq--;
 			}
-			return ans;
+			freqs.put(val, freqs.get(val) - 1);
+			return val;
 		}
 	}
 

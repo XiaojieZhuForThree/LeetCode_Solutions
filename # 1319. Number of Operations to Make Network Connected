@@ -1,0 +1,46 @@
+package com.leetcode.problems;
+
+public class Question1319 {
+	class Solution {
+		class UnionFind {
+			int[] parent;
+			int numberOfGroups;
+			int extraCable;
+
+			public UnionFind(int n) {
+				parent = new int[n];
+				numberOfGroups = n;
+				extraCable = 0;
+				for (int i = 0; i < n; i++) {
+					parent[i] = i;
+				}
+			}
+
+			public void union(int x, int y) {
+				int parentOfX = find(x);
+				int parentOfY = find(y);
+				if (parentOfX == parentOfY) {
+					extraCable++;
+				} else {
+					parent[parentOfY] = parentOfX;
+					numberOfGroups--;
+				}
+			}
+
+			public int find(int x) {
+				if (parent[x] != x) {
+					parent[x] = find(parent[x]);
+				}
+				return parent[x];
+			}
+		}
+
+		public int makeConnected(int n, int[][] connections) {
+			UnionFind uf = new UnionFind(n);
+			for (int[] connection : connections) {
+				uf.union(connection[0], connection[1]);
+			}
+			return uf.extraCable >= uf.numberOfGroups - 1 ? uf.numberOfGroups - 1 : -1;
+		}
+	}
+}

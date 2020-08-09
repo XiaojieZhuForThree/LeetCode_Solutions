@@ -1,0 +1,16 @@
+package com.leetcode.problems;
+
+public class Question1526 {
+	class Solution {
+		public int minNumberOperations(int[] target) {
+			int numberOfSteps = 0, prev = 0;
+			for (int i : target) {
+				if (i > prev) {
+					numberOfSteps += i - prev;
+				}
+				prev = i;
+			}
+			return numberOfSteps;
+		}
+	}
+}

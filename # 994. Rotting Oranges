@@ -1,34 +1,52 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Queue;
 
 public class Question994 {
 	class Solution {
+		class Point {
+			private int x;
+			private int y;
+
+			public Point(int x, int y) {
+				this.x = x;
+				this.y = y;
+			}
+
+			public int getX() {
+				return x;
+			}
+
+			public int getY() {
+				return y;
+			}
+		}
+
 		public int orangesRotting(int[][] grid) {
-			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
-			Deque<int[]> queue = new ArrayDeque<>();
+			int elapsedTime = -1;
+			Queue<Point> rottenQueue = new ArrayDeque<>();
 			int m = grid.length, n = grid[0].length;
+			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
 					if (grid[i][j] == 2) {
-						queue.offer(new int[] { i, j });
+						rottenQueue.offer(new Point(i, j));
 					}
 				}
 			}
-			int ans = queue.isEmpty() ? 0 : -1;
-			while (!queue.isEmpty()) {
-				ans++;
-				for (int i = queue.size(); i > 0; i--) {
-					int[] pos = queue.poll();
-					int x = pos[0], y = pos[1];
+			while (!rottenQueue.isEmpty()) {
+				elapsedTime++;
+				for (int i = rottenQueue.size(); i > 0; i--) {
+					Point rotten = rottenQueue.poll();
 					for (int[] dir : dirs) {
-						int nx = x + dir[0], ny = y + dir[1];
-						if (nx < 0 || nx >= m || ny < 0 || ny >= n || grid[nx][ny] != 1) {
+						int nx = rotten.getX() + dir[0];
+						int ny = rotten.getY() + dir[1];
+						if (0 > nx || nx >= m || 0 > ny || ny >= n || grid[nx][ny] != 1) {
 							continue;
 						}
-						queue.offer(new int[] { nx, ny });
 						grid[nx][ny] = 2;
+						rottenQueue.offer(new Point(nx, ny));
 					}
 				}
 			}
@@ -39,7 +57,7 @@ public class Question994 {
 					}
 				}
 			}
-			return ans;
+			return elapsedTime == -1 ? 0 : elapsedTime;
 		}
 	}
 }

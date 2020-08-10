@@ -1,0 +1,58 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question1530 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		int ans = 0;
+
+		public int countPairs(TreeNode root, int distance) {
+			getLeaves(root, distance);
+			return ans;
+		}
+
+		private Set<TreeNode> getLeaves(TreeNode root, int distance) {
+			if (root == null) {
+				return new HashSet<>();
+			}
+			if (root.left == null && root.right == null) {
+				root.val = 0;
+				return Set.of(root);
+
+			}
+
+			Set<TreeNode> leftLeaves = getLeaves(root.left, distance);
+			Set<TreeNode> rightLeaves = getLeaves(root.right, distance);
+
+			for (TreeNode left : leftLeaves) {
+				for (TreeNode right : rightLeaves) {
+					if (left.val + right.val + 2 <= distance) {
+						ans++;
+					}
+				}
+			}
+			Set<TreeNode> set = new HashSet<>();
+			for (TreeNode left : leftLeaves) {
+				if (left.val + 1 <= distance) {
+					left.val = left.val + 1;
+					set.add(left);
+				}
+			}
+			for (TreeNode right : rightLeaves) {
+				if (right.val + 1 <= distance) {
+					right.val = right.val + 1;
+					set.add(right);
+				}
+			}
+			return set;
+		}
+
+	}
+}

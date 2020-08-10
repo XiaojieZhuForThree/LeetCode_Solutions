@@ -1,22 +1,41 @@
-class Solution {
-    public int[] exclusiveTime(int n, List<String> logs) {
-        Stack<Integer> stack = new Stack<>();
-        int[] res = new int[n];
-        int prevTime = 0;
-        for (String log : logs) {
-            String[] info = log.split(":");
-            int time = Integer.valueOf(info[2]), ID = Integer.valueOf(info[0]);
-            if (info[1].equals("start")) {
-                if(!stack.isEmpty()) {
-                    res[stack.peek()] += time - prevTime;                    
-                }
-                prevTime = time;
-                stack.push(ID);
-            } else {
-                res[stack.pop()] += time - prevTime + 1;
-                prevTime = time + 1;
-            }
-        }
-        return res;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
+public class Question636 {
+	class Solution {
+		public int[] exclusiveTime(int n, List<String> logs) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			int[] times = new int[n];
+			int prevTime = 0;
+			for (String s : logs) {
+				String[] data = s.split(":");
+				if (data[1].equals("end")) {
+					int id = Integer.parseInt(data[0]);
+					int endTime = Integer.parseInt(data[2]);
+					times[id] += endTime - prevTime + 1;
+					prevTime = endTime + 1;
+					stack.pollLast();
+				} else {
+					int id = Integer.parseInt(data[0]);
+					int curTime = Integer.parseInt(data[2]);
+					if (stack.isEmpty()) {
+						stack.offerLast(id);
+						prevTime = curTime;
+
+					} else {
+						int prevRunningId = stack.peekLast();
+						times[prevRunningId] += curTime - prevTime;
+						prevTime = curTime;
+						prevRunningId = id;
+						stack.offerLast(id);
+					}
+
+				}
+			}
+			return times;
+		}
+	}
 }

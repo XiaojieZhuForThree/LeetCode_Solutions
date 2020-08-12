@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question119 {
+	class Solution {
+		public List<Integer> getRow(int rowIndex) {
+			if (rowIndex == 0) {
+				return List.of(1);
+			}
+			if (rowIndex == 1) {
+				return List.of(1, 1);
+			}
+			List<Integer> ans = new ArrayList<>();
+			ans.add(1);
+			List<Integer> prevRow = getRow(rowIndex - 1);
+			for (int i = 0; i < prevRow.size() - 1; i++) {
+				ans.add(prevRow.get(i) + prevRow.get(i + 1));
+			}
+			ans.add(1);
+			return ans;
+		}
+	}
+}

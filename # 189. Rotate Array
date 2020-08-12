@@ -1,17 +1,37 @@
-class Solution {
-    public void rotate(int[] nums, int k) {
-        k %= nums.length;
-    	swap(nums, 0, nums.length-k-1);
-    	swap(nums, nums.length-k, nums.length-1);
-    	swap(nums, 0, nums.length-1);
-    }
-    private void swap(int[] nums, int s, int e) {
-    	while (s < e) {
-    		int mid = nums[s];
-    		nums[s] = nums[e];
-    		nums[e] = mid;
-    		s++;
-    		e--;
-    	}
-    }
+package com.leetcode.problems;
+
+public class Question189 {
+	class Solution1 {
+		public void rotate(int[] nums, int k) {
+			int[] numsCopy = nums.clone();
+			int n = nums.length;
+			k %= nums.length;
+			for (int i = 0; i < k; i++) {
+				nums[i] = numsCopy[n - k + i];
+			}
+			for (int i = 0; i < n - k; i++) {
+				nums[k + i] = numsCopy[i];
+			}
+		}
+	}
+
+	class Solution2 {
+		public void rotate(int[] nums, int k) {
+			k %= nums.length;
+			swap(nums, 0, nums.length - k - 1);
+			swap(nums, nums.length - k, nums.length - 1);
+			swap(nums, 0, nums.length - 1);
+		}
+
+		private void swap(int[] nums, int s, int e) {
+			while (s < e) {
+				int mid = nums[s];
+				nums[s] = nums[e];
+				nums[e] = mid;
+				s++;
+				e--;
+			}
+		}
+	}
+
 }

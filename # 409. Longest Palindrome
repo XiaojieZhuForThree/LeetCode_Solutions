@@ -1,0 +1,35 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question409 {
+	class Solution {
+		public int longestPalindrome(String s) {
+			Map<Character, Integer> counts = generateCountMap(s);
+			return calculatePalindromeLength(counts);
+		}
+
+		private final Map<Character, Integer> generateCountMap(String s) {
+			Map<Character, Integer> counts = new HashMap<>();
+			for (char c : s.toCharArray()) {
+				counts.put(c, counts.getOrDefault(c, 0) + 1);
+			}
+			return counts;
+		}
+
+		private final int calculatePalindromeLength(Map<Character, Integer> counts) {
+			int len = 0, oddLen = 0;
+			for (char c : counts.keySet()) {
+				if (counts.get(c) % 2 == 0) {
+					len += counts.get(c);
+				} else {
+					oddLen = 1;
+					len += counts.get(c) - 1;
+				}
+			}
+			return len + oddLen;
+		}
+
+	}
+}

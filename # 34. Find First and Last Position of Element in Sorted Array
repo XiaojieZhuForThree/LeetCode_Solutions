@@ -1,67 +1,60 @@
-class Solution {
-	public int[] searchRange(int[] nums, int target) {
-		int l = 0, r = nums.length;
-		while (l < r) {
-			int mid = (l + r) / 2;
-			if (nums[mid] == target) {
-				int lt = mid, rt = mid;
-				while (lt >= 0 && nums[lt] == target) {
-					lt--;
-				}
-				while (rt < nums.length && nums[rt] == target) {
-					rt++;
-				}
-				return new int[] { lt + 1, rt - 1 };
-			} else if (nums[mid] < target) {
-				l = mid + 1;
-			} else {
-				r = mid;
+package com.leetcode.problems;
+
+public class Question34 {
+	class Solution {
+		public int[] searchRange(int[] nums, int target) {
+			if (nums == null || nums.length == 0) {
+				return new int[] { -1, -1 };
 			}
+			int left = findLeft(nums, target);
+			int right = findRight(nums, target);
+			return new int[] { left, right };
 		}
-		return new int[] { -1, -1 };
+
+		private final int findLeft(int[] nums, int target) {
+			int position = -1;
+			int left = 0, right = nums.length - 1;
+			while (left < right) {
+				int middle = left + (right - left) / 2;
+				if (nums[middle] == target) {
+					if (middle > 0 && nums[middle - 1] == target) {
+						right = middle - 1;
+					} else {
+						return middle;
+					}
+				} else if (nums[middle] < target) {
+					left = middle + 1;
+				} else {
+					right = middle;
+				}
+			}
+			if (nums[left] == target) {
+				position = left;
+			}
+			return position;
+		}
+
+		private final int findRight(int[] nums, int target) {
+			int position = -1;
+			int left = 0, right = nums.length - 1;
+			while (left < right) {
+				int middle = left + (right - left) / 2;
+				if (nums[middle] == target) {
+					if (middle < nums.length - 1 && nums[middle + 1] == target) {
+						left = middle + 1;
+					} else {
+						return middle;
+					}
+				} else if (nums[middle] < target) {
+					left = left + 1;
+				} else {
+					right = middle;
+				}
+			}
+			if (nums[right] == target) {
+				position = right;
+			}
+			return position;
+		}
 	}
-}
-
-
-
-class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        if (nums == null || nums.length == 0) {
-            return new int[]{-1, -1};
-        }
-        int left = 0, right = nums.length;
-        int index1 = -1, index2 = -1;
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid;
-            } else {
-                if (mid - 1 >= 0 && nums[mid - 1] == target) {
-                    right = mid;
-                } else {
-                    index1 = mid;
-                    break;
-                }
-            }
-        }
-        left = 0; right = nums.length;
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid;
-            } else {
-                if (mid + 1 <  nums.length && nums[mid + 1] == target) {
-                    left = mid + 1;
-                } else {
-                    index2 = mid;
-                    break;
-                }
-            }
-        }
-        return new int[] {index1, index2};
-    }
 }

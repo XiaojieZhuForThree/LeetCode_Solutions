@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+public class Question868 {
+	class Solution {
+		public int binaryGap(int N) {
+			String s = Integer.toBinaryString(N);
+			return findMaxGap(s);
+		}
+
+		private final int findMaxGap(String s) {
+			int gap = 0, prevOne = -1;
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if (c == '1') {
+					if (prevOne == -1) {
+						prevOne = i;
+					} else {
+						gap = Math.max(gap, i - prevOne);
+						prevOne = i;
+					}
+				}
+			}
+			return gap;
+		}
+	}
+}

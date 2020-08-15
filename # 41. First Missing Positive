@@ -16,23 +16,32 @@ public class Question41 {
 			int n = nums.length;
 			for (int i = 0; i < n; i++) {
 				int num = nums[i];
-				if (num <= 0 || num > n) {
+				if (numIsNonPositiveOrGreaterThanN(num, n)) {
 					nums[i] = n + 1;
 				}
 			}
+		}
+
+		private final boolean numIsNonPositiveOrGreaterThanN(int num, int n) {
+			return num <= 0 || num > n;
 		}
 
 		private final void markNums(int[] nums) {
 			int n = nums.length;
 			for (int i : nums) {
 				i = Math.abs(i);
-				if (i > n) {
+				if (numIsNonPositiveOrGreaterThanN(i, n)) {
 					continue;
 				}
-				if (nums[i - 1] > 0) {
-					nums[i - 1] = -nums[i - 1];
-				}
+				markNumAtIndex(nums, i - 1);
 			}
+		}
+
+		private final void markNumAtIndex(int[] nums, int index) {
+			if (nums[index] > 0) {
+				nums[index] = -nums[index];
+			}
+
 		}
 
 		private final int getFirstMissingPositive(int[] nums) {

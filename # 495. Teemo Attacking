@@ -3,13 +3,12 @@ package com.leetcode.problems;
 public class Question495 {
 	class Solution {
 		public int findPoisonedDuration(int[] timeSeries, int duration) {
-			int ans = 0, currentTime = -1;
+			int totalPoisonedTime = 0, currentTime = -1;
 			for (int time : timeSeries) {
-				ans += duration;
-				ans -= getOverlapTime(currentTime, time);
+				totalPoisonedTime += duration - getOverlapTime(currentTime, time);
 				currentTime = time + duration - 1;
 			}
-			return ans;
+			return totalPoisonedTime;
 		}
 
 		private final int getOverlapTime(int currentTime, int time) {

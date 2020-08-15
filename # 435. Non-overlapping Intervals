@@ -14,20 +14,7 @@ public class Question435 {
 		}
 
 		private final void processIntervals(int[][] intervals) {
-			Comparator<int[]> comparator = generateComparator();
-			Arrays.sort(intervals, comparator);
-		}
-		
-		private final Comparator<int[]> generateComparator() {
-			return new Comparator<>() {
-				@Override
-				public int compare(int[] o1, int[] o2) {
-					if (o1[0] == o2[0]) {
-						return Integer.compare(o1[1], o2[1]);
-					}
-					return Integer.compare(o1[0], o2[0]);
-				}
-			};
+			Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 		}
 
 		private final int findEraseNumber(int[][] intervals) {
@@ -36,15 +23,21 @@ public class Question435 {
 			int delete = 0;
 			for (int i = 1; i < intervals.length; i++) {
 				int[] curInterval = intervals[i];
-				if (curInterval[0] < right) {
-					delete++;
-					if (curInterval[1] >= right) {
-						continue;
-					}
-				}
-				right = curInterval[1];
+				delete += updateDelete(curInterval, right);
+				right = updateRight(curInterval, right);
 			}
 			return delete;
+		}
+
+		private final int updateRight(int[] curInterval, int right) {
+			if (curInterval[0] < right) {
+				return Math.min(curInterval[1], right);
+			}
+			return curInterval[1];
+		}
+
+		private final int updateDelete(int[] curInterval, int right) {
+			return curInterval[0] < right ? 1 : 0;
 		}
 	}
 }

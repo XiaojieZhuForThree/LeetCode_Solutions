@@ -1,0 +1,50 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Question435 {
+	class Solution {
+		public int eraseOverlapIntervals(int[][] intervals) {
+			if (intervals == null || intervals.length == 0) {
+				return 0;
+			}
+			processIntervals(intervals);
+			return findEraseNumber(intervals);
+		}
+
+		private final void processIntervals(int[][] intervals) {
+			Comparator<int[]> comparator = generateComparator();
+			Arrays.sort(intervals, comparator);
+		}
+		
+		private final Comparator<int[]> generateComparator() {
+			return new Comparator<>() {
+				@Override
+				public int compare(int[] o1, int[] o2) {
+					if (o1[0] == o2[0]) {
+						return Integer.compare(o1[1], o2[1]);
+					}
+					return Integer.compare(o1[0], o2[0]);
+				}
+			};
+		}
+
+		private final int findEraseNumber(int[][] intervals) {
+			int[] initInterval = intervals[0];
+			int right = initInterval[1];
+			int delete = 0;
+			for (int i = 1; i < intervals.length; i++) {
+				int[] curInterval = intervals[i];
+				if (curInterval[0] < right) {
+					delete++;
+					if (curInterval[1] >= right) {
+						continue;
+					}
+				}
+				right = curInterval[1];
+			}
+			return delete;
+		}
+	}
+}

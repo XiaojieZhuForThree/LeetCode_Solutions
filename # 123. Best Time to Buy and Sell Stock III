@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+public class Question123 {
+	class Solution {
+
+		public int maxProfit(int[] prices) {
+			return generateMaxProfit(prices);
+		}
+
+		private final int generateMaxProfit(int[] prices) {
+
+			int n = prices.length;
+			int maxProfit = 0;
+			int maxOneTransactionProfit = 0;
+			int[] oneTransactionProfits = new int[n];
+
+			for (int i = 1; i < n; i++) {
+				int sellPrice = prices[i];
+				int bestOneTransactionProfit = 0;
+				for (int j = 0; j < i; j++) {
+					int buyPrice = prices[j];
+					int oneTransactionProfit = sellPrice - buyPrice;
+					int prevOneTransactionProfit = (j == 0 ? 0 : oneTransactionProfits[j - 1]);
+					int profit = oneTransactionProfit + prevOneTransactionProfit;
+					bestOneTransactionProfit = Math.max(bestOneTransactionProfit, oneTransactionProfit);
+					maxProfit = Math.max(maxProfit, profit);
+				}
+
+				maxOneTransactionProfit = Math.max(maxOneTransactionProfit, bestOneTransactionProfit);
+				oneTransactionProfits[i] = maxOneTransactionProfit;
+			}
+
+			return maxProfit;
+		}
+	}
+}

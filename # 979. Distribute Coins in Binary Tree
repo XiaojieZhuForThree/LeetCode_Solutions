@@ -1,0 +1,46 @@
+package com.leetcode.problems;
+
+public class Question979 {
+	class Solution {
+		int ans = 0;
+		public int distributeCoins(TreeNode root) {
+			updateTreeValue(root);
+			dfs(root);
+			return ans;
+		}
+
+		private final void updateTreeValue(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			node.val = node.val - 1;
+			updateTreeValue(node.left);
+			updateTreeValue(node.right);
+		}
+
+		private final void dfs(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			if (isLeafNode(node)) {
+				return;
+			}
+			if (node.left != null) {
+				dfs(node.left);
+				int surplus = node.left.val;
+				ans += Math.abs(surplus);
+				node.val += surplus;
+			}
+			if (node.right != null) {
+				dfs(node.right);
+				int surplus = node.right.val;
+				ans += Math.abs(surplus);
+				node.val += surplus;
+			}
+		}
+
+		private final boolean isLeafNode(TreeNode node) {
+			return node.left == null && node.right == null;
+		}
+	}
+}

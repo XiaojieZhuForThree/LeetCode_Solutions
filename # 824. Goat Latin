@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+import java.util.Set;
+
+public class Question824 {
+	class Solution {
+		
+		Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+
+		public String toGoatLatin(String S) {
+			String[] words = S.split(" ");
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < words.length; i++) {
+				String word = words[i];
+				sb.append(processedWord(word, i));
+				sb.append(" ");
+			}
+			return sb.substring(0, sb.length() - 1).toString();
+		}
+
+		private final String processedWord(String word, int i) {
+			StringBuilder sb = new StringBuilder();
+			if (!wordStartsWithVowel(word)) {
+				sb.append(word.substring(1));
+				sb.append(word.charAt(0));
+			} else {
+				sb.append(word);
+			}
+			sb.append("ma");
+			for (int j = 0; j <= i; j++) {
+				sb.append('a');
+			}
+			return sb.toString();
+		}
+
+		private final boolean wordStartsWithVowel(String word) {
+			return vowels.contains(word.charAt(0));
+		}
+	}
+}

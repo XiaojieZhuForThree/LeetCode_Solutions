@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+public class Question567 {
+	class Solution {
+		public boolean checkInclusion(String s1, String s2) {
+			if (s1.length() > s2.length()) {
+				return false;
+			}
+			int[] charsOfS1 = getCharCounts(s1);
+			int[] charsOfS2 = getCharCounts(s2.substring(0, s1.length()));
+			for (int i = 0, j = s1.length(); j < s2.length(); i++, j++) {
+				if (charMatched(charsOfS1, charsOfS2)) {
+					return true;
+				}
+				char remove = s2.charAt(i);
+				char add = s2.charAt(j);
+				charsOfS2[remove - 'a']--;
+				charsOfS2[add - 'a']++;
+			}
+			return charMatched(charsOfS1, charsOfS2);
+		}
+
+		private final int[] getCharCounts(String s) {
+			int[] ans = new int[26];
+			for (char c : s.toCharArray()) {
+				ans[c - 'a']++;
+			}
+			return ans;
+		}
+
+		private final boolean charMatched(int[] charCount1, int[] charCount2) {
+			for (int i = 0; i < 26; i++) {
+				if (charCount1[i] != charCount2[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

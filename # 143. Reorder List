@@ -42,3 +42,52 @@ class Solution {
         }
     }
 }
+
+
+
+
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.api.ListNode;
+
+public class Question143 {
+	class Solution {
+		public void reorderList(ListNode head) {
+			if (head == null) {
+				return;
+			}
+			List<ListNode> container = convertListNodeToList(head);
+			helper(container, 0, container.size() - 1);
+			return;
+		}
+
+		private final List<ListNode> convertListNodeToList(ListNode node) {
+			List<ListNode> container = new ArrayList<>();
+			while (node != null) {
+				container.add(node);
+				node = node.next;
+			}
+			return container;
+		}
+
+		private ListNode helper(List<ListNode> container, int i, int j) {
+			if (i > j) {
+				return null;
+			}
+			if (i == j) {
+				ListNode curHead = container.get(i);
+				curHead.next = null;
+				return container.get(i);
+			}
+			ListNode curHead = container.get(i);
+			ListNode curNext = container.get(j);
+			curHead.next = curNext;
+			curNext.next = helper(container, i + 1, j - 1);
+			return curHead;
+		}
+	}
+}
+

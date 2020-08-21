@@ -4,21 +4,21 @@ public class Question905 {
 	class Solution {
 		public int[] sortArrayByParity(int[] A) {
 			int n = A.length;
-			int i = firstOdd(A, 0);
-			int j = firstEven(A, n - 1);
+			int i = firstOddFromFirst(A, 0);
+			int j = firstEvenFromBack(A, n - 1);
 			for (; i < n; i++) {
 				if (isOdd(A[i])) {
 					if (j < i) {
 						break;
 					}
 					swap(A, i, j);
-					j = firstEven(A, j - 1);
+					j = firstEvenFromBack(A, j - 1);
 				}
 			}
 			return A;
 		}
 
-		private final int firstOdd(int[] A, int i) {
+		private final int firstOddFromFirst(int[] A, int i) {
 			for (; i < A.length; i++) {
 				if (isOdd(A[i])) {
 					return i;
@@ -27,7 +27,7 @@ public class Question905 {
 			return A.length;
 		}
 
-		private final int firstEven(int[] A, int j) {
+		private final int firstEvenFromBack(int[] A, int j) {
 			for (; j >= 0; j--) {
 				if (isEven(A[j])) {
 					return j;

@@ -1,16 +1,53 @@
-class Solution {
-    public int[] sortArrayByParity(int[] A) {
-        int init = 0, end = A.length -1;
-        while (init < end) {
-            if (A[init] % 2 == 1) {
-                int intermediate = A[end];
-                A[end] = A[init];
-                A[init] = intermediate;
-                end--;
-            } else {
-                init++;
-            }
-        }
-        return A;
-    }
+package com.leetcode.problems;
+
+public class Question905 {
+	class Solution {
+		public int[] sortArrayByParity(int[] A) {
+			int n = A.length;
+			int i = firstOdd(A, 0);
+			int j = firstEven(A, n - 1);
+			for (; i < n; i++) {
+				if (isOdd(A[i])) {
+					if (j < i) {
+						break;
+					}
+					swap(A, i, j);
+					j = firstEven(A, j - 1);
+				}
+			}
+			return A;
+		}
+
+		private final int firstOdd(int[] A, int i) {
+			for (; i < A.length; i++) {
+				if (isOdd(A[i])) {
+					return i;
+				}
+			}
+			return A.length;
+		}
+
+		private final int firstEven(int[] A, int j) {
+			for (; j >= 0; j--) {
+				if (isEven(A[j])) {
+					return j;
+				}
+			}
+			return -1;
+		}
+
+		private final boolean isOdd(int i) {
+			return i % 2 == 1;
+		}
+
+		private final boolean isEven(int i) {
+			return i % 2 == 0;
+		}
+
+		private final void swap(int[] A, int i, int j) {
+			int temp = A[i];
+			A[i] = A[j];
+			A[j] = temp;
+		}
+	}
 }

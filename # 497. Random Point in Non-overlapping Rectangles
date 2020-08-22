@@ -2,26 +2,50 @@ package com.leetcode.problems;
 
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Question497 {
 	class Solution {
-		TreeMap<Integer, Integer> map;
-		int[][] rs;
-		int sum = 0;
-		Random rand = new Random();
+		TreeMap<Integer, Integer> areaToIndex;
+		Random rand;
+		int[][] rects;
+		int sum;
 
 		public Solution(int[][] rects) {
-			map = new TreeMap<>();
-			rs = rects;
-			for (int i = 0; i < rs.length; i++) {
-				map.put(sum, i);
-				sum += (rs[i][2] - rs[i][0] + 1) * (rs[i][3] - rs[i][1] + 1);
+			areaToIndex = new TreeMap<>();
+			rand = ThreadLocalRandom.current();
+			this.rects = rects;
+			for (int i = 0; i < rects.length; i++) {
+				int[] rect = rects[i];
+				updateMap(rect, i);
 			}
 		}
 
+		private final void updateMap(int[] rect, int i) {
+			int leftX = rect[0], leftY = rect[1], rightX = rect[2], rightY = rect[3];
+			int area = (rightX - leftX + 1) * (rightY - leftY + 1);
+			sum += area;
+			areaToIndex.put(sum, i);
+		}
+
 		public int[] pick() {
-			int rd = rand.nextInt(sum), k = map.floorKey(rd), r[] = rs[map.get(k)], diff = rd - k, w = r[2] - r[0] + 1;
-			return new int[] { r[0] + diff % w, r[1] + diff / w };
+			int pickedArea = rand.nextInt(sum) + 1;
+			int index = areaToIndex.get(areaToIndex.ceilingKey(pickedArea));
+			int[] rec = rects[index];
+			return getRandomPoint(rec);
+		}
+
+		private final int[] getRandomPoint(int[] rec) {
+			int xRange = rec[2] - rec[0] + 1;
+			int yRange = rec[3] - rec[1] + 1;
+			int addXValue = rand.nextInt(xRange);
+			int addYValue = rand.nextInt(yRange);
+			return new int[] { rec[0] + addXValue, rec[1] + addYValue };
 		}
 	}
+
+	/**
+	 * Your Solution object will be instantiated and called as such: Solution obj =
+	 * new Solution(rects); int[] param_1 = obj.pick();
+	 */
 }

@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+public class Question404 {
+	class Solution {
+		int sum = 0;
+
+		public int sumOfLeftLeaves(TreeNode root) {
+			updateSum(root, false);
+			return sum;
+		}
+
+		private final void updateSum(TreeNode node, boolean isLeftLeaf) {
+			if (node == null) {
+				return;
+			}
+			if (isLeaf(node) && isLeftLeaf) {
+				sum += node.val;
+			}
+			updateSum(node.left, true);
+			updateSum(node.right, false);
+		}
+
+		private final boolean isLeaf(TreeNode node) {
+			return node.left == null && node.right == null;
+		}
+	}
+}

@@ -1,32 +1,46 @@
-class Solution {
-	public boolean canFinish(int numCourses, int[][] prerequisites) {
-		List<Integer>[] adj = new ArrayList[numCourses];
-		for (int i = 0; i < numCourses; i++) {
-			adj[i] = new ArrayList<Integer>();
-		}
-		for (int[] pre : prerequisites) {
-			adj[pre[1]].add(pre[0]);
-		}
-		int[] status = new int[numCourses]; // 0: unvisited, 1:visiting, 2: visited
-		for (int i = 0; i < numCourses; i++) {
-			if (status[i] == 0) {
-				if (dfs(i, adj, status) == false)
-					return false;
-			}
-		}
-		return true;
-	}
+package com.leetcode.problems;
 
-	private boolean dfs(int root, List<Integer>[] adj, int[] status) {
-		status[root] = 1;
-		for (int neighbor : adj[root]) {
-			if (status[neighbor] == 0) {
-				if (dfs(neighbor, adj, status) == false)
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question207 {
+	class Solution {
+		public boolean canFinish(int numCourses, int[][] prerequisites) {
+			List<List<Integer>> graph = buildGraph(numCourses, prerequisites);
+			for (int i = 0; i < numCourses; i++) {
+				if (!containsNoLoop(i, graph, new int[numCourses])) {
 					return false;
-			} else if (status[neighbor] == 1)
-				return false;
+				}
+			}
+			return true;
 		}
-		status[root] = 2;
-		return true;
+
+		private final List<List<Integer>> buildGraph(int numCourses, int[][] prerequisites) {
+			List<List<Integer>> graph = new ArrayList<>();
+			for (int i = 0; i < numCourses; i++) {
+				graph.add(new ArrayList<>());
+			}
+			for (int[] relation : prerequisites) {
+				int course = relation[0];
+				int pre = relation[1];
+				graph.get(pre).add(course);
+			}
+			return graph;
+		}
+
+		private final boolean containsNoLoop(int node, List<List<Integer>> graph, int[] status) {
+			status[node] = 1;
+			for (int neighbor : graph.get(node)) {
+				if (status[neighbor] == 0) {
+					if (!containsNoLoop(neighbor, graph, status)) {
+						return false;
+					}
+				} else if (status[neighbor] == 1) {
+					return false;
+				}
+			}
+			status[node] = 2;
+			return true;
+		}
 	}
 }

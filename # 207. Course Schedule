@@ -1,10 +1,14 @@
 package com.leetcode.problems;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 public class Question207 {
-	class Solution {
+	class Solution1 {
 		public boolean canFinish(int numCourses, int[][] prerequisites) {
 			List<List<Integer>> graph = buildGraph(numCourses, prerequisites);
 			for (int i = 0; i < numCourses; i++) {
@@ -43,4 +47,75 @@ public class Question207 {
 			return true;
 		}
 	}
+
+	class Solution2 {
+		int[] indegrees;
+		Map<Integer, List<Integer>> courseRelations;
+		int numCourses;
+
+		public boolean canFinish(int numCourses, int[][] prerequisites) {
+			initializeData(numCourses, prerequisites);
+			populateCourseRelations(prerequisites);
+			return isTopologicalStructure();
+		}
+
+		private final void initializeData(int numCourses, int[][] prerequisites) {
+			this.indegrees = new int[numCourses];
+			this.courseRelations = new HashMap<>();
+			this.numCourses = numCourses;
+		}
+
+		private final void populateCourseRelations(int[][] prerequisites) {
+			for (int[] relation : prerequisites) {
+				updateCourseRelation(relation);
+			}
+		}
+
+		private final void updateCourseRelation(int[] relation) {
+			int course = relation[0];
+			int pre = relation[1];
+			indegrees[course]++;
+			courseRelations.putIfAbsent(pre, new ArrayList<>());
+			courseRelations.get(pre).add(course);
+		}
+
+		private final boolean isTopologicalStructure() {
+			List<Integer> listOfCourses = new ArrayList<>();
+			Queue<Integer> freeCourses = new ArrayDeque<>();
+			initializeFreeCourses(freeCourses);
+			populateListOfCourses(listOfCourses, freeCourses);
+			return listOfCourses.size() == numCourses;
+		}
+
+		private final void initializeFreeCourses(Queue<Integer> freeCourses) {
+			for (int i = 0; i < numCourses; i++) {
+				if (indegrees[i] == 0) {
+					freeCourses.offer(i);
+				}
+			}
+		}
+
+		private final void populateListOfCourses(List<Integer> listOfCourses, Queue<Integer> freeCourses) {
+			while (!freeCourses.isEmpty()) {
+				int course = freeCourses.poll();
+				listOfCourses.add(course);
+				updateFreeCourses(course, freeCourses);
+			}
+		}
+
+		private final void updateFreeCourses(int course, Queue<Integer> freeCourses) {
+			if (!courseRelations.containsKey(course)) {
+				return;
+			}
+			List<Integer> subCourses = courseRelations.get(course);
+			for (int sub : subCourses) {
+				indegrees[sub]--;
+				if (indegrees[sub] == 0) {
+					freeCourses.offer(sub);
+				}
+			}
+		}
+
+	}
+
 }

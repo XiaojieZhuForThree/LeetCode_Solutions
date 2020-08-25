@@ -1,87 +1,54 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public TreeNode bstToGst(TreeNode root) {
-        Stack<TreeNode> store = new Stack<>();
-        helper(root, store);
-        int val = 0;
-        while (!store.isEmpty()) {
-            TreeNode cur = store.pop();
-            cur.val += val;
-            val = cur.val;
-        }
-        return root;
-    }
-    public void helper(TreeNode root, Stack<TreeNode> stack) {
-        if (root == null) {
-            return;
-        }
-        helper(root.left, stack);
-        stack.push(root);
-        helper(root.right, stack);
-    }
-}
+package com.leetcode.problems;
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public TreeNode bstToGst(TreeNode root) {
-        Stack<TreeNode> store = new Stack<>(), save = new Stack<>();
-        TreeNode dummy = root;
-        while (!save.isEmpty() || dummy != null){
-            if (dummy == null){
-                dummy = save.pop();
-                store.push(dummy);
-                dummy = dummy.right;
-            } else {
-                save.push(dummy);
-                dummy = dummy.left;
-            }
-        }
-        int val = 0;
-        while (!store.isEmpty()) {
-            TreeNode cur = store.pop();
-            cur.val += val;
-            val = cur.val;
-        }
-        return root;
-    }
-}
+public class Question1038 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		public TreeNode bstToGst(TreeNode root) {
+			updateValues(root);
+			return root;
+		}
 
+		private final void updateValues(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			if (isLeafNode(node)) {
+				return;
+			}
+			updateValues(node.right);
+			node.val += getLeftMostValue(node.right);
+			if (node.left != null) {
+				updateValues(node.left);
+				addValue(node.left, node.val);
+			}
+		}
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public TreeNode bstToGst(TreeNode root) {
-        helper(root, 0);
-        return root;
-    }
-    public int helper(TreeNode root, int sum) {
-        if (root == null) {
-            return sum;
-        }
-        root.val += helper(root.right, sum);
-        return helper(root.left, root.val);
-    }
+		private final boolean isLeafNode(TreeNode node) {
+			return node.left == null && node.right == null;
+		}
+
+		private final int getLeftMostValue(TreeNode node) {
+			if (node == null) {
+				return 0;
+			}
+			while (node.left != null) {
+				node = node.left;
+			}
+			return node.val;
+		}
+
+		private final void addValue(TreeNode node, int val) {
+			if (node == null) {
+				return;
+			}
+			node.val += val;
+			addValue(node.left, val);
+			addValue(node.right, val);
+		}
+	}
 }

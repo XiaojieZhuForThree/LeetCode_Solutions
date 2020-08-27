@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+import java.util.TreeMap;
+
+public class Question436 {
+	class Solution {
+		public int[] findRightInterval(int[][] intervals) {
+			TreeMap<Integer, Integer> reference = getReference(intervals);
+			return getRightInterval(intervals, reference);
+		}
+
+		private final TreeMap<Integer, Integer> getReference(int[][] intervals) {
+			TreeMap<Integer, Integer> res = new TreeMap<>();
+			for (int i = 0; i < intervals.length; i++) {
+				int[] interval = intervals[i];
+				res.put(interval[0], i);
+			}
+			return res;
+		}
+
+		private final int[] getRightInterval(int[][] intervals, TreeMap<Integer, Integer> reference) {
+			int n = intervals.length;
+			int[] ans = new int[n];
+			for (int i = 0; i < n; i++) {
+				int endPoint = intervals[i][1];
+				Integer ceilingPoint = reference.ceilingKey(endPoint);
+				if (ceilingPoint == null) {
+					ans[i] = -1;
+				} else {
+					ans[i] = reference.get(ceilingPoint);
+				}
+			}
+			return ans;
+		}
+	}
+}

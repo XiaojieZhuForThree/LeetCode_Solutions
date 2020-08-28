@@ -1,7 +1,6 @@
-package problems;
+package com.leetcode.problems;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import com.leetcode.api.SolBase;
 
 public class Question470 {
 	/**
@@ -10,7 +9,7 @@ public class Question470 {
 	 * 
 	 * @return a random integer in the range 1 to 7
 	 */
-	class Solution extends SolBase {
+	class Solution1 extends SolBase {
 		public int rand10() {
 			int indicator;
 			do {
@@ -27,9 +26,26 @@ public class Question470 {
 		}
 	}
 
-	public int rand7() {
-		// TODO Auto-generated method stub
-		Random random = ThreadLocalRandom.current();
-		return random.nextInt(7) + 1;
+	
+	class Solution2 extends SolBase {
+	    public int rand10() {
+	        int generatedNumber = rand5();
+	        int minus = determineMinus();
+	        return generatedNumber * 2 - minus;
+	    }
+	    private final int rand5() {
+	        int num = rand7();
+	        while (num > 5) {
+	            num = rand7();
+	        }
+	        return num;
+	    }
+	    private final int determineMinus() {
+	        int num = rand7();
+	        while (num == 7) {
+	            num = rand7();
+	        }
+	        return num < 4 ? 1 : 0;
+	    }
 	}
 }

@@ -13,16 +13,12 @@ public class Question1359 {
 				return 1;
 			}
 			long prevCount = countOrders(n - 1);
-			long base = sum(2 * n - 1);
+			int base = sum(2 * n - 1);
 			return (prevCount * base) % mod;
 		}
 
 		private final int sum(int n) {
-			int ans = 0;
-			for (int i = 1; i <= n; i++) {
-				ans += i;
-			}
-			return ans;
+			return n * (n + 1) / 2;
 		}
 	}
 }

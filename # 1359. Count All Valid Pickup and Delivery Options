@@ -1,0 +1,28 @@
+package com.leetcode.problems;
+
+public class Question1359 {
+	class Solution {
+		int mod = 1000000007;
+
+		public int countOrders(int n) {
+			return (int) calculatePerm(n);
+		}
+
+		private final long calculatePerm(int n) {
+			if (n == 1) {
+				return 1;
+			}
+			long prevCount = countOrders(n - 1);
+			long base = sum(2 * n - 1);
+			return (prevCount * base) % mod;
+		}
+
+		private final int sum(int n) {
+			int ans = 0;
+			for (int i = 1; i <= n; i++) {
+				ans += i;
+			}
+			return ans;
+		}
+	}
+}

@@ -46,20 +46,20 @@ public class Question952 {
 
 		public int largestComponentSize(int[] A) {
 			UnionFind uf = new UnionFind();
-			Map<Integer, Integer> map = new HashMap<>();
+			Map<Integer, Integer> divideValues = new HashMap<>();
 			for (int i = 0; i < A.length; i++) {
 				int a = A[i];
 				for (int j = 2; j * j <= a; j++) {
 					if (!canDivide(a, j)) {
 						continue;
 					}
-					map.putIfAbsent(j, a);
-					map.putIfAbsent(a / j, a);
-					uf.union(map.get(j), a);
-					uf.union(map.get(a / j), a);
+					divideValues.putIfAbsent(j, a);
+					divideValues.putIfAbsent(a / j, a);
+					uf.union(divideValues.get(j), a);
+					uf.union(divideValues.get(a / j), a);
 				}
-				map.putIfAbsent(a, a);
-				uf.union(map.get(a), a);
+				divideValues.putIfAbsent(a, a);
+				uf.union(divideValues.get(a), a);
 			}
 			return uf.maxSize();
 		}

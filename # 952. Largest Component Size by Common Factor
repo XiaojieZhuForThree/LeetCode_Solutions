@@ -1,60 +1,71 @@
-class Solution {
-    class UF{
-        int[] parents;
-        int[]sizes;
-        int max;
-        public UF(int N) {
-            parents = new int[N];
-            sizes = new int[N];
-            max = 1;
-            for (int i = 0; i < N; i++) {
-                parents[i] = i;
-                sizes[i] = 1;
-            }
-        }
-        public int find(int x) {
-            if (x == parents[x]) {
-                return x;
-            }
-            parents[x] = find(parents[x]);
-            return parents[x];
-        }
-        public void union(int x, int y) {
-            int parX = find(x);
-            int parY = find(y);
-            if (parX != parY) {
-                parents[parX] = parY;
-                sizes[parY] += sizes[parX];
-                sizes[parX] = 1;
-                max = Math.max(max, sizes[parY]);
-            }
-        }
-    }
-    public int largestComponentSize(int[] A) {
-        Map<Integer, Integer> map = new HashMap<>();
-        UF uf = new UF(A.length);
-        for (int i = 0; i < A.length; i++) {
-            int a = A[i];
-            for (int j = 2; j * j <= a; j++) {
-                if (a % j == 0) {
-                    if (!map.containsKey(j)) {
-                        map.put(j, i);
-                    } else {
-                        uf.union(i, map.get(j));
-                    }
-                    if (!map.containsKey(a/j)) {
-                        map.put(a/j, i);
-                    } else {
-                        uf.union(i, map.get(a/j));
-                    }
-                }
-            }
-            if (!map.containsKey(a)) {
-                map.put(a, i);
-            } else {
-                uf.union(i, map.get(a));
-            }
-        }
-        return uf.max;
-    }
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question952 {
+	class Solution {
+		class UnionFind {
+			private final int[] parents;
+			private final int[] size;
+
+			public UnionFind() {
+				parents = new int[100001];
+				size = new int[100001];
+				for (int i = 0; i < parents.length; i++) {
+					parents[i] = i;
+					size[i] = 1;
+				}
+			}
+
+			public final int find(int i) {
+				if (parents[i] != i) {
+					parents[i] = find(parents[i]);
+				}
+				return parents[i];
+			}
+
+			public final void union(int A, int B) {
+				int parentA = find(A);
+				int parentB = find(B);
+				if (parentA == parentB) {
+					return;
+				}
+				parents[parentA] = parentB;
+				size[parentB] += size[parentA];
+			}
+
+			public final int maxSize() {
+				int max = 0;
+				for (int i : size) {
+					max = Math.max(max, i);
+				}
+				return max;
+			}
+		}
+
+		public int largestComponentSize(int[] A) {
+			UnionFind uf = new UnionFind();
+			Map<Integer, Integer> map = new HashMap<>();
+			for (int i = 0; i < A.length; i++) {
+				int a = A[i];
+				for (int j = 2; j * j <= a; j++) {
+					if (!canDivide(a, j)) {
+						continue;
+					}
+					map.putIfAbsent(j, a);
+					map.putIfAbsent(a / j, a);
+					uf.union(map.get(j), a);
+					uf.union(map.get(a / j), a);
+				}
+				map.putIfAbsent(a, a);
+				uf.union(map.get(a), a);
+			}
+			return uf.maxSize();
+		}
+
+		private final boolean canDivide(int a, int b) {
+			return a % b == 0;
+		}
+	}
 }

@@ -4,27 +4,32 @@ public class Question450 {
 	class Solution {
 		public TreeNode deleteNode(TreeNode root, int key) {
 			if (root == null) {
-				return null;
+				return root;
 			}
-			if (key < root.val) {
+			if (root.val > key) {
 				root.left = deleteNode(root.left, key);
-			} else if (key > root.val) {
-				root.right = deleteNode(root.right, key);
-			} else {
-				if (root.left == null) {
-					return root.right;
-				} else if (root.right == null) {
-					return root.left;
-				}
-				TreeNode minNode = findMin(root.right);
-				root.val = minNode.val;
-				root.right = deleteNode(root.right, root.val);
+				return root;
 			}
+			if (root.val < key) {
+				root.right = deleteNode(root.right, key);
+				return root;
+			}
+			if (root.left == null) {
+				return root.right;
+			}
+			if (root.right == null) {
+				return root.left;
+			}
+			TreeNode switchNode = findLargestValueNode(root.left);
+			root.val = switchNode.val;
+			switchNode.val = key;
+			root.left = deleteNode(root.left, key);
 			return root;
 		}
-		private TreeNode findMin(TreeNode node) {
-			while (node.left != null) {
-				node = node.left;
+
+		private final TreeNode findLargestValueNode(TreeNode node) {
+			while (node.right != null) {
+				node = node.right;
 			}
 			return node;
 		}

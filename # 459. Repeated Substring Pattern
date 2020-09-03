@@ -1,0 +1,24 @@
+package com.leetcode.problems;
+
+public class Question459 {
+	class Solution {
+		public boolean repeatedSubstringPattern(String s) {
+			for (int i = 1; i <= s.length() / 2; i++) {
+				if (s.length() % i == 0 && canMatch(s, i)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private final boolean canMatch(String s, int i) {
+			String pattern = s.substring(0, i);
+			for (int j = i; j <= s.length() - i; j += i) {
+				if (!pattern.equals(s.substring(j, j + i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

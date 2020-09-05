@@ -1,37 +1,63 @@
-class Solution {
-    public List<Integer> partitionLabels(String S) {
-        List<Integer> ans = new ArrayList<>();
-        if (S == null || S.length() == 0) {
-            return ans;
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        for (char i : S.toCharArray()) {
-            map.put(i, map.getOrDefault(i, 0) + 1);
-        }
-        int j = 0;
-        while (j < S.length()) {
-            if (map.get(S.charAt(j)) == 1) {
-                ans.add(1);
-                j++;
-            }
-            else {
-                Set<Character> set = new HashSet<>();
-                set.add(S.charAt(j));
-                int start = j, end = j;
-                int remaining = map.get(S.charAt(j));
-                while (remaining > 0) {
-                    if (set.contains(S.charAt(end))) {
-                        remaining--;
-                        end++;
-                    } else {
-                        set.add(S.charAt(end));
-                        remaining += map.get(S.charAt(end));
-                    }
-                }
-                ans.add(end - start);
-                j = end;
-            }
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question763 {
+	class Solution {
+		public List<Integer> partitionLabels(String S) {
+			Map<Character, Integer> parts = new HashMap<>();
+			int[] pos = new int[26];
+			Arrays.fill(pos, -1);
+			for (int i = 0; i < S.length(); i++) {
+				char c = S.charAt(i);
+				if (!parts.containsKey(c)) {
+					parts.put(c, i);
+					pos[c - 'a'] = i;
+				} else {
+					int part = parts.get(c);
+					for (int j = 0; j < 26; j++) {
+						if (pos[j] > part) {
+							pos[j] = part;
+							parts.put((char) (j + 'a'), part);
+						}
+					}
+				}
+			}
+			return getPartLengths(pos, S);
+		}
+
+		private final List<Integer> getPartLengths(int[] pos, String S) {
+			List<Integer> list = getSegments(pos);
+			return getParts(list, S);
+		}
+
+		private final List<Integer> getSegments(int[] pos) {
+			Set<Integer> set = new HashSet<>();
+			for (int i : pos) {
+				if (i == -1) {
+					continue;
+				}
+				set.add(i);
+			}
+			List<Integer> list = new ArrayList<>(set);
+			Collections.sort(list);
+			return list;
+		}
+
+		private final List<Integer> getParts(List<Integer> list, String S) {
+			List<Integer> ans = new ArrayList<>();
+			for (int i = 0; i < list.size() - 1; i++) {
+				ans.add(list.get(i + 1) - list.get(i));
+			}
+			ans.add(S.length() - list.get(list.size() - 1));
+			return ans;
+		}
+	}
 }

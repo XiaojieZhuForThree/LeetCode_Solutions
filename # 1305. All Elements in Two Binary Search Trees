@@ -1,6 +1,8 @@
-package problems;
+package com.leetcode.problems;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 public class Question1305 {
@@ -47,6 +49,68 @@ public class Question1305 {
 				}
 			}
 			return ans;
+		}
+	}
+
+	class Solution2 {
+		public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+			List<Integer> integersForRoot1 = getIntegers(root1);
+			List<Integer> integersForRoot2 = getIntegers(root2);
+			return merge(integersForRoot1, integersForRoot2);
+		}
+
+		private final List<Integer> getIntegers(TreeNode root) {
+			List<Integer> list = new ArrayList<>();
+			Deque<TreeNode> stack = new ArrayDeque<>();
+			while (root != null) {
+				stack.offer(root);
+				root = root.left;
+			}
+			while (!stack.isEmpty()) {
+				TreeNode node = stack.pollLast();
+				list.add(node.val);
+				addNodes(stack, node.right);
+			}
+			return list;
+		}
+
+		private final void addNodes(Deque<TreeNode> stack, TreeNode node) {
+			while (node != null) {
+				stack.offer(node);
+				node = node.left;
+			}
+		}
+
+		private final List<Integer> merge(List<Integer> list1, List<Integer> list2) {
+			int ptr1 = 0, ptr2 = 0;
+			List<Integer> ans = new ArrayList<>();
+			while (ptr1 < list1.size() || ptr2 < list2.size()) {
+				if (ptr1 == list1.size()) {
+					fillListWithRemainingNumbers(ans, list2, ptr2);
+					break;
+				} else if (ptr2 == list2.size()) {
+					fillListWithRemainingNumbers(ans, list1, ptr1);
+					break;
+				} else {
+					int val1 = list1.get(ptr1);
+					int val2 = list2.get(ptr2);
+					if (val1 < val2) {
+						ans.add(val1);
+						ptr1++;
+					} else {
+						ans.add(val2);
+						ptr2++;
+					}
+				}
+			}
+			return ans;
+		}
+
+		private final void fillListWithRemainingNumbers(List<Integer> ans, List<Integer> list, int ptr) {
+			for (; ptr < list.size(); ptr++) {
+				ans.add(list.get(ptr));
+			}
+			return;
 		}
 	}
 }

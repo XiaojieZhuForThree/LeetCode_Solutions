@@ -1,0 +1,60 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class Question957 {
+	class Solution {
+		public int[] prisonAfterNDays(int[] cells, int N) {
+			Map<Integer, String> sequences = generateSequences(cells);
+			int n = (N - 1) % sequences.size();
+			String s = sequences.get(n);
+			return generateArray(s);
+		}
+
+		private final Map<Integer, String> generateSequences(int[] cells) {
+			int i = 0;
+			Set<String> seen = new HashSet<>();
+			Map<Integer, String> map = new HashMap<>();
+			updateCells(cells);
+			String s = generateString(cells);
+			while (!seen.contains(s)) {
+				seen.add(s);
+				map.put(i++, s);
+				updateCells(cells);
+				s = generateString(cells);
+			}
+			return map;
+		}
+
+		private final void updateCells(int[] cells) {
+			int[] reference = cells.clone();
+			for (int i = 0; i < 8; i++) {
+				if (i == 0 || i == 7) {
+					cells[i] = 0;
+				} else {
+					cells[i] = reference[i - 1] == reference[i + 1] ? 1 : 0;
+				}
+			}
+			return;
+		}
+
+		private final String generateString(int[] cells) {
+			StringBuilder builder = new StringBuilder();
+			for (int i : cells) {
+				builder.append(i);
+			}
+			return builder.toString();
+		}
+
+		private final int[] generateArray(String s) {
+			int[] cells = new int[8];
+			for (int i = 0; i < 8; i++) {
+				cells[i] = (int) (s.charAt(i) - '0');
+			}
+			return cells;
+		}
+	}
+}

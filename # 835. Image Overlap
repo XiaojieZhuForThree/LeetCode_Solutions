@@ -1,0 +1,31 @@
+package com.leetcode.problems;
+
+public class Question835 {
+	class Solution {
+		public int largestOverlap(int[][] A, int[][] B) {
+			int n = A.length;
+			int maxOverlap = 0;
+			for (int i = 1 - n; i < n; i++) {
+				for (int j = 1 - n; j < n; j++) {
+					maxOverlap = Math.max(maxOverlap, getOverlap(A, B, i, j));
+				}
+			}
+			return maxOverlap;
+		}
+
+		private final int getOverlap(int[][] A, int[][] B, int i, int j) {
+			int cnt = 0;
+			for (int r = 0; r < A.length; r++) {
+				for (int c = 0; c < A.length; c++) {
+					if (r + i < 0 || c + j < 0 || r + i >= A.length || c + j >= A.length) {
+						continue;
+					}
+					if (A[r + i][c + j] == 1 && B[r][c] == 1) {
+						cnt++;
+					}
+				}
+			}
+			return cnt;
+		}
+	}
+}

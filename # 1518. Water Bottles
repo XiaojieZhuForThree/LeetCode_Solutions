@@ -1,0 +1,16 @@
+package com.leetcode.problems;
+
+public class Question1518 {
+	class Solution {
+		public int numWaterBottles(int numBottles, int numExchange) {
+			int ans = numBottles, emptyBottles = numBottles;
+			while (emptyBottles >= numExchange) {
+				int extraFilledBottles = emptyBottles / numExchange;
+				emptyBottles %= numExchange;
+				ans += extraFilledBottles;
+				emptyBottles += extraFilledBottles;
+			}
+			return ans;
+		}
+	}
+}

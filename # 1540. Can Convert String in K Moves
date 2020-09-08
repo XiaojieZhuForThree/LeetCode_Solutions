@@ -1,45 +1,28 @@
 package com.leetcode.problems;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class Question1540 {
 	class Solution {
-		public boolean canConvertString(String s, String t, int k) {
-			if (s.length() != t.length()) {
-				return false;
-			}
-			List<Integer> changes = getShifts(s, t);
-			int accumulate = 0;
-			for (int i = 0; i < changes.size(); i++) {
-				int change = changes.get(i);
-				if (i == 0 || changes.get(i - 1) != change) {
-					accumulate = 0;
-				}
-				int val = accumulate * 26 + change;
-				if (val > k) {
-					return false;
-				}
-				accumulate++;
-			}
-			return true;
-		}
-
-		private final List<Integer> getShifts(String s, String t) {
-			List<Integer> changes = new ArrayList<>();
-			for (int i = 0; i < s.length(); i++) {
-				if (s.charAt(i) == t.charAt(i)) {
-					continue;
-				}
-				changes.add(getNumOfShifts(s.charAt(i), t.charAt(i)));
-			}
-			Collections.sort(changes);
-			return changes;
-		}
-
-		private final int getNumOfShifts(char a, char b) {
-			return (b - a + 26) % 26;
-		}
+	    public boolean canConvertString(String s, String t, int k) {
+	        if (s.length() != t.length()) {
+	            return false;
+	        }
+	        int[] shiftCounts = new int[26];
+	        for (int i = 0; i < s.length(); i++) {
+	            if (s.charAt(i) == t.charAt(i)) {
+	                continue;
+	            }
+	            int shift = getNumOfShifts(s.charAt(i), t.charAt(i));
+	            int val = shiftCounts[shift] * 26 + shift;
+	            if (val > k) {
+	                return false;
+	            }
+	            shiftCounts[shift]++;
+	        }
+	        return true;
+	    }
+	    
+	    private final int getNumOfShifts(char a, char b) {
+	        return (b - a + 26) % 26;
+	    }
 	}
 }

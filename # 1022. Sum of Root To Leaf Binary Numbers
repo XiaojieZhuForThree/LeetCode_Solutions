@@ -1,33 +1,29 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1022 {
-	/**
-	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
-	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
-	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
-	 * = left; this.right = right; } }
-	 */
 	class Solution1 {
-		int ans = 0;
-
-		public int sumRootToLeaf(TreeNode root) {
-			dfs(root, 0);
-			return ans;
-		}
-
-		private void dfs(TreeNode root, int cur) {
-			if (root == null) {
-				return;
-			}
-			cur *= 2;
-			cur += root.val;
-			if (root.left == null && root.right == null) {
-				ans += cur;
-				return;
-			}
-			dfs(root.left, cur);
-			dfs(root.right, cur);
-		}
+	    int sum = 0;
+	    public int sumRootToLeaf(TreeNode root) {
+	        dfs(root);
+	        return sum;
+	    }
+	    private final void dfs(TreeNode node) {
+	        if (node == null) {
+	            return;
+	        }
+	        if (node.left == null && node.right == null) {
+	            sum += node.val;
+	            return;
+	        }
+	        if (node.left != null) {
+	            node.left.val += node.val * 2;
+	            dfs(node.left);
+	        }
+	        if (node.right != null) {
+	            node.right.val += node.val * 2;
+	            dfs(node.right);
+	        }
+	    }
 	}
 
 	class Solution2 {

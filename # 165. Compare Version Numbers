@@ -1,41 +1,20 @@
-class Solution {
-    public int compareVersion(String version1, String version2) {
-        int pos1 = 0, pos2 = 0;
-        int dotPos1, dotPos2, v1, v2;
-        while (pos1 < version1.length() && pos2 < version2.length()){
-            dotPos1 = version1.indexOf('.', pos1);
-            dotPos2 = version2.indexOf('.', pos2);
-            dotPos1 = (dotPos1 == -1) ? version1.length() : dotPos1;
-            dotPos2 = (dotPos2 == -1) ? version2.length() : dotPos2;
-            v1 = Integer.parseInt(version1.substring(pos1, dotPos1));
-            v2 = Integer.parseInt(version2.substring(pos2, dotPos2));
-            if (v1 < v2){
-                return -1;
-            } else if (v1 > v2){
-                return 1;
-            } else {
-                pos1 = ++dotPos1;
-                pos2 = ++dotPos2;
-            }
-        }
-        while (pos1 < version1.length()){
-            dotPos1 = version1.indexOf('.', pos1);
-            dotPos1 = (dotPos1 == -1) ? version1.length() : dotPos1;
-            v1 = Integer.parseInt(version1.substring(pos1, dotPos1));
-            if (v1 > 0){
-                return 1;
-            }
-            pos1 = ++dotPos1;
-        }
-        while (pos2 < version2.length()){
-            dotPos2 = version2.indexOf('.', pos2);
-            dotPos2 = (dotPos2 == -1) ? version2.length() : dotPos2;
-            v2 = Integer.parseInt(version2.substring(pos2, dotPos2));
-            if (v2 > 0){
-                return -1;
-            }
-            pos2 = ++dotPos2;
-        }
-        return 0;
-    }
+package com.leetcode.problems;
+
+public class Question165 {
+	class Solution {
+		public int compareVersion(String version1, String version2) {
+			String[] partOfVersion1 = version1.split("\\.");
+			String[] partOfVersion2 = version2.split("\\.");
+			int len = Math.max(partOfVersion1.length, partOfVersion2.length);
+			for (int i = 0; i < len; i++) {
+				int version1LevelI = i >= partOfVersion1.length ? 0 : Integer.parseInt(partOfVersion1[i]);
+				int version2LevelI = i >= partOfVersion2.length ? 0 : Integer.parseInt(partOfVersion2[i]);
+				if (Integer.compare(version1LevelI, version2LevelI) == 0) {
+					continue;
+				}
+				return Integer.compare(version1LevelI, version2LevelI);
+			}
+			return 0;
+		}
+	}
 }

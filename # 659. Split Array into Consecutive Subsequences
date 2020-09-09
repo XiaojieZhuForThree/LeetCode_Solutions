@@ -1,0 +1,39 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class Question659 {
+	class Solution {
+		public boolean isPossible(int[] nums) {
+			Map<Integer, PriorityQueue<Integer>> record = divideNums(nums);
+			return isRightlyDistributed(record);
+		}
+
+		private final Map<Integer, PriorityQueue<Integer>> divideNums(int[] nums) {
+			Map<Integer, PriorityQueue<Integer>> record = new HashMap<>();
+			for (int i : nums) {
+				if (!record.containsKey(i - 1) || record.get(i - 1).isEmpty()) {
+					record.putIfAbsent(i, new PriorityQueue<>());
+					record.get(i).add(1);
+				} else {
+					int smallest = record.get(i - 1).poll();
+					record.putIfAbsent(i, new PriorityQueue<>());
+					record.get(i).add(smallest + 1);
+				}
+			}
+			return record;
+		}
+
+		private final boolean isRightlyDistributed(Map<Integer, PriorityQueue<Integer>> record) {
+			for (int i : record.keySet()) {
+				PriorityQueue<Integer> queue = record.get(i);
+				if (!queue.isEmpty() && queue.peek() < 3) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

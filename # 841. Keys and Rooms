@@ -1,59 +1,40 @@
-class Solution {
-    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        boolean[] visited = new boolean[rooms.size()];
-        Queue<Integer> queue = new LinkedList<>();
-        visited[0] = true;
-        helper(rooms, 0, visited, queue);
-        while (!queue.isEmpty()) {
-            int i = queue.poll();
-            helper(rooms, i, visited, queue);
-        }
-        boolean ans = true;
-        for (boolean i : visited){
-            ans &= i;
-        }
-        return ans;
-    }
-    
-    public void helper(List<List<Integer>> rooms, int i, boolean[] visited, Queue<Integer> queue) {
-        for (int j : rooms.get(i)) {
-            if (!visited[j]) {
-                visited[j] = true;
-                queue.add(j);
-            }
-        }
-    }
-}
+package com.leetcode.problems;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-class Solution {
-    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        return helper(rooms, 0, new HashSet<>());
-    }
-    public boolean helper(List<List<Integer>> rooms, int key, Set<Integer> dfs) {
-        dfs.add(key);
-        for (int i : rooms.get(key)) {
-            if (!dfs.contains(i)) {
-                helper(rooms, i, dfs);
-            }
-        }
-        return dfs.size() == rooms.size();
-    }
-}
+public class Question841 {
+	class Solution {
+		public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+			Set<Integer> keys = bfs(rooms);
+			return canOpenAllRooms(keys, rooms);
+		}
 
-class Solution{
-    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        Stack<Integer> dfs = new Stack<>(); dfs.add(0);
-        HashSet<Integer> seen = new HashSet<Integer>(); seen.add(0);
-        while (!dfs.isEmpty()) {
-            int i = dfs.pop();
-            for (int j : rooms.get(i))
-                if (!seen.contains(j)) {
-                    dfs.add(j);
-                    seen.add(j);
-                    if (rooms.size() == seen.size()) return true;
-                }
-        }
-        return rooms.size() == seen.size();
-    }
+		private final Set<Integer> bfs(List<List<Integer>> rooms) {
+			Set<Integer> keys = new HashSet<>();
+			Set<Integer> visited = new HashSet<>();
+			keys.add(0);
+			visited.add(0);
+			visit(visited, keys, rooms, 0);
+			return keys;
+		}
+
+		private final void visit(Set<Integer> visited, Set<Integer> keys, List<List<Integer>> rooms, int i) {
+			List<Integer> keysInRoom = rooms.get(i);
+			for (int j : keysInRoom) {
+				if (visited.contains(j)) {
+					continue;
+				}
+				visited.add(j);
+				keys.add(j);
+				visit(visited, keys, rooms, j);
+			}
+			return;
+		}
+
+		private final boolean canOpenAllRooms(Set<Integer> keys, List<List<Integer>> rooms) {
+			return keys.size() == rooms.size();
+		}
+	}
 }

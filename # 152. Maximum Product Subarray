@@ -1,25 +1,35 @@
-class Solution {
-    public int maxProduct(int[] nums) {
-        if (nums == null) return 0;
-        int max = nums[0], poss = nums[0], negs = nums[0];
-        for (int i = 1; i < nums.length; i++){
-            int pos = poss * nums[i], neg = negs * nums[i];
-            poss = Math.max(nums[i], Math.max(pos, neg));
-            max = Math.max(max, poss);
-            negs = nums[i] < 0 ? Math.min(nums[i], pos) : Math.min(nums[i], neg);
-        }
-        return max;
-    }
-}
+package com.leetcode.problems;
 
-class Solution {
-    public int maxProduct(int[] nums) {
-        int n = nums.length, res = nums[0], l = 0, r = 0; 
-        for (int i = 0; i < nums.length; i++) {
-            l = (l == 0 ? 1 : l) * nums[i];
-            r = (r == 0 ? 1 : r) * nums[n-1-i];
-            res = Math.max(res, Math.max(l, r));
-        }
-        return res;
-    }
+public class Question152 {
+	class Solution {
+		public int maxProduct(int[] nums) {
+			if (nums == null || nums.length == 0) {
+				return 0;
+			}
+			if (nums.length == 1) {
+				return nums[0];
+			}
+			return getMaxProduct(nums);
+		}
+
+		private final int getMaxProduct(int[] nums) {
+			int largestPos = 0, smallestNeg = 0, max = 0;
+			for (int i : nums) {
+				if (i == 0) {
+					largestPos = 0;
+					smallestNeg = 0;
+				} else if (i > 0) {
+					largestPos = largestPos == 0 ? i : i * largestPos;
+					smallestNeg *= i;
+				} else {
+					int nextSmallestNeg = smallestNeg;
+					nextSmallestNeg = largestPos == 0 ? i : i * largestPos;
+					largestPos = smallestNeg * i;
+					smallestNeg = nextSmallestNeg;
+				}
+				max = Math.max(max, largestPos);
+			}
+			return max;
+		}
+	}
 }

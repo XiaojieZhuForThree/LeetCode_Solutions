@@ -1,0 +1,67 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Question1261 {
+	class FindElements {
+		TreeNode root;
+
+		public FindElements(TreeNode root) {
+			this.root = root;
+			if (this.root != null) {
+				this.root.val = 0;
+				this.root = recoverTree(root);
+			}
+		}
+
+		public boolean find(int target) {
+			List<Integer> path = generatePath(target);
+			TreeNode node = root;
+			for (int i : path) {
+				node = isEvenNumber(i) ? node.right : node.left;
+				if (node == null) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private final TreeNode recoverTree(TreeNode node) {
+			if (node == null) {
+				return null;
+			}
+			int val = node.val;
+			if (node.left != null) {
+				node.left.val = val * 2 + 1;
+			}
+			if (node.right != null) {
+				node.right.val = val * 2 + 2;
+			}
+			node.left = recoverTree(node.left);
+			node.right = recoverTree(node.right);
+			return node;
+		}
+
+		private final List<Integer> generatePath(int target) {
+			List<Integer> path = new ArrayList<>();
+			while (target > 0) {
+				path.add(target);
+				target = (isEvenNumber(target) ? target - 2 : target - 1) / 2;
+			}
+			Collections.reverse(path);
+			return path;
+		}
+
+		private final boolean isEvenNumber(int number) {
+			return number % 2 == 0;
+		}
+	}
+
+	/**
+	 * Your FindElements object will be instantiated and called as such:
+	 * FindElements obj = new FindElements(root); boolean param_1 =
+	 * obj.find(target);
+	 */
+}

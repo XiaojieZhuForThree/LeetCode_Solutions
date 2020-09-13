@@ -1,26 +1,56 @@
-class Solution {
-    public int[][] insert(int[][] intervals, int[] newInterval) {
-        if (intervals == null || intervals.length == 0) {
-            return new int[][]{{newInterval[0], newInterval[1]}};
-        }
-        int start = newInterval[0], end = newInterval[1];
-        List<int[]> ans = new ArrayList<>();
-        boolean in = false;
-        for (int[] interval : intervals) {
-            if (interval[0] > end || interval[1] < start) {
-                if (interval[0] > end && !in) {
-                    ans.add(new int[] {start, end});
-                    in = true;
-                }
-                ans.add(interval);
-            } else {
-                start = Math.min(start, interval[0]);
-                end = Math.max(end, interval[1]);
-            }
-        }
-        if (!in) {
-            ans.add(new int[]{start, end});
-        }
-        return ans.toArray(new int[ans.size()][2]);
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question57 {
+	class Solution {
+		public int[][] insert(int[][] intervals, int[] newInterval) {
+			boolean[] removed = new boolean[intervals.length];
+			for (int i = 0; i < intervals.length; i++) {
+				int[] interval = intervals[i];
+				if (noOverlap(interval, newInterval)) {
+					continue;
+				}
+				removed[i] = true;
+				newInterval = merge(interval, newInterval);
+			}
+			return getNewIntervals(intervals, removed, newInterval);
+		}
+
+		private final boolean noOverlap(int[] interval, int[] newInterval) {
+			return interval[1] < newInterval[0] || interval[0] > newInterval[1];
+		}
+
+		private final int[] merge(int[] interval, int[] newInterval) {
+			int left = Math.min(interval[0], newInterval[0]);
+			int right = Math.max(interval[1], newInterval[1]);
+			newInterval[0] = left;
+			newInterval[1] = right;
+			return newInterval;
+		}
+
+		private final int[][] getNewIntervals(int[][] intervals, boolean[] removed, int[] newInterval) {
+			List<int[]> ans = new ArrayList<>();
+			boolean added = false;
+			for (int i = 0; i < intervals.length; i++) {
+				if (!removed[i]) {
+					int[] interval = intervals[i];
+					if (afterNewInterval(interval, newInterval) && !added) {
+						ans.add(newInterval);
+						added = true;
+					}
+					ans.add(interval);
+				}
+			}
+			if (!added) {
+				ans.add(newInterval);
+			}
+			return ans.toArray(new int[ans.size()][2]);
+		}
+
+		private final boolean afterNewInterval(int[] interval, int[] newInterval) {
+			return interval[0] > newInterval[0];
+		}
+	}
 }

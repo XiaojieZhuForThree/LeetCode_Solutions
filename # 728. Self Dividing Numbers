@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question728 {
+	class Solution {
+		public List<Integer> selfDividingNumbers(int left, int right) {
+			List<Integer> ans = new ArrayList<>();
+			for (int i = left; i <= right; i++) {
+				if (isSelfDivisible(i)) {
+					ans.add(i);
+				}
+			}
+			return ans;
+		}
+
+		private final boolean isSelfDivisible(int i) {
+			int j = i;
+			while (j > 0) {
+				int num = j % 10;
+				if (num == 0 || i % num != 0) {
+					return false;
+				}
+				j /= 10;
+			}
+			return true;
+		}
+	}
+}

@@ -1,85 +1,77 @@
-class Solution {
-    public String minWindow(String s, String t) {
-        if (s == null || t == null || s.length() == 0 || t.length() == 0 || s.length() < t.length()) {
-            return "";
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        int len = s.length();
-        int left = 0, right = s.length()-1;
-        for (char c : t.toCharArray()) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
-        }
-        int i = 0, j = 0, count = t.length();
-        boolean flag = false;
-        while (j < s.length()) {
-            char c = s.charAt(j);
-            if (map.containsKey(c)) {
-                map.put(c, map.get(c) - 1);
-                if (map.get(c) >= 0) {
-                    count--;
-                }
-            }
-            while (count == 0 && i <= j) {
-                flag = true;
-                int curLen = j - i + 1;
-                if (curLen < len) {
-                    len = curLen;
-                    left = i; right = j;
-                }
-                char x = s.charAt(i);
-                if (map.containsKey(x)) {
-                    map.put(x, map.get(x) + 1);
-                    if (map.get(x) >= 1) {
-                        count++;
-                    }
-                }
-                i++;
-            }
-            j++;
-        }
-        return flag == true ? s.substring(left, right + 1) : "";
-    }
-}
+package com.leetcode.problems;
 
+import java.util.HashMap;
+import java.util.Map;
 
-class Solution {
-    public String minWindow(String s, String t) {
-        int left = 0, right = 0, ansLeft = 0, ansRight = s.length()-1;
-        int minLen = s.length();
-        boolean found = false;
-        int erase = 0;
-        Map<Character, Integer> map = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
-        }
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            if (map.containsKey(c)) {
-                map.put(c, map.get(c)-1);
-                if (map.get(c) == 0) {
-                    erase++;
-                }
-                if (erase == map.size()) {
-                    found = true;
-                    while (erase == map.size() && left <= right) {
-                        if (right - left + 1 < minLen) {
-                            ansLeft = left;
-                            ansRight = right;
-                            minLen = ansRight - ansLeft + 1;
-                        }
-                        char l = s.charAt(left);
-                        if (map.containsKey(l)) {
-                            map.put(l, map.get(l) + 1);
-                            if (map.get(l) > 0) {
-                                erase --;
-                            }
-                        }
-                        left++;
-                    }
-                }
-            }
-            right++;
-        }
-        return found == false ? "" : s.substring(ansLeft, ansRight + 1);
-    }
+public class Question76 {
+	class Solution {
+		public String minWindow(String s, String t) {
+			int left = 0, right = 0;
+			Map<Character, Integer> charCounts = getCharCounts(t);
+			int totalChar = t.length();
+			int idealLeft = -1, idealRight = -1;
+			int minSize = Integer.MAX_VALUE;
+
+			while (left < s.length()) {
+				if (charCounts.containsKey(s.charAt(left))) {
+					charCounts.put(s.charAt(left), charCounts.get(s.charAt(left)) - 1);
+					totalChar--;
+					if (totalChar == 0) {
+						minSize = 1;
+						idealLeft = left;
+						idealRight = left + 1;
+					}
+					break;
+				}
+				left++;
+			}
+
+			right = left + 1;
+
+			while (right < s.length()) {
+				char c = s.charAt(right);
+				if (!charCounts.containsKey(c)) {
+					right++;
+					continue;
+				}
+				charCounts.put(c, charCounts.get(c) - 1);
+				if (charCounts.get(c) >= 0) {
+					totalChar--;
+				}
+				char leftCharacter = s.charAt(left);
+				if (charCounts.get(leftCharacter) < 0) {
+					for (; left < right; left++) {
+						if (!charCounts.containsKey(s.charAt(left))) {
+							continue;
+						}
+						if (charCounts.get(s.charAt(left)) >= 0) {
+							break;
+						}
+						charCounts.put(s.charAt(left), charCounts.get(s.charAt(left)) + 1);
+					}
+				}
+				if (totalChar == 0) {
+					int newSize = right - left + 1;
+					if (newSize < minSize) {
+						minSize = newSize;
+						idealLeft = left;
+						idealRight = right + 1;
+					}
+				}
+				right++;
+			}
+			if (minSize == Integer.MAX_VALUE) {
+				return "";
+			}
+			return s.substring(idealLeft, idealRight);
+		}
+
+		private final Map<Character, Integer> getCharCounts(String t) {
+			Map<Character, Integer> charCounts = new HashMap<>();
+			for (char c : t.toCharArray()) {
+				charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+			}
+			return charCounts;
+		}
+	}
 }

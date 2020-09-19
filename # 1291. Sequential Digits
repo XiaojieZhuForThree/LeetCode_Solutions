@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,36 +7,42 @@ public class Question1291 {
 	class Solution {
 		public List<Integer> sequentialDigits(int low, int high) {
 			List<Integer> ans = new ArrayList<>();
-			int test = 1, lB = 0, hB = 0;
-			while (test <= low) {
-				test *= 10;
-				lB++;
-				hB++;
-			}
-			while (test <= high) {
-				test *= 10;
-				hB++;
-			}
-			for (; lB <= hB; lB++) {
-				ans.addAll(getSeq(lB, low, high));
+			int lowerBound = findDigits(low);
+			int higherBound = findDigits(high);
+			for (; lowerBound <= higherBound; lowerBound++) {
+				ans.addAll(generateSequentialDigits(lowerBound, low, high));
+
 			}
 			return ans;
 		}
 
-		private List<Integer> getSeq(int bound, int low, int high) {
+		private final int findDigits(int i) {
+			int ans = 0;
+			while (i > 0) {
+				ans++;
+				i /= 10;
+			}
+			return ans;
+		}
+
+		private final List<Integer> generateSequentialDigits(int bound, int low, int high) {
 			List<Integer> ans = new ArrayList<>();
-			for (int i = 1; i < 10; i++) {
-				int j = i, dig = 0, val = 0;
-				while (dig < bound && j < 10) {
-					val = val * 10 + j;
-					dig++;
-					j++;
-				}
-				if (dig == bound && low <= val && val <= high) {
-					ans.add(val);
+			for (int i = 1; i + bound - 1 < 10; i++) {
+				int number = generateNum(i, bound);
+				if (low <= number && number <= high) {
+					ans.add(number);
 				}
 			}
 			return ans;
+		}
+
+		private final int generateNum(int i, int bound) {
+			int j = 0;
+			for (int m = 0; m < bound; m++) {
+				j *= 10;
+				j += i++;
+			}
+			return j;
 		}
 	}
 }

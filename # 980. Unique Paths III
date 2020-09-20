@@ -5,66 +5,131 @@ import java.util.Set;
 
 public class Question980 {
 	class Solution {
-	    int ans = 0;
-	    Set<Integer> seen = new HashSet<>();
-	    int[][] dirs = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-	    public int uniquePathsIII(int[][] grid) {
-	        int[] start = findStart(grid);
-	        int numOfEmptySquare = getEmptySquareNum(grid);
-	        seen.add(start[0] * grid[0].length + start[1]);
-	        dfs(grid, start[0], start[1], 0, numOfEmptySquare);
-	        return ans;
-	    }
-	    private final void dfs(int[][] grid, int x, int y, int curNum, int numOfEmptySquare) {
-	        if (grid[x][y] == 2) {
-	            if (curNum == numOfEmptySquare) {
-	                ans++;
-	            }
-	            return;
-	        }
-	        if (grid[x][y] == 0) {
-	            curNum++;
-	        }
-	        for (int[] dir : dirs) {
-	            int nx = x + dir[0];
-	            int ny = y + dir[1];
-	            if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length) {
-	                continue;
-	            }
-	            if (grid[nx][ny] == -1) {
-	                continue;
-	            }
-	            if (seen.contains(nx * grid[0].length + ny)) {
-	                continue;
-	            }
-	            seen.add(nx * grid[0].length + ny);
-	            dfs(grid, nx, ny, curNum, numOfEmptySquare);
-	            seen.remove(nx * grid[0].length + ny);  
-	        }
-	        return;
-	    }
-	    
-	    private final int[] findStart(int[][] grid) {
-	        for (int i = 0; i < grid.length; i++) {
-	            for (int j = 0; j < grid[0].length; j++) {
-	                if (grid[i][j] == 1) {
-	                    return new int[] {i, j};
-	                }
-	            }
-	        }
-	        return new int[0];
-	    }
-	    
-	    private final int getEmptySquareNum(int[][] grid) {
-	        int ans = 0;
-	        for (int[] row : grid) {
-	            for (int cell : row) {
-	                if (cell == 0) {
-	                    ans++;
-	                }
-	            }
-	        }
-	        return ans;
-	    }
+		int ans = 0;
+		Set<Integer> seen = new HashSet<>();
+		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+		public int uniquePathsIII(int[][] grid) {
+			int[] start = findStart(grid);
+			int numOfEmptySquare = getEmptySquareNum(grid);
+			seen.add(start[0] * grid[0].length + start[1]);
+			dfs(grid, start[0], start[1], 0, numOfEmptySquare);
+			return ans;
+		}
+
+		private final void dfs(int[][] grid, int x, int y, int curNum, int numOfEmptySquare) {
+			if (grid[x][y] == 2) {
+				if (curNum == numOfEmptySquare) {
+					ans++;
+				}
+				return;
+			}
+			if (grid[x][y] == 0) {
+				curNum++;
+			}
+			for (int[] dir : dirs) {
+				int nx = x + dir[0];
+				int ny = y + dir[1];
+				if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length) {
+					continue;
+				}
+				if (grid[nx][ny] == -1) {
+					continue;
+				}
+				if (seen.contains(nx * grid[0].length + ny)) {
+					continue;
+				}
+				seen.add(nx * grid[0].length + ny);
+				dfs(grid, nx, ny, curNum, numOfEmptySquare);
+				seen.remove(nx * grid[0].length + ny);
+			}
+			return;
+		}
+
+		private final int[] findStart(int[][] grid) {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1) {
+						return new int[] { i, j };
+					}
+				}
+			}
+			return new int[0];
+		}
+
+		private final int getEmptySquareNum(int[][] grid) {
+			int ans = 0;
+			for (int[] row : grid) {
+				for (int cell : row) {
+					if (cell == 0) {
+						ans++;
+					}
+				}
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		int ans = 0;
+		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+		public int uniquePathsIII(int[][] grid) {
+			int[] start = findStart(grid);
+			int numOfEmptySquare = getEmptySquareNum(grid);
+			dfs(grid, start[0], start[1], 0, numOfEmptySquare);
+			return ans;
+		}
+
+		private final void dfs(int[][] grid, int x, int y, int curNum, int numOfEmptySquare) {
+			if (grid[x][y] == 2) {
+				if (curNum == numOfEmptySquare) {
+					ans++;
+				}
+				return;
+			}
+
+			for (int[] dir : dirs) {
+				int nx = x + dir[0];
+				int ny = y + dir[1];
+				if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length) {
+					continue;
+				}
+				if (grid[nx][ny] == 1 || grid[nx][ny] == -1) {
+					continue;
+				}
+				if (grid[nx][ny] == 0) {
+					grid[nx][ny] = -1;
+					dfs(grid, nx, ny, curNum + 1, numOfEmptySquare);
+					grid[nx][ny] = 0;
+				} else {
+					dfs(grid, nx, ny, curNum, numOfEmptySquare);
+				}
+			}
+			return;
+		}
+
+		private final int[] findStart(int[][] grid) {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1) {
+						return new int[] { i, j };
+					}
+				}
+			}
+			return new int[0];
+		}
+
+		private final int getEmptySquareNum(int[][] grid) {
+			int ans = 0;
+			for (int[] row : grid) {
+				for (int cell : row) {
+					if (cell == 0) {
+						ans++;
+					}
+				}
+			}
+			return ans;
+		}
 	}
 }

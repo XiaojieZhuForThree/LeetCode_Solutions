@@ -21,11 +21,20 @@ public class Question1094 {
 
 	class Solution2 {
 		public boolean carPooling(int[][] trips, int capacity) {
+			Map<Integer, Integer> timeStamps = getTimeStamps(trips);
+			return canCarPooling(timeStamps, capacity);
+		}
+
+		private final Map<Integer, Integer> getTimeStamps(int[][] trips) {
 			Map<Integer, Integer> timeStamps = new TreeMap<>();
 			for (int[] trip : trips) {
 				timeStamps.put(trip[1], timeStamps.getOrDefault(trip[1], 0) + trip[0]);
 				timeStamps.put(trip[2], timeStamps.getOrDefault(trip[2], 0) - trip[0]);
 			}
+			return timeStamps;
+		}
+
+		private final boolean canCarPooling(Map<Integer, Integer> timeStamps, int capacity) {
 			for (int val : timeStamps.values()) {
 				capacity -= val;
 				if (capacity < 0) {

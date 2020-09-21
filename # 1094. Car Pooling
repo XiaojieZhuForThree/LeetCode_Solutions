@@ -44,4 +44,22 @@ public class Question1094 {
 			return true;
 		}
 	}
+
+	class Solution3 {
+		public boolean carPooling(int[][] trips, int capacity) {
+			int[] timeSlots = new int[1001];
+			for (int[] trip : trips) {
+				timeSlots[trip[1]] += trip[0];
+				timeSlots[trip[2]] -= trip[0];
+			}
+			int curCapacity = 0;
+			for (int i : timeSlots) {
+				curCapacity += i;
+				if (curCapacity > capacity) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 }

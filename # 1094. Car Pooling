@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Question1094 {
+	class Solution1 {
+		public boolean carPooling(int[][] trips, int capacity) {
+			int[] timeSlots = new int[1001];
+			for (int[] trip : trips) {
+				for (int start = trip[1]; start < trip[2]; start++) {
+					timeSlots[start] += trip[0];
+					if (timeSlots[start] > capacity) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+
+	class Solution2 {
+		public boolean carPooling(int[][] trips, int capacity) {
+			Map<Integer, Integer> timeStamps = new TreeMap<>();
+			for (int[] trip : trips) {
+				timeStamps.put(trip[1], timeStamps.getOrDefault(trip[1], 0) + trip[0]);
+				timeStamps.put(trip[2], timeStamps.getOrDefault(trip[2], 0) - trip[0]);
+			}
+			for (int val : timeStamps.values()) {
+				capacity -= val;
+				if (capacity < 0) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

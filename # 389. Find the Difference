@@ -1,53 +1,32 @@
-class Solution1 {
-    public char findTheDifference(String s, String t) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (char i: t.toCharArray()) {
-        	map.put(i, map.getOrDefault(i, 0) + 1);
-        }
-        for (char j : s.toCharArray()) {
-        	if (map.get(j) == 1) {
-        		map.remove(j);
-        	}
-        	else {
-        		map.put(j, map.get(j)-1);
-        	}
-        }
-        char[] ans = new char[1];
-        for (char i : map.keySet()) {
-        	ans[0] = i;
-        }
-        return ans[0];
-    }
-}
+package com.leetcode.problems;
 
-class Solution2 {
-    public char findTheDifference(String s, String t) {
-        int[] seen = new int[26];
-        for (char i: t.toCharArray()) {
-        	seen[i-'a']++;
-        }
-        for (char j : s.toCharArray()) {
-        	seen[j-'a']--;
-        }
-        int x = 0;
-        for (; x < 26; x++) {
-        	if (seen[x] == 1) {
-        		break;
-        	}
-        }
-        return (char)(x + 'a');
-    }
-}
+public class Question389 {
+	class Solution1 {
+		public char findTheDifference(String s, String t) {
+			int[] chars = new int[26];
+			for (char c : s.toCharArray()) {
+				chars[c - 'a']++;
+			}
+			for (char c : t.toCharArray()) {
+				chars[c - 'a']--;
+				if (chars[c - 'a'] < 0) {
+					return c;
+				}
+			}
+			return 'a';
+		}
+	}
 
-class Solution3 {
-    public char findTheDifference(String s, String t) {
-    	char ans = 0;
-    	int i = 0;
-    	for (; i < t.length()-1; i++) {
-    		ans ^= s.charAt(i);
-    		ans ^= t.charAt(i);
-    	}
-    	ans ^= t.charAt(i);
-    	return ans;
-    }
+	class Solution2 {
+		public char findTheDifference(String s, String t) {
+			char ans = 0;
+			int i = 0;
+			for (; i < t.length() - 1; i++) {
+				ans ^= s.charAt(i);
+				ans ^= t.charAt(i);
+			}
+			ans ^= t.charAt(i);
+			return ans;
+		}
+	}
 }

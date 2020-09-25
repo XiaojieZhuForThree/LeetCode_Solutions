@@ -1,31 +1,19 @@
-import java.util.*;
+package com.leetcode.problems;
 
-class Solution {
-	public String largestNumber(int[] nums) {
-		PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
-			public int compare(String arg0, String arg1) {
-				if (arg0.contentEquals(arg1)) return 0;
-				if (arg0.length() > arg1.length()) {
-					return -compare(arg1, arg0);
-				}
-				for (int i = 0; i < arg0.length(); i++) {
-					if (arg0.charAt(i) != arg1.charAt(i)) {
-						return arg1.charAt(i) - arg0.charAt(i);
-					}
-				}
-				return compare(arg0, arg1.substring(arg0.length()));
+import java.util.PriorityQueue;
+
+public class Question179 {
+	class Solution {
+		public String largestNumber(int[] nums) {
+			PriorityQueue<String> pq = new PriorityQueue<>((a, b) -> (b + a).compareTo(a + b));
+			for (int i : nums) {
+				pq.offer(String.valueOf(i));
 			}
-		});
-		for (int i : nums) {
-			pq.add(Integer.toString(i));
+			StringBuilder sb = new StringBuilder();
+			while (!pq.isEmpty()) {
+				sb.append(pq.poll());
+			}
+			return sb.charAt(0) == '0' ? "0" : sb.toString();
 		}
-		StringBuilder sb = new StringBuilder();
-		while (!pq.isEmpty()) {
-			sb.append(pq.remove());
-		}
-		if (sb.length() > 0 && sb.charAt(0) == '0') {
-			return new String("0");
-		}
-		return sb.toString();
 	}
 }

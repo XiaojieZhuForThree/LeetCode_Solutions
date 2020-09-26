@@ -2,20 +2,17 @@ package com.leetcode.problems;
 
 public class Question495 {
 	class Solution {
-		public int findPoisonedDuration(int[] timeSeries, int duration) {
-			int totalPoisonedTime = 0, currentTime = -1;
-			for (int time : timeSeries) {
-				totalPoisonedTime += duration - getOverlapTime(currentTime, time);
-				currentTime = time + duration - 1;
-			}
-			return totalPoisonedTime;
-		}
-
-		private final int getOverlapTime(int currentTime, int time) {
-			if (time <= currentTime) {
-				return currentTime - time + 1;
-			}
-			return 0;
-		}
+	    public int findPoisonedDuration(int[] timeSeries, int duration) {
+	        int ans = 0, endTime = -1;
+	        for (int time : timeSeries) {
+	            if (time > endTime) {
+	                ans += duration;
+	            } else {
+	                ans += time + duration - endTime - 1;
+	            }
+	            endTime = time + duration - 1;
+	        }
+	        return ans;
+	    }
 	}
 }

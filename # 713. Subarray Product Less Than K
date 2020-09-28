@@ -1,0 +1,49 @@
+package com.leetcode.problems;
+
+public class Question713 {
+	class Solution1 {
+		public int numSubarrayProductLessThanK(int[] nums, int k) {
+			int left = 0, right = 0, prevRight = 0;
+			long ans = 0, product = 1;
+			while (right < nums.length) {
+				product *= nums[right];
+				if (product >= k) {
+					ans += getNum(right - 1 - left + 1) - getNum(prevRight - left + 1);
+					prevRight = right - 1;
+				}
+				while (product >= k) {
+					product /= nums[left++];
+					if (left > right) {
+						break;
+					}
+				}
+				right++;
+			}
+			return (int) (ans + getNum(right - 1 - left + 1) - getNum(prevRight - left + 1) + 1);
+		}
+
+		private long getNum(int n) {
+			if (n <= 0) {
+				return 0;
+			}
+			return (long) ((long) (n + 1) * (long) n) / 2;
+		}
+	}
+
+	class Solution2 {
+		public int numSubarrayProductLessThanK(int[] nums, int k) {
+			if (k == 0)
+				return 0;
+			int cnt = 0;
+			int pro = 1;
+			for (int i = 0, j = 0; j < nums.length; j++) {
+				pro *= nums[j];
+				while (i <= j && pro >= k) {
+					pro /= nums[i++];
+				}
+				cnt += j - i + 1;
+			}
+			return cnt;
+		}
+	}
+}

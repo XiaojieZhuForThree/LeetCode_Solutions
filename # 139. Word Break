@@ -1,36 +1,25 @@
-// key: dynamic programming
+package com.leetcode.problems;
 
-class Solution {
-    Set<String> remains = new HashSet<>();
-    public boolean wordBreak(String s, List<String> wordDict) {
-        for (String i : wordDict) {
-        	if (s.equals(i)) {
-        		return true;
-        	}
-        	else if (s.length()>i.length() && s.substring(0,i.length()).equals(i)) {
-        		String remain = s.substring(i.length(), s.length());
-        		if (!remains.contains(remain) && wordBreak(remain, wordDict) == true) {
-            			return true;
-        		}
-    			remains.add(remain);
-        	}
-        }
-        return false;
-    }
-}
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-
-class Solution {
-    public boolean wordBreak(String s, List<String> wordDict) {
-        boolean[] dp = new boolean[s.length()+1];
-        dp[0] = true;
-        for (int i = 0; i <= s.length(); i++) {
-            for (String word : wordDict) {
-                if (word.length() <= i && dp[i-word.length()] && word.equals(s.substring(i-word.length(), i))) {
-                    dp[i] = true;
-                }
-            }
-        }
-        return dp[s.length()];
-    }
+public class Question139 {
+	class Solution {
+		public boolean wordBreak(String s, List<String> wordDict) {
+			boolean[] dp = new boolean[s.length() + 1];
+			dp[0] = true;
+			Set<String> set = new HashSet<>(wordDict);
+			for (int i = 1; i <= s.length(); i++) {
+				for (int j = 0; j < i; j++) {
+					if (set.contains(s.substring(j, i)) && dp[j] == true) {
+						dp[i] = true;
+						break;
+					}
+					dp[i] = false;
+				}
+			}
+			return dp[s.length()];
+		}
+	}
 }

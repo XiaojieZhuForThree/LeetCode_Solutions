@@ -4,58 +4,37 @@ public class Question41 {
 	class Solution {
 		public int firstMissingPositive(int[] nums) {
 			processNums(nums);
-			return getFirstMissingPositive(nums);
+			return findMissingPos(nums);
 		}
 
 		private final void processNums(int[] nums) {
-			changeInvalidValues(nums);
-			markNums(nums);
-		}
-
-		private final void changeInvalidValues(int[] nums) {
 			int n = nums.length;
 			for (int i = 0; i < n; i++) {
-				int num = nums[i];
-				if (numIsNonPositiveOrGreaterThanN(num, n)) {
+				if (nonPosOrOverflow(nums[i], n)) {
 					nums[i] = n + 1;
 				}
 			}
+			for (int i = 0; i < n; i++) {
+				int target = Math.abs(nums[i]);
+				if (nonPosOrOverflow(target, n)) {
+					continue;
+				}
+				int pos = nums[target - 1];
+				nums[target - 1] = -Math.abs(pos);
+			}
 		}
 
-		private final boolean numIsNonPositiveOrGreaterThanN(int num, int n) {
+		private final boolean nonPosOrOverflow(int num, int n) {
 			return num <= 0 || num > n;
 		}
 
-		private final void markNums(int[] nums) {
-			int n = nums.length;
-			for (int i : nums) {
-				i = Math.abs(i);
-				if (numIsNonPositiveOrGreaterThanN(i, n)) {
-					continue;
-				}
-				int index = i - 1;
-				markNumAtIndex(nums, index);
-			}
-		}
-
-		private final void markNumAtIndex(int[] nums, int index) {
-			if (nums[index] > 0) {
-				nums[index] = -nums[index];
-			}
-		}
-
-		private final int getFirstMissingPositive(int[] nums) {
-			int n = nums.length;
-			for (int i = 0; i < n; i++) {
-				if (!marked(nums[i])) {
+		private final int findMissingPos(int[] nums) {
+			for (int i = 0; i < nums.length; i++) {
+				if (nums[i] >= 0) {
 					return i + 1;
 				}
 			}
-			return n + 1;
-		}
-
-		private final boolean marked(int i) {
-			return i < 0;
+			return nums.length + 1;
 		}
 	}
 }

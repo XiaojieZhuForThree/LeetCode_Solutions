@@ -1,0 +1,28 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class Question933 {
+	class RecentCounter {
+		Queue<Integer> queue;
+
+		public RecentCounter() {
+			queue = new ArrayDeque<>();
+		}
+
+		public int ping(int t) {
+			int last = t - 3000;
+			while (!queue.isEmpty() && queue.peek() < last) {
+				queue.poll();
+			}
+			queue.offer(t);
+			return queue.size();
+		}
+	}
+
+	/**
+	 * Your RecentCounter object will be instantiated and called as such:
+	 * RecentCounter obj = new RecentCounter(); int param_1 = obj.ping(t);
+	 */
+}

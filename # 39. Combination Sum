@@ -1,26 +1,35 @@
-class Solution {
-	Set<List<Integer>> set = new HashSet<>();
+package com.leetcode.problems;
 
-	private void dynamic(int[] candidates, int target, List<Integer> combo) {
-		if (target == 0) {
-			Collections.sort(combo);
-			set.add(combo);
-			return;
-		} else if (target < 0) {
-			return;
-		} else {
-			for (int i : candidates) {
-				int sub = target - i;
-				List<Integer> next = new ArrayList<>(combo);
-				next.add(i);
-				dynamic(candidates, sub, next);
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Question39 {
+	class Solution {
+		List<List<Integer>> ans = new ArrayList<>();
+
+		public List<List<Integer>> combinationSum(int[] candidates, int target) {
+			Arrays.sort(candidates);
+			dfs(candidates, new ArrayList<>(), 0, target, 0);
+			return ans;
+		}
+
+		private void dfs(int[] candidates, List<Integer> list, int cur, int target, int index) {
+			if (cur == target) {
+				ans.add(new ArrayList<>(list));
+				return;
 			}
+			if (cur > target) {
+				return;
+			}
+			for (; index < candidates.length; index++) {
+				if (cur + candidates[index] <= target) {
+					list.add(candidates[index]);
+					dfs(candidates, list, cur + candidates[index], target, index);
+					list.remove(list.size() - 1);
+				}
+			}
+			return;
 		}
 	}
-
-	public List<List<Integer>> combinationSum(int[] candidates, int target) {
-		dynamic(candidates, target, new ArrayList<Integer>());
-		return new ArrayList<List<Integer>>(set);
-	}
-
 }

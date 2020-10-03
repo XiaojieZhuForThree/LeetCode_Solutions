@@ -1,0 +1,23 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question532 {
+	class Solution {
+		public int findPairs(int[] nums, int k) {
+			Set<Integer> seenNums = new HashSet<>();
+			Set<Integer> pairReps = new HashSet<>();
+			for (int i : nums) {
+				if (seenNums.contains(i - k)) {
+					pairReps.add(i - k);
+				}
+				if (seenNums.contains(i + k)) {
+					pairReps.add(i);
+				}
+				seenNums.add(i);
+			}
+			return pairReps.size();
+		}
+	}
+}

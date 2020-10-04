@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -6,23 +6,28 @@ import java.util.Comparator;
 public class Question1288 {
 	class Solution {
 		public int removeCoveredIntervals(int[][] intervals) {
-			Arrays.sort(intervals, new Comparator<int[]>() {
-				public int compare(int[] a, int[] b) {
-					if (Integer.compare(a[0], b[0]) == 0) {
-						return Integer.compare(b[1], a[1]);
+			Comparator<int[]> comparator = new Comparator<>() {
+				@Override
+				public int compare(int[] o1, int[] o2) {
+					if (o1[0] == o2[0]) {
+						return o2[1] - o1[1];
 					}
-					return Integer.compare(a[0], b[0]);
+					return o1[0] - o2[0];
 				}
-			});
-			int ans = intervals.length;
-			int right = intervals[0][1];
+			};
+			Arrays.sort(intervals, comparator);
+			return removeCovered(intervals);
+		}
+
+		private final int removeCovered(int[][] intervals) {
+			int ans = 1, index = 0;
 			for (int i = 1; i < intervals.length; i++) {
-				int[] interval = intervals[i];
-				if (interval[1] <= right) {
-					ans--;
-				} else {
-					right = interval[1];
+				int[] target = intervals[i], reference = intervals[index];
+				if (target[0] >= reference[0] && target[1] <= reference[1]) {
+					continue;
 				}
+				ans++;
+				index = i;
 			}
 			return ans;
 		}

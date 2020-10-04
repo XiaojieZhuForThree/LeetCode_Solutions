@@ -1,0 +1,52 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
+public class Question854 {
+	class Solution {
+		public int kSimilarity(String A, String B) {
+			if (A.equals(B)) {
+				return 0;
+			}
+			Set<String> visited = new HashSet<>();
+			Queue<String> queue = new ArrayDeque<>();
+			queue.offer(A);
+			visited.add(A);
+			int ans = 0;
+			while (!queue.isEmpty()) {
+				ans++;
+				for (int size = queue.size(); size > 0; size--) {
+					String s = queue.poll();
+					int i = 0;
+					while (s.charAt(i) == B.charAt(i)) {
+						i++;
+					}
+					for (int j = i + 1; j < s.length(); j++) {
+						if (s.charAt(j) == B.charAt(j) || s.charAt(j) != B.charAt(i)) {
+							continue;
+						}
+						String temp = swap(s, i, j);
+						if (temp.equals(B)) {
+							return ans;
+						}
+						if (visited.add(temp)) {
+							queue.offer(temp);
+						}
+					}
+				}
+			}
+			return ans;
+		}
+
+		private String swap(String s, int i, int j) {
+			char[] chars = s.toCharArray();
+			char temp = chars[i];
+			chars[i] = chars[j];
+			chars[j] = temp;
+			return new String(chars);
+		}
+	}
+}

@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+public class Question1009 {
+	class Solution1 {
+	    public int bitwiseComplement(int N) {
+	        String rep = Integer.toBinaryString(N);
+	        int val = 0;
+	        for (char c : rep.toCharArray()) {
+	            val *= 2;
+	            if (c == '0') {
+	                val++;
+	            }
+	        }
+	        return val;
+	    }
+	}
+	class Solution2 {
+	    public int bitwiseComplement(int N) {
+	        if (N == 0) {
+	            return 1;
+	        }
+	        int ref = Integer.highestOneBit(N<<1) - 1;
+	        return ref ^ N;
+	    }
+	}
+}

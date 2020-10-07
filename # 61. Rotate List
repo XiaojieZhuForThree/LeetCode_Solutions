@@ -1,0 +1,44 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.ListNode;
+
+public class Question61 {
+	class Solution {
+		public ListNode rotateRight(ListNode head, int k) {
+			int len = findLen(head);
+			if (len == 0 || len == 1) {
+				return head;
+			}
+			int split = k % len;
+			if (split == 0) {
+				return head;
+			}
+			ListNode dummy = head;
+			ListNode tail = findTail(head);
+			for (int i = 1; i < len - split; i++) {
+				dummy = dummy.next;
+			}
+			ListNode remaining = dummy.next;
+			dummy.next = null;
+			tail.next = head;
+			return remaining;
+		}
+
+		private int findLen(ListNode head) {
+			int len = 0;
+			while (head != null) {
+				len++;
+				head = head.next;
+			}
+			return len;
+		}
+
+		private ListNode findTail(ListNode head) {
+			ListNode dummy = head;
+			while (dummy.next != null) {
+				dummy = dummy.next;
+			}
+			return dummy;
+		}
+	}
+}

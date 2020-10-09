@@ -1,0 +1,56 @@
+package com.leetcode.problems;
+
+public class Question449 {
+	public class Codec {
+
+		// Encodes a tree to a single string.
+		public String serialize(TreeNode root) {
+			StringBuilder builder = new StringBuilder();
+			generateString(root, builder);
+			return builder.toString();
+		}
+
+		// Decodes your encoded data to tree.
+		public TreeNode deserialize(String data) {
+			if (data == null || data.length() == 0) {
+				return null;
+			}
+			String[] vals = data.split(",");
+			int headVal = Integer.valueOf(vals[0]);
+			TreeNode head = new TreeNode(headVal);
+			int i = 1;
+			StringBuilder leftBuilder = new StringBuilder(), rightBuilder = new StringBuilder();
+			for (; i < vals.length; i++) {
+				if (Integer.valueOf(vals[i]) > headVal) {
+					break;
+				}
+				leftBuilder.append(vals[i]);
+				leftBuilder.append(",");
+			}
+			for (; i < vals.length; i++) {
+				rightBuilder.append(vals[i]);
+				rightBuilder.append(",");
+			}
+			head.left = deserialize(leftBuilder.toString());
+			head.right = deserialize(rightBuilder.toString());
+			return head;
+		}
+
+		private void generateString(TreeNode node, StringBuilder builder) {
+			if (node == null) {
+				return;
+			}
+			builder.append(node.val);
+			builder.append(",");
+			generateString(node.left, builder);
+			generateString(node.right, builder);
+		}
+	}
+
+	// Your Codec object will be instantiated and called as such:
+	// Codec ser = new Codec();
+	// Codec deser = new Codec();
+	// String tree = ser.serialize(root);
+	// TreeNode ans = deser.deserialize(tree);
+	// return ans;
+}

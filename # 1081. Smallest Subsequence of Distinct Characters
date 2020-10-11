@@ -1,0 +1,34 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1081 {
+	class Solution {
+		public String smallestSubsequence(String text) {
+			int[] counts = new int[26];
+			for (char c : text.toCharArray()) {
+				counts[c - 'a']++;
+			}
+			boolean[] seen = new boolean[26];
+			Deque<Character> stack = new ArrayDeque<>();
+			for (char c : text.toCharArray()) {
+				counts[c - 'a']--;
+				if (seen[c - 'a']) {
+					continue;
+				}
+				while (!stack.isEmpty() && stack.peekLast() > c && counts[stack.peekLast() - 'a'] > 0) {
+					seen[stack.peekLast() - 'a'] = false;
+					stack.pollLast();
+				}
+				stack.offerLast(c);
+				seen[c - 'a'] = true;
+			}
+			StringBuilder sb = new StringBuilder();
+			for (char c : stack) {
+				sb.append(c);
+			}
+			return sb.toString();
+		}
+	}
+}

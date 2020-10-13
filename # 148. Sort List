@@ -1,55 +1,69 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode sortList(ListNode head) {
-        return helper(head);
-    }
-    
-    private ListNode helper(ListNode head){
-        //basic case
-        if(head==null||head.next==null) return head;
-        
-        ListNode fast = head;
-        ListNode slow = head;
-        ListNode pre = slow;
-        
-        while(fast!=null&&fast.next!=null){
-            pre = slow;
-            slow=slow.next;
-            fast = fast.next.next;
-        }
-        pre.next = null;
-        
-        ListNode one = helper(head);
-        ListNode two = helper(slow);
-        
-        return combine(one,two);
-    }
-    
-    ListNode combine(ListNode one, ListNode two){
-        ListNode head = new ListNode(0);
-        ListNode temp = head;
-        while(one!=null&&two!=null){
-            if(one.val<two.val){
-                temp.next = one;
-                one = one.next;
-                temp = temp.next;
-            }
-            else{
-                temp.next = two;
-                temp = temp.next;
-                two=two.next;
-            }
-        }
-        if(one==null) temp.next = two;
-        if(two==null) temp.next = one;
-        return head.next;
-    }
-    
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+import com.leetcode.api.ListNode;
+
+public class Question148 {
+
+	class Solution1 {
+		public ListNode sortList(ListNode head) {
+			if (head == null || head.next == null) {
+				return head;
+			}
+			PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+			while (head != null) {
+				pq.offer(head);
+				head = head.next;
+			}
+			ListNode node = pq.poll();
+			ListNode dummy = node;
+			while (!pq.isEmpty()) {
+				dummy.next = pq.poll();
+				dummy = dummy.next;
+			}
+			dummy.next = null;
+			return node;
+		}
+	}
+
+	class Solution2 {
+		public ListNode sortList(ListNode head) {
+			if (head == null || head.next == null) {
+				return head;
+			}
+			ListNode slow = head, fast = head.next;
+			while (fast != null && fast.next != null) {
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+			ListNode next = slow.next;
+			slow.next = null;
+			head = sortList(head);
+			next = sortList(next);
+			return merge(head, next);
+		}
+
+		private ListNode merge(ListNode node1, ListNode node2) {
+			ListNode head = new ListNode(0), dummy = head;
+			while (node1 != null && node2 != null) {
+				if (node1.val < node2.val) {
+					dummy.next = node1;
+					node1 = node1.next;
+					dummy = dummy.next;
+				} else {
+					dummy.next = node2;
+					node2 = node2.next;
+					dummy = dummy.next;
+				}
+			}
+			if (node1 != null) {
+				dummy.next = node1;
+			}
+			if (node2 != null) {
+				dummy.next = node2;
+			}
+			return head.next;
+		}
+	}
 }

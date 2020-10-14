@@ -14,6 +14,7 @@ public class Question316 {
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']++;
 			}
+
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']--;
 				if (contains[c - 'a']) {
@@ -26,9 +27,11 @@ public class Question316 {
 				stack.offer(c);
 				contains[c - 'a'] = true;
 			}
+
 			for (char c : stack) {
 				sb.append(c);
 			}
+
 			return sb.toString();
 		}
 	}

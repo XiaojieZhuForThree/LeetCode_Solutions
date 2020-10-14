@@ -6,25 +6,26 @@ import java.util.Deque;
 public class Question316 {
 	class Solution {
 		public String removeDuplicateLetters(String s) {
+			int[] counts = new int[26];
+			boolean[] contains = new boolean[26];
 			Deque<Character> stack = new ArrayDeque<>();
-			int[] count = new int[26];
+			StringBuilder sb = new StringBuilder();
+
 			for (char c : s.toCharArray()) {
-				count[c - 'a']++;
+				counts[c - 'a']++;
 			}
-			boolean[] visited = new boolean[26];
 			for (char c : s.toCharArray()) {
-				count[c - 'a']--;
-				if (visited[c - 'a']) {
+				counts[c - 'a']--;
+				if (contains[c - 'a']) {
 					continue;
 				}
-				while (!stack.isEmpty() && stack.peekLast() > c && count[stack.peekLast() - 'a'] > 0) {
-					visited[stack.peekLast() - 'a'] = false;
+				while (!stack.isEmpty() && stack.peekLast() > c && counts[stack.peekLast() - 'a'] > 0) {
+					contains[stack.peekLast() - 'a'] = false;
 					stack.pollLast();
 				}
-				stack.offerLast(c);
-				visited[c - 'a'] = true;
+				stack.offer(c);
+				contains[c - 'a'] = true;
 			}
-			StringBuilder sb = new StringBuilder();
 			for (char c : stack) {
 				sb.append(c);
 			}

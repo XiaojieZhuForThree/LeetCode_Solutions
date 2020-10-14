@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1013 {
 	class Solution {
@@ -10,15 +10,21 @@ public class Question1013 {
 			if (sum % 3 != 0) {
 				return false;
 			}
-			int part = sum / 3, cur = 0, t = 0;
-			for (int i : A) {
-				cur += i;
-				if (cur == part) {
-					cur = 0;
-					t++;
+			int part = sum / 3;
+			int sum1 = 0;
+			boolean first = false;
+			for (int i = 0; i < A.length; i++) {
+				sum1 += A[i];
+				if (sum1 == part) {
+					if (first == true) {
+						return i < A.length - 1 ? true : false;
+					} else {
+						sum1 = 0;
+						first = true;
+					}
 				}
 			}
-			return t >= 3;
+			return false;
 		}
 	}
 }

@@ -6,13 +6,13 @@ import java.util.Map;
 public class Question1001 {
 	class Solution {
 		public int[] gridIllumination(int N, int[][] lamps, int[][] queries) {
-			int[][] dirs = new int[][] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }, { 1, 1 }, { 1, -1 },
-					{ -1, 1 }, { -1, -1 } };
 			Map<Integer, Integer> rows = new HashMap<>();
 			Map<Integer, Integer> cols = new HashMap<>();
 			Map<Integer, Integer> uppers = new HashMap<>();
 			Map<Integer, Integer> lowers = new HashMap<>();
 			Map<Integer, Boolean> lightOn = new HashMap<>();
+			int[][] dirs = new int[][] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { 1, -1 },
+					{ -1, 1 }, { -1, -1 } };
 			for (int[] lamp : lamps) {
 				int x = lamp[0], y = lamp[1];
 				rows.put(x, rows.getOrDefault(x, 0) + 1);
@@ -21,15 +21,12 @@ public class Question1001 {
 				lowers.put(x - y, lowers.getOrDefault(x - y, 0) + 1);
 				lightOn.put(x * N + y, true);
 			}
-			int[] ans = new int[queries.length];
-			int i = 0;
+			int i = 0, ans[] = new int[queries.length];
 			for (int[] query : queries) {
 				int x = query[0], y = query[1];
 				if (rows.getOrDefault(x, 0) > 0 || cols.getOrDefault(y, 0) > 0 || uppers.getOrDefault(x + y, 0) > 0
 						|| lowers.getOrDefault(x - y, 0) > 0) {
 					ans[i] = 1;
-				} else {
-					ans[i] = 0;
 				}
 				i++;
 				for (int[] dir : dirs) {

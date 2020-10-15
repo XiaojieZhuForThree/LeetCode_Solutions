@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +32,25 @@ public class Question1016 {
 			}
 			for (int i = 1; i <= N; i++) {
 				if (!set.contains(i)) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	class Solution3 {
+		public boolean queryString(String S, int N) {
+			for (int i = 1; i <= N; i++) {
+				String s = Integer.toBinaryString(i);
+				boolean contains = false;
+				for (int j = 0; j <= S.length() - s.length(); j++) {
+					if (S.substring(j, j + s.length()).equals(s)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
 					return false;
 				}
 			}

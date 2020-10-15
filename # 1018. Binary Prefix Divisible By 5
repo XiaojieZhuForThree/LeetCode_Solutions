@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,10 @@ public class Question1018 {
 	class Solution {
 		public List<Boolean> prefixesDivBy5(int[] A) {
 			List<Boolean> ans = new ArrayList<>();
-			int val = 0;
-			for (int i = 0; i < A.length; i++) {
-				val = (val * 2 + A[i]) % 5;
-				ans.add(val == 0);
+			int remainder = 0;
+			for (int i : A) {
+				remainder = (remainder * 2 + i) % 5;
+				ans.add(remainder == 0);
 			}
 			return ans;
 		}

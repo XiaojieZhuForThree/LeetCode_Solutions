@@ -27,7 +27,12 @@ public class Question148 {
 		}
 	}
 
-	class Solution2 {
+	/**
+	 * Definition for singly-linked list. public class ListNode { int val; ListNode
+	 * next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val,
+	 * ListNode next) { this.val = val; this.next = next; } }
+	 */
+	class Solution {
 		public ListNode sortList(ListNode head) {
 			if (head == null || head.next == null) {
 				return head;
@@ -39,9 +44,8 @@ public class Question148 {
 			}
 			ListNode next = slow.next;
 			slow.next = null;
-			head = sortList(head);
-			next = sortList(next);
-			return merge(head, next);
+			ListNode node1 = sortList(head), node2 = sortList(next);
+			return merge(node1, node2);
 		}
 
 		private ListNode merge(ListNode node1, ListNode node2) {
@@ -50,12 +54,11 @@ public class Question148 {
 				if (node1.val < node2.val) {
 					dummy.next = node1;
 					node1 = node1.next;
-					dummy = dummy.next;
 				} else {
 					dummy.next = node2;
 					node2 = node2.next;
-					dummy = dummy.next;
 				}
+				dummy = dummy.next;
 			}
 			if (node1 != null) {
 				dummy.next = node1;

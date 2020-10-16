@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.ListNode;
+
+public class Question82 {
+
+	class Solution {
+		public ListNode deleteDuplicates(ListNode head) {
+			ListNode preHead = new ListNode(-1);
+			preHead.next = head;
+			ListNode pre = preHead, node = head;
+			while (node != null) {
+				if (node.next != null && node.next.val == node.val) {
+					int val = node.val;
+					while (node != null && node.val == val) {
+						node = node.next;
+					}
+					pre.next = node;
+				} else {
+					pre = pre.next;
+					node = node.next;
+				}
+			}
+			return preHead.next;
+		}
+	}
+}

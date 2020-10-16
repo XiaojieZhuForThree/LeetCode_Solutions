@@ -8,7 +8,6 @@ import java.util.List;
 import com.leetcode.api.ListNode;
 
 public class Question1019 {
-
 	class Solution {
 		public int[] nextLargerNodes(ListNode head) {
 			List<Integer> vals = new ArrayList<>();
@@ -16,18 +15,14 @@ public class Question1019 {
 				vals.add(head.val);
 				head = head.next;
 			}
-			int[] ans = new int[vals.size()];
 			Deque<Integer> stack = new ArrayDeque<>();
+			int[] ans = new int[vals.size()];
 			for (int i = vals.size() - 1; i >= 0; i--) {
 				while (!stack.isEmpty() && stack.peekLast() <= vals.get(i)) {
 					stack.pollLast();
 				}
-				if (stack.isEmpty()) {
-					ans[i] = 0;
-				} else {
-					ans[i] = stack.peekLast();
-				}
-				stack.offerLast(vals.get(i));
+				ans[i] = stack.isEmpty() ? 0 : stack.peekLast();
+				stack.offer(vals.get(i));
 			}
 			return ans;
 		}

@@ -25,13 +25,13 @@ public class Question1009 {
 		}
 	}
 
-	class Solution3 {
+	class Solution {
 		public int bitwiseComplement(int N) {
-			int n = 2;
-			while (n <= N) {
-				n <<= 1;
+			int M = 2;
+			while (M <= N) {
+				M <<= 1;
 			}
-			return (n - 1) ^ N;
+			return N ^ (M - 1);
 		}
 	}
 }

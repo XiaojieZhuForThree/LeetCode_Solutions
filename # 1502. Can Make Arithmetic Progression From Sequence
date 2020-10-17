@@ -1,0 +1,22 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question1502 {
+	class Solution {
+		public boolean canMakeArithmeticProgression(int[] arr) {
+			Arrays.sort(arr);
+			return isArithmeticProgression(arr);
+		}
+
+		private boolean isArithmeticProgression(int[] arr) {
+			int diff = arr[1] - arr[0];
+			for (int i = 2; i < arr.length; i++) {
+				if (arr[i] - arr[i - 1] != diff) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

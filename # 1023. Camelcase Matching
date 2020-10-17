@@ -7,29 +7,24 @@ public class Question1023 {
 	class Solution {
 		public List<Boolean> camelMatch(String[] queries, String pattern) {
 			List<Boolean> ans = new ArrayList<>();
-			int uppers = 0;
-			for (char c : pattern.toCharArray()) {
-				if (Character.isUpperCase(c)) {
-					uppers++;
-				}
-			}
 			for (String query : queries) {
-				ans.add(canMatch(query, pattern, uppers));
+				ans.add(canMatch(query, pattern));
 			}
 			return ans;
 		}
 
-		private boolean canMatch(String query, String pattern, int uppers) {
-			int pt1 = 0, pt2 = 0, patUppers = 0;
-			for (; pt1 < query.length(); pt1++) {
-				if (Character.isUpperCase(query.charAt(pt1))) {
-					patUppers++;
-				}
-				if (pt2 < pattern.length() && query.charAt(pt1) == pattern.charAt(pt2)) {
-					pt2++;
+		private boolean canMatch(String query, String pattern) {
+			StringBuilder sb = new StringBuilder();
+			int i = 0;
+			for (char c : query.toCharArray()) {
+				if (i < pattern.length() && pattern.charAt(i) == c) {
+					sb.append(c);
+					i++;
+				} else if (Character.isUpperCase(c)) {
+					sb.append(c);
 				}
 			}
-			return pt2 == pattern.length() && patUppers == uppers;
+			return pattern.equals(sb.toString());
 		}
 	}
 }

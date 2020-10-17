@@ -1,17 +1,26 @@
-import java.util.*;
+package com.leetcode.problems;
 
-class Solution {
-    public List<String> findRepeatedDnaSequences(String s) {
-        Set<String> set = new HashSet<>();
-        Set<String> ans = new HashSet<>();
-        for (int i = 0; i <= s.length()-10; i++) {
-        	if (set.contains(s.substring(i, i+10))) {
-        		ans.add(s.substring(i, i+10));
-        	}
-        	else {
-            	set.add(s.substring(i, i+10));        		
-        	}
-        }
-        return new ArrayList<>(ans);
-    }
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Question187 {
+	class Solution {
+		public List<String> findRepeatedDnaSequences(String s) {
+			Set<String> seen = new HashSet<>();
+			Set<String> ans = new HashSet<>();
+			int left = 0, right = 10;
+			while (right <= s.length()) {
+				String sub = s.substring(left, right);
+				if (seen.contains(sub)) {
+					ans.add(sub);
+				}
+				seen.add(sub);
+				left++;
+				right++;
+			}
+			return new ArrayList<>(ans);
+		}
+	}
 }

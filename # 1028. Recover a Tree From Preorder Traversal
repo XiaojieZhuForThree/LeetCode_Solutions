@@ -1,10 +1,10 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class Question1028 {
-	class Solution {
+	class Solution1 {
 		public TreeNode recoverFromPreorder(String S) {
 			if (S == null || S.length() == 0) {
 				return null;
@@ -48,7 +48,7 @@ public class Question1028 {
 		}
 	}
 
-	class Solution_Beta {
+	class Solution2 {
 		public TreeNode recoverFromPreorder(String S) {
 			if (S == null || S.length() == 0) {
 				return null;
@@ -77,6 +77,44 @@ public class Question1028 {
 				stack.offer(node);
 			}
 			return stack.pollFirst();
+		}
+	}
+
+	class Solution3 {
+		public TreeNode recoverFromPreorder(String S) {
+			if (S == null || S.length() == 0) {
+				return null;
+			}
+			int i = 0;
+			while (i < S.length() && Character.isDigit(S.charAt(i))) {
+				i++;
+			}
+			int val = Integer.parseInt(S.substring(0, i));
+			TreeNode head = new TreeNode(val);
+			int depth = 0;
+			while (i < S.length() && S.charAt(i) == '-') {
+				depth++;
+				i++;
+			}
+			int first = i;
+			int level = 0;
+			boolean hasRight = false;
+			while (i < S.length()) {
+				if (S.charAt(i) == '-') {
+					level++;
+				} else {
+					if (level == depth) {
+						hasRight = true;
+						break;
+					} else {
+						level = 0;
+					}
+				}
+				i++;
+			}
+			head.left = recoverFromPreorder(S.substring(first, hasRight ? i - depth : S.length()));
+			head.right = recoverFromPreorder(S.substring(i, S.length()));
+			return head;
 		}
 	}
 }

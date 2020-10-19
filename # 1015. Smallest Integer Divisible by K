@@ -35,16 +35,14 @@ public class Question1015 {
 		}
 	}
 
-	// pigeonhole theory: the num of remainders cannot surpass K
-	class Solution {
+	class Solution3 {
 		public int smallestRepunitDivByK(int K) {
-			int remainder = 1;
+			int val = 1;
 			for (int i = 1; i <= K; i++) {
-				remainder %= K;
-				if (remainder == 0) {
+				if (val % K == 0) {
 					return i;
 				}
-				remainder = remainder * 10 + 1;
+				val = (val % K) * 10 + 1;
 			}
 			return -1;
 		}

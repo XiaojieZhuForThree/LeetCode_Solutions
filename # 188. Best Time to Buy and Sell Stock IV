@@ -3,7 +3,7 @@ package com.leetcode.problems;
 import java.util.Arrays;
 
 public class Question188 {
-	class Solution {
+	class Solution1 {
 		public int maxProfit(int k, int[] prices) {
 			if (k >= prices.length / 2) {
 				return getMaxProfit(prices);

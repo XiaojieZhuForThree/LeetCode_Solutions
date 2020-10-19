@@ -7,12 +7,11 @@ public class Question316 {
 	class Solution {
 		public String removeDuplicateLetters(String s) {
 			int[] counts = new int[26];
-			boolean[] contains = new boolean[26];
-			Deque<Character> stack = new ArrayDeque<>();
-			StringBuilder sb = new StringBuilder();
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']++;
 			}
+			Deque<Character> stack = new ArrayDeque<>();
+			boolean[] contains = new boolean[26];
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']--;
 				if (contains[c - 'a']) {
@@ -25,6 +24,7 @@ public class Question316 {
 				stack.offerLast(c);
 				contains[c - 'a'] = true;
 			}
+			StringBuilder sb = new StringBuilder();
 			for (char c : stack) {
 				sb.append(c);
 			}

@@ -20,12 +20,12 @@ public class Question1009 {
 			if (N == 0) {
 				return 1;
 			}
-			int ref = Integer.highestOneBit(N << 1) - 1;
-			return ref ^ N;
+			int M = Integer.highestOneBit(N << 1);
+			return N ^ (M - 1);
 		}
 	}
 
-	class Solution {
+	class Solution3 {
 		public int bitwiseComplement(int N) {
 			int M = 2;
 			while (M <= N) {

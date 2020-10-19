@@ -1,24 +1,29 @@
-class Solution {
-    public int minDominoRotations(int[] A, int[] B) {
-        int ans1 = Math.min(helper(A, B, A[0]), helper(B, A, A[0]));
-        int ans2 = Math.min(helper(A, B, B[0]), helper(B, A, B[0]));
-        int ans = Math.min(ans1, ans2);
-        if (ans == Integer.MAX_VALUE) {
-            return -1;
-        }
-        return ans;
-    }
-    private int helper(int[] A, int[] B, int target) {
-        int ans = 0;
-        for (int i = 0; i < A.length; i++) {
-            if (A[i] == target) {
-                continue;
-            } else if (B[i] == target) {
-                ans++;
-            } else {
-                return Integer.MAX_VALUE;
-            }
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+public class Question1007 {
+	class Solution {
+		public int minDominoRotations(int[] A, int[] B) {
+			int val1 = A[0], val2 = B[0];
+			int ans1 = getRotates(A, B, val1);
+			int ans2 = getRotates(B, A, val1);
+			int ans3 = getRotates(A, B, val2);
+			int ans4 = getRotates(B, A, val2);
+			int ans = Math.min(Math.min(ans1, ans2), Math.min(ans3, ans4));
+			return ans == Integer.MAX_VALUE ? -1 : ans;
+		}
+
+		private int getRotates(int[] A, int[] B, int val) {
+			int ans = 0;
+			for (int i = 0; i < A.length; i++) {
+				if (A[i] == val) {
+					continue;
+				} else if (B[i] == val) {
+					ans++;
+				} else {
+					return Integer.MAX_VALUE;
+				}
+			}
+			return ans;
+		}
+	}
 }

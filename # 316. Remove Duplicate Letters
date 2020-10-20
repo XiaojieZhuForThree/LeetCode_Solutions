@@ -11,18 +11,18 @@ public class Question316 {
 				counts[c - 'a']++;
 			}
 			Deque<Character> stack = new ArrayDeque<>();
-			boolean[] contains = new boolean[26];
+			boolean[] seen = new boolean[26];
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']--;
-				if (contains[c - 'a']) {
+				if (seen[c - 'a']) {
 					continue;
 				}
 				while (!stack.isEmpty() && stack.peekLast() > c && counts[stack.peekLast() - 'a'] > 0) {
-					contains[stack.peekLast() - 'a'] = false;
+					seen[stack.peekLast() - 'a'] = false;
 					stack.pollLast();
 				}
 				stack.offerLast(c);
-				contains[c - 'a'] = true;
+				seen[c - 'a'] = true;
 			}
 			StringBuilder sb = new StringBuilder();
 			for (char c : stack) {

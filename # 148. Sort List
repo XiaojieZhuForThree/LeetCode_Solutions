@@ -27,41 +27,45 @@ public class Question148 {
 		}
 	}
 
-	class Solution2 {
-	    public ListNode sortList(ListNode head) {
-	        if (head == null || head.next == null) {
-	            return head;
-	        }
-	        ListNode slow = head, fast = slow.next;
-	        while (fast != null && fast.next != null) {
-	            slow = slow.next;
-	            fast = fast.next.next;
-	        }
-	        ListNode next = slow.next;
-	        slow.next = null;
-	        ListNode node1 = sortList(head), node2 = sortList(next);
-	        return merge(node1, node2);
-	    }
-	    
-	    private ListNode merge(ListNode node1, ListNode node2) {
-	        ListNode head = new ListNode(0), dummy = head;
-	        while (node1 != null && node2 != null) {
-	            if (node1.val < node2.val) {
-	                dummy.next = node1;
-	                node1 = node1.next;
-	            } else {
-	                dummy.next = node2;
-	                node2 = node2.next;
-	            }
-	            dummy = dummy.next;
-	        }
-	        if (node1 != null) {
-	            dummy.next = node1;
-	        }
-	        if (node2 != null) {
-	            dummy.next = node2;
-	        }
-	        return head.next;
-	    }
+	/**
+	 * Definition for singly-linked list. public class ListNode { int val; ListNode
+	 * next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val,
+	 * ListNode next) { this.val = val; this.next = next; } }
+	 */
+	class Solution {
+		public ListNode sortList(ListNode head) {
+			if (head == null || head.next == null) {
+				return head;
+			}
+			ListNode slow = head, fast = head.next;
+			while (fast != null && fast.next != null) {
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+			ListNode next = slow.next;
+			slow.next = null;
+			ListNode node1 = sortList(head), node2 = sortList(next);
+			return merge(node1, node2);
+		}
+
+		private ListNode merge(ListNode node1, ListNode node2) {
+			ListNode head = new ListNode(0), dummy = head;
+			while (node1 != null && node2 != null) {
+				if (node1.val < node2.val) {
+					dummy.next = node1;
+					node1 = node1.next;
+				} else {
+					dummy.next = node2;
+					node2 = node2.next;
+				}
+				dummy = dummy.next;
+			}
+			if (node1 != null) {
+				dummy.next = node1;
+			} else {
+				dummy.next = node2;
+			}
+			return head.next;
+		}
 	}
 }

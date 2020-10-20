@@ -3,13 +3,12 @@ package com.leetcode.problems;
 import java.util.Arrays;
 
 public class Question188 {
-	class Solution1 {
+	class Solution {
 		public int maxProfit(int k, int[] prices) {
-			if (k >= prices.length / 2) {
+			if (k > prices.length / 2) {
 				return getMaxProfit(prices);
 			}
-			int[] buys = new int[k + 1];
-			int[] sells = new int[k + 1];
+			int[] buys = new int[k + 1], sells = new int[k + 1];
 			Arrays.fill(buys, Integer.MIN_VALUE);
 			for (int price : prices) {
 				for (int i = 1; i <= k; i++) {
@@ -21,13 +20,13 @@ public class Question188 {
 		}
 
 		private int getMaxProfit(int[] prices) {
-			int ans = 0;
+			int val = 0;
 			for (int i = 1; i < prices.length; i++) {
 				if (prices[i] > prices[i - 1]) {
-					ans += prices[i] - prices[i - 1];
+					val += prices[i] - prices[i - 1];
 				}
 			}
-			return ans;
+			return val;
 		}
 	}
 

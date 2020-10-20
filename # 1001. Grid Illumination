@@ -6,13 +6,13 @@ import java.util.Map;
 public class Question1001 {
 	class Solution {
 		public int[] gridIllumination(int N, int[][] lamps, int[][] queries) {
-			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
-					{ -1, -1 }, { 0, 0 } };
 			Map<Integer, Integer> rows = new HashMap<>();
 			Map<Integer, Integer> cols = new HashMap<>();
 			Map<Integer, Integer> uppers = new HashMap<>();
 			Map<Integer, Integer> lowers = new HashMap<>();
 			Map<Integer, Boolean> lightOn = new HashMap<>();
+			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
+					{ -1, -1 }, { 0, 0 } };
 			for (int[] lamp : lamps) {
 				int x = lamp[0], y = lamp[1];
 				rows.put(x, rows.getOrDefault(x, 0) + 1);
@@ -31,17 +31,17 @@ public class Question1001 {
 				}
 				for (int[] dir : dirs) {
 					int nx = x + dir[0], ny = y + dir[1];
-					if (!lightOn.containsKey(nx * N + ny) || !lightOn.get(nx * N + ny)) {
-						continue;
-					}
 					if (nx < 0 || nx >= N || ny < 0 || ny >= N) {
 						continue;
 					}
+					if (!lightOn.getOrDefault(nx * N + ny, false)) {
+						continue;
+					}
+					lightOn.put(nx * N + ny, false);
 					rows.put(nx, rows.getOrDefault(nx, 1) - 1);
 					cols.put(ny, cols.getOrDefault(ny, 1) - 1);
 					uppers.put(nx + ny, uppers.getOrDefault(nx + ny, 1) - 1);
 					lowers.put(nx - ny, lowers.getOrDefault(nx - ny, 1) - 1);
-					lightOn.put(nx * N + ny, false);
 				}
 			}
 			return ans;

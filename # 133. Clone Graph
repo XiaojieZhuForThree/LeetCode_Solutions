@@ -33,30 +33,25 @@ public class Question133 {
 			if (node == null) {
 				return null;
 			}
-			Queue<Node> queue = new ArrayDeque<>();
 			Map<Integer, Node> copyMap = new HashMap<>();
+			Queue<Node> queue = new ArrayDeque<>();
 			queue.offer(node);
 			while (!queue.isEmpty()) {
-				Node curNode = queue.poll();
-				Node copyNode;
-				if (copyMap.containsKey(curNode.val)) {
-					copyNode = copyMap.get(curNode.val);
-				} else {
-					copyNode = new Node(curNode.val);
-				}
+				Node cur = queue.poll();
+				Node copy = copyMap.getOrDefault(cur.val, new Node(cur.val));
 				List<Node> copyNeighbors = new ArrayList<>();
-				for (Node neighbor : curNode.neighbors) {
+				for (Node neighbor : cur.neighbors) {
 					if (copyMap.containsKey(neighbor.val)) {
 						copyNeighbors.add(copyMap.get(neighbor.val));
 					} else {
 						Node copyNeighbor = new Node(neighbor.val);
 						copyNeighbors.add(copyNeighbor);
-						copyMap.put(neighbor.val, copyNeighbor);
+						copyMap.put(copyNeighbor.val, copyNeighbor);
 						queue.offer(neighbor);
 					}
 				}
-				copyNode.neighbors = copyNeighbors;
-				copyMap.put(curNode.val, copyNode);
+				copy.neighbors = copyNeighbors;
+				copyMap.put(copy.val, copy);
 			}
 			return copyMap.get(node.val);
 		}

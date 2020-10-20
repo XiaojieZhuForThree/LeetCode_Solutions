@@ -1,0 +1,64 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
+public class Question133 {
+	class Node {
+		public int val;
+		public List<Node> neighbors;
+
+		public Node() {
+			val = 0;
+			neighbors = new ArrayList<Node>();
+		}
+
+		public Node(int _val) {
+			val = _val;
+			neighbors = new ArrayList<Node>();
+		}
+
+		public Node(int _val, ArrayList<Node> _neighbors) {
+			val = _val;
+			neighbors = _neighbors;
+		}
+	}
+
+	class Solution {
+		public Node cloneGraph(Node node) {
+			if (node == null) {
+				return null;
+			}
+			Queue<Node> queue = new ArrayDeque<>();
+			Map<Integer, Node> copyMap = new HashMap<>();
+			queue.offer(node);
+			while (!queue.isEmpty()) {
+				Node curNode = queue.poll();
+				Node copyNode;
+				if (copyMap.containsKey(curNode.val)) {
+					copyNode = copyMap.get(curNode.val);
+				} else {
+					copyNode = new Node(curNode.val);
+				}
+				List<Node> copyNeighbors = new ArrayList<>();
+				for (Node neighbor : curNode.neighbors) {
+					if (copyMap.containsKey(neighbor.val)) {
+						copyNeighbors.add(copyMap.get(neighbor.val));
+					} else {
+						Node copyNeighbor = new Node(neighbor.val);
+						copyNeighbors.add(copyNeighbor);
+						copyMap.put(neighbor.val, copyNeighbor);
+						queue.offer(neighbor);
+					}
+				}
+				copyNode.neighbors = copyNeighbors;
+				copyMap.put(curNode.val, copyNode);
+			}
+			return copyMap.get(node.val);
+		}
+	}
+}

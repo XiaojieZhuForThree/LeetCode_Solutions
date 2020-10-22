@@ -1,0 +1,59 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class Question111 {
+	class Solution1 {
+		int depth = Integer.MAX_VALUE;
+
+		public int minDepth(TreeNode root) {
+			if (root == null) {
+				return 0;
+			}
+			dfs(root, 0);
+			return depth;
+		}
+
+		private void dfs(TreeNode node, int dep) {
+			if (node == null) {
+				return;
+			}
+			if (node.left == null && node.right == null) {
+				dep++;
+				depth = Math.min(depth, dep);
+				return;
+			}
+			dfs(node.left, dep + 1);
+			dfs(node.right, dep + 1);
+			return;
+		}
+	}
+
+	class Solution2 {
+		public int minDepth(TreeNode root) {
+			if (root == null) {
+				return 0;
+			}
+			int minDep = 0;
+			Queue<TreeNode> queue = new ArrayDeque<>();
+			queue.offer(root);
+			while (!queue.isEmpty()) {
+				minDep++;
+				for (int i = queue.size(); i > 0; i--) {
+					TreeNode node = queue.poll();
+					if (node.left == null && node.right == null) {
+						return minDep;
+					}
+					if (node.left != null) {
+						queue.offer(node.left);
+					}
+					if (node.right != null) {
+						queue.offer(node.right);
+					}
+				}
+			}
+			return minDep;
+		}
+	}
+}

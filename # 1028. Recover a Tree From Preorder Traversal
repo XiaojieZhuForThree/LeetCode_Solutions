@@ -90,29 +90,30 @@ public class Question1028 {
 				i++;
 			}
 			int val = Integer.parseInt(S.substring(0, i));
-			int level = 0;
+			int depth = 0;
 			while (i < S.length() && S.charAt(i) == '-') {
-				level++;
+				depth++;
 				i++;
 			}
 			int start = i;
+			int level = 0;
 			boolean hasRight = false;
-			int cur = 0;
 			while (i < S.length()) {
 				if (Character.isDigit(S.charAt(i))) {
-					if (cur == level) {
+					if (level == depth) {
 						hasRight = true;
 						break;
 					} else {
-						cur = 0;
+						level = 0;
 					}
 				} else {
-					cur++;
+					level++;
 				}
 				i++;
 			}
 			TreeNode node = new TreeNode(val);
-			node.left = recoverFromPreorder(S.substring(start, hasRight ? i - level : i));
+			node.left = hasRight ? recoverFromPreorder(S.substring(start, i - depth))
+					: recoverFromPreorder(S.substring(start));
 			node.right = recoverFromPreorder(S.substring(i));
 			return node;
 		}

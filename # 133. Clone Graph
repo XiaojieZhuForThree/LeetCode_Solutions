@@ -38,20 +38,20 @@ public class Question133 {
 			queue.offer(node);
 			while (!queue.isEmpty()) {
 				Node cur = queue.poll();
-				Node copy = copyMap.getOrDefault(cur.val, new Node(cur.val));
+				Node copyCur = copyMap.getOrDefault(cur.val, new Node(cur.val));
 				List<Node> copyNeighbors = new ArrayList<>();
 				for (Node neighbor : cur.neighbors) {
 					if (copyMap.containsKey(neighbor.val)) {
 						copyNeighbors.add(copyMap.get(neighbor.val));
-					} else {
-						Node copyNeighbor = new Node(neighbor.val);
-						copyNeighbors.add(copyNeighbor);
-						copyMap.put(copyNeighbor.val, copyNeighbor);
-						queue.offer(neighbor);
+						continue;
 					}
+					Node copyNeighbor = new Node(neighbor.val);
+					copyNeighbors.add(copyNeighbor);
+					copyMap.put(copyNeighbor.val, copyNeighbor);
+					queue.offer(neighbor);
 				}
-				copy.neighbors = copyNeighbors;
-				copyMap.put(copy.val, copy);
+				copyCur.neighbors = copyNeighbors;
+				copyMap.putIfAbsent(copyCur.val, copyCur);
 			}
 			return copyMap.get(node.val);
 		}

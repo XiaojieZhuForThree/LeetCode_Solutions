@@ -6,13 +6,13 @@ import java.util.Map;
 public class Question1001 {
 	class Solution {
 		public int[] gridIllumination(int N, int[][] lamps, int[][] queries) {
+			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 },
+					{ -1, -1 }, { 0, 0 } };
 			Map<Integer, Integer> rows = new HashMap<>();
 			Map<Integer, Integer> cols = new HashMap<>();
 			Map<Integer, Integer> uppers = new HashMap<>();
 			Map<Integer, Integer> lowers = new HashMap<>();
 			Map<Integer, Boolean> lightOn = new HashMap<>();
-			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
-					{ -1, -1 }, { 0, 0 } };
 			for (int[] lamp : lamps) {
 				int x = lamp[0], y = lamp[1];
 				rows.put(x, rows.getOrDefault(x, 0) + 1);

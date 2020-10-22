@@ -26,12 +26,12 @@ public class Question1009 {
 	}
 
 	class Solution3 {
-		public int bitwiseComplement(int N) {
-			int M = 2;
-			while (M <= N) {
-				M <<= 1;
-			}
-			return N ^ (M - 1);
-		}
+	    public int bitwiseComplement(int N) {
+	        int M = 2;
+	        while (M <= N) {
+	            M <<= 1;
+	        }
+	        return (M - 1) ^ N;
+	    }
 	}
 }

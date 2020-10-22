@@ -10,8 +10,8 @@ public class Question316 {
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']++;
 			}
-			Deque<Character> stack = new ArrayDeque<>();
 			boolean[] seen = new boolean[26];
+			Deque<Character> stack = new ArrayDeque<>();
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']--;
 				if (seen[c - 'a']) {

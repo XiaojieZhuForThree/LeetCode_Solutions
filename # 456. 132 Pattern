@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+import java.util.TreeSet;
+
+public class Question456 {
+	class Solution1 {
+		public boolean find132pattern(int[] nums) {
+			int[] smallVals = new int[nums.length];
+			smallVals[0] = nums[0];
+			int smallest = nums[0];
+			for (int i = 1; i < nums.length; i++) {
+				smallest = Math.min(smallest, nums[i]);
+				smallVals[i] = smallest;
+			}
+			
+			TreeSet<Integer> set = new TreeSet<>();
+			int[] largeVals = new int[nums.length];
+			Arrays.fill(largeVals, Integer.MIN_VALUE);
+			set.add(nums[nums.length - 1]);
+			for (int i = nums.length - 2; i >= 0; i--) {
+				if (set.lower(nums[i]) != null) {
+					largeVals[i] = set.lower(nums[i]);
+				}
+				set.add(nums[i]);
+			}
+			
+			for (int i = 0; i < nums.length; i++) {
+				if (smallVals[i] < nums[i] && largeVals[i] > smallVals[i]) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+}

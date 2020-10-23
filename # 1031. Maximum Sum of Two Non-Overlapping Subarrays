@@ -3,30 +3,31 @@ package com.leetcode.problems;
 public class Question1031 {
 	class Solution {
 		public int maxSumTwoNoOverlap(int[] A, int L, int M) {
-			return Math.max(getVal(A, L, M), getVal(A, M, L));
+			return Math.max(getMaxSum(A, L, M), getMaxSum(A, M, L));
 		}
 
-		private int getVal(int[] A, int L, int M) {
+		private int getMaxSum(int[] A, int L, int M) {
 			int[] dp = new int[A.length];
-			int curL = 0;
+			int val = 0, max = 0;
 			for (int i = 0; i < L; i++) {
-				curL += A[i];
+				val += A[i];
 			}
-			dp[L - 1] = curL;
-			int max = curL;
+			max = val;
+			dp[L - 1] = max;
 			for (int i = L; i < A.length; i++) {
-				curL = curL - A[i - L] + A[i];
-				max = Math.max(curL, max);
+				val = val - A[i - L] + A[i];
+				max = Math.max(max, val);
 				dp[i] = max;
 			}
-			int curM = 0;
-			for (int i = L; i < L + M; i++) {
-				curM += A[i];
+			val = 0;
+			max = 0;
+			for (int i = L; i < M + L; i++) {
+				val += A[i];
 			}
-			max = curM + dp[L - 1];
-			for (int i = L + M; i < A.length; i++) {
-				curM = curM - A[i - M] + A[i];
-				max = Math.max(max, curM + dp[i - M]);
+			max = val + dp[L - 1];
+			for (int i = M + L; i < A.length; i++) {
+				val = val - A[i - M] + A[i];
+				max = Math.max(max, val + dp[i - M]);
 			}
 			return max;
 		}

@@ -96,24 +96,23 @@ public class Question1028 {
 				i++;
 			}
 			int start = i;
-			int level = 0;
+			int cur = 0;
 			boolean hasRight = false;
 			while (i < S.length()) {
 				if (Character.isDigit(S.charAt(i))) {
-					if (level == depth) {
+					if (cur == depth) {
 						hasRight = true;
 						break;
 					} else {
-						level = 0;
+						cur = 0;
 					}
 				} else {
-					level++;
+					cur++;
 				}
 				i++;
 			}
 			TreeNode node = new TreeNode(val);
-			node.left = hasRight ? recoverFromPreorder(S.substring(start, i - depth))
-					: recoverFromPreorder(S.substring(start));
+			node.left = recoverFromPreorder(S.substring(start, hasRight ? i - depth : i));
 			node.right = recoverFromPreorder(S.substring(i));
 			return node;
 		}

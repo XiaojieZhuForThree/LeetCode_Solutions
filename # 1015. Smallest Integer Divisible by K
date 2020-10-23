@@ -35,15 +35,15 @@ public class Question1015 {
 	}
 
 	class Solution3 {
-		public int smallestRepunitDivByK(int K) {
-			int val = 1;
-			for (int i = 1; i <= K; i++) {
-				if (val % K == 0) {
-					return i;
-				}
-				val = (val % K) * 10 + 1;
-			}
-			return -1;
-		}
+	    public int smallestRepunitDivByK(int K) {
+	        int remainder = 1;
+	        for (int i = 1; i <= K; i++) {
+	            if (remainder % K == 0) {
+	                return i;
+	            }
+	            remainder = (remainder % K) * 10 + 1;
+	        }
+	        return -1;
+	    }
 	}
 }

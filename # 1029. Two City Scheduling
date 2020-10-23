@@ -5,18 +5,18 @@ import java.util.PriorityQueue;
 public class Question1029 {
 	class Solution1 {
 		public int twoCitySchedCost(int[][] costs) {
-			PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> (Integer.compare(a[0] - a[1], b[0] - b[1])));
+			PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0] - a[1], b[0] - b[1]));
 			for (int[] cost : costs) {
 				pq.offer(cost);
 			}
-			int val = 0;
+			int ans = 0;
 			for (int i = 0; i < costs.length / 2; i++) {
-				val += pq.poll()[0];
+				ans += pq.poll()[0];
 			}
-			while (!pq.isEmpty()) {
-				val += pq.poll()[1];
+			for (int i = 0; i < costs.length / 2; i++) {
+				ans += pq.poll()[1];
 			}
-			return val;
+			return ans;
 		}
 	}
 

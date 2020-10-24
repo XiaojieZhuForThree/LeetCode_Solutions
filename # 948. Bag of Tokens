@@ -1,24 +1,31 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.Arrays;
 
 public class Question948 {
 	class Solution {
 		public int bagOfTokensScore(int[] tokens, int P) {
+			if (tokens == null || tokens.length == 0 || P == 0) {
+				return 0;
+			}
 			Arrays.sort(tokens);
-			int ans = 0, pts = 0, i = 0, j = tokens.length - 1;
-			while (i <= j) {
-				if (P >= tokens[i]) {
-					P -= tokens[i++];
-					ans = Math.max(ans, ++pts);
-				} else if (pts > 0) {
-					pts--;
-					P += tokens[j--];
+			int left = 0, right = tokens.length - 1;
+			int score = 0;
+			while (left < right) {
+				if (P >= tokens[left]) {
+					P -= tokens[left++];
+					score++;
+				} else if (score > 0 && tokens[right] >= tokens[left]) {
+					score--;
+					P += tokens[right--];
 				} else {
 					break;
 				}
 			}
-			return ans;
+			if (P >= tokens[left]) {
+				score++;
+			}
+			return score;
 		}
 	}
 }

@@ -15,7 +15,7 @@ public class Question948 {
 				if (P >= tokens[left]) {
 					P -= tokens[left++];
 					score++;
-				} else if (score > 0 && tokens[right] >= tokens[left]) {
+				} else if (score > 0 && P + tokens[right] >= tokens[left]) {
 					score--;
 					P += tokens[right--];
 				} else {

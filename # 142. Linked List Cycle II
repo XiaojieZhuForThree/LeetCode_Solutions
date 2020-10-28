@@ -1,32 +1,91 @@
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
-public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast = head, slow = head;
-        if (fast == null) {
-            return null;
-        }
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) {
-                ListNode slow2 = head;
-                while (slow != slow2) {
-                    slow = slow.next;
-                    slow2 = slow2.next;
-                }
-                return slow;
-            }
-        }
-        return null;
-    }
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.leetcode.api.ListNode;
+
+public class Question142 {
+	public class Solution1 {
+		public ListNode detectCycle(ListNode head) {
+			if (head == null || head.next == null) {
+				return null;
+			}
+			Set<ListNode> seen = new HashSet<>();
+			while (head != null) {
+				if (seen.contains(head)) {
+					return head;
+				}
+				seen.add(head);
+				head = head.next;
+			}
+			return null;
+		}
+	}
+
+	public class Solution2 {
+		public ListNode detectCycle(ListNode head) {
+			if (head == null || head.next == null) {
+				return null;
+			}
+			ListNode fast = head, slow = head.next;
+			int i = 1;
+			while (fast != slow) {
+				if (slow == null || slow.next == null) {
+					return null;
+				}
+				fast = fast.next;
+				slow = slow.next.next;
+				i++;
+			}
+			int j = 1;
+			ListNode dummy = slow.next;
+			while (dummy != slow) {
+				j++;
+				dummy = dummy.next;
+			}
+			ListNode node = head;
+			for (int k = 0; k < i - j; k++) {
+				node = node.next;
+			}
+			while (node != fast) {
+				if (isValid(node, j)) {
+					return node;
+				}
+				node = node.next;
+			}
+			return node;
+		}
+
+		private boolean isValid(ListNode node, int j) {
+			ListNode dummy = node;
+			for (int i = 0; i < j; i++) {
+				dummy = dummy.next;
+			}
+			return dummy == node;
+		}
+	}
+
+	public class Solution3 {
+		public ListNode detectCycle(ListNode head) {
+			if (head == null || head.next == null) {
+				return null;
+			}
+			ListNode slow = head, fast = head.next;
+			while (slow != fast) {
+				if (fast == null || fast.next == null) {
+					return null;
+				}
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+			slow = head;
+			fast = fast.next;
+			while (slow != fast) {
+				slow = slow.next;
+				fast = fast.next;
+			}
+			return slow;
+		}
+	}
 }

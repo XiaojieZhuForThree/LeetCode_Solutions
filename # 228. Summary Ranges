@@ -1,0 +1,35 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question228 {
+	class Solution {
+		public List<String> summaryRanges(int[] nums) {
+			List<String> list = new ArrayList<>();
+			if (nums == null || nums.length == 0) {
+				return list;
+			}
+			int left = nums[0], right = nums[0];
+			for (int i = 1; i < nums.length; i++) {
+				if (nums[i] == right + 1) {
+					right = nums[i];
+				} else {
+					if (left == right) {
+						list.add(Integer.toString(left));
+					} else {
+						list.add(left + "->" + right);
+					}
+					left = nums[i];
+					right = nums[i];
+				}
+			}
+			if (left == right) {
+				list.add(Integer.toString(left));
+			} else {
+				list.add(left + "->" + right);
+			}
+			return list;
+		}
+	}
+}

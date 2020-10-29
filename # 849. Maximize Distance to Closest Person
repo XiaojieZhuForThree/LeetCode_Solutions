@@ -1,0 +1,43 @@
+package com.leetcode.problems;
+
+public class Question849 {
+	class Solution {
+		public int maxDistToClosest(int[] seats) {
+			int[] dp = new int[seats.length];
+			int dis = 0;
+			for (int i = 0; i < seats.length; i++) {
+				if (seats[i] == 1) {
+					dis = i;
+					break;
+				}
+			}
+			for (int i = dis + 1; i < seats.length; i++) {
+				if (seats[i] == 1) {
+					dp[i] = -1;
+					dis = i;
+				} else {
+					dp[i] = i - dis;
+				}
+			}
+			for (int i = seats.length - 1; i >= 0; i--) {
+				if (seats[i] == 1) {
+					dis = i;
+					break;
+				}
+			}
+			for (int i = dis - 1; i >= 0; i--) {
+				if (seats[i] == 1) {
+					dp[i] = -1;
+					dis = i;
+				} else {
+					dp[i] = Math.min(dp[i], dis - i);
+				}
+			}
+			int val = 0;
+			for (int i : dp) {
+				val = Math.max(val, i);
+			}
+			return val;
+		}
+	}
+}

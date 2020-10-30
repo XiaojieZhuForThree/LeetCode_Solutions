@@ -1,0 +1,34 @@
+package com.leetcode.problems;
+
+public class Question673 {
+	class Solution {
+		public int findNumberOfLIS(int[] nums) {
+			int max = 0, count = 0;
+			int[] lens = new int[nums.length];
+			int[] counts = new int[nums.length];
+			for (int i = 0; i < nums.length; i++) {
+				int maxLen = 1, cnt = 1;
+				for (int j = i - 1; j >= 0; j--) {
+					if (nums[j] >= nums[i]) {
+						continue;
+					}
+					if (lens[j] + 1 > maxLen) {
+						maxLen = lens[j] + 1;
+						cnt = counts[j];
+					} else if (lens[j] + 1 == maxLen) {
+						cnt += counts[j];
+					}
+				}
+				if (maxLen > max) {
+					max = maxLen;
+					count = cnt;
+				} else if (maxLen == max) {
+					count += cnt;
+				}
+				lens[i] = maxLen;
+				counts[i] = cnt;
+			}
+			return count;
+		}
+	}
+}

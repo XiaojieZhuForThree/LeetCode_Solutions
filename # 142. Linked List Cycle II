@@ -68,19 +68,18 @@ public class Question142 {
 
 	public class Solution3 {
 		public ListNode detectCycle(ListNode head) {
-			if (head == null || head.next == null) {
+			if (head == null || head.next == null || head.next.next == null) {
 				return null;
 			}
-			ListNode slow = head, fast = head.next;
+			ListNode slow = head.next, fast = head.next.next;
 			while (slow != fast) {
-				if (fast == null || fast.next == null) {
+				if (fast.next == null || fast.next.next == null) {
 					return null;
 				}
 				slow = slow.next;
 				fast = fast.next.next;
 			}
 			slow = head;
-			fast = fast.next;
 			while (slow != fast) {
 				slow = slow.next;
 				fast = fast.next;

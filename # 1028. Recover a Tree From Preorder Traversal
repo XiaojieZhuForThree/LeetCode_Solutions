@@ -82,7 +82,7 @@ public class Question1028 {
 
 	class Solution3 {
 		public TreeNode recoverFromPreorder(String S) {
-			if (S == null || S.length() == 0) {
+			if (S == null || S.isEmpty()) {
 				return null;
 			}
 			int i = 0;
@@ -92,27 +92,25 @@ public class Question1028 {
 			int val = Integer.parseInt(S.substring(0, i));
 			int depth = 0;
 			while (i < S.length() && S.charAt(i) == '-') {
-				depth++;
 				i++;
+				depth++;
 			}
 			int start = i;
-			int cur = 0;
-			boolean hasRight = false;
+			int curDep = 0;
 			while (i < S.length()) {
 				if (Character.isDigit(S.charAt(i))) {
-					if (cur == depth) {
-						hasRight = true;
+					if (curDep == depth) {
 						break;
 					} else {
-						cur = 0;
+						curDep = 0;
 					}
 				} else {
-					cur++;
+					curDep++;
 				}
 				i++;
 			}
 			TreeNode node = new TreeNode(val);
-			node.left = recoverFromPreorder(S.substring(start, hasRight ? i - depth : i));
+			node.left = recoverFromPreorder(S.substring(start, i));
 			node.right = recoverFromPreorder(S.substring(i));
 			return node;
 		}

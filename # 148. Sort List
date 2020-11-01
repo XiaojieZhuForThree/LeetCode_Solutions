@@ -39,26 +39,25 @@ public class Question148 {
 			}
 			ListNode next = slow.next;
 			slow.next = null;
-			ListNode node1 = sortList(head), node2 = sortList(next);
-			return merge(node1, node2);
+			return merge(sortList(head), sortList(next));
 		}
 
 		private ListNode merge(ListNode node1, ListNode node2) {
-			ListNode head = new ListNode(-1), dummy = head;
+			ListNode node = new ListNode(-1), head = node;
 			while (node1 != null && node2 != null) {
 				if (node1.val < node2.val) {
-					dummy.next = node1;
+					node.next = node1;
 					node1 = node1.next;
 				} else {
-					dummy.next = node2;
+					node.next = node2;
 					node2 = node2.next;
 				}
-				dummy = dummy.next;
+				node = node.next;
 			}
 			if (node1 != null) {
-				dummy.next = node1;
+				node.next = node1;
 			} else {
-				dummy.next = node2;
+				node.next = node2;
 			}
 			return head.next;
 		}

@@ -8,26 +8,25 @@ public class Question1031 {
 
 		private int getMaxSum(int[] A, int L, int M) {
 			int[] dp = new int[A.length];
-			int val = 0, max = 0;
+			int max = 0, cur = 0;
 			for (int i = 0; i < L; i++) {
-				val += A[i];
+				max += A[i];
+				cur = max;
 			}
-			max = val;
 			dp[L - 1] = max;
 			for (int i = L; i < A.length; i++) {
-				val = val - A[i - L] + A[i];
-				max = Math.max(max, val);
+				cur = cur - A[i - L] + A[i];
+				max = Math.max(max, cur);
 				dp[i] = max;
 			}
-			val = 0;
-			max = 0;
-			for (int i = L; i < M + L; i++) {
-				val += A[i];
+			cur = 0;
+			for (int i = L; i < L + M; i++) {
+				cur += A[i];
 			}
-			max = val + dp[L - 1];
-			for (int i = M + L; i < A.length; i++) {
-				val = val - A[i - M] + A[i];
-				max = Math.max(max, val + dp[i - M]);
+			max = cur + dp[L - 1];
+			for (int i = L + M; i < A.length; i++) {
+				cur = cur - A[i - M] + A[i];
+				max = Math.max(max, cur + dp[i - M]);
 			}
 			return max;
 		}

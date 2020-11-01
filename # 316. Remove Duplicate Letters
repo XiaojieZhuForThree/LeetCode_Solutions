@@ -10,19 +10,19 @@ public class Question316 {
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']++;
 			}
-			boolean[] seen = new boolean[26];
 			Deque<Character> stack = new ArrayDeque<>();
+			boolean[] shown = new boolean[26];
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']--;
-				if (seen[c - 'a']) {
+				if (shown[c - 'a']) {
 					continue;
 				}
 				while (!stack.isEmpty() && stack.peekLast() > c && counts[stack.peekLast() - 'a'] > 0) {
-					seen[stack.peekLast() - 'a'] = false;
+					shown[stack.peekLast() - 'a'] = false;
 					stack.pollLast();
 				}
-				stack.offerLast(c);
-				seen[c - 'a'] = true;
+				stack.offer(c);
+				shown[c - 'a'] = true;
 			}
 			StringBuilder sb = new StringBuilder();
 			for (char c : stack) {

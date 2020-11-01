@@ -20,8 +20,7 @@ public class Question1009 {
 	        if (N == 0) {
 	            return 1;
 	        }
-	        int M = Integer.highestOneBit(N << 1) - 1;
-	        return M ^ N;
+	        return N ^ (Integer.highestOneBit(N<<1) - 1);
 	    }
 	}
 

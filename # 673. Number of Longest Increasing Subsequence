@@ -3,32 +3,37 @@ package com.leetcode.problems;
 public class Question673 {
 	class Solution {
 		public int findNumberOfLIS(int[] nums) {
-			int max = 0, count = 0;
-			int[] lens = new int[nums.length];
-			int[] counts = new int[nums.length];
-			for (int i = 0; i < nums.length; i++) {
-				int maxLen = 1, cnt = 1;
-				for (int j = i - 1; j >= 0; j--) {
-					if (nums[j] >= nums[i]) {
-						continue;
-					}
-					if (lens[j] + 1 > maxLen) {
-						maxLen = lens[j] + 1;
-						cnt = counts[j];
-					} else if (lens[j] + 1 == maxLen) {
-						cnt += counts[j];
-					}
-				}
-				if (maxLen > max) {
-					max = maxLen;
-					count = cnt;
-				} else if (maxLen == max) {
-					count += cnt;
-				}
-				lens[i] = maxLen;
-				counts[i] = cnt;
+			if (nums == null || nums.length == 0) {
+				return 0;
 			}
-			return count;
+			int max = 1, cnt = 1;
+			int[] lens = new int[nums.length];
+			int[] cnts = new int[nums.length];
+			lens[0] = 1;
+			cnts[0] = 1;
+			for (int i = 1; i < nums.length; i++) {
+				int len = 1, count = 1;
+				for (int j = 0; j < i; j++) {
+					if (nums[i] > nums[j]) {
+						int curLen = lens[j] + 1;
+						if (curLen > len) {
+							len = curLen;
+							count = cnts[j];
+						} else if (curLen == len) {
+							count += cnts[j];
+						}
+					}
+				}
+				if (len > max) {
+					max = len;
+					cnt = count;
+				} else if (len == max) {
+					cnt += count;
+				}
+				lens[i] = len;
+				cnts[i] = count;
+			}
+			return cnt;
 		}
 	}
 }

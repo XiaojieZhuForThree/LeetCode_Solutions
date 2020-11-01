@@ -1,0 +1,70 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question99 {
+	class Solution {
+		public void recoverTree(TreeNode root) {
+			helper(root, true);
+		}
+
+		private TreeNode helper(TreeNode node, boolean isRight) {
+			if (node == null) {
+				return null;
+			}
+			if (node.left == null && node.right == null) {
+				return node;
+			}
+			TreeNode node1 = helper(node.left, false), node2 = helper(node.right, true);
+			if (node1 == null) {
+				if (node.val < node2.val) {
+					return isRight ? node : getMax(node.right);
+				} else {
+					swap(node, node2);
+					helper(node.right, true);
+					return isRight ? node : getMax(node.right);
+				}
+			} else if (node2 == null) {
+				if (node.val > node1.val) {
+					return isRight ? getMin(node) : node;
+				} else {
+					swap(node, node1);
+					helper(node.left, false);
+					return isRight ? getMin(node) : node;
+				}
+			} else {
+				if (node1.val < node.val && node.val < node2.val) {
+					return isRight ? getMin(node) : getMax(node);
+				}
+				int[] vals = new int[] { node1.val, node.val, node2.val };
+				Arrays.sort(vals);
+				node1.val = vals[0];
+				node.val = vals[1];
+				node2.val = vals[2];
+				helper(node.left, false);
+				helper(node.right, true);
+				return isRight ? getMin(node) : getMax(node);
+			}
+		}
+
+		private TreeNode getMax(TreeNode node) {
+			while (node.right != null) {
+				node = node.right;
+			}
+			return node;
+		}
+
+		private TreeNode getMin(TreeNode node) {
+			while (node.left != null) {
+				node = node.left;
+			}
+			return node;
+		}
+
+		private void swap(TreeNode node1, TreeNode node2) {
+			int temp = node1.val;
+			node1.val = node2.val;
+			node2.val = temp;
+		}
+	}
+}

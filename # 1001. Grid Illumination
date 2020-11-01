@@ -36,12 +36,13 @@ public class Question1001 {
 					if (!lightOn.getOrDefault(nx * N + ny, false)) {
 						continue;
 					}
-					lightOn.put(nx * N + ny, false);
 					rows.put(nx, rows.getOrDefault(nx, 1) - 1);
 					cols.put(ny, cols.getOrDefault(ny, 1) - 1);
 					uppers.put(nx + ny, uppers.getOrDefault(nx + ny, 1) - 1);
 					lowers.put(nx - ny, lowers.getOrDefault(nx - ny, 1) - 1);
+					lightOn.put(nx * N + ny, false);
 				}
+
 			}
 			return ans;
 		}

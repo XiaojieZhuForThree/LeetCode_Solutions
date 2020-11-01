@@ -2,6 +2,7 @@ package com.leetcode.problems;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,27 +34,27 @@ public class Question133 {
 			if (node == null) {
 				return null;
 			}
-			Map<Integer, Node> copyMap = new HashMap<>();
-			Queue<Node> queue = new ArrayDeque<>();
+			Map<Integer, Node> map = new HashMap<>();
+			Deque<Node> queue = new ArrayDeque<>();
 			queue.offer(node);
 			while (!queue.isEmpty()) {
 				Node cur = queue.poll();
-				Node copyCur = copyMap.getOrDefault(cur.val, new Node(cur.val));
-				List<Node> copyNeighbors = new ArrayList<>();
-				for (Node neighbor : cur.neighbors) {
-					if (copyMap.containsKey(neighbor.val)) {
-						copyNeighbors.add(copyMap.get(neighbor.val));
-						continue;
+				Node copy = map.containsKey(cur.val) ? map.get(cur.val) : new Node(cur.val);
+				List<Node> list = new ArrayList<>();
+				for (Node nei : cur.neighbors) {
+					if (map.containsKey(nei.val)) {
+						list.add(map.get(nei.val));
+					} else {
+						Node cnei = new Node(nei.val);
+						list.add(cnei);
+						map.put(cnei.val, cnei);
+						queue.offer(nei);
 					}
-					Node copyNeighbor = new Node(neighbor.val);
-					copyNeighbors.add(copyNeighbor);
-					copyMap.put(copyNeighbor.val, copyNeighbor);
-					queue.offer(neighbor);
 				}
-				copyCur.neighbors = copyNeighbors;
-				copyMap.putIfAbsent(copyCur.val, copyCur);
+				copy.neighbors = list;
+				map.putIfAbsent(copy.val, copy);
 			}
-			return copyMap.get(node.val);
+			return map.get(node.val);
 		}
 	}
 }

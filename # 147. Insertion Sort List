@@ -1,39 +1,38 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null){
-            return head;
-        }
-        ListNode resultHead = head, resultTail = head;
-        head = head.next;
-        resultHead.next = null;
-        while (head != null) {
-            ListNode node = head;
-            head = head.next;
-            node.next = null;
-            if (node.val <= resultHead.val){
-                ListNode tmp = resultHead;
-                resultHead = node;
-                node.next = tmp;
-            }else if (node.val >= resultTail.val) {
-                resultTail.next = node;
-                resultTail = node;
-            } else {
-                ListNode prev = resultHead;
-                while (prev.next != null && prev.next.val < node.val){
-                    prev = prev.next;
-                }
-                node.next = prev.next;
-                prev.next = node;
-            }
-        }
-        return resultHead;
-    }
+package com.leetcode.problems;
+
+import com.leetcode.api.ListNode;
+
+public class Question147 {
+	class Solution {
+		public ListNode insertionSortList(ListNode head) {
+			if (head == null || head.next == null) {
+				return head;
+			}
+			ListNode top = new ListNode(0), trav = head;
+			top.next = head;
+			while (trav != null && trav.next != null) {
+				ListNode target = trav.next, nextNode = trav.next.next;
+				trav.next = nextNode;
+				ListNode dummy = top;
+				boolean inserted = false;
+				while (dummy != trav) {
+					ListNode compare = dummy.next;
+					if (compare.val > target.val) {
+						dummy.next = target;
+						target.next = compare;
+						inserted = true;
+						break;
+					} else {
+						dummy = dummy.next;
+					}
+				}
+				if (!inserted) {
+					trav.next = target;
+					target.next = nextNode;
+					trav = trav.next;
+				}
+			}
+			return top.next;
+		}
+	}
 }

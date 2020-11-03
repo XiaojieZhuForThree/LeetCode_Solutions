@@ -1,3 +1,4 @@
+package com.leetcode.problems;
 
 public class Question1446 {
 	class Solution1 {
@@ -21,16 +22,20 @@ public class Question1446 {
 	}
 
 	class Solution2 {
-		public int maxPower(String s) {
-			if (s == null || s.length() == 0) {
-				return 0;
-			}
-			int ans = 1, cur = 1;
-			for (int i = 1; i < s.length(); i++) {
-				cur = s.charAt(i) == s.charAt(i - 1) ? cur + 1 : 1;
-				ans = Math.max(cur, ans);
-			}
-			return ans;
-		}
+	    public int maxPower(String s) {
+	        char rep = '#';
+	        int cnt = 0, cur = 0;
+	        for (char c : s.toCharArray()) {
+	            if (c == rep) {
+	                cur++;
+	            } else {
+	                cnt = Math.max(cnt, cur);
+	                rep = c;
+	                cur = 1;
+	            }
+	        }
+	        cnt = Math.max(cnt, cur);
+	        return cnt;
+	    }
 	}
 }

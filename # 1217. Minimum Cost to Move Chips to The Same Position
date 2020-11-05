@@ -1,0 +1,46 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1217 {
+	class Solution1 {
+		public int minCostToMoveChips(int[] position) {
+			int cost = Integer.MAX_VALUE;
+			Map<Integer, Integer> record = new HashMap<>();
+			for (int i : position) {
+				record.put(i, record.getOrDefault(i, 0) + 1);
+			}
+			for (int i : record.keySet()) {
+				cost = Math.min(cost, getCost(record, i));
+			}
+			return cost;
+		}
+
+		private int getCost(Map<Integer, Integer> record, int i) {
+			int val = 0;
+			for (int j : record.keySet()) {
+				if (j == i) {
+					continue;
+				} else {
+					val += record.get(j) * (Math.abs(i - j) % 2);
+				}
+			}
+			return val;
+		}
+	}
+
+	class Solution2 {
+		public int minCostToMoveChips(int[] position) {
+			int odd = 0, even = 0;
+			for (int i : position) {
+				if (i % 2 == 0) {
+					even++;
+				} else {
+					odd++;
+				}
+			}
+			return Math.min(odd, even);
+		}
+	}
+}

@@ -8,21 +8,20 @@ import java.util.Queue;
 public class Question310 {
 	class Solution {
 		public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-			List<Integer> ans = new ArrayList<>();
 			if (n == 1) {
-				ans.add(0);
-				return ans;
+				return List.of(0);
 			}
-			int[] degrees = new int[n];
+			List<Integer> ans = new ArrayList<>();
 			List<List<Integer>> graph = new ArrayList<>();
 			for (int i = 0; i < n; i++) {
 				graph.add(new ArrayList<>());
 			}
-			for (int[] e : edges) {
-				graph.get(e[0]).add(e[1]);
-				graph.get(e[1]).add(e[0]);
-				degrees[e[0]]++;
-				degrees[e[1]]++;
+			int[] degrees = new int[n];
+			for (int[] edge : edges) {
+				graph.get(edge[0]).add(edge[1]);
+				graph.get(edge[1]).add(edge[0]);
+				degrees[edge[0]]++;
+				degrees[edge[1]]++;
 			}
 			Queue<Integer> queue = new ArrayDeque<>();
 			for (int i = 0; i < n; i++) {

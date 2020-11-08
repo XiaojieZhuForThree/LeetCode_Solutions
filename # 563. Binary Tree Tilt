@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+public class Question563 {
+	class Solution {
+		int val = 0;
+
+		public int findTilt(TreeNode root) {
+			helper(root);
+			return val;
+		}
+
+		private void helper(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			int left = 0, right = 0;
+			if (node.left != null) {
+				findTilt(node.left);
+				left = node.left.val;
+			}
+			if (node.right != null) {
+				findTilt(node.right);
+				right = node.right.val;
+			}
+			val += Math.abs(left - right);
+			node.val += left + right;
+			return;
+		}
+	}
+}

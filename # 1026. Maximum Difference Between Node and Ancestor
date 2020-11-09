@@ -1,0 +1,82 @@
+package com.leetcode.problems;
+
+public class Question1026 {
+	class Solution1 {
+		int val = 0;
+
+		public int maxAncestorDiff(TreeNode root) {
+			TreeNode copy = copyNode(root);
+			maxHelper(root);
+			minHelper(copy);
+			return val;
+		}
+
+		private TreeNode copyNode(TreeNode node) {
+			if (node == null) {
+				return null;
+			}
+			TreeNode copy = new TreeNode(node.val);
+			copy.left = copyNode(node.left);
+			copy.right = copyNode(node.right);
+			return copy;
+		}
+
+		private void maxHelper(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			int cur = node.val;
+			if (node.left != null) {
+				maxHelper(node.left);
+				val = Math.max(val, Math.abs(node.val - node.left.val));
+				cur = Math.max(cur, node.left.val);
+			}
+			if (node.right != null) {
+				maxHelper(node.right);
+				val = Math.max(val, Math.abs(node.val - node.right.val));
+				cur = Math.max(cur, node.right.val);
+			}
+			node.val = cur;
+			return;
+		}
+
+		private void minHelper(TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			int cur = node.val;
+			if (node.left != null) {
+				minHelper(node.left);
+				val = Math.max(val, Math.abs(node.val - node.left.val));
+				cur = Math.min(cur, node.left.val);
+			}
+			if (node.right != null) {
+				minHelper(node.right);
+				val = Math.max(val, Math.abs(node.val - node.right.val));
+				cur = Math.min(cur, node.right.val);
+			}
+			node.val = cur;
+			return;
+		}
+	}
+
+	class Solution2 {
+		public int maxAncestorDiff(TreeNode root) {
+			if (root == null) {
+				return 0;
+			}
+			return helper(root, root.val, root.val);
+		}
+
+		private int helper(TreeNode node, int curMin, int curMax) {
+			if (node == null) {
+				return curMax - curMin;
+			}
+			curMax = Math.max(node.val, curMax);
+			curMin = Math.min(node.val, curMin);
+			int left = helper(node.left, curMin, curMax);
+			int right = helper(node.right, curMin, curMax);
+			return Math.max(left, right);
+		}
+	}
+}

@@ -3,41 +3,34 @@ package com.leetcode.problems;
 public class Question832 {
 	class Solution {
 		public int[][] flipAndInvertImage(int[][] A) {
-			flipImage(A);
-			invertImage(A);
+			for (int[] row : A) {
+				reverse(row);
+			}
+			invert(A);
 			return A;
 		}
 
-		private final void flipImage(int[][] A) {
-			int n = A.length;
-			for (int i = 0; i < n; i++) {
-				A[i] = reverseRow(A[i]);
+		private void reverse(int[] row) {
+			int left = 0, right = row.length - 1;
+			while (left < right) {
+				swap(row, left++, right--);
 			}
+			return;
 		}
 
-		private final int[] reverseRow(int[] row) {
-			int i = 0, j = row.length - 1;
-			while (i < j) {
-				swap(row, i, j);
-				i++;
-				j--;
-			}
-			return row;
+		private void swap(int[] row, int left, int right) {
+			int temp = row[left];
+			row[left] = row[right];
+			row[right] = temp;
 		}
 
-		private final void swap(int[] row, int i, int j) {
-			int temp = row[i];
-			row[i] = row[j];
-			row[j] = temp;
-		}
-
-		private final void invertImage(int[][] A) {
-			int n = A.length;
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					A[i][j] = A[i][j] == 1 ? 0 : 1;
+		private void invert(int[][] A) {
+			for (int[] row : A) {
+				for (int i = 0; i < row.length; i++) {
+					row[i] = row[i] == 0 ? 1 : 0;
 				}
 			}
+			return;
 		}
 	}
 }

@@ -1,21 +1,39 @@
-class Solution {
-    Set<List<Integer>> ans = new HashSet<>();
-    public List<List<Integer>> permuteUnique(int[] nums) {
-    	
-    	bfs(nums, new ArrayList<Integer>(nums.length), nums.length);
-    	return new ArrayList<List<Integer>>(ans);
-    }
-    private void bfs(int[] nums, List<Integer> res, int size) {
-    	if (size == 0) {
-    		ans.add(res);
-    	}
-    	for (int i = 0; i < size; i++) {
-    		List<Integer> next = new ArrayList<>(res);
-    		next.add(nums[i]);
-    		int restore = nums[i];
-    		nums[i] = nums[size-1];
-    		bfs(nums, next, size-1);
-    		nums[i] = restore;
-    	}
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Question47 {
+	class Solution {
+		List<List<Integer>> ans = new ArrayList<>();
+
+		public List<List<Integer>> permuteUnique(int[] nums) {
+			Set<String> set = new HashSet<>();
+			dfs(nums, set, new ArrayList<>(), new HashSet<>());
+			return ans;
+		}
+
+		private void dfs(int[] nums, Set<String> set, List<Integer> perm, Set<Integer> alreadyIn) {
+			if (alreadyIn.size() == nums.length) {
+				if (!set.contains(perm.toString())) {
+					ans.add(new ArrayList<>(perm));
+					set.add(perm.toString());
+				}
+				return;
+			} else {
+				for (int i = 0; i < nums.length; i++) {
+					if (!alreadyIn.contains(i)) {
+						perm.add(nums[i]);
+						alreadyIn.add(i);
+						dfs(nums, set, perm, alreadyIn);
+						alreadyIn.remove(i);
+						perm.remove(perm.size() - 1);
+					}
+				}
+				return;
+			}
+		}
+	}
 }

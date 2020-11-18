@@ -1,0 +1,19 @@
+package com.leetcode.problems;
+
+public class Question858 {
+	class Solution {
+		public int mirrorReflection(int p, int q) {
+			boolean right = true;
+			int height = q;
+			while (height % p != 0) {
+				height += q;
+				right = !right;
+			}
+			if (!right) {
+				return 2;
+			} else {
+				return (height / p) % 2;
+			}
+		}
+	}
+}

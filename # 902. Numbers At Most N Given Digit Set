@@ -1,0 +1,48 @@
+package com.leetcode.problems;
+
+public class Question902 {
+	class Solution {
+		public int atMostNGivenDigitSet(String[] digits, int n) {
+			String N = String.valueOf(n);
+			int ans = getSameSizeNum(digits, N);
+			for (int i = 1; i < N.length(); i++) {
+				ans += getPerm(digits.length, i);
+			}
+			return ans;
+		}
+
+		private int getSameSizeNum(String[] digits, String N) {
+			int ans = 0;
+			if (N.length() == 0) {
+				return ans;
+			}
+			if (N.length() == 1) {
+				for (String dig : digits) {
+					if (dig.compareTo(N) <= 0) {
+						ans++;
+					}
+				}
+				return ans;
+			}
+			String cur = N.substring(0, 1);
+			for (String dig : digits) {
+				if (dig.compareTo(cur) > 0) {
+					continue;
+				} else if (dig.equals(cur)) {
+					ans += getSameSizeNum(digits, N.substring(1));
+				} else {
+					ans += getPerm(digits.length, N.length() - 1);
+				}
+			}
+			return ans;
+		}
+
+		private int getPerm(int n, int m) {
+			int val = 1;
+			for (int i = 0; i < m; i++) {
+				val *= n;
+			}
+			return val;
+		}
+	}
+}

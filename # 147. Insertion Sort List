@@ -5,34 +5,30 @@ import com.leetcode.api.ListNode;
 public class Question147 {
 	class Solution {
 		public ListNode insertionSortList(ListNode head) {
-			if (head == null || head.next == null) {
-				return head;
-			}
-			ListNode top = new ListNode(0), trav = head;
-			top.next = head;
-			while (trav != null && trav.next != null) {
-				ListNode target = trav.next, nextNode = trav.next.next;
-				trav.next = nextNode;
-				ListNode dummy = top;
-				boolean inserted = false;
-				while (dummy != trav) {
-					ListNode compare = dummy.next;
-					if (compare.val > target.val) {
-						dummy.next = target;
-						target.next = compare;
-						inserted = true;
+			ListNode hanger = new ListNode(-1);
+			hanger.next = head;
+			ListNode dummy = hanger;
+			while (dummy.next != null) {
+				ListNode start = hanger;
+				boolean swapped = false;
+				while (start != dummy) {
+					if (start.next.val > dummy.next.val) {
+						ListNode tmp = start.next;
+						ListNode dummyTmp = dummy.next.next;
+						start.next = dummy.next;
+						start.next.next = tmp;
+						dummy.next = dummyTmp;
+						swapped = true;
 						break;
 					} else {
-						dummy = dummy.next;
+						start = start.next;
 					}
 				}
-				if (!inserted) {
-					trav.next = target;
-					target.next = nextNode;
-					trav = trav.next;
+				if (!swapped) {
+					dummy = dummy.next;
 				}
 			}
-			return top.next;
+			return hanger.next;
 		}
 	}
 }

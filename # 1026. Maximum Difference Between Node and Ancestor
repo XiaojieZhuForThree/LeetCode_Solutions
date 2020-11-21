@@ -2,81 +2,66 @@ package com.leetcode.problems;
 
 public class Question1026 {
 	class Solution1 {
-		int val = 0;
+		int ans = 0;
 
 		public int maxAncestorDiff(TreeNode root) {
-			TreeNode copy = copyNode(root);
-			maxHelper(root);
-			minHelper(copy);
-			return val;
+			TreeNode copy = copyTree(root);
+			getDiff(root, true);
+			getDiff(copy, false);
+			return ans;
 		}
 
-		private TreeNode copyNode(TreeNode node) {
+		private TreeNode copyTree(TreeNode node) {
 			if (node == null) {
 				return null;
 			}
 			TreeNode copy = new TreeNode(node.val);
-			copy.left = copyNode(node.left);
-			copy.right = copyNode(node.right);
+			copy.left = copyTree(node.left);
+			copy.right = copyTree(node.right);
 			return copy;
 		}
 
-		private void maxHelper(TreeNode node) {
+		private void getDiff(TreeNode node, boolean isMin) {
 			if (node == null) {
 				return;
 			}
-			int cur = node.val;
 			if (node.left != null) {
-				maxHelper(node.left);
-				val = Math.max(val, Math.abs(node.val - node.left.val));
-				cur = Math.max(cur, node.left.val);
+				getDiff(node.left, isMin);
+				ans = Math.max(ans, Math.abs(node.val - node.left.val));
 			}
 			if (node.right != null) {
-				maxHelper(node.right);
-				val = Math.max(val, Math.abs(node.val - node.right.val));
-				cur = Math.max(cur, node.right.val);
+				getDiff(node.right, isMin);
+				ans = Math.max(ans, Math.abs(node.val - node.right.val));
 			}
-			node.val = cur;
-			return;
-		}
-
-		private void minHelper(TreeNode node) {
-			if (node == null) {
-				return;
-			}
-			int cur = node.val;
 			if (node.left != null) {
-				minHelper(node.left);
-				val = Math.max(val, Math.abs(node.val - node.left.val));
-				cur = Math.min(cur, node.left.val);
+				node.val = isMin ? Math.min(node.val, node.left.val) : Math.max(node.val, node.left.val);
 			}
 			if (node.right != null) {
-				minHelper(node.right);
-				val = Math.max(val, Math.abs(node.val - node.right.val));
-				cur = Math.min(cur, node.right.val);
+				node.val = isMin ? Math.min(node.val, node.right.val) : Math.max(node.val, node.right.val);
 			}
-			node.val = cur;
-			return;
 		}
 	}
 
 	class Solution2 {
+		int ans = 0;
+
 		public int maxAncestorDiff(TreeNode root) {
 			if (root == null) {
-				return 0;
+				return ans;
 			}
-			return helper(root, root.val, root.val);
+			helper(root, root.val, root.val);
+			return ans;
 		}
 
-		private int helper(TreeNode node, int curMin, int curMax) {
+		private void helper(TreeNode node, int min, int max) {
 			if (node == null) {
-				return curMax - curMin;
+				return;
 			}
-			curMax = Math.max(node.val, curMax);
-			curMin = Math.min(node.val, curMin);
-			int left = helper(node.left, curMin, curMax);
-			int right = helper(node.right, curMin, curMax);
-			return Math.max(left, right);
+			min = Math.min(min, node.val);
+			max = Math.max(max, node.val);
+			ans = Math.max(ans, max - min);
+			helper(node.left, min, max);
+			helper(node.right, min, max);
 		}
 	}
 }

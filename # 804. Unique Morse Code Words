@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question804 {
+	class Solution {
+		public int uniqueMorseRepresentations(String[] words) {
+			String[] refTable = new String[] { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---",
+					"-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-",
+					"-.--", "--.." };
+			Set<String> codes = new HashSet<>();
+			for (String word : words) {
+				codes.add(getCode(word, refTable));
+			}
+			return codes.size();
+		}
+
+		private String getCode(String word, String[] refTable) {
+			StringBuilder sb = new StringBuilder();
+			for (char c : word.toCharArray()) {
+				sb.append(refTable[c - 'a']);
+			}
+			return sb.toString();
+		}
+	}
+}

@@ -2,37 +2,35 @@ package com.leetcode.problems;
 
 public class Question845 {
 	class Solution {
-		public int longestMountain(int[] A) {
-			if (A == null || A.length == 0) {
-				return 0;
-			}
-			int len = 0;
-			int start = 0, upperEnd = 0, lowerEnd = 0;
-			for (int i = 1; i < A.length; i++) {
-				if (A[i] > A[i - 1]) {
-					if (lowerEnd == i - 1) {
-						start = i - 1;
-					}
-					upperEnd = i;
-				} else if (A[i] < A[i - 1]) {
-					if (upperEnd > start) {
-						lowerEnd = i;
-						len = Math.max(len, lowerEnd - start + 1);
+		int ans = 0;
+
+		public int longestMountain(int[] arr) {
+			int start = 0, peak = 0, lower = 0;
+			for (int i = 1; i < arr.length; i++) {
+				if (arr[i] < arr[i - 1]) {
+					if (peak > start) {
+						lower = i;
+						ans = Math.max(ans, lower - start + 1);
 					} else {
 						start = i;
-						upperEnd = i;
-						lowerEnd = i;
+						peak = i;
+						lower = i;
+					}
+				} else if (arr[i] > arr[i - 1]) {
+					if (start == lower) {
+						peak++;
+					} else {
+						start = i - 1;
+						lower = i - 1;
+						peak = i;
 					}
 				} else {
 					start = i;
-					upperEnd = i;
-					lowerEnd = i;
+					lower = i;
+					peak = i;
 				}
 			}
-			if (lowerEnd > upperEnd && upperEnd > start) {
-				len = Math.max(len, lowerEnd - start + 1);
-			}
-			return len;
+			return ans;
 		}
 	}
 }

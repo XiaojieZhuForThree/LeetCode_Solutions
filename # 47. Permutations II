@@ -7,33 +7,28 @@ import java.util.Set;
 
 public class Question47 {
 	class Solution {
-		List<List<Integer>> ans = new ArrayList<>();
-
 		public List<List<Integer>> permuteUnique(int[] nums) {
-			Set<String> set = new HashSet<>();
-			dfs(nums, set, new ArrayList<>(), new HashSet<>());
-			return ans;
+			Set<List<Integer>> ans = new HashSet<>();
+			dfs(nums, ans, new ArrayList<>(), new HashSet<>());
+			return new ArrayList<>(ans);
 		}
 
-		private void dfs(int[] nums, Set<String> set, List<Integer> perm, Set<Integer> alreadyIn) {
-			if (alreadyIn.size() == nums.length) {
-				if (!set.contains(perm.toString())) {
-					ans.add(new ArrayList<>(perm));
-					set.add(perm.toString());
-				}
-				return;
-			} else {
-				for (int i = 0; i < nums.length; i++) {
-					if (!alreadyIn.contains(i)) {
-						perm.add(nums[i]);
-						alreadyIn.add(i);
-						dfs(nums, set, perm, alreadyIn);
-						alreadyIn.remove(i);
-						perm.remove(perm.size() - 1);
-					}
-				}
+		private void dfs(int[] nums, Set<List<Integer>> ans, List<Integer> curList, Set<Integer> seen) {
+			if (seen.size() == nums.length) {
+				ans.add(new ArrayList<>(curList));
 				return;
 			}
+			for (int i = 0; i < nums.length; i++) {
+				if (seen.contains(i)) {
+					continue;
+				}
+				seen.add(i);
+				curList.add(nums[i]);
+				dfs(nums, ans, curList, seen);
+				seen.remove(i);
+				curList.remove(curList.size() - 1);
+			}
+			return;
 		}
 	}
 }

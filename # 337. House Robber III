@@ -19,20 +19,19 @@ public class Question337 {
 	}
 
 	class Solution2 {
-		public int rob(TreeNode root) {
-			int[] vals = helper(root);
-			return Math.max(vals[0], vals[1]);
-		}
-
-		private int[] helper(TreeNode node) {
-			if (node == null) {
-				return new int[] { 0, 0 };
-			}
-			int[] leftVals = helper(node.left);
-			int[] rightVals = helper(node.right);
-			int with = node.val + leftVals[1] + rightVals[1];
-			int without = Math.max(leftVals[0], leftVals[1]) + Math.max(rightVals[0], rightVals[1]);
-			return new int[] { with, without };
-		}
+	    public int rob(TreeNode root) {
+	        int[] maxVals = helper(root);
+	        return Math.max(maxVals[0], maxVals[1]);
+	    }
+	    private int[] helper(TreeNode node) {
+	        if (node == null) {
+	            return new int[] {0, 0};
+	        }
+	        int[] leftVals = helper(node.left);
+	        int[] rightVals = helper(node.right);
+	        int with = node.val + leftVals[1] + rightVals[1];
+	        int without = Math.max(leftVals[0], leftVals[1]) + Math.max(rightVals[0], rightVals[1]);
+	        return new int[] {with, without};
+	    }
 	}
 }

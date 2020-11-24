@@ -3,17 +3,16 @@ package com.leetcode.problems;
 public class Question858 {
 	class Solution {
 		public int mirrorReflection(int p, int q) {
-			boolean right = true;
-			int height = q;
-			while (height % p != 0) {
-				height += q;
-				right = !right;
+			int seg = q;
+			int ref = 0;
+			while (seg % p != 0) {
+				seg += q;
+				ref++;
 			}
-			if (!right) {
+			if (ref % 2 == 1) {
 				return 2;
-			} else {
-				return (height / p) % 2;
 			}
+			return (seg / p) % 2 == 0 ? 0 : 1;
 		}
 	}
 }

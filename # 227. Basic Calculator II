@@ -1,9 +1,56 @@
-class Solution {
-    public int calculate(String s) {
-        s.replaceAll("\\s","");
-        int cur = 0;
-        for (char i : s) {
-            
-        }
-    }
+package com.leetcode.problems;
+
+public class Question227 {
+	class Solution {
+		public int calculate(String s) {
+			return helper(s.replaceAll(" ", ""), 0, false);
+		}
+
+		private int helper(String s, int start, boolean isReversed) {
+			int val1 = 0;
+			for (int i = start; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if (Character.isDigit(c)) {
+					val1 = val1 * 10 + (c - '0');
+				} else if (c == '+') {
+					if (!isReversed) {
+						return val1 + helper(s, i + 1, false);
+					} else {
+						return val1 - helper(s, i + 1, false);
+					}
+				} else if (c == '-') {
+					if (!isReversed) {
+						return val1 - helper(s, i + 1, true);
+					} else {
+						return val1 + helper(s, i + 1, true);
+					}
+				} else if (c == '*') {
+					int val2 = 0;
+					int j = i + 1;
+					for (; j < s.length(); j++) {
+						if (!Character.isDigit(s.charAt(j))) {
+							break;
+						} else {
+							val2 = val2 * 10 + (s.charAt(j) - '0');
+						}
+					}
+					val1 *= val2;
+					i = j - 1;
+				} else {
+					int val2 = 0;
+					int j = i + 1;
+					for (; j < s.length(); j++) {
+						if (!Character.isDigit(s.charAt(j))) {
+							break;
+						} else {
+							val2 = val2 * 10 + (s.charAt(j) - '0');
+						}
+					}
+					val1 /= val2;
+					i = j - 1;
+				}
+			}
+			return val1;
+		}
+	}
 }

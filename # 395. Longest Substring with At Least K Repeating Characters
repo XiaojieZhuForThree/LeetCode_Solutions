@@ -1,0 +1,73 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question395 {
+	class Solution1 {
+		public int longestSubstring(String s, int k) {
+			int[] counts = new int[26];
+			int len = 0;
+			for (int i = 0; i < s.length(); i++) {
+				Arrays.fill(counts, 0);
+				for (int j = i; j >= 0; j--) {
+					char c = s.charAt(j);
+					counts[c - 'a']++;
+					if (isValid(counts, k)) {
+						len = Math.max(len, i - j + 1);
+					}
+				}
+			}
+			return len;
+		}
+
+		private boolean isValid(int[] counts, int k) {
+			for (int i : counts) {
+				if (i > 0 && i < k) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	class Solution2 {
+		public int longestSubstring(String s, int k) {
+			int[] counts = new int[26];
+			boolean possible = false;
+			for (char c : s.toCharArray()) {
+				counts[c - 'a']++;
+				if (counts[c - 'a'] == k) {
+					possible = true;
+				}
+			}
+			if (!possible) {
+				return 0;
+			}
+			if (isValid(counts, k)) {
+				return s.length();
+			}
+			int start = 0, max = 0, end = 0;
+			for (; end < s.length(); end++) {
+				if (counts[s.charAt(end) - 'a'] < k) {
+					int localMax = longestSubstring(s.substring(start, end), k);
+					max = Math.max(max, localMax);
+					start = end + 1;
+				}
+			}
+			if (start < end) {
+				int localMax = longestSubstring(s.substring(start, end), k);
+				max = Math.max(max, localMax);
+			}
+			return max;
+		}
+
+		private boolean isValid(int[] counts, int k) {
+			for (int i : counts) {
+				if (i > 0 && i < k) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

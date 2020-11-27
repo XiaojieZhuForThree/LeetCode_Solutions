@@ -1,81 +1,57 @@
-class Solution1 {
-    public boolean canPartition(int[] nums) {
-        if (nums == null || nums.length < 2) return false;
-        int sum = 0;
-        for (int i : nums){
-        	sum += i;
-        }
-        if (sum % 2 == 1) return false;
-        int half = sum / 2;
-        return helper(nums, half);
-    }
-    private boolean helper(int[] nums, int target){
-    	Set<Integer> set = new HashSet<>();
-    	for (int i : nums){
-    		if (i == target) return true;
-    		else if (i > target) return false;
-    		else if (set.contains(target - i)) return true;
-    		else {
-    			Set<Integer> newSet = new HashSet<>(set);
-    			for (int j : set){
-                    if (i + j < target){
-    				    newSet.add(i + j);                        
-                    }
-    			}
-    			newSet.add(i);
-    			set = newSet;
-    		}
-    	}
-    	return set.contains(target);
-    }
-}
+package com.leetcode.problems;
 
-class Solution2 {
-    public boolean canPartition(int[] nums) {
-        // check edge case
-        if (nums == null || nums.length == 0) {
-            return true;
-        }
-        // preprocess
-        int volumn = 0;
-        for (int num : nums) {
-            volumn += num;
-        }
-        if (volumn % 2 != 0) {
-            return false;
-        }
-        volumn /= 2;
-        // dp def
-        boolean[] dp = new boolean[volumn + 1];
-        // dp init
-        dp[0] = true;
-        // dp transition
-        for (int i = 1; i <= nums.length; i++) {
-            for (int j = volumn; j >= nums[i-1]; j--) {
-                dp[j] = dp[j] || dp[j - nums[i-1]];
-            }
-        }
-        return dp[volumn];
-    }
-}
+import java.util.HashSet;
+import java.util.Set;
 
-class Solution3 {
-    public boolean canPartition(int[] nums) {
-        int sum = 0;
-        for (int num : nums) sum += num;
-        if (sum % 2 == 1) return false;
-        return dfs(nums, 0, sum / 2);
-    }
+public class Question416 {
+	class Solution1 {
+		public boolean canPartition(int[] nums) {
+			if (nums == null || nums.length == 0) {
+				return false;
+			}
+			int sum = 0;
+			for (int i : nums) {
+				sum += i;
+			}
+			if (sum % 2 == 1) {
+				return false;
+			}
+			Set<Integer> set = new HashSet<>();
+			set.add(nums[0]);
+			set.add(-nums[0]);
+			for (int i = 1; i < nums.length; i++) {
+				Set<Integer> next = new HashSet<>();
+				for (int j : set) {
+					next.add(j + nums[i]);
+					next.add(j - nums[i]);
+				}
+				set = next;
+			}
+			return set.contains(0);
+		}
+	}
 
-    private boolean dfs(int[] nums, int index, int target) {
-        if (target == 0) return true;
-        if (target < 0 || index == nums.length) return false;
-        if (dfs(nums, index  + 1, target - nums[index])) return true;
-		// if meet duplicate number, index move one step.
-        int j = index + 1;
-        while (j < nums.length && nums[j] == nums[index]) {
-            j++;
-        }
-        return dfs(nums, j, target);
-    }
+	class Solution2 {
+		public boolean canPartition(int[] nums) {
+			if (nums == null || nums.length == 0) {
+				return false;
+			}
+			int sum = 0;
+			for (int i : nums) {
+				sum += i;
+			}
+			if (sum % 2 == 1) {
+				return false;
+			}
+			int target = sum / 2;
+			boolean[] dp = new boolean[target + 1];
+			dp[0] = true;
+			for (int i = 0; i < nums.length; i++) {
+				for (int j = target; j >= nums[i]; j--) {
+					dp[j] = dp[j] || dp[j - nums[i]];
+				}
+			}
+			return dp[target];
+		}
+	}
 }

@@ -32,11 +32,14 @@ public class Question395 {
 
 	class Solution2 {
 		public int longestSubstring(String s, int k) {
+			if (s == null || s.length() == 0) {
+				return 0;
+			}
 			int[] counts = new int[26];
 			boolean possible = false;
 			for (char c : s.toCharArray()) {
 				counts[c - 'a']++;
-				if (counts[c - 'a'] == k) {
+				if (counts[c - 'a'] >= k) {
 					possible = true;
 				}
 			}
@@ -46,17 +49,15 @@ public class Question395 {
 			if (isValid(counts, k)) {
 				return s.length();
 			}
-			int start = 0, max = 0, end = 0;
+			int start = 0, end = 0, max = 0;
 			for (; end < s.length(); end++) {
 				if (counts[s.charAt(end) - 'a'] < k) {
-					int localMax = longestSubstring(s.substring(start, end), k);
-					max = Math.max(max, localMax);
+					max = Math.max(max, longestSubstring(s.substring(start, end), k));
 					start = end + 1;
 				}
 			}
 			if (start < end) {
-				int localMax = longestSubstring(s.substring(start, end), k);
-				max = Math.max(max, localMax);
+				max = Math.max(max, longestSubstring(s.substring(start, end), k));
 			}
 			return max;
 		}

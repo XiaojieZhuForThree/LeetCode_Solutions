@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,20 +6,24 @@ import java.util.Set;
 public class Question1306 {
 	class Solution {
 		public boolean canReach(int[] arr, int start) {
+			if (arr == null || arr.length == 0) {
+				return false;
+			}
 			return dfs(arr, start, new HashSet<>());
 		}
 
-		private boolean dfs(int[] arr, int pos, Set<Integer> visited) {
-			int n = arr.length;
-			if (pos >= n || pos < 0 || visited.contains(pos)) {
+		private boolean dfs(int[] arr, int pos, Set<Integer> seen) {
+			if (pos < 0 || pos >= arr.length) {
+				return false;
+			}
+			if (seen.contains(pos)) {
 				return false;
 			}
 			if (arr[pos] == 0) {
 				return true;
 			}
-			int steps = arr[pos];
-			visited.add(pos);
-			return dfs(arr, pos + steps, visited) || dfs(arr, pos - steps, visited);
+			seen.add(pos);
+			return dfs(arr, pos + arr[pos], seen) || dfs(arr, pos - arr[pos], seen);
 		}
 	}
 }

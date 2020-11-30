@@ -3,54 +3,56 @@ package com.leetcode.problems;
 public class Question227 {
 	class Solution {
 		public int calculate(String s) {
-			return helper(s.replaceAll(" ", ""), 0, false);
+			s = s.replaceAll(" ", "");
+			return helper(s, 0, false);
 		}
 
-		private int helper(String s, int start, boolean isReversed) {
-			int val1 = 0;
-			for (int i = start; i < s.length(); i++) {
-				char c = s.charAt(i);
-				if (Character.isDigit(c)) {
-					val1 = val1 * 10 + (c - '0');
-				} else if (c == '+') {
-					if (!isReversed) {
-						return val1 + helper(s, i + 1, false);
-					} else {
-						return val1 - helper(s, i + 1, false);
-					}
-				} else if (c == '-') {
-					if (!isReversed) {
-						return val1 - helper(s, i + 1, true);
-					} else {
-						return val1 + helper(s, i + 1, true);
-					}
-				} else if (c == '*') {
-					int val2 = 0;
-					int j = i + 1;
-					for (; j < s.length(); j++) {
-						if (!Character.isDigit(s.charAt(j))) {
-							break;
-						} else {
-							val2 = val2 * 10 + (s.charAt(j) - '0');
-						}
-					}
-					val1 *= val2;
-					i = j - 1;
+		private int helper(String s, int i, boolean isReversed) {
+			int num1 = 0, num2 = 0;
+			for (; i < s.length(); i++) {
+				if (Character.isDigit(s.charAt(i))) {
+					num1 = num1 * 10 + (s.charAt(i) - '0');
 				} else {
-					int val2 = 0;
-					int j = i + 1;
-					for (; j < s.length(); j++) {
-						if (!Character.isDigit(s.charAt(j))) {
-							break;
+					if (s.charAt(i) == '+') {
+						if (isReversed) {
+							return num1 - helper(s, i + 1, false);
 						} else {
-							val2 = val2 * 10 + (s.charAt(j) - '0');
+							return num1 + helper(s, i + 1, false);
 						}
+					} else if (s.charAt(i) == '-') {
+						if (isReversed) {
+							return num1 + helper(s, i + 1, true);
+						} else {
+							return num1 - helper(s, i + 1, true);
+						}
+					} else if (s.charAt(i) == '*') {
+						int j = i + 1;
+						for (; j < s.length(); j++) {
+							if (Character.isDigit(s.charAt(j))) {
+								num2 = num2 * 10 + (s.charAt(j) - '0');
+							} else {
+								break;
+							}
+						}
+						num1 *= num2;
+						num2 = 0;
+						i = j - 1;
+					} else {
+						int j = i + 1;
+						for (; j < s.length(); j++) {
+							if (Character.isDigit(s.charAt(j))) {
+								num2 = num2 * 10 + (s.charAt(j) - '0');
+							} else {
+								break;
+							}
+						}
+						num1 /= num2;
+						num2 = 0;
+						i = j - 1;
 					}
-					val1 /= val2;
-					i = j - 1;
 				}
 			}
-			return val1;
+			return num1;
 		}
 	}
 }

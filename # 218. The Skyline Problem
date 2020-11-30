@@ -1,0 +1,55 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+public class Question218 {
+	class Solution {
+		public List<List<Integer>> getSkyline(int[][] buildings) {
+			TreeMap<Integer, Integer> map = new TreeMap<>(); // edge location -> height
+
+			for (int[] b : buildings) {
+
+				int l = b[0];
+				int r = b[1];
+				int h = b[2];
+
+				Integer rightFloor = map.floorKey(r);
+				if (rightFloor == null || map.get(rightFloor) < h) {
+					map.put(r, rightFloor == null ? 0 : map.get(rightFloor));
+				}
+
+				Integer leftFloor = map.floorKey(l);
+				if (leftFloor == null || map.get(leftFloor) < h) {
+					map.put(l, h);
+				}
+
+				List<Integer> delete = new ArrayList<>();
+				for (Integer loc : map.subMap(l + 1, r).keySet()) {
+					if (map.get(loc) < h) {
+						if (map.lowerEntry(loc) != null && map.lowerEntry(loc).getValue() > h) {
+							// drop from a higher place to lower place at loc, leading to an intersection
+							// with current building
+							map.put(loc, h);
+						} else {
+							delete.add(loc);
+						}
+					}
+				}
+				map.keySet().removeAll(delete);
+			}
+
+			List<List<Integer>> ans = new ArrayList<>();
+			for (Integer loc : map.keySet()) {
+				int h = map.get(loc);
+				if (!ans.isEmpty() && ans.get(ans.size() - 1).get(1) == h) {
+					continue;
+				}
+				ans.add(List.of(loc, h));
+			}
+
+			return ans;
+		}
+	}
+}

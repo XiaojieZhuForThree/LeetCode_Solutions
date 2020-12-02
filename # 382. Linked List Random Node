@@ -1,0 +1,89 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import com.leetcode.api.ListNode;
+
+public class Question382 {
+	/**
+	 * Definition for singly-linked list. public class ListNode { int val; ListNode
+	 * next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val,
+	 * ListNode next) { this.val = val; this.next = next; } }
+	 */
+	class Solution1 {
+		Map<Integer, ListNode> map;
+		int size = 0;
+		Random random;
+
+		/**
+		 * @param head The linked list's head. Note that the head is guaranteed to be
+		 *             not null, so it contains at least one node.
+		 */
+		public Solution1(ListNode head) {
+			random = ThreadLocalRandom.current();
+			map = new HashMap<>();
+			int index = 0;
+			while (head != null) {
+				map.put(index++, head);
+				head = head.next;
+			}
+			size = index;
+		}
+
+		/** Returns a random node's value. */
+		public int getRandom() {
+			int target = random.nextInt(size);
+			return map.get(target).val;
+		}
+	}
+
+	/**
+	 * Your Solution object will be instantiated and called as such: Solution obj =
+	 * new Solution(head); int param_1 = obj.getRandom();
+	 */
+	/**
+	 * Definition for singly-linked list. public class ListNode { int val; ListNode
+	 * next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val,
+	 * ListNode next) { this.val = val; this.next = next; } }
+	 */
+	class Solution2 {
+		ListNode head = null;
+		Random r = ThreadLocalRandom.current();
+
+		/**
+		 * @param head The linked list's head. Note that the head is guaranteed to be
+		 *             not null, so it contains at least one node.
+		 */
+		public Solution2(ListNode head) {
+			this.head = head;
+		}
+
+		/** Returns a random node's value. */
+		public int getRandom() {
+			int result = this.head.val;
+			ListNode node = this.head.next;
+			int k = 1;
+			int i = 1;
+			while (node != null) {
+				double x = r.nextDouble();
+				double y = k / (k + i * 1.0);
+				if (x <= y) {
+					result = node.val;
+				}
+
+				i++;
+				node = node.next;
+			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * Your Solution object will be instantiated and called as such: Solution obj =
+	 * new Solution(head); int param_1 = obj.getRandom();
+	 */
+}

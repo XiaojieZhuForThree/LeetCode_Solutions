@@ -1,0 +1,32 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.api.TreeNode;
+
+public class Question897 {
+	class Solution {
+		public TreeNode increasingBST(TreeNode root) {
+			List<TreeNode> container = new ArrayList<>();
+			getAllNodes(root, container);
+			TreeNode node = container.get(0);
+			TreeNode dummy = node;
+			for (int i = 1; i < container.size(); i++) {
+				dummy.right = container.get(i);
+				dummy = dummy.right;
+			}
+			return node;
+		}
+
+		private void getAllNodes(TreeNode node, List<TreeNode> container) {
+			if (node == null) {
+				return;
+			}
+			getAllNodes(node.left, container);
+			node.left = null;
+			container.add(node);
+			getAllNodes(node.right, container);
+		}
+	}
+}

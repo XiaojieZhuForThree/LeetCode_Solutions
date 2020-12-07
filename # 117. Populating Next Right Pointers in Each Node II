@@ -6,7 +6,7 @@ import java.util.Queue;
 import com.leetcode.api.Node;
 
 public class Question117 {
-	class Solution {
+	class Solution1 {
 		public Node connect(Node root) {
 			if (root == null) {
 				return root;
@@ -28,6 +28,65 @@ public class Question117 {
 					}
 				}
 				queue = nextQueue;
+			}
+			return root;
+		}
+	}
+
+	class Solution2 {
+		public Node connect(Node root) {
+			if (root == null) {
+				return root;
+			}
+			Node leftMost = root;
+			while (leftMost != null) {
+				Node nextLeftMost = null;
+				Node trav1 = leftMost;
+				while (trav1 != null) {
+					while (trav1 != null && trav1.left == null && trav1.right == null) {
+						trav1 = trav1.next;
+					}
+					if (trav1 == null) {
+						break;
+					}
+					Node trav2 = trav1.next;
+					if (trav1.left != null) {
+						if (nextLeftMost == null) {
+							nextLeftMost = trav1.left;
+						}
+						if (trav1.right != null) {
+							trav1.left.next = trav1.right;
+						} else {
+							while (trav2 != null && trav2.left == null && trav2.right == null) {
+								trav2 = trav2.next;
+							}
+							if (trav2 == null) {
+								break;
+							} else if (trav2.left != null) {
+								trav1.left.next = trav2.left;
+							} else {
+								trav1.left.next = trav2.right;
+							}
+						}
+					}
+					if (trav1.right != null) {
+						if (nextLeftMost == null) {
+							nextLeftMost = trav1.right;
+						}
+						while (trav2 != null && trav2.left == null && trav2.right == null) {
+							trav2 = trav2.next;
+						}
+						if (trav2 == null) {
+							break;
+						} else if (trav2.left != null) {
+							trav1.right.next = trav2.left;
+						} else {
+							trav1.right.next = trav2.right;
+						}
+					}
+					trav1 = trav2;
+				}
+				leftMost = nextLeftMost;
 			}
 			return root;
 		}

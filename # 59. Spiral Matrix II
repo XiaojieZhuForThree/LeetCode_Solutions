@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+public class Question59 {
+	class Solution {
+		public int[][] generateMatrix(int n) {
+			int[][] ans = new int[n][n];
+			fillMat(ans, 0, n - 1, 1);
+			return ans;
+		}
+
+		private void fillMat(int[][] ans, int l, int r, int cur) {
+			if (l > r) {
+				return;
+			}
+			for (int i = l; i <= r; i++) {
+				ans[l][i] = cur++;
+			}
+			for (int i = l + 1; i <= r; i++) {
+				ans[i][r] = cur++;
+			}
+			for (int i = r - 1; i >= l; i--) {
+				ans[r][i] = cur++;
+			}
+			for (int i = r - 1; i > l; i--) {
+				ans[i][l] = cur++;
+			}
+			fillMat(ans, l + 1, r - 1, cur);
+		}
+	}
+}

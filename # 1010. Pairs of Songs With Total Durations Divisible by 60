@@ -1,12 +1,16 @@
-class Solution {
-    public int numPairsDivisibleBy60(int[] time) {
-        int[] rem = new int[60];
-        int ans = 0;
-        for (int i : time) {
-            int target = i % 60 == 0 ? 0 : 60 - i % 60;
-            ans += rem[target];
-            rem[i % 60]++;
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+public class Question1010 {
+	class Solution {
+		public int numPairsDivisibleBy60(int[] time) {
+			int[] modCounts = new int[60];
+			int ans = 0;
+			for (int i : time) {
+				int mod = i % 60;
+				ans += modCounts[(60 - mod) % 60];
+				modCounts[mod]++;
+			}
+			return ans;
+		}
+	}
 }

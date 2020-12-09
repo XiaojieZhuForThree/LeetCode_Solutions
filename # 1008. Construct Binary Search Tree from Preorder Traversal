@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.TreeNode;
+
+public class Question1008 {
+	class Solution {
+		public TreeNode bstFromPreorder(int[] preorder) {
+			return createBST(preorder, 0, preorder.length - 1);
+		}
+
+		private TreeNode createBST(int[] preorder, int start, int end) {
+			if (start > end) {
+				return null;
+			}
+			TreeNode node = new TreeNode(preorder[start]);
+			int i = start + 1;
+			while (i <= end && preorder[i] < preorder[start]) {
+				i++;
+			}
+			node.left = createBST(preorder, start + 1, i - 1);
+			node.right = createBST(preorder, i, end);
+			return node;
+		}
+	}
+}

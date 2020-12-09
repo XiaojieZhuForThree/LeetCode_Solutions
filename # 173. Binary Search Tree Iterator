@@ -1,43 +1,38 @@
-/**
- * Definition for binary tree
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
+package com.leetcode.problems;
 
-public class BSTIterator {
-    Stack<TreeNode> smallests = new Stack<>();
+import java.util.ArrayList;
+import java.util.List;
 
-    public void getIt(TreeNode root) {
-    	while (root != null) {
-    		smallests.push(root);
-    		root = root.left;
-    	}
-    }
-    public BSTIterator(TreeNode root) {
-    	getIt(root);
-    }
+import com.leetcode.api.TreeNode;
 
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        return !smallests.isEmpty();
-    }
+public class Question173 {
+	class BSTIterator {
+		List<Integer> list;
+		int size = 0;
+		int index = -1;
 
-    /** @return the next smallest number */
-    public int next() {
-    	TreeNode now = smallests.pop();
-    	if (now.right != null) {
-    		getIt(now.right);
-    	}
-    	return now.val;
-    }
+		public BSTIterator(TreeNode root) {
+			list = new ArrayList<>();
+			preorder(list, root);
+			size = list.size();
+		}
+
+		private void preorder(List<Integer> list, TreeNode node) {
+			if (node == null) {
+				return;
+			}
+			preorder(list, node.left);
+			list.add(node.val);
+			preorder(list, node.right);
+			return;
+		}
+
+		public int next() {
+			return list.get(++index);
+		}
+
+		public boolean hasNext() {
+			return index + 1 < size;
+		}
+	}
 }
-
-/**
- * Your BSTIterator will be called like this:
- * BSTIterator i = new BSTIterator(root);
- * while (i.hasNext()) v[f()] = i.next();
- */

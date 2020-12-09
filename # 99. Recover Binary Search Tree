@@ -2,69 +2,64 @@ package com.leetcode.problems;
 
 import java.util.Arrays;
 
+import com.leetcode.api.TreeNode;
+
 public class Question99 {
 	class Solution {
 		public void recoverTree(TreeNode root) {
-			helper(root, true);
-		}
-
-		private TreeNode helper(TreeNode node, boolean isRight) {
-			if (node == null) {
-				return null;
+			if (root == null) {
+				return;
 			}
-			if (node.left == null && node.right == null) {
-				return node;
+			if (root.left == null && root.right == null) {
+				return;
 			}
-			TreeNode node1 = helper(node.left, false), node2 = helper(node.right, true);
-			if (node1 == null) {
-				if (node.val < node2.val) {
-					return isRight ? node : getMax(node.right);
-				} else {
-					swap(node, node2);
-					helper(node.right, true);
-					return isRight ? node : getMax(node.right);
+			recoverTree(root.left);
+			recoverTree(root.right);
+			if (root.left == null) {
+				TreeNode leftMost = findLeft(root.right);
+				if (root.val < leftMost.val) {
+					return;
 				}
-			} else if (node2 == null) {
-				if (node.val > node1.val) {
-					return isRight ? getMin(node) : node;
-				} else {
-					swap(node, node1);
-					helper(node.left, false);
-					return isRight ? getMin(node) : node;
+				int val = root.val;
+				root.val = leftMost.val;
+				leftMost.val = val;
+				recoverTree(root);
+			} else if (root.right == null) {
+				TreeNode rightMost = findRight(root.left);
+				if (root.val > rightMost.val) {
+					return;
 				}
+				int val = root.val;
+				root.val = rightMost.val;
+				rightMost.val = val;
+				recoverTree(root);
 			} else {
-				if (node1.val < node.val && node.val < node2.val) {
-					return isRight ? getMin(node) : getMax(node);
+				TreeNode leftMost = findLeft(root.right);
+				TreeNode rightMost = findRight(root.left);
+				if (root.val < leftMost.val && root.val > rightMost.val) {
+					return;
 				}
-				int[] vals = new int[] { node1.val, node.val, node2.val };
+				int[] vals = new int[] { root.val, leftMost.val, rightMost.val };
 				Arrays.sort(vals);
-				node1.val = vals[0];
-				node.val = vals[1];
-				node2.val = vals[2];
-				helper(node.left, false);
-				helper(node.right, true);
-				return isRight ? getMin(node) : getMax(node);
+				rightMost.val = vals[0];
+				root.val = vals[1];
+				leftMost.val = vals[2];
+				recoverTree(root);
 			}
 		}
 
-		private TreeNode getMax(TreeNode node) {
-			while (node.right != null) {
-				node = node.right;
-			}
-			return node;
-		}
-
-		private TreeNode getMin(TreeNode node) {
+		private TreeNode findLeft(TreeNode node) {
 			while (node.left != null) {
 				node = node.left;
 			}
 			return node;
 		}
 
-		private void swap(TreeNode node1, TreeNode node2) {
-			int temp = node1.val;
-			node1.val = node2.val;
-			node2.val = temp;
+		private TreeNode findRight(TreeNode node) {
+			while (node.right != null) {
+				node = node.right;
+			}
+			return node;
 		}
 	}
 }

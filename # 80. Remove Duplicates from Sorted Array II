@@ -1,0 +1,24 @@
+package com.leetcode.problems;
+
+public class Question80 {
+	class Solution {
+		public int removeDuplicates(int[] nums) {
+			if (nums == null || nums.length == 0) {
+				return 0;
+			}
+			int cur = 0, i = 0;
+			while (i < nums.length) {
+				int e = i;
+				while (e < nums.length && nums[e] == nums[i]) {
+					e++;
+				}
+				int span = Math.min(2, e - i);
+				for (int j = 0; j < span; j++) {
+					nums[cur++] = nums[i];
+				}
+				i = e;
+			}
+			return cur;
+		}
+	}
+}

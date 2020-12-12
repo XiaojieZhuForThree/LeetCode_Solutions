@@ -1,0 +1,28 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.TreeNode;
+
+public class Question1123 {
+	class Solution {
+		public TreeNode lcaDeepestLeaves(TreeNode root) {
+			if (root == null) {
+				return root;
+			}
+			int left = getDepth(root.left);
+			int right = getDepth(root.right);
+			if (left == right) {
+				return root;
+			} else if (left < right) {
+				return lcaDeepestLeaves(root.right);
+			}
+			return lcaDeepestLeaves(root.left);
+		}
+
+		private int getDepth(TreeNode node) {
+			if (node == null) {
+				return 0;
+			}
+			return 1 + Math.max(getDepth(node.left), getDepth(node.right));
+		}
+	}
+}

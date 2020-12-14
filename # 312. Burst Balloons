@@ -1,24 +1,26 @@
-class Solution {
-	public int maxCoins(int[] nums) {
-        int n = nums.length;
-                    
-        int[] a = new int[n + 2];
-        a[0] = 1; a[a.length - 1] = 1;
-        for (int i = 0; i<n; i++) {
-            a[i+1] = nums[i];
-        }      
-        
-        int[][] dp = new int[a.length][a.length];
-        
-        for (int len = 0; len < n; len++) {
-            for (int i = 1; i + len <= n; i++) {
-                int j = i + len;
-                for (int k = i; k <= j; k++) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i][k-1] + dp[k+1][j] + a[k]*a[i-1]*a[j+1]);
-                }
-            }
-        }
-        
-        return dp[1][n];
-    }
+package com.leetcode.problems;
+
+public class Question312 {
+	class Solution {
+		public int maxCoins(int[] nums) {
+			int n = nums.length + 2;
+			int[][] dp = new int[n][n];
+			int[] vals = new int[n];
+			for (int i = 1; i < n - 1; i++) {
+				vals[i] = nums[i - 1];
+			}
+			vals[0] = vals[n - 1] = 1;
+
+			for (int left = n - 1; left >= 0; left--) {
+				for (int right = left + 2; right < n; right++) {
+					int ans = 0;
+					for (int mid = left + 1; mid < right; mid++) {
+						ans = Math.max(ans, vals[mid] * vals[left] * vals[right] + dp[left][mid] + dp[mid][right]);
+					}
+					dp[left][right] = ans;
+				}
+			}
+			return dp[0][n - 1];
+		}
+	}
 }

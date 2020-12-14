@@ -1,0 +1,42 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question131 {
+	class Solution {
+		List<List<String>> ans = new ArrayList<>();
+
+		public List<List<String>> partition(String s) {
+			dfs(s, 0, new ArrayList<>());
+			return ans;
+		}
+
+		private void dfs(String s, int i, List<String> cur) {
+			if (i >= s.length()) {
+				ans.add(new ArrayList<>(cur));
+			}
+			for (int j = i + 1; j <= s.length(); j++) {
+				if (isPali(s.substring(i, j))) {
+					cur.add(s.substring(i, j));
+					dfs(s, j, cur);
+					cur.remove(cur.size() - 1);
+				}
+			}
+			return;
+		}
+
+		private boolean isPali(String s) {
+			if (s == null || s.length() == 0) {
+				return false;
+			}
+			int l = 0, r = s.length() - 1;
+			while (l <= r) {
+				if (s.charAt(l++) != s.charAt(r--)) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

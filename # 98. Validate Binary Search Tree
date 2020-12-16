@@ -1,26 +1,40 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public boolean isValidBST(TreeNode root) {
-        return helper(root, null, null);
-    }
-    boolean helper(TreeNode root, Integer min, Integer max) {
-        if (root == null) {
-            return true;
-        }
-        if (min != null && root.val <= min) {
-            return false;
-        } 
-        if (max != null && root.val >= max) {
-            return false;
-        }
-        return helper(root.left, min, root.val) && helper(root.right, root.val, max);
-    }
+package com.leetcode.problems;
+
+import com.leetcode.api.TreeNode;
+
+public class Question98 {
+	class Solution {
+		public boolean isValidBST(TreeNode root) {
+			if (root == null) {
+				return true;
+			}
+			if (root.left == null && root.right == null) {
+				return true;
+			}
+			if (!isValidBST(root.left) || !isValidBST(root.right)) {
+				return false;
+			}
+			if (root.left == null) {
+				return root.val < getLeft(root.right).val;
+			} else if (root.right == null) {
+				return root.val > getRight(root.left).val;
+			} else {
+				return root.val > getRight(root.left).val && root.val < getLeft(root.right).val;
+			}
+		}
+
+		private TreeNode getRight(TreeNode node) {
+			while (node.right != null) {
+				node = node.right;
+			}
+			return node;
+		}
+
+		private TreeNode getLeft(TreeNode node) {
+			while (node.left != null) {
+				node = node.left;
+			}
+			return node;
+		}
+	}
 }

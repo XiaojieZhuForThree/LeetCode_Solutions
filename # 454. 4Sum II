@@ -1,23 +1,26 @@
-// integer values, 4 lists, find tuples (i, j, k, l) that A[i] + B[j] + C[k] + D[l] = 0
-// 4 lists same length, 0 <= N <= 500, result guaranteed to within int
-class Solution {
-    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
-        if (A.length == 0) return 0;
-        int ans = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < B.length; j++) {
-                int key = A[i] + B[j];
-                map.put(key, map.getOrDefault(key, 0) + 1);
-            }
-        }
-        
-        for (int k = 0; k < C.length; k++) {
-            for (int l = 0; l < D.length; l++) {
-                int reverseKey = -C[k] - D[l];
-                ans += map.getOrDefault(reverseKey, 0);
-            }
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question454 {
+	class Solution {
+		public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+			Map<Integer, Integer> seen = new HashMap<>();
+			for (int i = 0; i < A.length; i++) {
+				for (int j = 0; j < B.length; j++) {
+					int val = A[i] + B[j];
+					seen.put(val, seen.getOrDefault(val, 0) + 1);
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < C.length; i++) {
+				for (int j = 0; j < D.length; j++) {
+					int val = C[i] + D[j];
+					ans += seen.getOrDefault(-val, 0);
+				}
+			}
+			return ans;
+		}
+	}
 }

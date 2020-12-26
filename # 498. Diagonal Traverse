@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+public class Question498 {
+	class Solution {
+		public int[] findDiagonalOrder(int[][] matrix) {
+			if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+				return new int[0];
+			}
+			int m = matrix.length, n = matrix[0].length;
+			int[] ans = new int[m * n];
+			int index = 0, r = 0, c = 0;
+			boolean upper = true;
+			while (index < ans.length) {
+				ans[index++] = upper ? matrix[r--][c++] : matrix[r++][c--];
+				if (r < 0 || r >= m || c < 0 || c >= n) {
+					if (upper) {
+						upper = false;
+						r++;
+						if (r < 0 || r >= m || c < 0 || c >= n) {
+							r++;
+							c--;
+						}
+					} else {
+						upper = true;
+						c++;
+						if (r < 0 || r >= m || c < 0 || c >= n) {
+							r--;
+							c++;
+						}
+					}
+				}
+			}
+			return ans;
+		}
+	}
+}

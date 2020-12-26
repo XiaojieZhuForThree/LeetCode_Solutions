@@ -1,16 +1,45 @@
-class Solution {
-    public int numDecodings(String s) {
-        if(s == null || s.length() == 0)return 0;
-        int[] dp = new int[s.length()+1];
-        dp[0]=1;
-        for (int i=0;i<s.length();i++) {
-            int cur= s.charAt(i)-'0';
-            if (cur > 0)dp[i+1] = dp[i];
-            if (i > 0)cur += (s.charAt(i-1)-'0')*10;
-            if(cur >= 10 && cur <= 26) {
-                dp[i+1] += dp[i-1];
-            }  
-        }
-        return dp[s.length()];
-    }
-}# 
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question91 {
+	class Solution {
+		Map<String, Integer> map = new HashMap<>();
+
+		public int numDecodings(String s) {
+			if (map.containsKey(s)) {
+				return map.get(s);
+			}
+
+			if (s == null || s.length() == 0) {
+				return 1;
+			}
+
+			if (s.charAt(0) == '0') {
+				return 0;
+			}
+
+			if (s.length() == 1) {
+				return 1;
+			}
+
+			char c1 = s.charAt(0);
+			char c2 = s.charAt(1);
+			int num = (c1 - '0') * 10 + (c2 - '0');
+			int val = 0;
+			if (c2 == '0') {
+				if (num <= 26) {
+					val = numDecodings(s.substring(2));
+				}
+			} else {
+				val = numDecodings(s.substring(1));
+				if (num <= 26) {
+					val += numDecodings(s.substring(2));
+				}
+			}
+			map.put(s, val);
+			return val;
+		}
+	}
+}

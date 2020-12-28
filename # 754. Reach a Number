@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+public class Question754 {
+	class Solution {
+		public int reachNumber(int target) {
+			if (target < 0) {
+				return reachNumber(-target);
+			}
+			int sum = 0;
+			int step = 0;
+			while (sum < target) {
+				sum += ++step;
+			}
+			if (sum == target) {
+				return step;
+			}
+			int diff = sum - target;
+			if (diff % 2 == 0) {
+				return step;
+			} else if (step % 2 == 0) {
+				return step + 1;
+			}
+			return step + 2;
+		}
+	}
+}

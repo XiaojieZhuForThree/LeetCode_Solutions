@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1640 {
+	class Solution {
+		public boolean canFormArray(int[] arr, int[][] pieces) {
+			Map<Integer, Integer> ref = new HashMap<>();
+			for (int i = 0; i < pieces.length; i++) {
+				ref.put(pieces[i][0], i);
+			}
+			int index = 0;
+			while (index < arr.length) {
+				int start = arr[index];
+				if (!ref.containsKey(start)) {
+					return false;
+				}
+				int[] piece = pieces[ref.get(start)];
+				for (int i = 0; i < piece.length; i++) {
+					if (arr[index++] != piece[i]) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

@@ -1,0 +1,32 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question526 {
+	class Solution {
+		int ans = 0;
+
+		public int countArrangement(int n) {
+			dfs(n, new HashSet<>(), 1);
+			return ans;
+		}
+
+		private void dfs(int n, Set<Integer> seen, int pos) {
+			if (pos > n) {
+				ans++;
+				return;
+			}
+			for (int i = 1; i <= n; i++) {
+				if (!seen.contains(i)) {
+					if (i % pos == 0 || pos % i == 0) {
+						seen.add(i);
+						dfs(n, seen, pos + 1);
+						seen.remove(i);
+					}
+				}
+			}
+			return;
+		}
+	}
+}

@@ -1,40 +1,28 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if (l1 == null) {
-            return l2;
-        } else if (l2 == null) {
-            return l1;
-        }
-        ListNode head = new ListNode(0);
-        ListNode dummy = head;
-        while (l1 != null || l2 != null) {
-            ListNode next = null;
-            if (l1 == null) {
-                next = l2;
-                l2 = l2.next;
-            } else if (l2 == null) {
-                next = l1;
-                l1 = l1.next;
-            } else {
-                if (l1.val < l2.val) {
-                    next = l1;
-                    l1 = l1.next;
-                } else {
-                    next = l2;
-                    l2 = l2.next;
-                }
-            }
-            dummy.next = next;
-            dummy = dummy.next;
-        }
-        return head.next;
-    }
+package com.leetcode.problems;
+
+import com.leetcode.api.ListNode;
+
+public class Question21 {
+	class Solution {
+		public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+			ListNode node = new ListNode(-1);
+			ListNode trav = node;
+			while (l1 != null && l2 != null) {
+				if (l1.val < l2.val) {
+					trav.next = l1;
+					l1 = l1.next;
+				} else {
+					trav.next = l2;
+					l2 = l2.next;
+				}
+				trav = trav.next;
+			}
+			if (l1 != null) {
+				trav.next = l1;
+			} else {
+				trav.next = l2;
+			}
+			return node.next;
+		}
+	}
 }

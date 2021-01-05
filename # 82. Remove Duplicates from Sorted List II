@@ -1,10 +1,13 @@
 package com.leetcode.problems;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.leetcode.api.ListNode;
 
 public class Question82 {
 
-	class Solution {
+	class Solution1 {
 		public ListNode deleteDuplicates(ListNode head) {
 			ListNode preHead = new ListNode(-1);
 			preHead.next = head;
@@ -22,6 +25,29 @@ public class Question82 {
 				}
 			}
 			return preHead.next;
+		}
+	}
+
+	class Solution2 {
+		public ListNode deleteDuplicates(ListNode head) {
+			Map<Integer, Integer> map = new HashMap<>();
+			ListNode node = head;
+			while (node != null) {
+				map.put(node.val, map.getOrDefault(node.val, 0) + 1);
+				node = node.next;
+			}
+			ListNode start = new ListNode(0);
+			node = head;
+			ListNode dummy = start;
+			while (node != null) {
+				if (map.get(node.val) == 1) {
+					dummy.next = node;
+					dummy = dummy.next;
+				}
+				node = node.next;
+			}
+			dummy.next = null;
+			return start.next;
 		}
 	}
 }

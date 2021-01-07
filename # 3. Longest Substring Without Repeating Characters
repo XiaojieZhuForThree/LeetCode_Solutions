@@ -1,61 +1,26 @@
-```
-Given a string, find the length of the longest substring without repeating characters.
+package com.leetcode.problems;
 
-Example 1:
+import java.util.HashMap;
+import java.util.Map;
 
-Input: "abcabcbb"
-Output: 3 
-Explanation: The answer is "abc", with the length of 3. 
-Example 2:
-
-Input: "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
-
-Input: "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3. 
-             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
-```             
-             
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        int ans = 0;
-        if (s == null || s.length() == 0) {
-            return ans;
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        int init = 0, max = 0, end = s.length();
-        for (int i = 0; i < end; i++) {
-            char c = s.charAt(i);
-            if (map.containsKey(c) && map.get(c) >= init) {
-                max = Math.max(max, i - init);
-                init = map.get(c) + 1;
-            }
-            map.put(c, i);
-        }
-        return Math.max(max, end - init);
-    }
-}
-
-
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        if (s == null || s.length() == 0) {
-            return 0;
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        int ans = 0, base = 0, count = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char key = s.charAt(i);
-            if (map.containsKey(key)) {
-                base = Math.max(map.get(key) + 1, base);
-            }
-            count = i - base + 1;
-            ans = Math.max(ans, count);
-            map.put(key, i);
-        }
-        return ans;
-    }
+public class Question3 {
+	class Solution {
+		public int lengthOfLongestSubstring(String s) {
+			Map<Character, Integer> map = new HashMap<>();
+			int len = 0, cur = 0;
+			int start = 0, end = 0;
+			for (; end < s.length(); end++) {
+				char c = s.charAt(end);
+				map.put(c, map.getOrDefault(c, 0) + 1);
+				while (map.get(c) > 1) {
+					char ch = s.charAt(start);
+					map.put(ch, map.getOrDefault(ch, 1) - 1);
+					start++;
+				}
+				cur = end - start + 1;
+				len = Math.max(len, cur);
+			}
+			return len;
+		}
+	}
 }

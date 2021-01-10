@@ -1,0 +1,54 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Question1649 {
+	class Solution1 {
+		int[] c;
+
+		public int createSortedArray(int[] A) {
+			int res = 0, n = A.length, mod = (int) 1e9 + 7;
+			c = new int[100001];
+			for (int i = 0; i < n; ++i) {
+				res = (res + Math.min(get(A[i] - 1), i - get(A[i]))) % mod;
+				update(A[i]);
+			}
+			return res;
+		}
+
+		public void update(int x) {
+			while (x < 100001) {
+				c[x]++;
+				x += x & -x;
+			}
+		}
+
+		public int get(int x) {
+			int res = 0;
+			while (x > 0) {
+				res += c[x];
+				x -= x & -x;
+			}
+			return res;
+		}
+	}
+
+	class Solution2 {
+		public int createSortedArray(int[] instructions) {
+			List<Double> sortedList = new ArrayList<>();
+			long cost = 0;
+			int leftPos, rightPos;
+
+			for (int num : instructions) {
+				leftPos = (Collections.binarySearch(sortedList, ((double) num) - 0.5) + 1) * -1;
+				rightPos = (Collections.binarySearch(sortedList, ((double) num) + 0.5) + 1) * -1;
+				cost += Math.min(leftPos, sortedList.size() - rightPos);
+				sortedList.add(rightPos, (double) num);
+			}
+
+			return (int) (cost % 1000000007);
+		}
+	}
+}

@@ -1,44 +1,38 @@
-```
-You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+package com.leetcode.problems;
 
-You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+import com.leetcode.api.ListNode;
 
-Example:
-
-Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
-Output: 7 -> 0 -> 8
-Explanation: 342 + 465 = 807.
-```
-
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode ans = new ListNode(0);
-        ListNode dummy = ans;
-        int carry = 0;
-        while (l1 != null || l2 != null || carry != 0) {
-            dummy.next = new ListNode(0);
-            int add = carry;            
-            if (l1 != null) {
-                add += l1.val;
-                l1 = l1.next;
-            }
-            if (l2 != null) {
-                add += l2.val;
-                l2 = l2.next;
-            }
-            carry = add / 10;
-            add %= 10;
-            dummy.next.val = add;
-            dummy = dummy.next;
-        }
-        return ans.next;
-    }
+public class Question2 {
+	class Solution {
+		public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+			int carry = 0;
+			ListNode ans = new ListNode(0), pointer = ans;
+			while (l1 != null && l2 != null) {
+				int val = (l1.val + l2.val + carry) % 10;
+				carry = (l1.val + l2.val + carry) / 10;
+				pointer.next = new ListNode(val);
+				l1 = l1.next;
+				l2 = l2.next;
+				pointer = pointer.next;
+			}
+			while (l1 != null) {
+				int val = (l1.val + carry) % 10;
+				carry = (l1.val + carry) / 10;
+				pointer.next = new ListNode(val);
+				l1 = l1.next;
+				pointer = pointer.next;
+			}
+			while (l2 != null) {
+				int val = (l2.val + carry) % 10;
+				carry = (l2.val + carry) / 10;
+				pointer.next = new ListNode(val);
+				l2 = l2.next;
+				pointer = pointer.next;
+			}
+			if (carry != 0) {
+				pointer.next = new ListNode(carry);
+			}
+			return ans.next;
+		}
+	}
 }

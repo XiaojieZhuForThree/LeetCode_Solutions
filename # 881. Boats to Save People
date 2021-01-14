@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question881 {
+	class Solution {
+		public int numRescueBoats(int[] people, int limit) {
+			int boats = 1;
+			Arrays.sort(people);
+			int space = limit;
+			int left = 0, right = people.length - 1;
+			while (left < right) {
+				space -= people[right];
+				if (left < right && space >= people[left]) {
+					space -= people[left++];
+				}
+				if (left == right) {
+					break;
+				}
+				right--;
+				boats++;
+				space = limit;
+			}
+			return boats;
+		}
+	}
+}

@@ -6,8 +6,8 @@ public class Question1658 {
 			int i = 0, j = nums.length - 1, currentSum = 0, result = Integer.MAX_VALUE;
 			while (i < nums.length && currentSum + nums[i] <= x) {
 				currentSum += nums[i++];
-				i--;
 			}
+			i--;
 			if (currentSum == x) {
 				result = i + 1;
 			}
@@ -18,8 +18,8 @@ public class Question1658 {
 				if (currentSum + nums[j] <= x) {
 					if (currentSum + nums[j] == x) {
 						result = Math.min(result, i + nums.length - j + 1);
-						currentSum += nums[j--];
 					}
+					currentSum += nums[j--];
 				} else if (i == -1)
 					break;
 			}

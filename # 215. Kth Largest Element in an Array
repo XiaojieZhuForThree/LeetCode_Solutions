@@ -1,6 +1,12 @@
-class Solution {
-    public int findKthLargest(int[] nums, int k) {
-        Arrays.sort(nums);
-        return nums[nums.length-k];
-    }
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question215 {
+	class Solution {
+		public int findKthLargest(int[] nums, int k) {
+			Arrays.sort(nums);
+			return nums[nums.length - k];
+		}
+	}
 }

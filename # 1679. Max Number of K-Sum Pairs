@@ -1,0 +1,32 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question1679 {
+	class Solution {
+		public int maxOperations(int[] nums, int k) {
+			Map<Integer, Integer> records = new HashMap<>();
+			for (int i : nums) {
+				records.put(i, records.getOrDefault(i, 0) + 1);
+			}
+			int ans = 0;
+			for (int key : records.keySet()) {
+				int part = k - key;
+				if (key == part) {
+					ans += records.get(key) / 2;
+					records.put(key, 0);
+				} else if (!records.containsKey(part)) {
+					continue;
+				} else {
+					int val1 = records.get(key);
+					int val2 = records.get(part);
+					ans += Math.min(val1, val2);
+					records.put(key, 0);
+					records.put(part, 0);
+				}
+			}
+			return ans;
+		}
+	}
+}

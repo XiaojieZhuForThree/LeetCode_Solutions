@@ -1,45 +1,28 @@
-```
-Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+package com.leetcode.problems;
 
-Example 1:
+public class Question5 {
+	class Solution {
+		int max = 0;
+		String ans = "";
 
-Input: "babad"
-Output: "bab"
-Note: "aba" is also a valid answer.
-Example 2:
+		public String longestPalindrome(String s) {
+			for (int i = 0; i < s.length(); i++) {
+				getMax(s, i, i);
+				getMax(s, i, i + 1);
+			}
+			return ans;
+		}
 
-Input: "cbbd"
-Output: "bb"
-```
-
-class Solution {
-    int max = 0;
-    String ans;
-    public String longestPalindrome(String s) {
-        if (s == null || s.length() < 2) {
-            return s;
-        }
-
-        for (int i = 0; i < s.length(); i++) {
-            computeLongest(s, i, i + 1);
-            computeLongest(s, i, i);
-        }
-        return ans;
-    }
-    private void computeLongest(String s, int left, int right) {
-        int length = 0;
-        while (left >= 0 && right < s.length()) {
-            if (s.charAt(left) == s.charAt(right)) {
-                left--;
-                right++;
-            } else {
-                break;
-            }
-        }
-        length = right - left - 1;
-        if (length > max) {
-            ans = s.substring(left + 1, right);
-            max = length;
-        }
-    }
+		private void getMax(String s, int left, int right) {
+			while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+				left--;
+				right++;
+			}
+			int len = right - left - 1;
+			if (len > max) {
+				max = len;
+				ans = s.substring(left + 1, right);
+			}
+		}
+	}
 }

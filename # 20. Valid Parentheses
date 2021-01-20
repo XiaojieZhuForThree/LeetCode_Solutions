@@ -1,32 +1,27 @@
-class Solution {
-    public boolean isValid(String s) {
-        if (s == null || s.length() == 0) {
-            return true;
-        }
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '[' || c == '{') {
-                stack.push(c);
-            } else if (c == ')') {
-                if (stack.isEmpty() || stack.peek() != '(') {
-                    return false;
-                } else {
-                    stack.pop();
-                }
-            } else if (c == ']') {
-                if (stack.isEmpty() || stack.peek() != '[') {
-                    return false;
-                } else {
-                    stack.pop();
-                }
-            } else if (c == '}') {
-                if (stack.isEmpty() || stack.peek() != '{') {
-                    return false;
-                } else {
-                    stack.pop();
-                }
-            }
-        }
-        return stack.isEmpty();
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question20 {
+	class Solution {
+		public boolean isValid(String s) {
+			Deque<Character> stack = new ArrayDeque<>();
+			for (char c : s.toCharArray()) {
+				if (c == '(' || c == '{' || c == '[') {
+					stack.offerLast(c);
+				} else {
+					if (stack.isEmpty()) {
+						return false;
+					}
+					char ch = stack.pollLast();
+					if (ch == '(' && c == ')' || ch == '{' && c == '}' || ch == '[' && c == ']') {
+						continue;
+					}
+					return false;
+				}
+			}
+			return stack.isEmpty();
+		}
+	}
 }

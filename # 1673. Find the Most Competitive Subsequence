@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1673 {
+	class Solution {
+		public int[] mostCompetitive(int[] nums, int k) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			int n = nums.length;
+			for (int i = 0; i < nums.length; i++) {
+				while (!stack.isEmpty() && stack.size() + n - i > k && stack.peekLast() > nums[i]) {
+					stack.pollLast();
+				}
+				if (stack.size() < k) {
+					stack.offerLast(nums[i]);
+				}
+			}
+			int[] ans = new int[k];
+			for (int i = 0; i < k; i++) {
+				ans[i] = stack.pollFirst();
+			}
+			return ans;
+		}
+	}
+}

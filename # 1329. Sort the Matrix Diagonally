@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Question1329 {
+	class Solution {
+		public int[][] diagonalSort(int[][] mat) {
+			int m = mat.length, n = mat[0].length;
+			List<Integer> list = new ArrayList<>();
+			for (int i = n - 1; i >= 0; i--) {
+				list.clear();
+				int x = 0, y = i;
+				while (x < m && y < n) {
+					list.add(mat[x++][y++]);
+				}
+				Collections.sort(list);
+				x = 0;
+				y = i;
+				for (int j = 0; j < list.size(); j++) {
+					mat[x++][y++] = list.get(j);
+				}
+			}
+			for (int i = 1; i < m; i++) {
+				list.clear();
+				int x = i, y = 0;
+				while (x < m && y < n) {
+					list.add(mat[x++][y++]);
+				}
+				Collections.sort(list);
+				x = i;
+				y = 0;
+				for (int j = 0; j < list.size(); j++) {
+					mat[x++][y++] = list.get(j);
+				}
+			}
+			return mat;
+		}
+	}
+}

@@ -1,22 +1,30 @@
-class Solution {
-    public ListNode mergeKLists(ListNode[] lists) {
-        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
-        ListNode head = new ListNode(-1), dummy = head;
-        for (ListNode list : lists) {
-            if (list == null) {
-                continue;
-            }
-            pq.offer(list);
-        }
-        while (!pq.isEmpty()) {
-            ListNode node = pq.poll();
-            dummy.next = node;
-            dummy = dummy.next;
-            if (node.next != null) {
-                pq.offer(node.next);
-            }
-        }
-        dummy.next = null;
-        return head.next;
-    }
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+import com.leetcode.api.ListNode;
+
+public class Question23 {
+	class Solution {
+		public ListNode mergeKLists(ListNode[] lists) {
+			PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+			ListNode head = new ListNode(-1), dummy = head;
+			for (ListNode list : lists) {
+				if (list == null) {
+					continue;
+				}
+				pq.offer(list);
+			}
+			while (!pq.isEmpty()) {
+				ListNode node = pq.poll();
+				dummy.next = node;
+				dummy = dummy.next;
+				if (node.next != null) {
+					pq.offer(node.next);
+				}
+			}
+			dummy.next = null;
+			return head.next;
+		}
+	}
 }

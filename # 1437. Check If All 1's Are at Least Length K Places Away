@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+public class Question1437 {
+	class Solution {
+		public boolean kLengthApart(int[] nums, int k) {
+			int i = 0;
+			while (i < nums.length && nums[i] != 1) {
+				i++;
+			}
+			int space = 0;
+			i++;
+			for (; i < nums.length; i++) {
+				if (nums[i] == 1) {
+					if (space < k) {
+						return false;
+					} else {
+						space = 0;
+					}
+				} else {
+					space++;
+				}
+			}
+			return true;
+		}
+	}
+}

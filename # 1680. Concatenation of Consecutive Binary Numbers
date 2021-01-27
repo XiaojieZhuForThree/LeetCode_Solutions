@@ -1,0 +1,18 @@
+package com.leetcode.problems;
+
+public class Question1680 {
+	class Solution {
+		public int concatenatedBinary(int n) {
+			long val = 0;
+			for (int i = 1; i <= n; i++) {
+				String s = Integer.toBinaryString(i);
+				for (char c : s.toCharArray()) {
+					val = val * 2 + (c - '0');
+					val %= 1000000007;
+				}
+			}
+			val %= 1000000007;
+			return (int) val;
+		}
+	}
+}

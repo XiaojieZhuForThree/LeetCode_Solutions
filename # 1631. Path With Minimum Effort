@@ -27,9 +27,6 @@ public class Question1631 {
 			pq.offer(new Point(0, 0));
 			while (!pq.isEmpty()) {
 				Point p = pq.poll();
-				if (p.x == m - 1 && p.y == n - 1) {
-					continue;
-				}
 				for (int[] dir : dirs) {
 					int nx = p.x + dir[0], ny = p.y + dir[1];
 					if (nx < 0 || nx >= m || ny < 0 || ny >= n) {

@@ -1,0 +1,23 @@
+package com.leetcode.problems;
+
+public class Question1663 {
+	class Solution {
+		public String getSmallestString(int n, int k) {
+			int[] container = new int[n];
+			k -= n;
+			int ptr = n - 1;
+			while (k > 0) {
+				container[ptr]++;
+				k--;
+				if (container[ptr] == 25) {
+					ptr--;
+				}
+			}
+			StringBuilder sb = new StringBuilder();
+			for (int i : container) {
+				sb.append((char) ('a' + i));
+			}
+			return sb.toString();
+		}
+	}
+}

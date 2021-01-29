@@ -1,59 +1,49 @@
 package com.leetcode.problems;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
+
+import com.leetcode.api.TreeNode;
 
 public class Question987 {
+	class Pos {
+		int val;
+		int y;
+
+		public Pos(int val, int y) {
+			this.val = val;
+			this.y = y;
+		}
+	}
+
 	class Solution {
 		public List<List<Integer>> verticalTraversal(TreeNode root) {
-			Map<TreeNode, int[]> map = new HashMap<>();
-			dfs(root, 0, 0, map);
-			PriorityQueue<TreeNode> pq = new PriorityQueue<>(new Comparator<TreeNode>() {
-
-				@Override
-				public int compare(TreeNode n1, TreeNode n2) {
-					int[] coordN1 = map.get(n1), coordN2 = map.get(n2);
-					if (coordN1[0] != coordN2[0]) {
-						return coordN1[0] - coordN2[0];
-					} else if (coordN1[1] != coordN2[1]) {
-						return coordN2[1] - coordN1[1];
-					} else {
-						return n1.val - n2.val;
-					}
-				}
-			});
-			
-			for (TreeNode node : map.keySet()) {
-				pq.offer(node);
-			}
+			Map<Integer, PriorityQueue<Pos>> map = new TreeMap<>();
+			dfs(map, root, 0, 0);
 			List<List<Integer>> ans = new ArrayList<>();
-			List<Integer> holder = new ArrayList<>();
-			while (!pq.isEmpty()) {
-				TreeNode node = pq.poll();
-				holder.add(node.val);
-				if (!pq.isEmpty()) {
-					TreeNode next = pq.peek();
-					if (map.get(node)[0] != map.get(next)[0]) {
-						ans.add(holder);
-						holder = new ArrayList<>();
-					}
+			for (int i : map.keySet()) {
+				List<Integer> list = new ArrayList<>();
+				PriorityQueue<Pos> queue = map.get(i);
+				while (!queue.isEmpty()) {
+					list.add(queue.poll().val);
 				}
+				ans.add(list);
 			}
-			ans.add(holder);
 			return ans;
 		}
 
-		private void dfs(TreeNode node, int x, int y, Map<TreeNode, int[]> map) {
+		private void dfs(Map<Integer, PriorityQueue<Pos>> map, TreeNode node, int x, int y) {
 			if (node == null) {
 				return;
 			}
-			map.put(node, new int[] { x, y });
-			dfs(node.left, x - 1, y - 1, map);
-			dfs(node.right, x + 1, y - 1, map);
+			Pos pos = new Pos(node.val, y);
+			map.putIfAbsent(x, new PriorityQueue<>((a, b) -> a.y == b.y ? a.val - b.val : a.y - b.y));
+			map.get(x).offer(pos);
+			dfs(map, node.left, x - 1, y + 1);
+			dfs(map, node.right, x + 1, y + 1);
 		}
 	}
 }

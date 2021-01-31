@@ -1,25 +1,40 @@
-class Solution {
-	public void nextPermutation(int[] nums) {
-		boolean change = false;
-		for (int i = nums.length - 2; i >= 0; i--) {
-			if (change == true) {
-				break;
-			}
-			if (nums[i] < nums[i + 1]) {
-				for (int j = nums.length - 1; j > i; j--) {
-					if (nums[j] > nums[i]) {
-						change = true;
-						int dum = nums[i];
-						nums[i] = nums[j];
-						nums[j] = dum;
-						Arrays.sort(nums, i + 1, nums.length);
-						break;
-					}
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question31 {
+	class Solution {
+		public void nextPermutation(int[] nums) {
+			int n = nums.length;
+			int val = nums[n - 1];
+			int bp = -1;
+			for (int i = n - 2; i >= 0; i--) {
+				if (nums[i] >= val) {
+					val = nums[i];
+				} else {
+					bp = i;
+					break;
 				}
 			}
+			if (bp == -1) {
+				Arrays.sort(nums);
+				return;
+			}
+			for (int i = n - 1; i > bp; i--) {
+				if (nums[i] > nums[bp]) {
+					swap(nums, bp, i);
+					Arrays.sort(nums, bp + 1, n);
+					return;
+				}
+			}
+			return;
 		}
-		if (change == false) {
-			Arrays.sort(nums);
+
+		private void swap(int[] nums, int left, int right) {
+			int temp = nums[left];
+			nums[left] = nums[right];
+			nums[right] = temp;
+			return;
 		}
 	}
 }

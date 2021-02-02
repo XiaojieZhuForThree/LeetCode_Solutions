@@ -1,0 +1,19 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.TreeNode;
+
+public class Question669 {
+	class Solution {
+		public TreeNode trimBST(TreeNode root, int low, int high) {
+			if (root == null) {
+				return root;
+			}
+			root.left = trimBST(root.left, low, high);
+			root.right = trimBST(root.right, low, high);
+			if (root.val < low || root.val > high) {
+				return root.left == null ? root.right : root.left;
+			}
+			return root;
+		}
+	}
+}

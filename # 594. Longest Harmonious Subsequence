@@ -1,0 +1,23 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question594 {
+	class Solution {
+		public int findLHS(int[] nums) {
+			int ans = 0;
+			Map<Integer, Integer> record = new HashMap<>();
+			for (int i : nums) {
+				record.put(i, record.getOrDefault(i, 0) + 1);
+				if (record.containsKey(i - 1)) {
+					ans = Math.max(ans, record.get(i) + record.get(i - 1));
+				}
+				if (record.containsKey(i + 1)) {
+					ans = Math.max(ans, record.get(i) + record.get(i + 1));
+				}
+			}
+			return ans;
+		}
+	}
+}

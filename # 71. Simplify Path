@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question71 {
+	class Solution {
+		public String simplifyPath(String path) {
+			String[] dirs = path.split("/");
+			Deque<String> stack = new ArrayDeque<>();
+			for (String dir : dirs) {
+				if (dir.equals(".")) {
+					continue;
+				} else if (dir.equals("..")) {
+					if (!stack.isEmpty()) {
+						stack.pollLast();
+					}
+				} else if (!dir.isEmpty()) {
+					stack.offerLast(dir);
+				}
+			}
+			StringBuilder sb = new StringBuilder();
+			for (String s : stack) {
+				sb.append("/");
+				sb.append(s);
+			}
+			return sb.toString().isEmpty() ? "/" : sb.toString();
+		}
+	}
+}

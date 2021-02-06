@@ -1,34 +1,34 @@
-import java.util.*;
+package com.leetcode.problems;
 
-//Definition for a binary tree node.
-class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
-	TreeNode(int x) {
-		val = x;
-	}
-}
+import com.leetcode.api.TreeNode;
 
-class Solution {
-	public List<Integer> rightSideView(TreeNode root) {
-		List<Integer> ans = new ArrayList<>();
-		Deque<TreeNode> deque = new ArrayDeque<>();
-		if (root == null)
-			return ans;
-		deque.addFirst(root);
-		while (!deque.isEmpty()) {
-			ans.add(deque.peekLast().val);
-			int length = deque.size();
-			for (int i = 0; i < length; i++) {
-				TreeNode one = deque.pollFirst();
-				if (one.left != null)
-					deque.addLast(one.left);
-				if (one.right != null)
-					deque.addLast(one.right);
+public class Question199 {
+	class Solution {
+		public List<Integer> rightSideView(TreeNode root) {
+			List<Integer> ans = new ArrayList<>();
+			Queue<TreeNode> queue = new ArrayDeque<>();
+			if (root != null) {
+				queue.offer(root);
 			}
+			while (!queue.isEmpty()) {
+				TreeNode node = null;
+				for (int i = queue.size(); i > 0; i--) {
+					node = queue.poll();
+					if (node.left != null) {
+						queue.offer(node.left);
+					}
+					if (node.right != null) {
+						queue.offer(node.right);
+					}
+				}
+				ans.add(node.val);
+			}
+			return ans;
 		}
-		return ans;
 	}
 }

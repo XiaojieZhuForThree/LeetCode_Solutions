@@ -1,0 +1,44 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
+
+public class Question284 {
+	// Java Iterator interface reference:
+	// https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
+
+	class PeekingIterator implements Iterator<Integer> {
+		Iterator<Integer> iterator;
+		Deque<Integer> stack;
+
+		public PeekingIterator(Iterator<Integer> iterator) {
+			// initialize any member here.
+			this.iterator = iterator;
+			this.stack = new ArrayDeque<>();
+		}
+
+		// Returns the next element in the iteration without advancing the iterator.
+		public Integer peek() {
+			if (stack.isEmpty()) {
+				stack.offerLast(iterator.next());
+			}
+			return stack.peekLast();
+		}
+
+		// hasNext() and next() should behave the same as in the Iterator interface.
+		// Override them if needed.
+		@Override
+		public Integer next() {
+			if (!stack.isEmpty()) {
+				return stack.pollLast();
+			}
+			return iterator.next();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return !stack.isEmpty() || iterator.hasNext();
+		}
+	}
+}

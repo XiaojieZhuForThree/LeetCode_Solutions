@@ -1,90 +1,32 @@
-/**
- * Definition for singly-linked list with a random pointer.
- * class RandomListNode {
- *     int label;
- *     RandomListNode next, random;
- *     RandomListNode(int x) { this.label = x; }
- * };
- */
-public class Solution {
-	public RandomListNode copyRandomList(RandomListNode head) {
-		if (head == null)
-			return null;
-		Map<RandomListNode, RandomListNode> created = new HashMap<>();
-		RandomListNode ans = new RandomListNode(head.label);
-		if (head.random == head) {
-			ans.random = ans;
-		}
-		else if (head.random != null) {
-			ans.random = new RandomListNode(head.random.label);
-			created.put(head.random, ans.random);
-		}
-		RandomListNode root = ans, trav = head;
-		while (trav.next!= null) {
-			if (created.containsKey(trav.next)) {
-				root.next = created.get(trav.next);
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.leetcode.api.Node;
+
+public class Question138 {
+	class Solution {
+		public Node copyRandomList(Node head) {
+			Map<Node, Node> map = new HashMap<>();
+			Node dummy = head;
+			while (dummy != null) {
+				map.put(dummy, new Node(dummy.val));
+				dummy = dummy.next;
 			}
-			else {
-				root.next = new RandomListNode(trav.next.label);
-        		created.put(trav.next, root.next);
-			}
-			if (trav.next.random != null) {
-				if (created.containsKey(trav.next.random)) {
-					root.next.random = created.get(trav.next.random);
+			dummy = head;
+			while (dummy != null) {
+				Node next = dummy.next;
+				if (next != null) {
+					map.get(dummy).next = map.get(next);
 				}
-				else {
-					root.next.random = new RandomListNode(trav.next.random.label);
-					created.put(trav.next.random, root.next.random);
+				Node random = dummy.random;
+				if (random != null) {
+					map.get(dummy).random = map.get(random);
 				}
+				dummy = dummy.next;
 			}
-			root = root.next;
-			trav = trav.next;
+			return map.get(head);
 		}
-		return ans;
 	}
-}
-
-
-/*
-// Definition for a Node.
-class Node {
-    public int val;
-    public Node next;
-    public Node random;
-
-    public Node() {}
-
-    public Node(int _val,Node _next,Node _random) {
-        val = _val;
-        next = _next;
-        random = _random;
-    }
-};
-*/
-class Solution {
-    public Node copyRandomList(Node head) {
-        Node ans = new Node(0, null, null);
-        Node dummy = head;
-        Node fake = ans;
-        Map<Node, Node> map = new HashMap<>();
-        while (dummy != null) {
-            Node next = new Node(dummy.val, null, null);
-            map.put(dummy, next);
-            dummy = dummy.next;
-        }
-        dummy = head;
-        while (dummy != null) {
-            Node next = map.get(dummy);
-            if (dummy.next != null) {
-                next.next = map.get(dummy.next);
-            }
-            if (dummy.random != null) {
-                next.random = map.get(dummy.random);
-            }
-            fake.next = next;
-            fake = fake.next;
-            dummy = dummy.next;
-        }
-        return ans.next;
-    }
 }

@@ -1,48 +1,41 @@
 package com.leetcode.problems;
 
+import com.leetcode.api.TreeNode;
+
 public class Question538 {
 	class Solution {
 		public TreeNode convertBST(TreeNode root) {
-			updateValues(root);
+			if (root == null) {
+				return root;
+			}
+			if (root.left == null && root.right == null) {
+				return root;
+			}
+			if (root.right != null) {
+				convertBST(root.right);
+				TreeNode node = getLeft(root.right);
+				root.val += node.val;
+			}
+			if (root.left != null) {
+				TreeNode node = getRight(root.left);
+				node.val += root.val;
+				convertBST(root.left);
+			}
 			return root;
 		}
 
-		private final void updateValues(TreeNode node) {
-			if (node == null) {
-				return;
-			}
-			if (isLeafNode(node)) {
-				return;
-			}
-			updateValues(node.right);
-			node.val += getLeftMostValue(node.right);
-			if (node.left != null) {
-				updateValues(node.left);
-				addValue(node.left, node.val);
-			}
-		}
-
-		private final boolean isLeafNode(TreeNode node) {
-			return node.left == null && node.right == null;
-		}
-
-		private final int getLeftMostValue(TreeNode node) {
-			if (node == null) {
-				return 0;
-			}
+		private TreeNode getLeft(TreeNode node) {
 			while (node.left != null) {
 				node = node.left;
 			}
-			return node.val;
+			return node;
 		}
 
-		private final void addValue(TreeNode node, int val) {
-			if (node == null) {
-				return;
+		private TreeNode getRight(TreeNode node) {
+			while (node.right != null) {
+				node = node.right;
 			}
-			node.val += val;
-			addValue(node.left, val);
-			addValue(node.right, val);
+			return node;
 		}
 	}
 }

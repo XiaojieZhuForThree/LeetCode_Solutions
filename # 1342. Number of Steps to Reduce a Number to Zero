@@ -1,18 +1,18 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1342 {
 	class Solution1 {
 		public int numberOfSteps(int num) {
-			int steps = 0;
-			while (num != 0) {
-				steps++;
+			int step = 0;
+			while (num > 0) {
 				if (num % 2 == 0) {
 					num /= 2;
 				} else {
-					num -= 1;
+					num--;
 				}
+				step++;
 			}
-			return steps;
+			return step;
 		}
 	}
 

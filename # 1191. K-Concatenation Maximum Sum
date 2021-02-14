@@ -1,41 +1,43 @@
 package com.leetcode.problems;
 
-class Solution {
-	public int kConcatenationMaxSum(int[] arr, int k) {
-		int mod = 1000000007;
-		int[] dp = arr.clone(), sums = arr.clone();
-		int n = arr.length;
-		long max1 = 0;
-		for (int i = 0; i < n; i++) {
-			if (i > 0) {
-				dp[i] = Math.max(dp[i], dp[i - 1] + dp[i]);
-				sums[i] += sums[i - 1];
+public class Question1191 {
+	class Solution {
+		public int kConcatenationMaxSum(int[] arr, int k) {
+			int mod = 1000000007;
+			int[] dp = arr.clone(), sums = arr.clone();
+			int n = arr.length;
+			long max1 = 0;
+			for (int i = 0; i < n; i++) {
+				if (i > 0) {
+					dp[i] = Math.max(dp[i], dp[i - 1] + dp[i]);
+					sums[i] += sums[i - 1];
+				}
+				max1 = Math.max(dp[i], max1);
 			}
-			max1 = Math.max(dp[i], max1);
+			max1 %= mod;
+			long sum = sums[n - 1];
+			long maxSuffixSum = sum;
+			for (int i = 0; i < n; i++) {
+				sum -= arr[i];
+				maxSuffixSum = Math.max(maxSuffixSum, sum);
+			}
+			sum = sums[n - 1];
+			long maxPrefixSum = sum;
+			for (int i = n - 1; i >= 0; i--) {
+				sum -= arr[i];
+				maxPrefixSum = Math.max(maxPrefixSum, sum);
+			}
+			sum = sums[n - 1];
+			long val1 = maxSuffixSum % mod + maxPrefixSum % mod + sum * (k - 2) % mod;
+			long val2 = maxSuffixSum % mod + maxPrefixSum % mod;
+			if (k == 1) {
+				return (int) max1 % mod;
+			}
+			if (sum > 0) {
+				long max2 = Math.max(val1, val2);
+				return (int) Math.max(max1, max2) % mod;
+			}
+			return (int) Math.max(max1, val2) % mod;
 		}
-		max1 %= mod;
-		long sum = sums[n - 1];
-		long maxSuffixSum = sum;
-		for (int i = 0; i < n; i++) {
-			sum -= arr[i];
-			maxSuffixSum = Math.max(maxSuffixSum, sum);
-		}
-		sum = sums[n - 1];
-		long maxPrefixSum = sum;
-		for (int i = n - 1; i >= 0; i--) {
-			sum -= arr[i];
-			maxPrefixSum = Math.max(maxPrefixSum, sum);
-		}
-		sum = sums[n - 1];
-		long val1 = maxSuffixSum % mod + maxPrefixSum % mod + sum * (k - 2) % mod;
-		long val2 = maxSuffixSum % mod + maxPrefixSum % mod;
-		if (k == 1) {
-			return (int) max1 % mod;
-		}
-		if (sum > 0) {
-			long max2 = Math.max(val1, val2);
-			return (int) Math.max(max1, max2) % mod;
-		}
-		return (int) Math.max(max1, val2) % mod;
 	}
 }

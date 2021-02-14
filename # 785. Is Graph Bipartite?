@@ -1,0 +1,78 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
+public class Question785 {
+	class Solution {
+		public boolean isBipartite(int[][] graph) {
+			Set<Integer> set1 = new HashSet<>(), set2 = new HashSet<>();
+			Queue<Integer> next = new ArrayDeque<>();
+			next.offer(0);
+			Set<Integer> counted = new HashSet<>();
+			while (counted.size() < graph.length) {
+				if (next.isEmpty()) {
+					for (int i = 0; i < graph.length; i++) {
+						if (!counted.contains(i)) {
+							next.offer(i);
+							break;
+						}
+					}
+					continue;
+				}
+				int node1 = next.poll();
+				counted.add(node1);
+				if (graph[node1].length == 0) {
+					if (next.size() != 0) {
+						continue;
+					}
+					for (int i = 0; i < graph.length; i++) {
+						if (!counted.contains(i)) {
+							next.offer(i);
+							break;
+						}
+					}
+					continue;
+				}
+				for (int node2 : graph[node1]) {
+					if (set1.contains(node1)) {
+						if (set1.contains(node2)) {
+							return false;
+						} else {
+							if (set2.contains(node2)) {
+								continue;
+							} else {
+								set2.add(node2);
+								next.offer(node2);
+							}
+						}
+					} else if (set2.contains(node1)) {
+						if (set2.contains(node2)) {
+							return false;
+						} else {
+							if (set1.contains(node2)) {
+								continue;
+							} else {
+								set1.add(node2);
+								next.offer(node2);
+							}
+						}
+					} else {
+						if (set1.contains(node2)) {
+							set2.add(node1);
+						} else if (set2.contains(node2)) {
+							set1.add(node1);
+						} else {
+							set1.add(node1);
+							set2.add(node2);
+							next.offer(node2);
+						}
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

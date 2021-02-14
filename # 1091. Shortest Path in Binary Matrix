@@ -5,50 +5,52 @@ import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 
-class Point {
-	int x;
-	int y;
+public class Question1091 {
+	class Point {
+		int x;
+		int y;
 
-	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-}
-
-class Solution {
-	public int shortestPathBinaryMatrix(int[][] grid) {
-		if (grid[0][0] == 1) {
-			return -1;
+		public Point(int x, int y) {
+			this.x = x;
+			this.y = y;
 		}
-		int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
-				{ -1, -1 } };
-		Set<Integer> seen = new HashSet<>();
-		Queue<Point> queue = new ArrayDeque<>();
-		queue.offer(new Point(0, 0));
-		int len = 0;
-		while (!queue.isEmpty()) {
-			len++;
-			for (int i = queue.size(); i > 0; i--) {
-				Point pt = queue.poll();
-				if (pt.x == grid.length - 1 && pt.y == grid[0].length - 1) {
-					return len;
-				}
-				for (int[] dir : dirs) {
-					int nx = pt.x + dir[0], ny = pt.y + dir[1];
-					if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length) {
-						continue;
+	}
+
+	class Solution {
+		public int shortestPathBinaryMatrix(int[][] grid) {
+			if (grid[0][0] == 1) {
+				return -1;
+			}
+			int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
+					{ -1, -1 } };
+			Set<Integer> seen = new HashSet<>();
+			Queue<Point> queue = new ArrayDeque<>();
+			queue.offer(new Point(0, 0));
+			int len = 0;
+			while (!queue.isEmpty()) {
+				len++;
+				for (int i = queue.size(); i > 0; i--) {
+					Point pt = queue.poll();
+					if (pt.x == grid.length - 1 && pt.y == grid[0].length - 1) {
+						return len;
 					}
-					if (grid[nx][ny] == 1) {
-						continue;
+					for (int[] dir : dirs) {
+						int nx = pt.x + dir[0], ny = pt.y + dir[1];
+						if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length) {
+							continue;
+						}
+						if (grid[nx][ny] == 1) {
+							continue;
+						}
+						if (seen.contains(nx * grid[0].length + ny)) {
+							continue;
+						}
+						seen.add(nx * grid[0].length + ny);
+						queue.offer(new Point(nx, ny));
 					}
-					if (seen.contains(nx * grid[0].length + ny)) {
-						continue;
-					}
-					seen.add(nx * grid[0].length + ny);
-					queue.offer(new Point(nx, ny));
 				}
 			}
+			return -1;
 		}
-		return -1;
 	}
 }

@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+public class Question1337 {
+	class Solution {
+		public int[] kWeakestRows(int[][] mat, int k) {
+			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> getSoldiers(mat[a]) == getSoldiers(mat[b]) ? a - b
+					: getSoldiers(mat[a]) - getSoldiers(mat[b]));
+			for (int i = 0; i < mat.length; i++) {
+				pq.offer(i);
+			}
+			int[] ans = new int[k];
+			for (int i = 0; i < k; i++) {
+				ans[i] = pq.poll();
+			}
+			return ans;
+		}
+
+		private int getSoldiers(int[] row) {
+			for (int i = 0; i < row.length; i++) {
+				if (row[i] == 0) {
+					return i;
+				}
+			}
+			return row.length;
+		}
+	}
+}

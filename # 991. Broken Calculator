@@ -1,0 +1,31 @@
+package com.leetcode.problems;
+
+public class Question991 {
+	class Solution1 {
+		public int brokenCalc(int X, int Y) {
+			int ans = 0;
+			while (Y > X) {
+				ans++;
+				if (Y % 2 == 0) {
+					Y /= 2;
+				} else {
+					Y++;
+				}
+			}
+			return ans + X - Y;
+		}
+	}
+
+	class Solution2 {
+		public int brokenCalc(int X, int Y) {
+			if (X >= Y) {
+				return X - Y;
+			}
+			if (Y % 2 == 0) {
+				return 1 + brokenCalc(X, Y / 2);
+			} else {
+				return 1 + brokenCalc(X, Y + 1);
+			}
+		}
+	}
+}

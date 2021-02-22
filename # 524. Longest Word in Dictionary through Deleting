@@ -1,0 +1,35 @@
+package com.leetcode.problems;
+
+import java.util.List;
+
+public class Question524 {
+	class Solution {
+		public String findLongestWord(String s, List<String> d) {
+			String ans = "";
+			for (String str : d) {
+				if (canDelete(s, str)) {
+					if (ans.isEmpty() || ans.length() < str.length()) {
+						ans = str;
+					} else if (ans.length() == str.length() && ans.compareTo(str) > 0) {
+						ans = str;
+					}
+				}
+			}
+			return ans;
+		}
+
+		private boolean canDelete(String s, String str) {
+			int ptr = 0;
+			for (char c : str.toCharArray()) {
+				while (ptr < s.length() && s.charAt(ptr) != c) {
+					ptr++;
+				}
+				if (ptr == s.length()) {
+					return false;
+				}
+				ptr++;
+			}
+			return true;
+		}
+	}
+}

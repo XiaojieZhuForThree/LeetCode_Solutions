@@ -1,24 +1,32 @@
 package com.leetcode.problems;
 
+import java.util.Arrays;
+
 public class Question240 {
-	class Solution {
-		public boolean searchMatrix(int[][] matrix, int target) {
-			if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-				return false;
-			}
-			int m = matrix.length, n = matrix[0].length;
-			int x = 0, y = n - 1;
-			while (x < m && y >= 0) {
-				if (matrix[x][y] == target) {
-					return true;
-				}
-				if (matrix[x][y] < target) {
-					x++;
-				} else {
-					y--;
-				}
-			}
-			return false;
-		}
+	class Solution1 {
+	    public boolean searchMatrix(int[][] matrix, int target) {
+	        for (int[] row : matrix) {
+	            if (Arrays.binarySearch(row, target) >= 0) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	}
+	
+	class Solution2 {
+	    public boolean searchMatrix(int[][] matrix, int target) {
+	        int col = matrix[0].length - 1, row = 0;
+	        while (col >= 0 && row < matrix.length) {
+	            if (matrix[row][col] == target) {
+	                return true;
+	            } else if (matrix[row][col] < target) {
+	                row++;
+	            } else {
+	                col--;
+	            }
+	        }
+	        return false;
+	    }
 	}
 }

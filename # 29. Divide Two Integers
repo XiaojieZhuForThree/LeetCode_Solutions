@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+public class Question29 {
+	class Solution {
+		public int divide(int dividend, int divisor) {
+			if (divisor == 1) {
+				return dividend;
+			} else if (divisor == -1) {
+				if (dividend > 0) {
+					return -dividend;
+				} else {
+					return dividend == Integer.MIN_VALUE ? Integer.MAX_VALUE : -dividend;
+				}
+			}
+			long ans = helper((long) dividend, (long) divisor);
+			return (int) ans;
+		}
+
+		private long helper(long dividend, long divisor) {
+			if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
+				return -helper(Math.abs(dividend), Math.abs(divisor));
+			}
+			dividend = Math.abs(dividend);
+			divisor = Math.abs(divisor);
+			long ans = 1;
+			long add = divisor;
+			while ((divisor << 1) <= dividend) {
+				divisor <<= 1;
+				ans <<= 1;
+			}
+			while (divisor < dividend) {
+				ans++;
+				divisor += add;
+			}
+			if (divisor > dividend) {
+				ans--;
+			}
+			return ans;
+		}
+	}
+}

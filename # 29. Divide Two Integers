@@ -22,20 +22,17 @@ public class Question29 {
 			}
 			dividend = Math.abs(dividend);
 			divisor = Math.abs(divisor);
+			if (dividend < divisor) {
+				return 0;
+			}
 			long ans = 1;
 			long add = divisor;
 			while ((divisor << 1) <= dividend) {
 				divisor <<= 1;
 				ans <<= 1;
 			}
-			while (divisor < dividend) {
-				ans++;
-				divisor += add;
-			}
-			if (divisor > dividend) {
-				ans--;
-			}
-			return ans;
+			return ans + helper(dividend - divisor, add);
+
 		}
 	}
 }

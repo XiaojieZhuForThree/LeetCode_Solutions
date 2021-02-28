@@ -7,33 +7,32 @@ import java.util.Map;
 
 public class Question895 {
 	class FreqStack {
-		Map<Integer, Deque<Integer>> stackMap;
-		Map<Integer, Integer> freqs;
-		int mostFreq;
+		Map<Integer, Deque<Integer>> freqStacks;
+		Map<Integer, Integer> freqMap;
+		int curFreq;
 
 		public FreqStack() {
-			stackMap = new HashMap<>();
-			freqs = new HashMap<>();
-			mostFreq = 0;
+			freqStacks = new HashMap<>();
+			freqMap = new HashMap<>();
+			curFreq = 0;
 		}
 
 		public void push(int x) {
-			freqs.put(x, freqs.getOrDefault(x, 0) + 1);
-			int freq = freqs.get(x);
-			stackMap.putIfAbsent(freq, new ArrayDeque<>());
-			stackMap.get(freq).offerLast(x);
-			if (freq > mostFreq) {
-				mostFreq = freq;
-			}
+			int freq = freqMap.getOrDefault(x, 0) + 1;
+			freqStacks.putIfAbsent(freq, new ArrayDeque<>());
+			freqStacks.get(freq).offer(x);
+			curFreq = Math.max(curFreq, freq);
+			freqMap.put(x, freq);
 		}
 
 		public int pop() {
-			int val = stackMap.get(mostFreq).pollLast();
-			if (stackMap.get(mostFreq).isEmpty()) {
-				mostFreq--;
+			int ans = freqStacks.get(curFreq).pollLast();
+			if (freqStacks.get(curFreq).isEmpty()) {
+				freqStacks.remove(curFreq);
+				curFreq--;
 			}
-			freqs.put(val, freqs.get(val) - 1);
-			return val;
+			freqMap.put(ans, freqMap.getOrDefault(ans, 1) - 1);
+			return ans;
 		}
 	}
 

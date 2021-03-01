@@ -1,0 +1,16 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question575 {
+	class Solution {
+		public int distributeCandies(int[] candyType) {
+			Map<Integer, Integer> types = new HashMap<>();
+			for (int i : candyType) {
+				types.put(i, types.getOrDefault(i, 0) + 1);
+			}
+			return Math.min(types.size(), candyType.length / 2);
+		}
+	}
+}

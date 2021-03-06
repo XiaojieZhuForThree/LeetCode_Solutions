@@ -1,0 +1,44 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question820 {
+	class Solution {
+		public int minimumLengthEncoding(String[] words) {
+			Set<String> parents = new HashSet<>();
+			for (String word : words) {
+				boolean matched = false;
+				for (String parent : parents) {
+					if (matchEnd(word, parent)) {
+						matched = true;
+						if (word.length() > parent.length()) {
+							parents.remove(parent);
+							parents.add(word);
+						}
+						break;
+					}
+				}
+				if (!matched) {
+					parents.add(word);
+				}
+			}
+			int len = 0;
+			for (String par : parents) {
+				len += par.length();
+				len += 1;
+			}
+			return len;
+		}
+
+		private boolean matchEnd(String a, String b) {
+			int ptr1 = a.length() - 1, ptr2 = b.length() - 1;
+			while (ptr1 >= 0 && ptr2 >= 0) {
+				if (a.charAt(ptr1--) != b.charAt(ptr2--)) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

@@ -1,0 +1,22 @@
+package com.leetcode.problems;
+
+public class Question1332 {
+	class Solution {
+		public int removePalindromeSub(String s) {
+			if (s.isEmpty()) {
+				return 0;
+			}
+			return isPalin(s) ? 1 : 2;
+		}
+
+		private boolean isPalin(String s) {
+			int l = 0, r = s.length() - 1;
+			while (l < r) {
+				if (s.charAt(l++) != s.charAt(r--)) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}

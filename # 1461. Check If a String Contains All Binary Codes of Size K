@@ -1,0 +1,16 @@
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question1461 {
+	class Solution {
+		public boolean hasAllCodes(String s, int k) {
+			Set<String> binCode = new HashSet<>();
+			for (int i = 0; i + k <= s.length(); i++) {
+				binCode.add(s.substring(i, i + k));
+			}
+			return binCode.size() == Math.pow(2, k);
+		}
+	}
+}

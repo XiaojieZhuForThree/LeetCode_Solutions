@@ -12,10 +12,13 @@ public class Question823 {
 			for (int i : arr) {
 				map.put(i, 1L);
 				ans += 1;
-			}	
+			}
 			Arrays.sort(arr);
 			for (int i : arr) {
-				for (int j = 2; j * j <= i; j++) {
+				for (int j : arr) {
+					if (j == i) {
+						break;
+					}
 					if (i % j != 0 || !map.containsKey(j)) {
 						continue;
 					}
@@ -24,9 +27,6 @@ public class Question823 {
 						continue;
 					}
 					long val = map.get(j) * map.get(k);
-					if (k != j) {
-						val *= 2;
-					}
 					ans += val;
 					map.put(i, map.get(i) + val);
 				}

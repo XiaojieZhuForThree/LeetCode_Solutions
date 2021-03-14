@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.api.ListNode;
+
+public class Question1721 {
+	class Solution {
+		public ListNode swapNodes(ListNode head, int k) {
+			List<ListNode> list = new ArrayList<>();
+			ListNode node = head;
+			while (node != null) {
+				list.add(node);
+				node = node.next;
+			}
+			ListNode node1 = list.get(k - 1);
+			ListNode node2 = list.get(list.size() - k);
+			list.set(k - 1, node2);
+			list.set(list.size() - k, node1);
+			ListNode ans = new ListNode(0), dummy = ans;
+			for (ListNode i : list) {
+				dummy.next = i;
+				dummy = dummy.next;
+			}
+			dummy.next = null;
+			return ans.next;
+		}
+	}
+}

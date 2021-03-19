@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question376 {
+	class Solution {
+		public int wiggleMaxLength(int[] nums) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			stack.offer(nums[0]);
+			boolean up = false;
+			for (int i = 1; i < nums.length; i++) {
+				if (nums[i] == stack.peekLast()) {
+					continue;
+				}
+				if (stack.size() == 1) {
+					up = stack.peekLast() > nums[i];
+					stack.offerLast(nums[i]);
+				} else if (stack.peekLast() > nums[i]) {
+					if (up) {
+						stack.pollLast();
+						stack.offer(nums[i]);
+					} else {
+						stack.offer(nums[i]);
+						up = true;
+					}
+				} else {
+					if (up) {
+						stack.offer(nums[i]);
+						up = false;
+					} else {
+						stack.pollLast();
+						stack.offer(nums[i]);
+					}
+				}
+			}
+			return stack.size();
+		}
+	}
+}

@@ -1,40 +1,32 @@
 package com.leetcode.problems;
 
+import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 public class Question841 {
 	class Solution {
 		public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-			Set<Integer> keys = bfs(rooms);
-			return canOpenAllRooms(keys, rooms);
-		}
-
-		private final Set<Integer> bfs(List<List<Integer>> rooms) {
-			Set<Integer> keys = new HashSet<>();
-			Set<Integer> visited = new HashSet<>();
-			keys.add(0);
-			visited.add(0);
-			visit(visited, keys, rooms, 0);
-			return keys;
-		}
-
-		private final void visit(Set<Integer> visited, Set<Integer> keys, List<List<Integer>> rooms, int i) {
-			List<Integer> keysInRoom = rooms.get(i);
-			for (int j : keysInRoom) {
-				if (visited.contains(j)) {
+			Set<Integer> seen = new HashSet<>();
+			Queue<Integer> queue = new ArrayDeque<>();
+			queue.addAll(rooms.get(0));
+			seen.add(0);
+			while (!queue.isEmpty()) {
+				int key = queue.poll();
+				if (seen.contains(key)) {
 					continue;
 				}
-				visited.add(j);
-				keys.add(j);
-				visit(visited, keys, rooms, j);
+				seen.add(key);
+				for (int i : rooms.get(key)) {
+					if (seen.contains(i)) {
+						continue;
+					}
+					queue.offer(i);
+				}
 			}
-			return;
-		}
-
-		private final boolean canOpenAllRooms(Set<Integer> keys, List<List<Integer>> rooms) {
-			return keys.size() == rooms.size();
+			return seen.size() == rooms.size();
 		}
 	}
 }

@@ -1,68 +1,40 @@
-package problems;
+package com.leetcode.problems;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-public class Question864 {
-	class Solution1 {
+public class Question869 {
+	class Solution {
 		public boolean reorderedPowerOf2(int N) {
-			int[] digs = new int[10];
-			int numOfDigs = 0;
-			while (N > 0) {
-				digs[N % 10]++;
-				N /= 10;
-				numOfDigs++;
+			if (N == 1) {
+				return true;
 			}
-			for (int val : getPots(numOfDigs)) {
-				if (canCompose(val, digs)) {
+			int num = 1;
+			for (int i = 0; i < 32; i++) {
+				num *= 2;
+				if (canMatch(num, N)) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		private Set<Integer> getPots(int n) {
-			int i = 1;
-			Set<Integer> set = new HashSet<>();
-			while (Integer.toString(i).length() <= n) {
-				if (Integer.toString(i).length() == n) {
-					set.add(i);
+		private boolean canMatch(int a, int b) {
+			int[] digs = new int[10];
+			while (a > 0) {
+				digs[a % 10]++;
+				a /= 10;
+			}
+			while (b > 0) {
+				if (digs[b % 10] <= 0) {
+					return false;
 				}
-				i *= 2;
+				digs[b % 10]--;
+				b /= 10;
 			}
-			return set;
-		}
-
-		private boolean canCompose(int val, int[] digs) {
-			int[] valDigs = new int[10];
-			while (val > 0) {
-				valDigs[val % 10]++;
-				val /= 10;
-			}
-			for (int i = 0; i < 10; i++) {
-				if (valDigs[i] != digs[i]) {
+			for (int i : digs) {
+				if (i != 0) {
 					return false;
 				}
 			}
 			return true;
-		}
-	}
-
-	class Solution2 {
-		public boolean reorderedPowerOf2(int N) {
-			char[] s1 = Integer.toString(N).toCharArray();
-			Arrays.sort(s1);
-			String reference = new String(s1);
-			for (int i = 0; i < 32; i++) {
-				char[] s2 = Integer.toString((1 << i)).toCharArray();
-				Arrays.sort(s2);
-				String cur = new String(s2);
-				if (reference.equals(cur)) {
-					return true;
-				}
-			}
-			return false;
 		}
 	}
 }

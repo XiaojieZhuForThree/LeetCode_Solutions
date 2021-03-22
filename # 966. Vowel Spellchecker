@@ -1,0 +1,37 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class Question966 {
+	class Solution {
+		public String[] spellchecker(String[] wordlist, String[] queries) {
+			String[] ans = new String[queries.length];
+			Set<String> set = new HashSet<>();
+			Map<String, String> caseInsMap = new HashMap<>();
+			Map<String, String> vMap = new HashMap<>();
+			for (int i = 0; i < wordlist.length; i++) {
+				String s = wordlist[i];
+				set.add(s);
+				caseInsMap.putIfAbsent(s.toLowerCase(), s);
+				String vs = s.toLowerCase().replaceAll("[aeiou]", "*");
+				vMap.putIfAbsent(vs, s);
+			}
+			for (int i = 0; i < queries.length; i++) {
+				String q = queries[i];
+				if (set.contains(q)) {
+					ans[i] = q;
+				} else if (caseInsMap.containsKey(q.toLowerCase())) {
+					ans[i] = caseInsMap.get(q.toLowerCase());
+				} else if (vMap.containsKey(q.toLowerCase().replaceAll("[aeiou]", "*"))) {
+					ans[i] = vMap.get(q.toLowerCase().replaceAll("[aeiou]", "*"));
+				} else {
+					ans[i] = "";
+				}
+			}
+			return ans;
+		}
+	}
+}

@@ -1,28 +1,21 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Question923 {
 	class Solution {
-		int mod = 1_000_000_007;
-
-		public int threeSumMulti(int[] A, int target) {
-			if (A == null || A.length == 0)
-				return 0;
-			Map<Integer, Integer> map = new HashMap<>();
-			map.put(A[0] + A[1], 1);
-			int ans = 0;
-			for (int i = 2; i < A.length; i++) {
-				if (map.containsKey(target - A[i])) {
-					ans += map.get(target - A[i]);
-					ans %= mod;
-				}
+		public int threeSumMulti(int[] arr, int target) {
+			Map<Integer, Integer> counts = new HashMap<>();
+			counts.put(arr[0] + arr[1], 1);
+			long ans = 0;
+			for (int i = 2; i < arr.length; i++) {
+				ans += counts.getOrDefault(target - arr[i], 0);
 				for (int j = 0; j < i; j++) {
-					map.put(A[j] + A[i], map.getOrDefault(A[j] + A[i], 0) + 1);
+					counts.put(arr[i] + arr[j], counts.getOrDefault(arr[i] + arr[j], 0) + 1);
 				}
 			}
-			return ans;
+			return (int) (ans % 1000000007);
 		}
 	}
 }

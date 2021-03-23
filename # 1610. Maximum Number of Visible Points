@@ -1,0 +1,37 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Question1610 {
+	class Solution {
+		public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+			int ori = 0;
+			List<Double> scatters = new ArrayList<>();
+			for (List<Integer> pt : points) {
+				if (pt.get(0) == location.get(0) && pt.get(1) == location.get(1)) {
+					ori++;
+				} else {
+					scatters.add(Math.atan2(pt.get(1) - location.get(1), pt.get(0) - location.get(0)));
+				}
+			}
+			Collections.sort(scatters);
+			int n = scatters.size();
+			for (int i = 0; i < n; i++) {
+				scatters.add(scatters.get(i) + 2 * Math.PI);
+			}
+			int ans = 0;
+			int l = 0;
+			double ang = angle * Math.PI / 180;
+			for (int r = 0; r < scatters.size(); r++) {
+				while (scatters.get(r) - scatters.get(l) > ang) {
+					l++;
+
+				}
+				ans = Math.max(ans, r - l + 1);
+			}
+			return ans + ori;
+		}
+	}
+}

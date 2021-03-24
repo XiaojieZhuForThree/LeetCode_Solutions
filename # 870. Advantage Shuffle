@@ -1,13 +1,14 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Question870 {
-	class Solution {
+	class Solution1 {
 		public int[] advantageCount(int[] A, int[] B) {
 			Arrays.sort(A);
 			int[] C = B.clone();
@@ -26,6 +27,41 @@ public class Question870 {
 				A[x] = map.get(B[x]).poll();
 			}
 			return A;
+		}
+	}
+
+	class Solution2 {
+		public int[] advantageCount(int[] A, int[] B) {
+			PriorityQueue<Integer> pqA = new PriorityQueue<>((a, b) -> A[a] - A[b]);
+			PriorityQueue<Integer> pqB = new PriorityQueue<>((a, b) -> B[a] - B[b]);
+			for (int i = 0; i < A.length; i++) {
+				pqA.offer(i);
+				pqB.offer(i);
+			}
+			int[] ans = new int[A.length];
+			Arrays.fill(ans, -1);
+			while (!pqB.isEmpty() && !pqA.isEmpty()) {
+				int bIndex = pqB.poll();
+				while (!pqA.isEmpty() && A[pqA.peek()] <= B[bIndex]) {
+					pqA.poll();
+				}
+				if (!pqA.isEmpty()) {
+					int aIndex = pqA.poll();
+					ans[bIndex] = A[aIndex];
+					A[aIndex] = -1;
+				}
+			}
+			int j = 0;
+			for (int i = 0; i < ans.length; i++) {
+				if (ans[i] == -1) {
+					while (A[j] == -1) {
+						j++;
+					}
+					ans[i] = A[j];
+					A[j] = -1;
+				}
+			}
+			return ans;
 		}
 	}
 }

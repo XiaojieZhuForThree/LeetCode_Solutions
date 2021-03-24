@@ -1,13 +1,15 @@
-package problems;
+package com.leetcode.problems;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Question1514 {
-	class Solution {
+	class Solution1 {
 		double max = 0.0;
 
 		public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
@@ -49,6 +51,34 @@ public class Question1514 {
 				}
 			}
 			return 0.0;
+		}
+	}
+
+	class Solution2 {
+		public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+			Map<Integer, Map<Integer, Double>> map = new HashMap<>();
+			for (int i = 0; i < n; i++) {
+				map.put(i, new HashMap<>());
+			}
+			for (int i = 0; i < edges.length; i++) {
+				int[] edge = edges[i];
+				map.get(edge[0]).put(edge[1], succProb[i]);
+				map.get(edge[1]).put(edge[0], succProb[i]);
+			}
+			double[] maxSucc = new double[n];
+			maxSucc[start] = 1.0;
+			Queue<Integer> queue = new ArrayDeque<>();
+			queue.offer(start);
+			while (!queue.isEmpty()) {
+				int s = queue.poll();
+				for (int e : map.get(s).keySet()) {
+					if (maxSucc[s] * map.get(s).get(e) > maxSucc[e]) {
+						maxSucc[e] = maxSucc[s] * map.get(s).get(e);
+						queue.offer(e);
+					}
+				}
+			}
+			return maxSucc[end];
 		}
 	}
 }

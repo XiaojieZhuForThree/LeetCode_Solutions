@@ -1,23 +1,31 @@
-class Solution {
-    private int getArea(int[][] grid, int i, int j) {
-    	int r = grid.length, c = grid[0].length;
-    	if (grid[i][j] == 0) {
-    		return 0;
-    	}
-    	grid[i][j] = 0;
-    	return 1 + getArea(grid, i, Math.min(j + 1, c-1)) + getArea(grid, i, Math.max(j-1, 0)) +
-    			getArea(grid, Math.min(i + 1, r-1), j) + getArea(grid, Math.max(i - 1, 0), j);
-    }
-    
-    public int maxAreaOfIsland(int[][] grid) {
-        int ans = 0;
-        for (int i = 0; i < grid.length; i++) {
-        	for (int j = 0; j < grid[0].length; j++) {
-        		if (grid[i][j] == 1) {
-        			ans = Math.max(ans, getArea(grid, i, j));
-        		}
-        	}
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+public class Question695 {
+	class Solution {
+		int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+		public int maxAreaOfIsland(int[][] grid) {
+			int ans = 0;
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (grid[i][j] == 1) {
+						ans = Math.max(ans, dfs(grid, i, j));
+					}
+				}
+			}
+			return ans;
+		}
+
+		private int dfs(int[][] grid, int i, int j) {
+			if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 0) {
+				return 0;
+			}
+			grid[i][j] = 0;
+			int area = 1;
+			for (int[] dir : dirs) {
+				area += dfs(grid, i + dir[0], j + dir[1]);
+			}
+			return area;
+		}
+	}
 }

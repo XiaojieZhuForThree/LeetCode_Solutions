@@ -1,0 +1,63 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Question417 {
+	class Solution {
+		public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+			if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+				return List.of();
+			}
+			int m = matrix.length, n = matrix[0].length;
+			boolean[][] canPac = new boolean[m][n];
+			boolean[][] canAlt = new boolean[m][n];
+			Arrays.fill(canPac[0], true);
+			Arrays.fill(canAlt[m - 1], true);
+			for (int i = 0; i < m; i++) {
+				canPac[i][0] = true;
+				canAlt[i][n - 1] = true;
+			}
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (canPac[i][j]) {
+						dfs(canPac, matrix, i, j);
+					}
+					if (canAlt[i][j]) {
+						dfs(canAlt, matrix, i, j);
+					}
+				}
+			}
+			List<List<Integer>> ans = new ArrayList<>();
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (canPac[i][j] && canAlt[i][j]) {
+						ans.add(List.of(i, j));
+					}
+				}
+			}
+			return ans;
+		}
+
+		private void dfs(boolean[][] canReach, int[][] matrix, int i, int j) {
+			if (i + 1 < matrix.length && !canReach[i + 1][j] && matrix[i][j] <= matrix[i + 1][j]) {
+				canReach[i + 1][j] = true;
+				dfs(canReach, matrix, i + 1, j);
+			}
+			if (j + 1 < matrix[0].length && !canReach[i][j + 1] && matrix[i][j] <= matrix[i][j + 1]) {
+				canReach[i][j + 1] = true;
+				dfs(canReach, matrix, i, j + 1);
+			}
+			if (i - 1 >= 0 && !canReach[i - 1][j] && matrix[i][j] <= matrix[i - 1][j]) {
+				canReach[i - 1][j] = true;
+				dfs(canReach, matrix, i - 1, j);
+			}
+			if (j - 1 >= 0 && !canReach[i][j - 1] && matrix[i][j] <= matrix[i][j - 1]) {
+				canReach[i][j - 1] = true;
+				dfs(canReach, matrix, i, j - 1);
+			}
+			return;
+		}
+	}
+}

@@ -1,181 +1,34 @@
-class Solution {
-    String ans = "";
-    int minLen = Integer.MAX_VALUE;
-    public String minWindow(String S, String T) {
-        for (int i = 0; i < S.length(); i++) {
-            if (S.charAt(i) == T.charAt(0)) {
-                dfs(S, T, i);
-            }
-        }
-        return ans;
-    }
-    private void dfs(String S, String T, int i){
-        int j = 0, init = i;
-        while (j < T.length() && i < S.length()) {
-            if (S.charAt(i) == T.charAt(j)) {
-                j++;
-            }
-            i++;
-        }
-        if (j == T.length()) {
-            if (i - init < minLen) {
-                minLen = i - init;
-                ans = S.substring(init, i);
-            }
-        }
-    }
-}
+package com.leetcode.problems;
 
-
-class Solution {
-    public String minWindow(String S, String T) {
-        int right = 0, minLength = Integer.MAX_VALUE;
-        String res = "";
-        while (right < S.length()) {
-            int tIndex = 0;
-            while (right < S.length()) {
-                if (S.charAt(right) == T.charAt(tIndex)) {
-                    tIndex++;
-                }
-                if (tIndex == T.length()) {
-                    break;
-                }
-                right++;
-            }
-            if (right == S.length()) {
-                break;
-            }
-            int left = right;
-            tIndex = T.length() - 1;
-            while (left >= 0) {
-                if (S.charAt(left) == T.charAt(tIndex)) {
-                    tIndex--;
-                }
-                if (tIndex < 0) {
-                    break;
-                }
-                left--;
-            }
-            if (right - left + 1 < minLength) {
-                minLength = right - left + 1;
-                res = S.substring(left, right+1);
-            }
-            right = left + 1;
-        }
-        return res;
-    }
-}
-
-
-
-class Solution {
-    public String minWindow(String S, String T) {
-        int[][] dp = new int[S.length()][T.length()];
-        for (int i = 0; i < S.length(); i++) {
-            if (S.charAt(i) == T.charAt(0)) {
-                dp[i][0] = i;
-            } else if (i == 0) {
-                dp[i][0] = -1;
-            } else {
-                dp[i][0] = dp[i-1][0];
-            }
-        }
-        for (int i = 0; i < S.length(); i++) {
-            for (int j = 1; j < T.length(); j++) {
-                if (S.charAt(i) == T.charAt(j)) {
-                    if (i == 0) {
-                        dp[i][j] = -1;
-                    } else {
-                        dp[i][j] = dp[i-1][j-1];
-                    }
-                } else {
-                    if (i == 0) {
-                        dp[i][j] = -1;
-                    } else {
-                        dp[i][j] = dp[i-1][j];
-                    }
-                }
-            }
-        }
-        int start = 0, len = Integer.MAX_VALUE;
-        for (int i = 0; i < S.length(); i++) {
-            if (dp[i][T.length()-1] != -1) {
-                if (i - dp[i][T.length()-1] + 1 < len) {
-                    len = i - dp[i][T.length()-1] + 1;
-                    start = dp[i][T.length()-1];
-                }
-            }
-        }
-        return len == Integer.MAX_VALUE ? "" : S.substring(start, start + len);
-    }
-}
-
-
-
-class Solution {
-    public String minWindow(String S, String T) {
-        char[] s = S.toCharArray(), t = T.toCharArray();
-        String ans = "";
-        int i = 0, ti = 0, slen = s.length, tlen = t.length, anslen = Integer.MAX_VALUE;
-        while (i < slen) {
-            if (s[i] == t[ti]) {
-                ti++;
-                if (ti == tlen) {
-                    int end = i + 1;
-                    ti--;
-                    while (ti >= 0) {
-                        if (s[i] == t[ti]) {
-                            ti--;
-                        }
-                        i--;
-                    }
-                    i++;
-                    ti++;
-                    if (end - i < anslen) {
-                        anslen = end - i;
-                        ans = S.substring(i, end); 
-                    }
-                }
-            }
-            i++;
-        }
-        return ans;
-    }
-}
-
-
-class Solution {
-    public String minWindow(String S, String T) {
-        int m = S.length(), n = T.length();
-        int[][] dp = new int[m+1][n+1];
-        for (int[] i : dp) {
-            Arrays.fill(i, -1);
-        }
-        for (int i = 1; i <= m; i++) {
-            if (S.charAt(i-1) == T.charAt(0)) {
-                dp[i][1] = i-1;
-            } else {
-                dp[i][1] = dp[i-1][1];
-            }
-        }
-        for (int i = 1; i <= m; i++) {
-            for (int j = 2; j <= n; j++) {
-                if (S.charAt(i-1) == T.charAt(j-1)) {
-                    dp[i][j] = dp[i-1][j-1];
-                } else {
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-        }
-        int start = 0, len = Integer.MAX_VALUE;
-        for (int i = 1; i <= m; i++) {
-            if (dp[i][n] != -1) {
-                if (i - dp[i][n] < len) {
-                    len = i - dp[i][n];
-                    start = dp[i][n];
-                }
-            }
-        }
-        return len == Integer.MAX_VALUE ? "" : S.substring(start, start + len);
-    }
+public class Question727 {
+	class Solution {
+		public String minWindow(String S, String T) {
+			String ans = "";
+			int j = 0;
+			int i = 0;
+			for (; i < S.length(); i++) {
+				if (S.charAt(i) == T.charAt(j)) {
+					if (j == T.length() - 1) {
+						for (int k = i; k >= 0; k--) {
+							if (S.charAt(k) == T.charAt(j)) {
+								if (j == 0) {
+									if (ans.isEmpty() || ans.length() > i - k + 1) {
+										ans = S.substring(k, i + 1);
+										break;
+									}
+								} else {
+									j--;
+								}
+							}
+						}
+						j = T.length() - 1;
+						i++;
+					} else {
+						j++;
+					}
+				}
+			}
+			return ans;
+		}
+	}
 }

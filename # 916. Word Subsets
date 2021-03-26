@@ -1,0 +1,39 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question916 {
+	class Solution {
+		public List<String> wordSubsets(String[] A, String[] B) {
+			int[] chars = new int[26];
+			for (String s : B) {
+				int[] sChars = new int[26];
+				for (char c : s.toCharArray()) {
+					sChars[c - 'a']++;
+				}
+				for (int i = 0; i < 26; i++) {
+					chars[i] = Math.max(chars[i], sChars[i]);
+				}
+			}
+			List<String> ans = new ArrayList<>();
+			for (String a : A) {
+				int[] aChars = new int[26];
+				for (char c : a.toCharArray()) {
+					aChars[c - 'a']++;
+				}
+				boolean canCover = true;
+				for (int i = 0; i < 26; i++) {
+					if (aChars[i] < chars[i]) {
+						canCover = false;
+						break;
+					}
+				}
+				if (canCover) {
+					ans.add(a);
+				}
+			}
+			return ans;
+		}
+	}
+}

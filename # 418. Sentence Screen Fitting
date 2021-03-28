@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+public class Question418 {
+	class Solution {
+		public int wordsTyping(String[] sentence, int rows, int cols) {
+			int curRow = 1, curC = 0;
+			int i = 0;
+			while (curRow <= rows) {
+				String word = sentence[i % sentence.length];
+				if (word.length() > cols) {
+					return 0;
+				}
+				if (curC + word.length() > cols) {
+					if (i % sentence.length == 0) {
+						int nr = curRow;
+						int curi = i;
+						while (curRow + nr <= rows) {
+							curRow += nr;
+							i += curi;
+						}
+					}
+					curRow++;
+					curC = word.length();
+					if (curC < cols) {
+						curC++;
+					}
+				} else {
+					curC += word.length();
+					if (curC < cols) {
+						curC++;
+					}
+				}
+				i++;
+			}
+			return curRow > rows && curC > 0 ? (i - 1) / sentence.length : i / sentence.length;
+		}
+	}
+}

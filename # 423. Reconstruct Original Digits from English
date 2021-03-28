@@ -1,0 +1,66 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
+
+public class Question423 {
+	class Solution {
+		public String originalDigits(String s) {
+			String[] nums = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+					"nine" };
+			Map<Integer, Integer> records = new HashMap<>();
+			int[] chars = new int[26];
+			Map<Character, Set<Integer>> indegree = new HashMap<>();
+			for (int i = 0; i < 10; i++) {
+				String num = nums[i];
+				for (char c : num.toCharArray()) {
+					indegree.putIfAbsent(c, new HashSet<>());
+					indegree.get(c).add(i);
+				}
+			}
+
+			PriorityQueue<Character> pq = new PriorityQueue<>(
+					(a, b) -> indegree.get(a).size() - indegree.get(b).size());
+
+			for (char c : indegree.keySet()) {
+				pq.offer(c);
+			}
+
+			for (char c : s.toCharArray()) {
+				chars[c - 'a']++;
+			}
+
+			while (!pq.isEmpty()) {
+				char c = pq.poll();
+				Set<Integer> set = indegree.get(c);
+				for (int i : set) {
+					String num = nums[i];
+					int val = Integer.MAX_VALUE;
+					for (char m : num.toCharArray()) {
+						val = Math.min(val, chars[m - 'a']);
+					}
+					for (char m : num.toCharArray()) {
+						chars[m - 'a'] -= val;
+					}
+					records.putIfAbsent(i, val);
+				}
+				indegree.remove(c);
+				pq.clear();
+				for (char m : indegree.keySet()) {
+					pq.offer(m);
+				}
+			}
+
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < records.getOrDefault(i, 0); j++) {
+					sb.append(i);
+				}
+			}
+			return sb.toString();
+		}
+	}
+}

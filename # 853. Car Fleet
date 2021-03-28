@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.PriorityQueue;
+
+public class Question853 {
+	class Solution {
+		public int carFleet(int target, int[] position, int[] speed) {
+			int n = position.length;
+			int[] dis = new int[n];
+			for (int i = 0; i < n; i++) {
+				dis[i] = target - position[i];
+			}
+			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> dis[a] - dis[b]);
+			for (int i = 0; i < n; i++) {
+				pq.offer(i);
+			}
+			Deque<Integer> stack = new ArrayDeque<>();
+			while (!pq.isEmpty()) {
+				int i = pq.poll();
+				if (stack.isEmpty()
+						|| (double) dis[stack.peekLast()] / speed[stack.peekLast()] < (double) dis[i] / speed[i]) {
+					stack.offer(i);
+				}
+			}
+			return stack.size();
+		}
+	}
+}

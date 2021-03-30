@@ -1,0 +1,65 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.leetcode.api.TreeNode;
+
+public class Question652 {
+	class Solution {
+		Map<TreeNode, Boolean> occurred = new HashMap<>();
+
+		public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+			Map<Integer, Map<Integer, List<TreeNode>>> map = new HashMap<>();
+			List<TreeNode> ans = new ArrayList<>();
+			helper(root, map, ans);
+			return ans;
+		}
+
+		private int helper(TreeNode node, Map<Integer, Map<Integer, List<TreeNode>>> map, List<TreeNode> ans) {
+			if (node == null) {
+				return 0;
+			}
+			int val1 = helper(node.left, map, ans);
+			int val2 = helper(node.right, map, ans);
+			if (!map.containsKey(node.val)) {
+				map.put(node.val, new HashMap<>());
+				map.get(node.val).put(1 + val1 + val2, new ArrayList<>());
+				map.get(node.val).get(1 + val1 + val2).add(node);
+				occurred.put(node, false);
+			} else if (!map.get(node.val).containsKey(1 + val1 + val2)) {
+				map.get(node.val).put(1 + val1 + val2, new ArrayList<>());
+				map.get(node.val).get(1 + val1 + val2).add(node);
+				occurred.put(node, false);
+			} else {
+				boolean added = false;
+				for (TreeNode prev : map.get(node.val).get(1 + val1 + val2)) {
+					if (sameTree(prev, node)) {
+						if (!occurred.get(prev)) {
+							occurred.put(prev, true);
+							ans.add(node);
+							added = true;
+						}
+						break;
+					}
+				}
+				if (!added) {
+					map.get(node.val).get(1 + val1 + val2).add(node);
+					occurred.put(node, false);
+				}
+			}
+			return 1 + val1 + val2;
+		}
+
+		private boolean sameTree(TreeNode prev, TreeNode node) {
+			if (prev == null && node == null) {
+				return true;
+			} else if (prev == null || node == null) {
+				return false;
+			}
+			return prev.val == node.val && sameTree(prev.left, node.left) && sameTree(prev.right, node.right);
+		}
+	}
+}

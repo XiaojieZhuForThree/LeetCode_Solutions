@@ -1,0 +1,64 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question936 {
+	class Solution {
+		public int[] movesToStamp(String stamp, String target) {
+			char[] end = target.toCharArray();
+			int stars = 0;
+			boolean[] done = new boolean[target.length()];
+			List<Integer> ans = new ArrayList<>();
+			while (stars < target.length()) {
+				boolean replaced = false;
+				for (int i = 0; i + stamp.length() <= target.length(); i++) {
+					if (!done[i] && canReplace(end, stamp, i)) {
+						stars += replace(end, stamp, i);
+						done[i] = true;
+						replaced = true;
+						ans.add(i);
+						if (stars == target.length()) {
+							break;
+						}
+					}
+				}
+				if (!replaced) {
+					return new int[] {};
+				}
+			}
+			return getArray(ans);
+		}
+
+		private boolean canReplace(char[] end, String stamp, int i) {
+			if (i + stamp.length() > end.length) {
+				return false;
+			}
+			for (int j = 0; j < stamp.length(); j++) {
+				if (end[i + j] != '*' && end[i + j] != stamp.charAt(j)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private int replace(char[] end, String stamp, int i) {
+			int ans = 0;
+			for (int j = 0; j < stamp.length(); j++) {
+				if (end[i + j] != '*') {
+					end[i + j] = '*';
+					ans++;
+				}
+			}
+			return ans;
+		}
+
+		private int[] getArray(List<Integer> list) {
+			int[] ans = new int[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				ans[i] = list.get(list.size() - 1 - i);
+			}
+			return ans;
+		}
+	}
+}

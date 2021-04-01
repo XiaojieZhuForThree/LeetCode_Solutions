@@ -1,54 +1,21 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1277 {
-	class Solution1 {
-		public int countSquares(int[][] M) {
+	class Solution {
+		public int countSquares(int[][] matrix) {
+			int m = matrix.length, n = matrix[0].length;
 			int ans = 0;
-			int m = M.length, n = M[0].length;
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
-					if (M[i][j] == 1) {
+					if (matrix[i][j] == 1) {
 						ans++;
-						for (int k = 1; k < Math.min(m, n); k++) {
-							if (checkSquare(M, i, j, k)) {
-								ans++;
-							}
-						}
+						int l = j > 0 ? matrix[i][j - 1] : 0;
+						int u = i > 0 ? matrix[i - 1][j] : 0;
+						int d = i > 0 && j > 0 ? matrix[i - 1][j - 1] : 0;
+						int len = Math.min(l, Math.min(u, d));
+						ans += len;
+						matrix[i][j] += len;
 					}
-				}
-			}
-			return ans;
-		}
-
-		private boolean checkSquare(int[][] M, int i, int j, int k) {
-			for (int x = i; x <= i + k; x++) {
-				for (int y = j; y <= j + k; y++) {
-					if (x >= M.length || y >= M[0].length || M[x][y] == 0) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-	}
-
-	class Solution2 {
-		public int countSquares(int[][] M) {
-			int m = M.length, n = M[0].length;
-			int ans = 0;
-			for (int i = 0; i < m; i++) {
-				for (int j = 0; j < n; j++) {
-					if (M[i][j] == 0) {
-						continue;
-					}
-					ans++;
-					if (i == 0 || j == 0) {
-						continue;
-					}
-					int val1 = M[i][j - 1], val2 = M[i - 1][j], val3 = M[i - 1][j - 1];
-					int add = Math.min(val1, Math.min(val2, val3));
-					ans += add;
-					M[i][j] += add;
 				}
 			}
 			return ans;

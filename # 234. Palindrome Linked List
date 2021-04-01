@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+import com.leetcode.api.ListNode;
+
+public class Question234 {
+	class Solution {
+		public boolean isPalindrome(ListNode head) {
+			int len = getLength(head);
+			if (len == 1) {
+				return true;
+			}
+			int half = len / 2;
+			ListNode prev = null, cur = head, next = head.next;
+			for (int i = 0; i < half; i++) {
+				cur.next = prev;
+				prev = cur;
+				cur = next;
+				next = cur.next;
+			}
+			if (len % 2 == 1) {
+				cur = cur.next;
+			}
+			while (cur != null && prev != null) {
+				if (cur.val != prev.val) {
+					return false;
+				}
+				cur = cur.next;
+				prev = prev.next;
+			}
+			return true;
+		}
+
+		private int getLength(ListNode node) {
+			if (node == null) {
+				return 0;
+			}
+			return 1 + getLength(node.next);
+		}
+	}
+}

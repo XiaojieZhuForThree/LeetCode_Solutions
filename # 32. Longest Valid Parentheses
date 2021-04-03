@@ -1,17 +1,35 @@
-class Solution {
-    public int longestValidParentheses(String s) {
-        int leftCount = 0, ans = 0;
-        int[] dp = new int[s.length()];
-        char[] arr = s.toCharArray();
-        for (int i = 0; i < arr.length; i++){
-            if (arr[i] == '(') leftCount++;
-            else if (leftCount > 0){
-                dp[i] = dp[i-1] + 2;
-                dp[i] += i - dp[i] >= 0 ? dp[i-dp[i]] : 0;
-                ans = Math.max(ans, dp[i]);
-                leftCount--;
-            }
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question32 {
+	class Solution {
+		public int longestValidParentheses(String s) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			int[] dp = new int[s.length()];
+			int ans = 0;
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if (c == '(') {
+					if (i > 0 && s.charAt(i - 1) == ')') {
+						dp[i] = dp[i - 1];
+					} else {
+						dp[i] = 0;
+					}
+					stack.offer(i);
+				} else {
+					if (stack.isEmpty()) {
+						dp[i] = 0;
+					} else {
+						int j = stack.pollLast();
+						int len = i - j + 1;
+						dp[i] = len + dp[j];
+						ans = Math.max(ans, dp[i]);
+					}
+				}
+			}
+			return ans;
+		}
+	}
 }

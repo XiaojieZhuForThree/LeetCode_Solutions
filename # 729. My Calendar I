@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import java.util.TreeMap;
+
+public class Question729 {
+	class MyCalendar {
+		TreeMap<Integer, Integer> map;
+
+		public MyCalendar() {
+			this.map = new TreeMap<>();
+		}
+
+		public boolean book(int start, int end) {
+			Integer l = map.floorKey(start);
+			Integer r = map.lowerKey(end);
+			if (l != null && map.get(l) > start) {
+				return false;
+			} else if (r != null && (r < end && map.get(r) > start)) {
+				return false;
+			}
+			map.put(start, end);
+			return true;
+		}
+	}
+}

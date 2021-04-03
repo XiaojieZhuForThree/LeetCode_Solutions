@@ -1,89 +1,27 @@
-class Solution {
-    TreeMap<Integer, Integer> map = new TreeMap<>();
-    int acc = 0, l, r;
-    int[] weights;
-    Random rand = new Random();
-    public Solution(int[] w) {
-        weights = new int[w.length];
-        for (int i = 0; i < w.length; i++) {
-            acc += w[i];
-            weights[i] = acc;
-        }
-    }
-    
-    public int pickIndex() {
-        int ind = rand.nextInt(acc);
-        l = 0;
-        r = weights.length;
-        while (l < r) {
-            int mid = (l + r) / 2;
-            if (weights[mid] > ind) {
-                r = mid;
-            } else {
-                l = mid + 1;
-            }
-        }
-        return l;
-    }
+package com.leetcode.problems;
+
+import java.util.Random;
+import java.util.TreeMap;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class Question528 {
+	class Solution {
+		TreeMap<Integer, Integer> map;
+		int count = 0;
+		Random rand;
+
+		public Solution(int[] w) {
+			this.rand = ThreadLocalRandom.current();
+			this.map = new TreeMap<>();
+			for (int i = 0; i < w.length; i++) {
+				map.put(count, i);
+				count += w[i];
+			}
+		}
+
+		public int pickIndex() {
+			int pos = rand.nextInt(count);
+			return map.get(map.floorKey(pos));
+		}
+	}
 }
-
-/**
- * Your Solution object will be instantiated and called as such:
- * Solution obj = new Solution(w);
- * int param_1 = obj.pickIndex();
- */
-
-
-class Solution {
-    TreeMap<Integer, Integer> map = new TreeMap<>();
-    int acc = 0, l, r;
-    int[] weights;
-    Random rand = new Random();
-    public Solution(int[] w) {
-        weights = new int[w.length];
-        for (int i = 0; i < w.length; i++) {
-            acc += w[i];
-            weights[i] = acc;
-        }
-    }
-    
-    public int pickIndex() {
-        int index = rand.nextInt(acc) + 1;
-        int ans = Arrays.binarySearch(weights, index);
-        return ans >= 0 ? ans : -ans - 1;
-    }
-}
-
-/**
- * Your Solution object will be instantiated and called as such:
- * Solution obj = new Solution(w);
- * int param_1 = obj.pickIndex();
- */
-
-
-class Solution {
-    Random rand;
-    int[] weights;
-    public Solution(int[] w) {
-        rand = new Random();
-        for (int i = 1; i < w.length; i++) {
-            w[i] += w[i-1];
-        }
-        weights = w;
-    }
-    
-    public int pickIndex() {
-        int weight = rand.nextInt(weights[weights.length-1])+1;
-        int index = Arrays.binarySearch(weights, weight);
-        if (index < 0) {
-            return -index-1;
-        }
-        return index;
-    }
-}
-
-/**
- * Your Solution object will be instantiated and called as such:
- * Solution obj = new Solution(w);
- * int param_1 = obj.pickIndex();
- */

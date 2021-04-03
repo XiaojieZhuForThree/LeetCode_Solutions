@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+public class Question474 {
+	class Solution {
+		public int findMaxForm(String[] strs, int m, int n) {
+			int[][] dp = new int[m + 1][n + 1];
+			for (String s : strs) {
+				int[] counts = getCounts(s);
+				for (int i = m; i >= counts[0]; i--) {
+					for (int j = n; j >= counts[1]; j--) {
+						dp[i][j] = Math.max(dp[i][j], 1 + dp[i - counts[0]][j - counts[1]]);
+					}
+				}
+			}
+			return dp[m][n];
+		}
+
+		private int[] getCounts(String s) {
+			int ones = 0, zeros = 0;
+			for (char c : s.toCharArray()) {
+				if (c == '1') {
+					ones++;
+				} else {
+					zeros++;
+				}
+			}
+			return new int[] { zeros, ones };
+		}
+	}
+}

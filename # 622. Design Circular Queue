@@ -1,92 +1,75 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question622 {
 	class MyCircularQueue {
-		private class Node {
-			int data;
-			Node next;
+		class ListNode {
+			int val;
+			ListNode next;
 
-			public Node(int data) {
-				this.data = data;
+			public ListNode(int val) {
+				this.val = val;
 			}
 		}
 
-		Node head, tail;
-		final int size;
-		private int cur;
+		int k;
+		int cur = 0;
+		ListNode head;
+		ListNode tail;
 
-		/** Initialize your data structure here. Set the size of the queue to be k. */
 		public MyCircularQueue(int k) {
-			this.size = k;
-			head = tail = null;
+			this.k = k;
 			this.cur = 0;
-
 		}
 
-		/**
-		 * Insert an element into the circular queue. Return true if the operation is
-		 * successful.
-		 */
 		public boolean enQueue(int value) {
 			if (isFull()) {
 				return false;
 			}
-			Node node = new Node(value);
-			if (head == null) {
-				head = tail = node;
-				head.next = tail;
+			if (isEmpty()) {
+				head = new ListNode(value);
+				tail = head;
 				tail.next = head;
-			} else {
-				tail.next = node;
-				node.next = head;
-				tail = node;
+				cur++;
+				return true;
 			}
+			ListNode add = new ListNode(value);
+			tail.next = add;
+			add.next = head;
+			tail = add;
 			cur++;
 			return true;
 		}
 
-		/**
-		 * Delete an element from the circular queue. Return true if the operation is
-		 * successful.
-		 */
 		public boolean deQueue() {
 			if (isEmpty()) {
 				return false;
 			}
-			if (head.next == head) {
-				head = tail = null;
-			} else {
-				head = head.next;
-				tail.next = head;
+			if (head == tail) {
+				head = null;
+				tail = null;
+				cur--;
+				return true;
 			}
+			head = head.next;
+			tail.next = head;
 			cur--;
 			return true;
 		}
 
-		/** Get the front item from the queue. */
 		public int Front() {
-			if (isEmpty()) {
-				return -1;
-			}
-			return head.data;
+			return head == null ? -1 : head.val;
 		}
 
-		/** Get the last item from the queue. */
 		public int Rear() {
-			if (isEmpty()) {
-				return -1;
-			}
-			return tail.data;
+			return tail == null ? -1 : tail.val;
 		}
 
-		/** Checks whether the circular queue is empty or not. */
 		public boolean isEmpty() {
 			return cur == 0;
 		}
 
-		/** Checks whether the circular queue is full or not. */
 		public boolean isFull() {
-			return cur == size;
+			return cur == k;
 		}
 	}
 

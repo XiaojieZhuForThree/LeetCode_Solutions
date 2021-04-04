@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class Question995 {
+	class Solution {
+		public int minKBitFlips(int[] A, int K) {
+			int count = 0;
+			Queue<Integer> queue = new ArrayDeque<>();
+			for (int i = 0; i < A.length; i++) {
+				while (!queue.isEmpty() && queue.peek() + K <= i) {
+					queue.poll();
+				}
+				int flip = queue.size();
+				if (A[i] == 0 && flip % 2 == 0) {
+					if (i + K > A.length) {
+						return -1;
+					}
+					count++;
+					queue.add(i);
+
+				} else if (A[i] == 1 && flip % 2 == 1) {
+					if (i + K > A.length) {
+						return -1;
+					}
+					count++;
+					queue.add(i);
+
+				}
+
+			}
+			return count;
+		}
+	}
+}

@@ -1,37 +1,53 @@
-class Solution {
-    int ans = 0;
-    public int confusingNumberII(int N) {
-        int[] rotate = {0, 1, 6, 8, 9};
-        int[] match = {0, 1, 9, 8, 6};
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < rotate.length; i++) {
-            map.put(rotate[i], match[i]);
-        }
-        dfs(0, N, map);
-        return ans;
-    }
-    private void dfs(int i, int N, Map<Integer, Integer> map) {
-        if (isConfusing(i, map)) {
-            ans++;
-        }
-        for (int j : map.keySet()) {
-            if (j == 0 && i == 0) {
-                continue;
-            } else if ((Integer.MAX_VALUE - j) / 10 < i || i * 10 + j > N) {
-                continue;
-            } else {
-                dfs(i * 10 + j, N, map);
-            }
-        }
-    }
-    private boolean isConfusing(int i, Map<Integer, Integer> map) {
-        int rev = 0, prev = i;
-        while (i != 0) {
-            int j = i % 10;
-            rev *= 10;
-            rev += map.get(j);
-            i /= 10;
-        }
-        return rev != prev;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
+
+public class Question1088 {
+	class Solution {
+		public int confusingNumberII(int N) {
+			Map<Integer, Integer> conv = new HashMap<>();
+			conv.put(0, 0);
+			conv.put(1, 1);
+			conv.put(6, 9);
+			conv.put(8, 8);
+			conv.put(9, 6);
+			int start = 1;
+			Queue<Integer> level = new ArrayDeque<>();
+			level.offer(0);
+			int ans = 0;
+			while (start <= N) {
+				for (int i = level.size(); i > 0; i--) {
+					int base = level.poll();
+					if (start > 1 && base == 0) {
+						continue;
+					}
+					if (base >= Integer.MAX_VALUE / 10 || base * 10 > N) {
+						continue;
+					}
+					for (int j : conv.keySet()) {
+						int num = base * 10 + j;
+						if (num <= N && isValid(num, conv)) {
+							ans++;
+						}
+						level.offer(num);
+					}
+				}
+				start *= 10;
+			}
+			return ans;
+		}
+
+		private boolean isValid(Integer num, Map<Integer, Integer> conv) {
+			int rev = 0;
+			int target = num;
+			while (target > 0) {
+				rev = rev * 10 + conv.get(target % 10);
+				target /= 10;
+			}
+			return rev != num;
+		}
+	}
 }

@@ -1,0 +1,16 @@
+package com.leetcode.problems;
+
+public class Question1551 {
+	class Solution {
+		public int minOperations(int n) {
+			return getSum(n - 1);
+		}
+
+		private int getSum(int n) {
+			if (n <= 0) {
+				return 0;
+			}
+			return n + getSum(n - 2);
+		}
+	}
+}

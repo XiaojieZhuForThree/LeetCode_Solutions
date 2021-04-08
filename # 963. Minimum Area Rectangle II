@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question963 {
+	class Solution {
+		public double minAreaFreeRect(int[][] points) {
+			double ans = 40000 * 40000 + 1;
+			Arrays.sort(points, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+			for (int i = 0; i < points.length - 3; i++) {
+				for (int j = i + 1; j < points.length - 2; j++) {
+					for (int k = j + 1; k < points.length - 1; k++) {
+						for (int l = k + 1; l < points.length; l++) {
+							ans = Math.min(ans, makeRec(points, i, j, k, l));
+						}
+					}
+				}
+			}
+			return ans == 40000 * 40000 + 1 ? 0 : ans;
+		}
+
+		private double makeRec(int[][] points, int i, int j, int k, int l) {
+			int[] pointa = points[i], pointb = points[j], pointc = points[k], pointd = points[l];
+			int sqab = getSqLen(pointa, pointb);
+			int sqac = getSqLen(pointa, pointc);
+			int sqbd = getSqLen(pointb, pointd);
+			int sqcd = getSqLen(pointc, pointd);
+			int sqbc = getSqLen(pointb, pointc);
+			int sqad = getSqLen(pointa, pointd);
+			if (sqab + sqac == sqbc && sqab + sqbd == sqad && sqbd + sqcd == sqbc) {
+				return Math.sqrt(sqab) * Math.sqrt(sqac);
+			}
+			return 40000 * 40000 + 1;
+		}
+
+		private int getSqLen(int[] pointa, int[] pointb) {
+			int xdiff = pointa[0] - pointb[0], ydiff = pointa[1] - pointb[1];
+			return xdiff * xdiff + ydiff * ydiff;
+		}
+	}
+}

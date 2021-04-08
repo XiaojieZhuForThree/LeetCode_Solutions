@@ -1,0 +1,45 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question17 {
+	class Solution {
+		List<String> list = new ArrayList<>();
+
+		public List<String> letterCombinations(String digits) {
+			if (digits == null || digits.length() == 0) {
+				return list;
+			}
+			Map<Integer, Set<Character>> map = new HashMap<>();
+			map.put(2, Set.of('a', 'b', 'c'));
+			map.put(3, Set.of('d', 'e', 'f'));
+			map.put(4, Set.of('g', 'h', 'i'));
+			map.put(5, Set.of('j', 'k', 'l'));
+			map.put(6, Set.of('m', 'n', 'o'));
+			map.put(7, Set.of('p', 'q', 'r', 's'));
+			map.put(8, Set.of('t', 'u', 'v'));
+			map.put(9, Set.of('w', 'x', 'y', 'z'));
+
+			dfs(map, digits, 0, new StringBuilder());
+
+			return list;
+		}
+
+		private void dfs(Map<Integer, Set<Character>> map, String s, int pos, StringBuilder sb) {
+			if (pos >= s.length()) {
+				list.add(sb.toString());
+				return;
+			}
+			for (char c : map.get(s.charAt(pos) - '0')) {
+				sb.append(c);
+				dfs(map, s, pos + 1, sb);
+				sb.deleteCharAt(sb.length() - 1);
+			}
+			return;
+		}
+	}
+}

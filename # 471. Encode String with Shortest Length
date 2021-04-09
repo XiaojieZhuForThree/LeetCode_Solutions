@@ -41,10 +41,7 @@ public class Question471 {
 
 		private int countPattern(String s, String pattern) {
 			int count = 0;
-			for (int i = 0; i < s.length(); i += pattern.length()) {
-				if (i + pattern.length() > s.length()) {
-					return -1;
-				}
+			for (int i = 0; i + pattern.length() <= s.length(); i += pattern.length()) {
 				if (s.substring(i, i + pattern.length()).equals(pattern)) {
 					count++;
 				}

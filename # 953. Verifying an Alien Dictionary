@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question953 {
+	class Solution {
+		public boolean isAlienSorted(String[] words, String order) {
+			Map<Character, Integer> charOrder = new HashMap<>();
+			for (int i = 0; i < order.length(); i++) {
+				charOrder.put(order.charAt(i), i);
+			}
+			for (int i = 0; i < words.length - 1; i++) {
+				if (compare(words[i], words[i + 1], charOrder) > 0) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private int compare(String a, String b, Map<Character, Integer> charOrder) {
+			int i = 0, j = 0;
+			if (a.equals(b)) {
+				return 0;
+			}
+			while (i < a.length() && j < b.length()) {
+				if (a.charAt(i) == b.charAt(j)) {
+					i++;
+					j++;
+				} else {
+					return charOrder.get(a.charAt(i)) - charOrder.get(b.charAt(j));
+				}
+
+			}
+			if (i == a.length()) {
+				return -1;
+			}
+			return 1;
+		}
+	}
+}

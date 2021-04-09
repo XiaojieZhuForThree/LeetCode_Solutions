@@ -1,0 +1,56 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question471 {
+	class Solution {
+		Map<String, String> map = new HashMap<>();
+
+		public String encode(String s) {
+			if (s == null || s.length() == 0) {
+				return s;
+			}
+			if (s.length() <= 4) {
+				return s;
+			}
+			if (map.containsKey(s)) {
+				return map.get(s);
+			}
+			String ans = s;
+			for (int k = s.length() / 2; k < s.length(); k++) {
+				String pattern = s.substring(k);
+				int count = countPattern(s, pattern);
+				if (count == -1) {
+					continue;
+				}
+				String cand = count + "[" + encode(pattern) + "]";
+				if (cand.length() < ans.length()) {
+					ans = cand;
+				}
+			}
+			for (int i = 1; i < s.length(); i++) {
+				String cand = encode(s.substring(0, i)) + encode(s.substring(i));
+				if (cand.length() < ans.length()) {
+					ans = cand;
+				}
+			}
+			map.put(s, ans);
+			return ans;
+		}
+
+		private int countPattern(String s, String pattern) {
+			int count = 0;
+			for (int i = 0; i < s.length(); i += pattern.length()) {
+				if (i + pattern.length() > s.length()) {
+					return -1;
+				}
+				if (s.substring(i, i + pattern.length()).equals(pattern)) {
+					count++;
+				}
+			}
+			return count * pattern.length() == s.length() ? count : -1;
+		}
+
+	}
+}

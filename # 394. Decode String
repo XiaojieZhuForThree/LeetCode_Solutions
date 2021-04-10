@@ -3,34 +3,38 @@ package com.leetcode.problems;
 public class Question394 {
 	class Solution {
 		public String decodeString(String s) {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < s.length(); i++) {
-				char c = s.charAt(i);
-				if (Character.isDigit(c)) {
-					int j = i + 1;
-					while (j < s.length() && Character.isDigit(s.charAt(j))) {
-						j++;
-					}
-					int rep = Integer.parseInt(s.substring(i, j));
-					int m = j + 1;
-					int left = 1;
-					while (m < s.length() && left != 0) {
-						m++;
-						if (s.charAt(m) == '[') {
-							left++;
-						} else if (s.charAt(m) == ']') {
-							left--;
-						}
-					}
-					for (int k = 0; k < rep; k++) {
-						sb.append(decodeString(s.substring(j + 1, m)));
-					}
-					i = m;
-				} else {
-					sb.append(c);
-				}
+			return helper(s, 0);
+		}
+
+		private String helper(String s, int i) {
+			if (i >= s.length()) {
+				return "";
 			}
-			return sb.toString();
+			if (!Character.isDigit(s.charAt(i))) {
+				return s.charAt(i) + helper(s, i + 1);
+			} else {
+				int rep = 0;
+				while (Character.isDigit(s.charAt(i))) {
+					rep = rep * 10 + (s.charAt(i) - '0');
+					i++;
+				}
+				int j = i + 1;
+				int left = 1;
+				StringBuilder sb = new StringBuilder();
+				while (j < s.length() && left != 0) {
+					if (s.charAt(j) == '[') {
+						left++;
+					} else if (s.charAt(j) == ']') {
+						left--;
+					}
+					j++;
+				}
+				String parse = helper(s.substring(i + 1, j - 1), 0);
+				for (int k = 0; k < rep; k++) {
+					sb.append(parse);
+				}
+				return sb.toString() + helper(s, j);
+			}
 		}
 	}
 }

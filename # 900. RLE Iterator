@@ -1,0 +1,41 @@
+package com.leetcode.problems;
+
+public class Question900 {
+	class RLEIterator {
+		int[] data;
+		int counter = -1;
+		int pointer = -1;
+
+		public RLEIterator(int[] A) {
+			this.data = A;
+			if (A.length > 0) {
+				counter = A[0];
+				pointer = 1;
+			}
+		}
+
+		public int next(int n) {
+			if (counter == -1) {
+				return -1;
+			}
+			if (counter >= n) {
+				counter -= n;
+				return data[pointer];
+			}
+			int remainder = n - counter;
+			if (pointer == data.length - 1) {
+				counter = -1;
+				pointer = -1;
+			} else {
+				counter = data[pointer + 1];
+				pointer += 2;
+			}
+			return next(remainder);
+		}
+	}
+
+	/**
+	 * Your RLEIterator object will be instantiated and called as such: RLEIterator
+	 * obj = new RLEIterator(A); int param_1 = obj.next(n);
+	 */
+}

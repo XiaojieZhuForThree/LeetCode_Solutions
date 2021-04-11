@@ -1,59 +1,38 @@
-package problems;
+package com.leetcode.problems;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import com.leetcode.api.TreeNode;
 
 public class Question1302 {
-	class Solution1 {
-		public int deepestLeavesSum(TreeNode root) {
-			Deque<TreeNode> queue = new ArrayDeque<>();
-			queue.offer(root);
-			int ans = 0;
-			while (!queue.isEmpty()) {
-				ans = 0;
-				for (int i = queue.size(); i > 0; i--) {
-					TreeNode node = queue.poll();
-					ans += node.val;
-					if (node.left != null) {
-						queue.offer(node.left);
-					}
-					if (node.right != null) {
-						queue.offer(node.right);
-					}
-				}
-			}
-			return ans;
-		}
-	}
-
-	class Solution2 {
-		int level = Integer.MIN_VALUE, sum;
+	class Solution {
+		private int depth = 0, ans = 0;
 
 		public int deepestLeavesSum(TreeNode root) {
 			dfs(root, 0);
-			helper(root, 0);
-			return sum;
+			sumLeave(root, 0);
+			return ans;
 		}
 
-		private void dfs(TreeNode node, int depth) {
-			if (node == null) {
-				level = Math.max(depth - 1, level);
-				return;
-			}
-			dfs(node.left, depth + 1);
-			dfs(node.right, depth + 1);
-		}
-
-		private void helper(TreeNode node, int depth) {
+		private void dfs(TreeNode node, int cur) {
 			if (node == null) {
 				return;
 			}
-			if (depth == level) {
-				sum += node.val;
+			if (node.left == null && node.right == null) {
+				depth = Math.max(depth, cur);
+			}
+			dfs(node.left, cur + 1);
+			dfs(node.right, cur + 1);
+		}
+
+		private void sumLeave(TreeNode node, int dep) {
+			if (node == null) {
 				return;
 			}
-			helper(node.left, depth + 1);
-			helper(node.right, depth + 1);
+			if (dep == depth) {
+				ans += node.val;
+				return;
+			}
+			sumLeave(node.left, dep + 1);
+			sumLeave(node.right, dep + 1);
 		}
 	}
 }

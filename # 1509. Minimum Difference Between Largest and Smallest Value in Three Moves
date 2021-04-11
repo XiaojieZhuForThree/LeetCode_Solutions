@@ -1,19 +1,20 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.Arrays;
 
 public class Question1509 {
 	class Solution {
 		public int minDifference(int[] nums) {
-			if (nums.length < 5) {
+			if (nums == null || nums.length <= 4) {
 				return 0;
 			}
 			Arrays.sort(nums);
-			int n = nums.length;
-			int val1 = nums[n - 3] - nums[1], val2 = nums[n - 2] - nums[2];
-			int val3 = nums[n - 4] - nums[0], val4 = nums[n - 1] - nums[3];
-			int ans1 = Math.min(val1, val2), ans2 = Math.min(val3, val4);
-			return Math.min(ans1, ans2);
+			int ans = Integer.MAX_VALUE;
+			int ptr1 = 0, ptr2 = nums.length - 4;
+			for (int i = 0; i <= 3; i++) {
+				ans = Math.min(ans, nums[ptr2 + i] - nums[ptr1 + i]);
+			}
+			return ans;
 		}
 	}
 }

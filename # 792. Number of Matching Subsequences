@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
+
+public class Question792 {
+	class Solution {
+		public int numMatchingSubseq(String s, String[] words) {
+			Map<Character, TreeSet<Integer>> map = new HashMap<>();
+			for (int i = 0; i < s.length(); i++) {
+				map.putIfAbsent(s.charAt(i), new TreeSet<>());
+				map.get(s.charAt(i)).add(i);
+			}
+			int i = 0;
+			for (String word : words) {
+				if (isSubsequence(word, map)) {
+					i++;
+				}
+			}
+			return i;
+		}
+
+		private boolean isSubsequence(String word, Map<Character, TreeSet<Integer>> map) {
+			int bound = -1;
+			for (Character c : word.toCharArray()) {
+				if (!map.containsKey(c)) {
+					return false;
+				}
+				TreeSet<Integer> set = map.get(c);
+				Integer higher = set.higher(bound);
+				if (higher == null) {
+					return false;
+				}
+				bound = higher;
+			}
+			return true;
+		}
+	}
+}

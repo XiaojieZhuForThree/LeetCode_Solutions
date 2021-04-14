@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.api.ListNode;
+
+public class Question86 {
+	class Solution {
+		public ListNode partition(ListNode head, int x) {
+			List<ListNode> lower = new ArrayList<>();
+			List<ListNode> higher = new ArrayList<>();
+			ListNode dummy = head;
+			while (dummy != null) {
+				if (dummy.val < x) {
+					lower.add(dummy);
+				} else {
+					higher.add(dummy);
+				}
+				dummy = dummy.next;
+			}
+			ListNode hanger = new ListNode(-1);
+			dummy = hanger;
+			for (ListNode node : lower) {
+				dummy.next = node;
+				dummy = dummy.next;
+			}
+			for (ListNode node : higher) {
+				dummy.next = node;
+				dummy = dummy.next;
+			}
+			if (dummy != null) {
+				dummy.next = null;
+			}
+			return hanger.next;
+		}
+	}
+}

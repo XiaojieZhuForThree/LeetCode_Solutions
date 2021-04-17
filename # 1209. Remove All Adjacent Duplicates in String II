@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

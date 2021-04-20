@@ -1,21 +1,28 @@
-class Solution {
-    public int combinationSum4(int[] nums, int target) {
-        if (nums == null || nums.length == 0 || target < 0) {
-            return 0;
-        }
-        int[] dp = new int[target+1];
-        for (int i : nums) {
-            if (i <= target) {
-                dp[i] = 1;                
-            }
-        }
-        for (int i = 1; i <= target; i++) {
-            for (int j : nums) {
-                if (i - j >= 0) {
-                    dp[i] += dp[i-j];
-                }
-            }
-        }
-        return dp[target];
-    }
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question377 {
+	class Solution {
+		Map<Integer, Integer> map = new HashMap<>();
+
+		public int combinationSum4(int[] nums, int target) {
+			if (target == 0) {
+				return 1;
+			}
+			if (map.containsKey(target)) {
+				return map.get(target);
+			}
+			int ans = 0;
+			for (int i : nums) {
+				if (target < i) {
+					continue;
+				}
+				ans += combinationSum4(nums, target - i);
+			}
+			map.put(target, ans);
+			return ans;
+		}
+	}
 }

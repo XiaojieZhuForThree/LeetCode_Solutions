@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import java.util.List;
+
+public class Question120 {
+	class Solution {
+		public int minimumTotal(List<List<Integer>> triangle) {
+			for (int i = 1; i < triangle.size(); i++) {
+				for (int j = 0; j < triangle.get(i).size(); j++) {
+					int val = j < triangle.get(i - 1).size() ? triangle.get(i - 1).get(j)
+							: triangle.get(i - 1).get(j - 1);
+					if (j > 0) {
+						val = Math.min(val, triangle.get(i - 1).get(j - 1));
+					}
+					triangle.get(i).set(j, val + triangle.get(i).get(j));
+				}
+			}
+			int ans = Integer.MAX_VALUE;
+			for (int i : triangle.get(triangle.size() - 1)) {
+				ans = Math.min(ans, i);
+			}
+			return ans;
+		}
+	}
+}

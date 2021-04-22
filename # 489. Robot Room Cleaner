@@ -1,41 +1,42 @@
-/**
- * // This is the robot's control interface.
- * // You should not implement it, or speculate about its implementation
- * interface Robot {
- *     // Returns true if the cell in front is open and robot moves into the cell.
- *     // Returns false if the cell in front is blocked and robot stays in the current cell.
- *     public boolean move();
- *
- *     // Robot will stay in the same cell after calling turnLeft/turnRight.
- *     // Each turn will be 90 degrees.
- *     public void turnLeft();
- *     public void turnRight();
- *
- *     // Clean the current cell.
- *     public void clean();
- * }
- */
-class Solution {
-    int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-    public void cleanRoom(Robot robot) {
-        dfs(0, 0, 0, new HashSet<>(), robot);
-    }
-    private void dfs(int r, int c, int dir, Set<String> visited, Robot robot) {
-        String s = r + ", " + c;
-        if (!visited.contains(s)) {
-            robot.clean();
-            visited.add(s);
-            for (int i = dir; i < dir + 4; i++) {
-                if (robot.move()) {
-                    dfs(r + dirs[i % 4][0], c + dirs[i % 4][1], i % 4, visited, robot);
-                    robot.turnRight();
-                    robot.turnRight();
-                    robot.move();
-                    robot.turnLeft();
-                    robot.turnLeft();
-                }
-                robot.turnRight();
-            }
-        }
-    }
+package com.leetcode.problems;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.leetcode.api.Robot;
+
+public class Question489 {
+	class Solution {
+		int[][] dirs = new int[][] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
+		Set<String> set = new HashSet<>();
+
+		public void cleanRoom(Robot robot) {
+			dfs(robot, 0, 0, 0);
+		}
+
+		private void dfs(Robot robot, int i, int j, int dir) {
+			if (!set.add(makeKey(i, j, dir))) {
+				return;
+			}
+			robot.clean();
+			for (int k = 0; k < 4; k++) {
+				if (robot.move()) {
+					int index = (dir + k) % 4;
+					int[] next = dirs[index];
+					dfs(robot, i + next[0], j + next[1], index);
+					robot.turnRight();
+					robot.turnRight();
+					robot.move();
+					robot.turnLeft();
+					robot.turnLeft();
+				}
+				robot.turnRight();
+			}
+			return;
+		}
+
+		private String makeKey(int i, int j, int dir) {
+			return i + ", " + j + ", " + dir;
+		}
+	}
 }

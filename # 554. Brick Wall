@@ -1,0 +1,37 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question554 {
+	class Solution {
+		public int leastBricks(List<List<Integer>> wall) {
+			int size = getLength(wall.get(0));
+			Map<Integer, Integer> slots = new HashMap<>();
+			for (List<Integer> layer : wall) {
+				int slot = 0;
+				for (int i : layer) {
+					slot += i;
+					if (slot == size) {
+						continue;
+					}
+					slots.put(slot, slots.getOrDefault(slot, 0) + 1);
+				}
+			}
+			int ans = wall.size();
+			for (int i : slots.keySet()) {
+				ans = Math.min(ans, wall.size() - slots.get(i));
+			}
+			return ans;
+		}
+
+		private int getLength(List<Integer> layer) {
+			int ans = 0;
+			for (int i : layer) {
+				ans += i;
+			}
+			return ans;
+		}
+	}
+}

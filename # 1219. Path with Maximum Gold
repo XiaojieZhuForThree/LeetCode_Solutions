@@ -1,34 +1,36 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question1219 {
 	class Solution {
+		int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
 		public int getMaximumGold(int[][] grid) {
-			int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 			int ans = 0;
 			for (int i = 0; i < grid.length; i++) {
 				for (int j = 0; j < grid[0].length; j++) {
-					if (grid[i][j] != 0) {
-						ans = Math.max(ans, dfs(grid, i, j, dirs, 0));
+					if (grid[i][j] > 0) {
+						ans = Math.max(ans, dfs(grid, i, j));
 					}
 				}
 			}
 			return ans;
 		}
 
-		private int dfs(int[][] grid, int i, int j, int[][] dirs, int curVal) {
-			if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 0) {
-				return curVal;
+		private int dfs(int[][] grid, int i, int j) {
+			if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) {
+				return 0;
 			}
-			curVal += grid[i][j];
-			int temp = grid[i][j];
+			if (grid[i][j] == 0) {
+				return 0;
+			}
+			int ans = grid[i][j];
+			int max = 0;
 			grid[i][j] = 0;
-			int ans = 0;
 			for (int[] dir : dirs) {
-				ans = Math.max(ans, dfs(grid, i + dir[0], j + dir[1], dirs, curVal));
+				max = Math.max(max, dfs(grid, i + dir[0], j + dir[1]));
 			}
-			grid[i][j] = temp;
-			return ans;
+			grid[i][j] = ans;
+			return ans + max;
 		}
 	}
 }

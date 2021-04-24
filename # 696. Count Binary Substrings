@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question696 {
+	class Solution {
+		public int countBinarySubstrings(String s) {
+			Deque<Character> ones = new ArrayDeque<>();
+			Deque<Character> zeros = new ArrayDeque<>();
+			int ans = 0;
+			char prev = '2';
+			for (char c : s.toCharArray()) {
+				if (c == '0') {
+					if (!ones.isEmpty()) {
+						ans++;
+						ones.pollLast();
+					}
+					if (prev != c) {
+						zeros.clear();
+					}
+					zeros.offerLast(c);
+				} else {
+					if (!zeros.isEmpty()) {
+						ans++;
+						zeros.pollLast();
+					}
+					if (prev != c) {
+						ones.clear();
+					}
+					ones.offerLast(c);
+				}
+				prev = c;
+			}
+			return ans;
+		}
+	}
+}

@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+public class Question48 {
+	class Solution {
+		public void rotate(int[][] matrix) {
+			int n = matrix.length;
+			rotate(matrix, 0, n - 1);
+			return;
+		}
+
+		private void rotate(int[][] matrix, int l, int r) {
+			if (l >= r) {
+				return;
+			}
+			int diff = r - l;
+			for (int i = 0; i < diff; i++) {
+				int val1 = matrix[l][l + i], val2 = matrix[l + i][r];
+				int val3 = matrix[r][r - i], val4 = matrix[r - i][l];
+				matrix[l + i][r] = val1;
+				matrix[r][r - i] = val2;
+				matrix[r - i][l] = val3;
+				matrix[l][l + i] = val4;
+			}
+			rotate(matrix, l + 1, r - 1);
+		}
+	}
+}

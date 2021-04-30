@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Question970 {
+	class Solution {
+		public List<Integer> powerfulIntegers(int x, int y, int bound) {
+			List<Integer> xpower = new ArrayList<>(), ypower = new ArrayList<>();
+			int xp = 1, yp = 1;
+			while (xp <= bound) {
+				xpower.add(xp);
+				if (x == 1) {
+					break;
+				}
+				xp *= x;
+			}
+			while (yp <= bound) {
+				ypower.add(yp);
+				if (y == 1) {
+					break;
+				}
+				yp *= y;
+			}
+			Set<Integer> ans = new HashSet<>();
+			for (int i : xpower) {
+				for (int j : ypower) {
+					if (i + j <= bound) {
+						ans.add(i + j);
+					}
+				}
+			}
+			return new ArrayList<>(ans);
+		}
+	}
+}

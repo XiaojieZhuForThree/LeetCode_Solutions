@@ -1,0 +1,64 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Question1548 {
+	class Solution {
+		List<List<Integer>> graph = new ArrayList<>();
+		int[][] visited;
+		int[][] dp;
+
+		public List<Integer> mostSimilar(int n, int[][] roads, String[] names, String[] targetPath) {
+			dp = new int[n][targetPath.length];
+			visited = new int[n][targetPath.length];
+			for (int[] i : visited) {
+				Arrays.fill(i, -1);
+			}
+			for (int i = 0; i < n; i++) {
+				graph.add(new ArrayList<>());
+			}
+			for (int[] road : roads) {
+				graph.get(road[0]).add(road[1]);
+				graph.get(road[1]).add(road[0]);
+			}
+			int min = Integer.MAX_VALUE;
+			int start = 0;
+			for (int i = 0; i < n; i++) {
+				int dis = dfs(i, 0, names, targetPath);
+				if (dis < min) {
+					min = dis;
+					start = i;
+				}
+			}
+			List<Integer> ans = new ArrayList<>();
+			while (ans.size() < targetPath.length) {
+				ans.add(start);
+				start = dp[start][ans.size() - 1];
+			}
+			return ans;
+		}
+
+		private int dfs(int index, int cur, String[] names, String[] targetPath) {
+			if (visited[index][cur] != -1) {
+				return visited[index][cur];
+			}
+			int dis = (names[index].equals(targetPath[cur])) ? 0 : 1;
+			if (cur == targetPath.length - 1) {
+				return dis;
+			}
+			int min = Integer.MAX_VALUE;
+			for (int next : graph.get(index)) {
+				int nextCost = dfs(next, cur + 1, names, targetPath);
+				if (nextCost < min) {
+					min = nextCost;
+					dp[index][cur] = next;
+				}
+			}
+			dis += min;
+			visited[index][cur] = dis;
+			return dis;
+		}
+	}
+}

@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question745 {
+	class WordFilter {
+		Map<String, Integer> map;
+
+		public WordFilter(String[] words) {
+			this.map = new HashMap<>();
+			for (int k = 0; k < words.length; k++) {
+				String word = words[k];
+				for (int i = 1; i <= word.length(); i++) {
+					String pref = word.substring(0, i);
+					for (int j = 0; j < word.length(); j++) {
+						String suff = word.substring(j);
+						String key = pref + ", " + suff;
+						map.put(key, k);
+					}
+				}
+			}
+		}
+
+		public int f(String prefix, String suffix) {
+			String key = prefix + ", " + suffix;
+			if (map.containsKey(key)) {
+				return map.get(key);
+			}
+			return -1;
+		}
+	}
+
+	/**
+	 * Your WordFilter object will be instantiated and called as such: WordFilter
+	 * obj = new WordFilter(words); int param_1 = obj.f(prefix,suffix);
+	 */
+}

@@ -3,7 +3,7 @@ package com.leetcode.problems;
 import java.util.Arrays;
 
 public class Question354 {
-	class Solution {
+	class Solution1 {
 		public int maxEnvelopes(int[][] envelopes) {
 			Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
 			int[] dp = new int[envelopes.length];
@@ -16,6 +16,25 @@ public class Question354 {
 					}
 				}
 				ans = Math.max(ans, dp[i]);
+			}
+			return ans;
+		}
+	}
+
+	class Solution2 {
+		public int maxEnvelopes(int[][] envelopes) {
+			Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+			int[] dp = new int[envelopes.length];
+			int ans = 0;
+			for (int[] env : envelopes) {
+				int index = Arrays.binarySearch(dp, 0, ans, env[1]);
+				if (index < 0) {
+					index = -(index + 1);
+				}
+				dp[index] = env[1];
+				if (index == ans) {
+					ans++;
+				}
 			}
 			return ans;
 		}

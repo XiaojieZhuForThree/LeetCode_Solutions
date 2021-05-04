@@ -1,0 +1,31 @@
+package com.leetcode.problems;
+
+public class Question665 {
+	class Solution {
+		public boolean checkPossibility(int[] nums) {
+			boolean changed = false;
+
+			for (int i = 1; i < nums.length; i++) {
+				if (nums[i] >= nums[i - 1]) {
+					continue;
+				} else if (changed) {
+					return false;
+				} else {
+					if (i - 2 >= 0) {
+						if (nums[i] >= nums[i - 2]) {
+							nums[i - 1] = nums[i - 2];
+							changed = true;
+						} else {
+							nums[i] = nums[i - 1];
+							changed = true;
+						}
+					} else {
+						nums[i - 1] = Integer.MIN_VALUE;
+						changed = true;
+					}
+				}
+			}
+			return true;
+		}
+	}
+}

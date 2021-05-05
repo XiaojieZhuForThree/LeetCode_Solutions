@@ -1,14 +1,33 @@
-class Solution {
-    public int jump(int[] nums) {
-        int[] anss = new int[nums.length];
-        Arrays.fill(anss, Integer.MAX_VALUE);
-        anss[0] = 0;
-        int remaining = nums[0];
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i+1; j <= Math.min(i + nums[i], nums.length-1); j++){
-                anss[j] = Math.min(anss[j], anss[i] + 1);
-            }
-        }
-        return anss[nums.length - 1];
-    }
+package com.leetcode.problems;
+
+public class Question45 {
+	class Solution {
+		public int jump(int[] nums) {
+			if (nums.length == 1) {
+				return 0;
+			}
+			return dfs(nums, 0, new int[nums.length], new boolean[nums.length]);
+		}
+
+		private int dfs(int[] nums, int index, int[] dp, boolean[] visited) {
+			if (index >= nums.length - 1) {
+				return 0;
+			}
+			if (visited[index]) {
+				return dp[index];
+			}
+			if (nums[index] == 0) {
+				visited[index] = true;
+				dp[index] = 1000;
+				return 1000;
+			}
+			int ans = 1000;
+			for (int i = 1; i <= nums[index]; i++) {
+				ans = Math.min(ans, dfs(nums, index + i, dp, visited));
+			}
+			visited[index] = true;
+			dp[index] = 1 + ans;
+			return dp[index];
+		}
+	}
 }

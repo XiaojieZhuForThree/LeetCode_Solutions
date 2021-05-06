@@ -1,0 +1,34 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.api.ListNode;
+import com.leetcode.api.TreeNode;
+
+public class Question109 {
+	class Solution {
+		public TreeNode sortedListToBST(ListNode head) {
+			List<Integer> list = new ArrayList<>();
+			while (head != null) {
+				list.add(head.val);
+				head = head.next;
+			}
+			return recurTree(list, 0, list.size() - 1);
+		}
+
+		private TreeNode recurTree(List<Integer> list, int s, int e) {
+			if (s > e) {
+				return null;
+			}
+			if (s == e) {
+				return new TreeNode(list.get(s));
+			}
+			int mid = s + (e - s) / 2;
+			TreeNode head = new TreeNode(list.get(mid));
+			head.left = recurTree(list, s, mid - 1);
+			head.right = recurTree(list, mid + 1, e);
+			return head;
+		}
+	}
+}

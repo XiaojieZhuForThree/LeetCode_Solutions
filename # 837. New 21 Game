@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+public class Question837 {
+	class Solution {
+		public double new21Game(int N, int K, int W) {
+			if (K <= 0 || N >= K + W) {
+				return 1.0;
+			}
+			double[] dp = new double[N + 1];
+			double sum = 1, ans = 0;
+			dp[0] = 1;
+			for (int i = 1; i <= N; i++) {
+				dp[i] = sum / W;
+				if (i < K) {
+					sum += dp[i];
+				} else {
+					ans += dp[i];
+				}
+				if (i - W >= 0) {
+					sum -= dp[i - W];
+				}
+			}
+			return ans;
+		}
+	}
+}

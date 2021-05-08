@@ -90,4 +90,49 @@ public class Question843 {
 			return ans;
 		}
 	}
+
+	class Solution3 {
+		public void findSecretWord(String[] wordlist, Master master) {
+			List<String> cur = new ArrayList<>();
+			for (String s : wordlist)
+				cur.add(s);
+			int[][] records = new int[6][26];
+			for (String s : cur) {
+				for (int i = 0; i < s.length(); i++) {
+					records[i][s.charAt(i) - 'a']++;
+				}
+			}
+			for (int cnt = 0, x = 0; cnt < 10 && x < 6; cnt++) {
+				String cand = cur.get(0);
+				int weight = 0;
+				for (String s : cur) {
+					int cw = 0;
+					for (int i = 0; i < s.length(); i++) {
+						cw += records[i][s.charAt(i) - 'a'];
+					}
+					if (cw > weight) {
+						cand = s;
+						weight = cw;
+					}
+				}
+				x = master.guess(cand);
+				List<String> next = new ArrayList<>();
+				for (String s : cur) {
+					if (match(cand, s) == x)
+						next.add(s);
+				}
+				cur = next;
+			}
+			return;
+		}
+
+		private int match(String a, String b) {
+			int ans = 0;
+			for (int i = 0; i < a.length(); i++) {
+				if (a.charAt(i) == b.charAt(i))
+					ans++;
+			}
+			return ans;
+		}
+	}
 }

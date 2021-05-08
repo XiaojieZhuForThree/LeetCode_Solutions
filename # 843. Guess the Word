@@ -8,36 +8,38 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.leetcode.api.Master;
 
 public class Question843 {
-	class Solution {
-		public void findSecretWord(String[] wordlist, Master master) {
-			Random rand = ThreadLocalRandom.current();
-			List<String> list = new ArrayList<>();
-			for (String s : wordlist) {
-				list.add(s);
-			}
-			for (int i = 0; i < 10; i++) {
-				String s = list.get(rand.nextInt(list.size()));
-				int val = master.guess(s);
-				int diff = 6 - val;
-				List<String> nextList = new ArrayList<>();
-				for (String next : list) {
-					if (wordDiff(next, s) == diff) {
-						nextList.add(next);
-					}
-				}
-				list = nextList;
-			}
-			return;
-		}
 
-		private int wordDiff(String a, String b) {
-			int diff = 0;
-			for (int i = 0; i < 6; i++) {
-				if (a.charAt(i) != b.charAt(i)) {
-					diff++;
-				}
-			}
-			return diff;
-		}
+	class Solution {
+	    public void findSecretWord(String[] wordlist, Master master) {
+	        Random rand = ThreadLocalRandom.current();
+	        List<String> cur = new ArrayList<>();
+	        for (String s : wordlist) {
+	            cur.add(s);
+	        }
+	        for (int i = 0; i < 10; i++) {
+	            String cand = cur.get(rand.nextInt(cur.size()));
+	            int sim = master.guess(cand);
+	            if (sim == 6) {
+	                return;
+	            }
+	            List<String> next = new ArrayList<>();
+	            for (String s : cur) {
+	                if (!s.equals(cand) && diff(s, cand) == sim) {
+	                    next.add(s);
+	                }
+	            }
+	            cur = next;
+	        }
+	        return;
+	    }
+	    private int diff(String a, String b) {
+	        int ans = 0;
+	        for (int i = 0; i < 6; i++) {
+	            if (a.charAt(i) == b.charAt(i)) {
+	                ans++;
+	            }
+	        }
+	        return ans;
+	    }
 	}
 }

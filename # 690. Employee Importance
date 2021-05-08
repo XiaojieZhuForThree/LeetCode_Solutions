@@ -10,21 +10,17 @@ public class Question690 {
 	class Solution {
 		public int getImportance(List<Employee> employees, int id) {
 			Map<Integer, Employee> map = new HashMap<>();
-			for (Employee emp : employees) {
+			for (Employee emp : employees)
 				map.put(emp.id, emp);
-			}
-			return dfs(map.get(id), map);
+			return dfs(map, id);
 		}
 
-		private int dfs(Employee sub, Map<Integer, Employee> map) {
-			if (sub.subordinates == null || sub.subordinates.isEmpty()) {
-				return sub.importance;
+		private int dfs(Map<Integer, Employee> map, int id) {
+			int imp = map.get(id).importance;
+			for (int sub : map.get(id).subordinates) {
+				imp += dfs(map, sub);
 			}
-			int ans = sub.importance;
-			for (int s : sub.subordinates) {
-				ans += dfs(map.get(s), map);
-			}
-			return ans;
+			return imp;
 		}
 	}
 }

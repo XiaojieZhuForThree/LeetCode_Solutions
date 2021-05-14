@@ -1,0 +1,30 @@
+package com.leetcode.problems;
+
+import com.leetcode.model.TreeNode;
+
+public class Question114 {
+	class Solution {
+	    public void flatten(TreeNode root) {
+	        rec(root);
+	        return;
+	    }
+	    private TreeNode rec(TreeNode node) {
+	        if (node == null) {
+	            return node;
+	        }
+	        TreeNode left = rec(node.left), right = rec(node.right);
+	        node.left = null;
+	        if (left == null) {
+	            node.right = right;
+	            return node;
+	        }
+	        TreeNode dummy = left;
+	        while (dummy.right != null) {
+	            dummy = dummy.right;
+	        }
+	        dummy.right = right;
+	        node.right = left;
+	        return node;
+	    }
+	}
+}

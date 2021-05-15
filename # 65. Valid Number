@@ -1,104 +1,36 @@
-class Solution {
-    public boolean isNumber(String s) {
-        boolean canBeSign = true, hasEpsilon = false, hasDecimalPoint = false, hasNumber = false, hasEpsilonNumber = false;
-        char[] charArray = s.trim().toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            char c = charArray[i];
-            switch (c) {
-                case '+':
-                case '-':
-                    if (!canBeSign) {
-                        return false;
-                    }
-                    canBeSign = false;
-                    break;
+package com.leetcode.problems;
 
-                case '.':
-                    if (hasDecimalPoint || hasEpsilon) {
-                        return false;
-                    }
-                    hasDecimalPoint = true;
-                    canBeSign = false;
-                    break;
-
-                case 'e':
-                    if (hasEpsilon || !hasNumber) {
-                        return false;
-                    }
-                    hasEpsilon = canBeSign = true;
-                    break;
-
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    if (hasEpsilon) {
-                        hasEpsilonNumber = true;
-                    } else {
-                        hasNumber = true;
-                    }
-                    canBeSign = false;
-                    break;
-
-                default:
-                    return false;
-            }
-        }
-
-        if (hasEpsilon && !hasEpsilonNumber || !hasNumber) {
-            return false;
-        }
-
-        return true;
-    }
-}
-
-
-class Solution {
-    public boolean isNumber(String s) {
-        boolean signs = true;
-        boolean hasE = false, hasEnum = false, hasDesP = false, hasNum = false;
-        for (char i : s.trim().toCharArray()) {
-            if (i == '+' || i == '-') {
-                if (!signs){
-                    return false;
-                } else {
-                    signs = false;
-                }
-            } else if (i == 'e') {
-                if (hasE || !hasNum) {
-                    return false;
-                } else {
-                    hasE = true;
-                    signs = true;
-                }
-            } else if (i == '.') {
-                if (hasDesP || hasE) {
-                    return false;
-                } else {
-                    hasDesP = true;
-                    signs = false;
-                }
-            } else if ('0' <= i && i <= '9') {
-                if (hasE) {
-                    hasEnum = true;
-                } else {
-                    hasNum = true;
-                }
-                signs = false;
-            } else {
-                return false;
-            }
-        }
-        if (hasE && !hasEnum || !hasNum) {
-            return false;
-        }
-        return true;
-    }
+public class Question65 {
+	class Solution {
+		public boolean isNumber(String S) {
+			boolean num = false, exp = false, sign = false, dec = false;
+			for (int i = 0; i < S.length(); i++) {
+				char c = S.charAt(i);
+				if (c >= '0' && c <= '9')
+					num = true;
+				else if (c == 'e' || c == 'E')
+					if (exp || !num)
+						return false;
+					else {
+						exp = true;
+						sign = false;
+						num = false;
+						dec = false;
+					}
+				else if (c == '+' || c == '-')
+					if (sign || num || dec)
+						return false;
+					else
+						sign = true;
+				else if (c == '.')
+					if (dec || exp)
+						return false;
+					else
+						dec = true;
+				else
+					return false;
+			}
+			return num;
+		}
+	}
 }

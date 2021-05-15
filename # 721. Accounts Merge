@@ -1,59 +1,57 @@
 package com.leetcode.problems;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 public class Question721 {
 	class Solution {
 		public List<List<String>> accountsMerge(List<List<String>> accounts) {
-			int[] parents = new int[accounts.size()];
+			int[] pars = new int[accounts.size()];
+
+			Map<Integer, String> map = new HashMap<>();
+			Map<String, Integer> records = new HashMap<>();
+			Map<Integer, List<String>> groups = new HashMap<>();
+
+			List<List<String>> ans = new ArrayList<>();
+			for (int i = 0; i < pars.length; i++)
+				pars[i] = i;
 			for (int i = 0; i < accounts.size(); i++) {
-				parents[i] = i;
-			}
-			Map<String, Integer> owners = new HashMap<>();
-			for (int i = 0; i < accounts.size(); i++) {
-				for (int j = 1; j < accounts.get(i).size(); j++) {
-					String email = accounts.get(i).get(j);
-					if (owners.containsKey(email)) {
-						int person = owners.get(email);
-						int p1 = findParent(parents, i);
-						int p2 = findParent(parents, person);
-						if (p1 != p2) {
-							parents[p2] = p1;
-						}
+				List<String> acc = accounts.get(i);
+				map.put(i, acc.get(0));
+				for (int j = 1; j < acc.size(); j++) {
+					String em = acc.get(j);
+					if (records.containsKey(em)) {
+						int par1 = getPar(pars, i), par2 = getPar(pars, records.get(em));
+						pars[par1] = par2;
 					} else {
-						owners.put(email, i);
+						records.put(em, i);
 					}
 				}
 			}
 
-			Map<Integer, TreeSet<String>> users = new HashMap<>();
-			for (int i = 0; i < accounts.size(); i++) {
-				int parent = findParent(parents, i);
-				List<String> emails = accounts.get(i);
-				users.putIfAbsent(parent, new TreeSet<String>());
-				users.get(parent).addAll(emails.subList(1, emails.size()));
+			for (String record : records.keySet()) {
+				int ppl = getPar(pars, records.get(record));
+				groups.putIfAbsent(ppl, new ArrayList<>());
+				groups.get(ppl).add(record);
 			}
-
-			List<List<String>> res = new ArrayList<List<String>>();
-			for (Integer idx : users.keySet()) {
-				String name = accounts.get(idx).get(0);
-				ArrayList<String> emails = new ArrayList<>(users.get(idx));
-				emails.add(0, name);
-				res.add(emails);
+			for (int ppl : groups.keySet()) {
+				List<String> list = new ArrayList<>();
+				list.add(map.get(ppl));
+				Collections.sort(groups.get(ppl));
+				list.addAll(groups.get(ppl));
+				ans.add(list);
 			}
-			return res;
+			return ans;
 		}
 
-		private int findParent(int[] parents, int idx) {
-			while (idx != parents[idx]) {
-				parents[idx] = parents[parents[idx]];
-				idx = parents[idx];
+		private int getPar(int[] pars, int i) {
+			if (pars[i] != i) {
+				pars[i] = getPar(pars, pars[i]);
 			}
-			return idx;
+			return pars[i];
 		}
 	}
 }

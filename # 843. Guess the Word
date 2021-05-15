@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.leetcode.api.Master;
+import com.leetcode.model.Master;
 
 public class Question843 {
 
@@ -92,47 +92,49 @@ public class Question843 {
 	}
 
 	class Solution3 {
-		public void findSecretWord(String[] wordlist, Master master) {
-			List<String> cur = new ArrayList<>();
-			for (String s : wordlist)
-				cur.add(s);
-			int[][] records = new int[6][26];
-			for (String s : cur) {
-				for (int i = 0; i < s.length(); i++) {
-					records[i][s.charAt(i) - 'a']++;
-				}
-			}
-			for (int cnt = 0, x = 0; cnt < 10 && x < 6; cnt++) {
-				String cand = cur.get(0);
-				int weight = 0;
-				for (String s : cur) {
-					int cw = 0;
-					for (int i = 0; i < s.length(); i++) {
-						cw += records[i][s.charAt(i) - 'a'];
-					}
-					if (cw > weight) {
-						cand = s;
-						weight = cw;
-					}
-				}
-				x = master.guess(cand);
-				List<String> next = new ArrayList<>();
-				for (String s : cur) {
-					if (match(cand, s) == x)
-						next.add(s);
-				}
-				cur = next;
-			}
-			return;
-		}
-
-		private int match(String a, String b) {
-			int ans = 0;
-			for (int i = 0; i < a.length(); i++) {
-				if (a.charAt(i) == b.charAt(i))
-					ans++;
-			}
-			return ans;
-		}
+	    public void findSecretWord(String[] wordlist, Master master) {
+	        List<String> list = new ArrayList<>();
+	        int[][] weights = new int[26][6];
+	        for (String s : wordlist) {
+	            for (int i = 0; i < s.length(); i++) {
+	                weights[s.charAt(i) - 'a'][i]++;
+	            }
+	            list.add(s);
+	        }
+	        for (int i = 0; i < 10; i++) {
+	            int weight = 0;
+	            String cand = "";
+	            for (String s : list) {
+	                int cur = 0;
+	                for (int j = 0; j < s.length(); j++) {
+	                    cur += weights[s.charAt(j) - 'a'][j];
+	                }
+	                if (cur > weight) {
+	                    weight = cur;
+	                    cand = s;
+	                }
+	            }
+	            int same = master.guess(cand);
+	            if (same == 6) {
+	                return;
+	            }
+	            List<String> next = new ArrayList<>();
+	            for (String s : list) {
+	                if (getSame(s, cand) == same) {
+	                    next.add(s);
+	                }
+	            }
+	            list = next;
+	        }
+	        return;
+	    }
+	    
+	    private int getSame(String a, String b) {
+	        int ans = 0;
+	        for (int i = 0; i < a.length(); i++) {
+	            if (a.charAt(i) == b.charAt(i)) ans++;
+	        }
+	        return ans;
+	    }
 	}
 }

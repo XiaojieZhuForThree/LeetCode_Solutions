@@ -9,7 +9,7 @@ public class Question359 {
 
 		/** Initialize your data structure here. */
 		public Logger() {
-			records = new HashMap<>();
+			this.records = new HashMap<>();
 		}
 
 		/**
@@ -18,14 +18,10 @@ public class Question359 {
 		 * be printed. The timestamp is in seconds granularity.
 		 */
 		public boolean shouldPrintMessage(int timestamp, String message) {
-			if (!records.containsKey(message)) {
-				records.put(message, timestamp + 10);
-				return true;
-			}
-			if (timestamp < records.get(message)) {
+			if (records.containsKey(message) && records.get(message) + 10 > timestamp) {
 				return false;
 			}
-			records.put(message, timestamp + 10);
+			records.put(message, timestamp);
 			return true;
 		}
 	}

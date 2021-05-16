@@ -8,24 +8,21 @@ public class Question968 {
 
 		public int minCameraCover(TreeNode root) {
 			int status = dfs(root);
-			if (status == 1) {
+			if (status == 1)
 				ans++;
-			}
 			return ans;
 		}
 
 		private int dfs(TreeNode node) {
-			if (node == null) {
+			if (node == null)
 				return 0;
-			}
 			int l = dfs(node.left), r = dfs(node.right);
 			if (l == 1 || r == 1) {
 				ans++;
 				return 2;
 			}
-			if (l == 2 || r == 2) {
+			if (l == 2 || r == 2)
 				return 0;
-			}
 			return 1;
 		}
 	}

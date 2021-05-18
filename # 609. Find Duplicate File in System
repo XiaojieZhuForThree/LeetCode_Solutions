@@ -1,0 +1,40 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question609 {
+	class Solution {
+		public List<List<String>> findDuplicate(String[] paths) {
+			Map<String, List<String>> map = new HashMap<>();
+			for (String path : paths)
+				processPath(path, map);
+			return getGroups(map);
+		}
+
+		private void processPath(String path, Map<String, List<String>> map) {
+			String[] elm = path.split(" ");
+			String pre = elm[0];
+			for (int i = 1; i < elm.length; i++) {
+				String file = elm[i];
+				String[] vals = file.split("\\(");
+				String content = vals[1].substring(0, vals[1].length() - 1);
+				map.putIfAbsent(content, new ArrayList<>());
+				String fullFile = pre + "/" + vals[0];
+				map.get(content).add(fullFile);
+			}
+			return;
+		}
+
+		private List<List<String>> getGroups(Map<String, List<String>> map) {
+			List<List<String>> ans = new ArrayList<>();
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				if (entry.getValue().size() > 1)
+					ans.add(entry.getValue());
+			}
+			return ans;
+		}
+	}
+}

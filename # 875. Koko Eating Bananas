@@ -2,42 +2,29 @@ package com.leetcode.problems;
 
 public class Question875 {
 	class Solution {
-		public int minEatingSpeed(int[] piles, int H) {
-			long totalBananas = sum(piles);
-			int minimumSpeed = getMinimumSpeed(totalBananas, H);
-			int neededHour = getNeededHour(piles, minimumSpeed);
-			while (neededHour > H) {
-				neededHour = getNeededHour(piles, ++minimumSpeed);
-			}
-			return minimumSpeed;
-		}
-
-		private final int getMinimumSpeed(long totalBananas, int H) {
-			int minimumSpeed = (int) (totalBananas / H);
-			if (minimumSpeed * H < totalBananas) {
-				minimumSpeed++;
-			}
-			return minimumSpeed;
-		}
-
-		private final long sum(int[] piles) {
-			long ans = 0;
+		public int minEatingSpeed(int[] piles, int h) {
+			int min = 1, max = Integer.MIN_VALUE;
 			for (int i : piles) {
-				ans += i;
+				max = Math.max(max, i);
 			}
-			return ans;
+			while (min < max) {
+				int mid = min + (max - min) / 2;
+				if (canCover(mid, piles, h))
+					max = mid;
+				else
+					min = mid + 1;
+			}
+			return min;
 		}
 
-		private final int getNeededHour(int[] piles, int minimumSpeed) {
-			int neededHour = 0;
-			for (int pile : piles) {
-				int hour = pile / minimumSpeed;
-				if (hour * minimumSpeed < pile) {
-					hour++;
-				}
-				neededHour += hour;
+		private boolean canCover(int val, int[] piles, int h) {
+			int ans = 0;
+			for (int i : piles) {
+				ans += i / val;
+				if (i % val > 0)
+					ans++;
 			}
-			return neededHour;
+			return ans <= h;
 		}
 	}
 }

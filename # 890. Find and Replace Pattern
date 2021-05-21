@@ -1,58 +1,34 @@
-class Solution {
-    public List<String> findAndReplacePattern(String[] words, String pattern) {
-        List<String> ans = new ArrayList<>();
-        Map<Character, Character> map = new HashMap<>();
-        Set<Character> paired = new HashSet<>();
-        for (String word : words) {
-            if (word.length() != pattern.length()) {
-                continue;
-            }
-            map.clear();
-            paired.clear();
-            boolean isMatch = true;
-            for (int i = 0; i < word.length(); i++) {
-                char pat = pattern.charAt(i), ref = word.charAt(i);
-                if (map.containsKey(pat)) {
-                    if (map.get(pat) != ref) {
-                        isMatch = false;
-                        break;
-                    }
-                } else if (paired.contains(ref)){
-                    isMatch = false;
-                    break;
-                } else {
-                    map.put(pat, ref);
-                    paired.add(ref);
-                }
-            }
-            if (isMatch) {
-                ans.add(word);
-            }
-        }
-        return ans;
-    }
-}
+package com.leetcode.problems;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+public class Question890 {
+	class Solution {
+		public List<String> findAndReplacePattern(String[] words, String pattern) {
+			List<String> ans = new ArrayList<>();
+			for (String s : words) {
+				if (canMatch(s, pattern))
+					ans.add(s);
+			}
+			return ans;
+		}
 
-class Solution {
-    public List<String> findAndReplacePattern(String[] words, String pattern) {
-        int[] form = normalize(pattern);
-        List<String> ans = new ArrayList<>();
-        for (String word : words) {
-            if (Arrays.equals(normalize(word), form)) {
-                ans.add(word);
-            }
-        }
-        return ans;
-    }
-    public int[] normalize(String word) {
-        Map<Character, Integer> map = new HashMap<>();
-        int[] ans = new int[word.length()];
-        for (int i = 0; i < word.length(); i++) {
-            map.putIfAbsent(word.charAt(i), map.size());
-            ans[i] = map.get(word.charAt(i));
-        }
-        return ans;
-    }
+		private boolean canMatch(String a, String b) {
+			int[] refA = new int[26], refB = new int[26];
+			Arrays.fill(refA, -1);
+			Arrays.fill(refB, -1);
+			for (int i = 0; i < a.length(); i++) {
+				int val1 = a.charAt(i) - 'a', val2 = b.charAt(i) - 'a';
+				if (refA[val1] == -1 && refB[val2] == -1) {
+					refA[val1] = val2;
+					refB[val2] = val1;
+				} else if (refA[val1] != val2 || refB[val2] != val1) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 }

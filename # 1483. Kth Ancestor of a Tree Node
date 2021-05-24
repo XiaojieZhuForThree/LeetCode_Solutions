@@ -1,0 +1,57 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question1483 {
+	class TreeAncestor {
+		Map<Integer, List<Integer>> children;
+		int[][] dp;
+
+		public TreeAncestor(int n, int[] parent) {
+			dp = new int[n][30];
+			children = new HashMap<>();
+			for (int[] row : dp)
+				Arrays.fill(row, -1);
+			for (int i = 0; i < n; i++) {
+				int curNode = i;
+				int parentNode = parent[i];
+				children.putIfAbsent(parentNode, new ArrayList<>());
+				children.get(parentNode).add(curNode);
+				if (i > 0)
+					dp[curNode][0] = parentNode;
+			}
+			dfs(0);
+		}
+
+		private void dfs(int cur) {
+			for (int i = 1; dp[cur][i - 1] != -1; i++) {
+				int nextNode = dp[cur][i - 1];
+				dp[cur][i] = dp[nextNode][i - 1];
+			}
+			for (int child : children.getOrDefault(cur, new ArrayList<>()))
+				dfs(child);
+		}
+
+		public int getKthAncestor(int node, int k) {
+			for (int i = 0; k > 0; i++) {
+				if (k % 2 == 1) {
+					if (dp[node][i] == -1)
+						return -1;
+					node = dp[node][i];
+				}
+				k /= 2;
+			}
+			return node;
+		}
+	}
+
+	/**
+	 * Your TreeAncestor object will be instantiated and called as such:
+	 * TreeAncestor obj = new TreeAncestor(n, parent); int param_1 =
+	 * obj.getKthAncestor(node,k);
+	 */
+}

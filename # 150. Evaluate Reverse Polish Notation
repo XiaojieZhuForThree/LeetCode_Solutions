@@ -1,58 +1,34 @@
-class Solution {
-    public int evalRPN(String[] tokens) {
-        int[] list = new int[tokens.length / 2 + 1];
-        int index = 0;
-        for (String token : tokens){
-            switch(token){
-                case "+":
-                    list[index - 2] += list[index - 1];
-                    index--;
-                    break;
-                case "-":
-                    list[index - 2] -= list[index - 1];
-                    index--;
-                    break; 
-                case "*":
-                    list[index - 2] *= list[index - 1];
-                    index--;
-                    break;   
-                case "/":
-                    list[index - 2] /= list[index - 1];
-                    index--;
-                    break;
-                default:
-                    list[index++] = Integer.parseInt(token);
-            }
-        }
-        return list[0];
-    }
-}
+package com.leetcode.problems;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-class Solution {
-    public int evalRPN(String[] tokens) {
-        Stack<Integer> stack = new Stack<>();
-        for (String i : tokens) {
-            if (i.equals("+")) {
-                int a = stack.pop();
-                int b = stack.pop();
-                stack.push(a+b);
-            } else if (i.equals("-")) {
-                int a = stack.pop();
-                int b = stack.pop();
-                stack.push(b-a);                
-            } else if (i.equals("*")) {
-                int a = stack.pop();
-                int b = stack.pop();
-                stack.push(a*b);                
-            } else if (i.equals("/")) {
-                int a = stack.pop();
-                int b = stack.pop();
-                stack.push(b/a);                
-            } else {
-                stack.push(Integer.valueOf(i));
-            }
-        }
-        return stack.pop();
-    }
+public class Question150 {
+	class Solution {
+		public int evalRPN(String[] tokens) {
+			Deque<Integer> stack = new ArrayDeque<>();
+			for (String s : tokens) {
+				if (s.equals("+")) {
+					int val1 = stack.pollLast();
+					int val2 = stack.pollLast();
+					stack.offerLast(val2 + val1);
+				} else if (s.equals("-")) {
+					int val1 = stack.pollLast();
+					int val2 = stack.pollLast();
+					stack.offerLast(val2 - val1);
+				} else if (s.equals("*")) {
+					int val1 = stack.pollLast();
+					int val2 = stack.pollLast();
+					stack.offerLast(val2 * val1);
+				} else if (s.equals("/")) {
+					int val1 = stack.pollLast();
+					int val2 = stack.pollLast();
+					stack.offerLast(val2 / val1);
+				} else {
+					stack.offerLast(Integer.parseInt(s));
+				}
+			}
+			return stack.pollLast();
+		}
+	}
 }

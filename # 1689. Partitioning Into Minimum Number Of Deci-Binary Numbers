@@ -1,0 +1,12 @@
+package com.leetcode.problems;
+
+public class Question1689 {
+	class Solution {
+		public int minPartitions(String n) {
+			int i = 0;
+			for (char c : n.toCharArray())
+				i = Math.max(i, c - '0');
+			return i;
+		}
+	}
+}

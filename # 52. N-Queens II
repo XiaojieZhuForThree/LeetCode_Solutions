@@ -1,38 +1,38 @@
-class Solution {
-	int ans = 0;
-	private void helper(int n, int i, int size, Set<Integer> no) {
-		for (int j = 0; j < n; j++) {
-			if (!no.contains(i*10 + j)) {
-				size ++;
-				if (size == n) {
-					ans++;
-					size--;
-					return;
-				} else {
-					Set<Integer> next = new HashSet<>(no);
-					for (int m = i + 1; m < n; m++) {
-						next.add(m*10 + j);
-					}
-					int k = j - 1, x = j + 1, l = i + 1, y = i + 1;
-					while (k >= 0 && l < n) {
-						next.add(l*10 + k);
-						k--;
-						l++;
-					}
-					while (x < n && y < n) {
-						next.add(y*10 + x);
-						x++;
-						y++;
-					}
-					helper(n, i + 1, size, next);
-					size--;
-				}
-			}
-		}
-	}
+package com.leetcode.problems;
 
-	public int totalNQueens(int n) {
-		helper(n, 0, 0, new HashSet<Integer>());
-		return ans;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question52 {
+	class Solution {
+		int ans = 0;
+		Set<Integer> col;
+		Set<Integer> upper;
+		Set<Integer> lower;
+
+		public int totalNQueens(int n) {
+			col = new HashSet<>();
+			upper = new HashSet<>();
+			lower = new HashSet<>();
+			dfs(0, n);
+			return ans;
+		}
+
+		private void dfs(int row, int n) {
+			if (row == n)
+				ans++;
+			for (int i = 0; i < n; i++) {
+				if (col.contains(i) || upper.contains(row + i) || lower.contains(row - i))
+					continue;
+				col.add(i);
+				upper.add(row + i);
+				lower.add(row - i);
+				dfs(row + 1, n);
+				col.remove(i);
+				upper.remove(row + i);
+				lower.remove(row - i);
+			}
+			return;
+		}
 	}
 }

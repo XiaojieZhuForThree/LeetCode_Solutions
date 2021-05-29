@@ -7,31 +7,36 @@ import java.util.List;
 public class Question1610 {
 	class Solution {
 		public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
-			int ori = 0;
+			int overlap = 0;
 			List<Double> scatters = new ArrayList<>();
-			for (List<Integer> pt : points) {
-				if (pt.get(0) == location.get(0) && pt.get(1) == location.get(1)) {
-					ori++;
-				} else {
-					scatters.add(Math.atan2(pt.get(1) - location.get(1), pt.get(0) - location.get(0)));
-				}
+			for (List<Integer> ptr : points) {
+				if (overlaps(ptr, location))
+					overlap++;
+				else
+					scatters.add(getDeg(ptr, location));
 			}
 			Collections.sort(scatters);
 			int n = scatters.size();
 			for (int i = 0; i < n; i++) {
 				scatters.add(scatters.get(i) + 2 * Math.PI);
 			}
-			int ans = 0;
-			int l = 0;
-			double ang = angle * Math.PI / 180;
-			for (int r = 0; r < scatters.size(); r++) {
-				while (scatters.get(r) - scatters.get(l) > ang) {
+			int l = 0, r = 0;
+			int max = 0;
+			double ang = angle * Math.PI / 180.0;
+			for (; r < scatters.size(); r++) {
+				while (Math.abs(scatters.get(r) - scatters.get(l)) > ang)
 					l++;
-
-				}
-				ans = Math.max(ans, r - l + 1);
+				max = Math.max(max, r - l + 1);
 			}
-			return ans + ori;
+			return max + overlap;
+		}
+
+		private boolean overlaps(List<Integer> a, List<Integer> b) {
+			return a.get(0) == b.get(0) && a.get(1) == b.get(1);
+		}
+
+		private double getDeg(List<Integer> ptr, List<Integer> location) {
+			return Math.atan2(ptr.get(1) - location.get(1), ptr.get(0) - location.get(0));
 		}
 	}
 }

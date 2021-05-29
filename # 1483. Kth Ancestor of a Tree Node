@@ -8,44 +8,52 @@ import java.util.Map;
 
 public class Question1483 {
 	class TreeAncestor {
-		Map<Integer, List<Integer>> children;
+		Map<Integer, List<Integer>> pars;
 		int[][] dp;
 
 		public TreeAncestor(int n, int[] parent) {
-			dp = new int[n][30];
-			children = new HashMap<>();
+			pars = new HashMap<>();
+			int exp = 1, cur = 1;
+			while (cur <= n) {
+				cur <<= 1;
+				exp++;
+			}
+			dp = new int[n][exp];
 			for (int[] row : dp)
 				Arrays.fill(row, -1);
 			for (int i = 0; i < n; i++) {
-				int curNode = i;
-				int parentNode = parent[i];
-				children.putIfAbsent(parentNode, new ArrayList<>());
-				children.get(parentNode).add(curNode);
-				if (i > 0)
-					dp[curNode][0] = parentNode;
+				int par = parent[i];
+				if (par != -1) {
+					pars.putIfAbsent(par, new ArrayList<>());
+					pars.get(par).add(i);
+					dp[i][0] = par;
+				}
 			}
 			dfs(0);
 		}
 
 		private void dfs(int cur) {
-			for (int i = 1; dp[cur][i - 1] != -1; i++) {
-				int nextNode = dp[cur][i - 1];
-				dp[cur][i] = dp[nextNode][i - 1];
+			for (int i = 1; i < dp[0].length; i++) {
+				int prev = dp[cur][i - 1];
+				if (prev == -1)
+					break;
+				dp[cur][i] = dp[prev][i - 1];
 			}
-			for (int child : children.getOrDefault(cur, new ArrayList<>()))
-				dfs(child);
+			for (int i : pars.getOrDefault(cur, new ArrayList<>()))
+				dfs(i);
+			return;
 		}
 
 		public int getKthAncestor(int node, int k) {
-			for (int i = 0; k > 0; i++) {
-				if (k % 2 == 1) {
-					if (dp[node][i] == -1)
-						return -1;
-					node = dp[node][i];
-				}
-				k /= 2;
+			if (node == -1 || k == 0)
+				return node;
+			int cur = 1, exp = 0;
+			while (cur * 2 <= k) {
+				cur *= 2;
+				exp++;
 			}
-			return node;
+			int prev = dp[node][exp];
+			return getKthAncestor(prev, k - cur);
 		}
 	}
 

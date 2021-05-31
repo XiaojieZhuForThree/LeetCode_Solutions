@@ -1,0 +1,31 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class Question1268 {
+	class Solution {
+		public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+			Map<String, PriorityQueue<String>> map = new HashMap<>();
+			for (String prd : products) {
+				for (int i = 1; i <= prd.length(); i++) {
+					map.putIfAbsent(prd.substring(0, i), new PriorityQueue<>());
+					map.get(prd.substring(0, i)).add(prd);
+				}
+			}
+			List<List<String>> ans = new ArrayList<>();
+			for (int i = 1; i <= searchWord.length(); i++) {
+				List<String> step = new ArrayList<>();
+				PriorityQueue<String> pq = map.getOrDefault(searchWord.substring(0, i), new PriorityQueue<>());
+				for (int j = 0; j < 3 && pq.size() > 0; j++) {
+					step.add(pq.poll());
+				}
+				ans.add(step);
+			}
+			return ans;
+		}
+	}
+}

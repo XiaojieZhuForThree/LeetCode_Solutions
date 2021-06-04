@@ -1,0 +1,50 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
+public class Question752 {
+	class Solution {
+		public int openLock(String[] deadends, String target) {
+			Queue<String> queue = new ArrayDeque<>();
+			Set<String> dds = new HashSet<>();
+			for (String dd : deadends)
+				dds.add(dd);
+			if (!dds.contains("0000"))
+				queue.offer("0000");
+			char[] chars = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+			int ans = 0;
+			while (!queue.isEmpty()) {
+				for (int i = queue.size(); i > 0; i--) {
+					String s = queue.poll();
+					if (s.equals(target))
+						return ans;
+					if (dds.contains(s))
+						continue;
+					dds.add(s);
+					for (int j = 0; j < 4; j++) {
+						StringBuilder sb1 = new StringBuilder(), sb2 = new StringBuilder();
+						for (int k = 0; k < 4; k++) {
+							if (k == j) {
+								sb1.append(chars[((s.charAt(j) - '0') + 1) % 10]);
+								sb2.append(chars[((s.charAt(j) - '0') + 9) % 10]);
+							} else {
+								sb1.append(s.charAt(k));
+								sb2.append(s.charAt(k));
+							}
+						}
+						String next1 = sb1.toString(), next2 = sb2.toString();
+						if (!dds.contains(next1))
+							queue.offer(next1);
+						if (!dds.contains(next2))
+							queue.offer(next2);
+					}
+				}
+				ans++;
+			}
+			return -1;
+		}
+	}
+}

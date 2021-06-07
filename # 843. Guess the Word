@@ -11,130 +11,165 @@ import com.leetcode.model.Master;
 
 public class Question843 {
 
+	/**
+	 * // This is the Master's API interface. // You should not implement it, or
+	 * speculate about its implementation interface Master { public int guess(String
+	 * word) {} }
+	 */
 	class Solution1 {
 		public void findSecretWord(String[] wordlist, Master master) {
 			Random rand = ThreadLocalRandom.current();
-			List<String> cur = new ArrayList<>();
-			for (String s : wordlist) {
-				cur.add(s);
-			}
+			List<String> list = new ArrayList<>();
+			for (String s : wordlist)
+				list.add(s);
 			for (int i = 0; i < 10; i++) {
-				String cand = cur.get(rand.nextInt(cur.size()));
-				int sim = master.guess(cand);
-				if (sim == 6) {
+				String word = list.get(rand.nextInt(list.size()));
+				int simi = master.guess(word);
+				if (simi == 6)
 					return;
-				}
 				List<String> next = new ArrayList<>();
-				for (String s : cur) {
-					if (!s.equals(cand) && diff(s, cand) == sim) {
+				for (String s : list) {
+					if (getSimi(s, word) == simi)
 						next.add(s);
-					}
 				}
-				cur = next;
+				list = next;
 			}
 			return;
 		}
 
-		private int diff(String a, String b) {
-			int ans = 0;
-			for (int i = 0; i < 6; i++) {
-				if (a.charAt(i) == b.charAt(i)) {
-					ans++;
-				}
+		private int getSimi(String a, String b) {
+			int simi = 0;
+			for (int i = 0; i < a.length(); i++) {
+				if (a.charAt(i) == b.charAt(i))
+					simi++;
 			}
-			return ans;
+			return simi;
 		}
 	}
 
+	/**
+	 * // This is the Master's API interface. // You should not implement it, or
+	 * speculate about its implementation interface Master { public int guess(String
+	 * word) {} }
+	 */
 	class Solution2 {
 		public void findSecretWord(String[] wordlist, Master master) {
-			List<String> cur = new ArrayList<>();
-			for (String s : wordlist) {
-				cur.add(s);
-			}
-			for (int i = 0, x = 0; i < 10 && x < 6; i++) {
-				Map<String, Integer> groups = new HashMap<>();
-				for (String a : cur) {
-					for (String b : cur) {
-						if (match(a, b) == 0)
-							groups.put(a, groups.getOrDefault(a, 0) + 1);
-					}
-				}
+			int[][] weights = getWeights(wordlist);
+			List<String> list = new ArrayList<>();
+			for (String s : wordlist)
+				list.add(s);
+			for (int i = 0; i < 10; i++) {
+				int wei = 0;
 				String cand = "";
-				int val = 100;
-				for (String s : cur) {
-					if (groups.getOrDefault(s, 0) < val) {
-						val = groups.getOrDefault(s, 0);
+				for (String s : list) {
+					int candWei = getWeight(weights, s);
+					if (candWei > wei) {
+						wei = candWei;
 						cand = s;
 					}
 				}
-				x = master.guess(cand);
+				int simi = master.guess(cand);
+				if (simi == 6)
+					return;
 				List<String> next = new ArrayList<>();
-				for (String s : cur) {
-					if (match(cand, s) == x) {
+				for (String s : list) {
+					if (getSimi(s, cand) == simi)
 						next.add(s);
-					}
 				}
-				cur = next;
+				list = next;
 			}
 			return;
 		}
 
-		private int match(String a, String b) {
+		private int[][] getWeights(String[] wordlist) {
+			int[][] ans = new int[6][26];
+			for (String s : wordlist) {
+				for (int i = 0; i < 6; i++)
+					ans[i][s.charAt(i) - 'a']++;
+			}
+			return ans;
+		}
+
+		private int getWeight(int[][] weights, String s) {
 			int ans = 0;
-			for (int i = 0; i < a.length(); i++) {
-				if (a.charAt(i) == b.charAt(i)) {
+			for (int i = 0; i < 6; i++)
+				ans += weights[i][s.charAt(i) - 'a'];
+			return ans;
+		}
+
+		private int getSimi(String a, String b) {
+			int ans = 0;
+			for (int i = 0; i < 6; i++) {
+				if (a.charAt(i) == b.charAt(i))
 					ans++;
-				}
 			}
 			return ans;
 		}
 	}
 
+	/**
+	 * // This is the Master's API interface. // You should not implement it, or
+	 * speculate about its implementation interface Master { public int guess(String
+	 * word) {} }
+	 */
 	class Solution3 {
-	    public void findSecretWord(String[] wordlist, Master master) {
-	        List<String> list = new ArrayList<>();
-	        int[][] weights = new int[26][6];
-	        for (String s : wordlist) {
-	            for (int i = 0; i < s.length(); i++) {
-	                weights[s.charAt(i) - 'a'][i]++;
-	            }
-	            list.add(s);
-	        }
-	        for (int i = 0; i < 10; i++) {
-	            int weight = 0;
-	            String cand = "";
-	            for (String s : list) {
-	                int cur = 0;
-	                for (int j = 0; j < s.length(); j++) {
-	                    cur += weights[s.charAt(j) - 'a'][j];
-	                }
-	                if (cur > weight) {
-	                    weight = cur;
-	                    cand = s;
-	                }
-	            }
-	            int same = master.guess(cand);
-	            if (same == 6) {
-	                return;
-	            }
-	            List<String> next = new ArrayList<>();
-	            for (String s : list) {
-	                if (getSame(s, cand) == same) {
-	                    next.add(s);
-	                }
-	            }
-	            list = next;
-	        }
-	        return;
-	    }
-	    
-	    private int getSame(String a, String b) {
-	        int ans = 0;
-	        for (int i = 0; i < a.length(); i++) {
-	            if (a.charAt(i) == b.charAt(i)) ans++;
-	        }
-	        return ans;
-	    }
+		public void findSecretWord(String[] wordlist, Master master) {
+			int[][] weights = getWeights(wordlist);
+			Map<String, Integer> weightRef = getWeightRef(weights, wordlist);
+			List<String> list = new ArrayList<>();
+			for (String s : wordlist)
+				list.add(s);
+			for (int i = 0; i < 10; i++) {
+				int wei = 0;
+				String cand = "";
+				for (String s : list) {
+					int candWei = weightRef.get(s);
+					if (candWei > wei) {
+						wei = candWei;
+						cand = s;
+					}
+				}
+				int simi = master.guess(cand);
+				if (simi == 6)
+					return;
+				List<String> next = new ArrayList<>();
+				for (String s : list) {
+					if (getSimi(s, cand) == simi)
+						next.add(s);
+				}
+				list = next;
+			}
+			return;
+		}
+
+		private int[][] getWeights(String[] wordlist) {
+			int[][] ans = new int[6][26];
+			for (String s : wordlist) {
+				for (int i = 0; i < 6; i++)
+					ans[i][s.charAt(i) - 'a']++;
+			}
+			return ans;
+		}
+
+		private Map<String, Integer> getWeightRef(int[][] weights, String[] wordlist) {
+			Map<String, Integer> map = new HashMap<>();
+			for (String s : wordlist) {
+				int ans = 0;
+				for (int i = 0; i < 6; i++)
+					ans += weights[i][s.charAt(i) - 'a'];
+				map.put(s, ans);
+			}
+
+			return map;
+		}
+
+		private int getSimi(String a, String b) {
+			int ans = 0;
+			for (int i = 0; i < 6; i++) {
+				if (a.charAt(i) == b.charAt(i))
+					ans++;
+			}
+			return ans;
+		}
 	}
 }

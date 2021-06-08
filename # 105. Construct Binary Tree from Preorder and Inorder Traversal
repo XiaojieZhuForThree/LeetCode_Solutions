@@ -1,28 +1,27 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    private int preIndex, inIndex;
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        return reconstruct(preorder, inorder, Integer.MAX_VALUE);
-    }
-    private TreeNode reconstruct(int[] preorder, int[] inorder, int target){
-        if (preIndex >= preorder.length){
-            return null;
-        }
-        if (inorder[inIndex] == target){
-            inIndex++;
-            return null;
-        }
-        TreeNode root = new TreeNode(preorder[preIndex++]);
-        root.left = reconstruct(preorder, inorder, root.val);
-        root.right = reconstruct(preorder, inorder, target);
-        return root;
-    }
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+import com.leetcode.model.TreeNode;
+
+public class Question105 {
+	class Solution {
+		public TreeNode buildTree(int[] preorder, int[] inorder) {
+			if (preorder == null || preorder.length == 0)
+				return null;
+			if (preorder.length == 1)
+				return new TreeNode(preorder[0]);
+			TreeNode node = new TreeNode(preorder[0]);
+			int i = 0;
+			while (inorder[i] != preorder[0])
+				i++;
+			int[] leftPreorder = Arrays.copyOfRange(preorder, 1, i + 1);
+			int[] rightPreorder = Arrays.copyOfRange(preorder, i + 1, preorder.length);
+			int[] leftInorder = Arrays.copyOfRange(inorder, 0, i);
+			int[] rightInorder = Arrays.copyOfRange(inorder, i + 1, inorder.length);
+			node.left = buildTree(leftPreorder, leftInorder);
+			node.right = buildTree(rightPreorder, rightInorder);
+			return node;
+		}
+	}
 }

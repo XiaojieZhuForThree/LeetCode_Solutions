@@ -1,0 +1,51 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.PriorityQueue;
+
+public class Question1696 {
+	class Solution1 {
+		public int maxResult(int[] nums, int k) {
+			if (nums == null || nums.length == 0)
+				return 0;
+			if (k == 0)
+				return 0;
+			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> nums[b] - nums[a]);
+			for (int i = 0; i < nums.length; i++) {
+				while (!pq.isEmpty() && pq.peek() + k < i)
+					pq.poll();
+				if (pq.isEmpty())
+					pq.offer(i);
+				else {
+					nums[i] += nums[pq.peek()];
+					pq.offer(i);
+				}
+			}
+			return nums[nums.length - 1];
+		}
+	}
+
+	class Solution2 {
+		public int maxResult(int[] nums, int k) {
+			if (nums == null || nums.length == 0)
+				return 0;
+			if (k == 0)
+				return 0;
+			Deque<Integer> queue = new ArrayDeque<>();
+			for (int i = 0; i < nums.length; i++) {
+				while (!queue.isEmpty() && queue.peekFirst() + k < i)
+					queue.pollFirst();
+				if (queue.isEmpty())
+					queue.offer(i);
+				else {
+					nums[i] += nums[queue.peekFirst()];
+					while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
+						queue.pollLast();
+					queue.offerLast(i);
+				}
+			}
+			return nums[nums.length - 1];
+		}
+	}
+}

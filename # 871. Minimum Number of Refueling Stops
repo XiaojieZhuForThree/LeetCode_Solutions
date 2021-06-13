@@ -26,8 +26,9 @@ public class Question871 {
 			int ans = 0, i = 0;
 			while (startFuel < target) {
 				ans++;
-				while (i < stations.length && startFuel >= stations[i][0])
-					pq.offer(stations[i++][1]);
+				for (; i < stations.length && startFuel >= stations[i][0]; i++) {
+					pq.offer(stations[i][1]);
+				}
 				if (pq.isEmpty())
 					return -1;
 				startFuel += pq.poll();

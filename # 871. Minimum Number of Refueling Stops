@@ -22,13 +22,12 @@ public class Question871 {
 
 	class Solution2 {
 		public int minRefuelStops(int target, int startFuel, int[][] stations) {
-			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+			final PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
 			int ans = 0, i = 0;
 			while (startFuel < target) {
 				ans++;
-				for (; i < stations.length && startFuel >= stations[i][0]; i++) {
+				for (; i < stations.length && startFuel >= stations[i][0]; i++)
 					pq.offer(stations[i][1]);
-				}
 				if (pq.isEmpty())
 					return -1;
 				startFuel += pq.poll();

@@ -1,0 +1,20 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question1710 {
+	class Solution {
+		public int maximumUnits(int[][] boxTypes, int truckSize) {
+			Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+			int ans = 0;
+			for (int[] boxType : boxTypes) {
+				int count = Math.min(truckSize, boxType[0]);
+				ans += count * boxType[1];
+				truckSize -= count;
+				if (truckSize == 0)
+					break;
+			}
+			return ans;
+		}
+	}
+}

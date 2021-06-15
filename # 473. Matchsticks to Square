@@ -1,0 +1,31 @@
+package com.leetcode.problems;
+
+public class Question473 {
+	class Solution {
+		public boolean makesquare(int[] matchsticks) {
+			if (matchsticks == null || matchsticks.length < 4)
+				return false;
+			int sum = 0;
+			for (int i = 0; i < matchsticks.length; i++)
+				sum += matchsticks[i];
+			if (sum % 4 != 0)
+				return false;
+			return dfs(matchsticks, new int[4], 0, sum / 4);
+		}
+
+		private boolean dfs(int[] matchsticks, int[] sides, int index, int target) {
+			if (index == matchsticks.length) {
+				return sides[0] == sides[1] && sides[1] == sides[2] && sides[2] == sides[3];
+			}
+			for (int i = 0; i < 4; i++) {
+				if (sides[i] + matchsticks[index] > target)
+					continue;
+				sides[i] += matchsticks[index];
+				if (dfs(matchsticks, sides, index + 1, target))
+					return true;
+				sides[i] -= matchsticks[index];
+			}
+			return false;
+		}
+	}
+}

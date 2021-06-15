@@ -54,52 +54,44 @@ public class Question843 {
 	 */
 	class Solution2 {
 		public void findSecretWord(String[] wordlist, Master master) {
-			int[][] weights = getWeights(wordlist);
-			List<String> list = new ArrayList<>();
-			for (String s : wordlist)
-				list.add(s);
+			final int[][] rec = new int[26][6];
+			for (final String w : wordlist) {
+				for (int i = 0; i < w.length(); i++)
+					rec[w.charAt(i) - 'a'][i]++;
+			}
+			List<String> list = Arrays.asList(wordlist);
 			for (int i = 0; i < 10; i++) {
-				int wei = 0;
-				String cand = "";
-				for (String s : list) {
-					int candWei = getWeight(weights, s);
-					if (candWei > wei) {
-						wei = candWei;
-						cand = s;
+				int weight = 0;
+				String candidate = "";
+				for (final String s : list) {
+					int wgt = getWeight(s, rec);
+					if (wgt > weight) {
+						weight = wgt;
+						candidate = s;
 					}
 				}
-				int simi = master.guess(cand);
-				if (simi == 6)
+				final int overlap = master.guess(candidate);
+				if (overlap == 6)
 					return;
 				List<String> next = new ArrayList<>();
-				for (String s : list) {
-					if (getSimi(s, cand) == simi)
+				for (final String s : list) {
+					if (getOverlap(s, candidate) == overlap)
 						next.add(s);
 				}
 				list = next;
 			}
-			return;
 		}
 
-		private int[][] getWeights(String[] wordlist) {
-			int[][] ans = new int[6][26];
-			for (String s : wordlist) {
-				for (int i = 0; i < 6; i++)
-					ans[i][s.charAt(i) - 'a']++;
-			}
+		private int getWeight(final String s, final int[][] rec) {
+			int ans = 0;
+			for (int i = 0; i < s.length(); i++)
+				ans += rec[s.charAt(i) - 'a'][i];
 			return ans;
 		}
 
-		private int getWeight(int[][] weights, String s) {
+		private int getOverlap(final String a, final String b) {
 			int ans = 0;
-			for (int i = 0; i < 6; i++)
-				ans += weights[i][s.charAt(i) - 'a'];
-			return ans;
-		}
-
-		private int getSimi(String a, String b) {
-			int ans = 0;
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < a.length(); i++) {
 				if (a.charAt(i) == b.charAt(i))
 					ans++;
 			}

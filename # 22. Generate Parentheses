@@ -1,0 +1,44 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Question22 {
+	class Solution1 {
+		public List<String> generateParenthesis(int n) {
+			if (n <= 0)
+				return List.of();
+			if (n == 1)
+				return List.of("()");
+			List<String> last = generateParenthesis(n - 1);
+			Set<String> set = new HashSet<>();
+			for (String s : last) {
+				for (int i = 0; i <= s.length(); i++)
+					set.add("(" + s.substring(0, i) + ")" + s.substring(i));
+			}
+			return new ArrayList<>(set);
+		}
+	}
+
+	class Solution2 {
+		public List<String> generateParenthesis(int n) {
+			List<String> ans = new ArrayList<>();
+			dfs(n, n, "", ans);
+			return ans;
+		}
+
+		private void dfs(int l, int r, String cur, List<String> ans) {
+			if (l < 0 || r < 0 || l > r)
+				return;
+			if (l == 0 && r == 0) {
+				ans.add(cur);
+				return;
+			}
+			dfs(l - 1, r, cur + "(", ans);
+			dfs(l, r - 1, cur + ")", ans);
+			return;
+		}
+	}
+}

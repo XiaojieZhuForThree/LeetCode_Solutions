@@ -1,0 +1,45 @@
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+public class Question778 {
+	class Solution {
+		public int swimInWater(int[][] grid) {
+			int n = grid.length;
+			PriorityQueue<Position> pq = new PriorityQueue<>((a, b) -> Integer.compare(a.dist, b.dist));
+			boolean[][] visited = new boolean[n][n];
+			pq.add(new Position(0, 0, grid[0][0]));
+			visited[0][0] = true;
+			int[] dx = { 0, 1, 0, -1 };
+			int[] dy = { 1, 0, -1, 0 };
+			int max = Integer.MIN_VALUE;
+			while (!pq.isEmpty()) {
+				Position pos = pq.poll();
+				max = Math.max(max, pos.dist);
+				if (pos.x == n - 1 && pos.y == n - 1) {
+					return max;
+				}
+				for (int k = 0; k < 4; k++) {
+					int tx = pos.x + dx[k];
+					int ty = pos.y + dy[k];
+					if (tx >= 0 && ty >= 0 && tx < n && ty < n && !visited[tx][ty]) {
+						visited[tx][ty] = true;
+						Position newPos = new Position(tx, ty, grid[tx][ty]);
+						pq.add(newPos);
+					}
+				}
+			}
+			return -1;
+		}
+	}
+
+	class Position {
+		int x, y, dist;
+
+		public Position(int x, int y, int dist) {
+			this.x = x;
+			this.y = y;
+			this.dist = dist;
+		}
+	}
+}

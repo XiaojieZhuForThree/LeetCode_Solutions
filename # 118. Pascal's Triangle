@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question118 {
+	class Solution {
+		public List<List<Integer>> generate(int numRows) {
+			if (numRows == 0)
+				return List.of();
+			List<List<Integer>> ans = new ArrayList<>();
+			ans.add(List.of(1));
+			for (int i = 2; i <= numRows; i++) {
+				List<Integer> prev = ans.get(ans.size() - 1);
+				List<Integer> cur = new ArrayList<>();
+				for (int j = 0; j < i; j++) {
+					int l = j == 0 ? 0 : prev.get(j - 1);
+					int r = j == i - 1 ? 0 : prev.get(j);
+					cur.add(l + r);
+				}
+				ans.add(cur);
+			}
+			return ans;
+		}
+	}
+}

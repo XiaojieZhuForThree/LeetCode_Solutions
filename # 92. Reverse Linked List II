@@ -1,0 +1,43 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.model.ListNode;
+
+public class Question92 {
+	class Solution {
+		public ListNode reverseBetween(ListNode head, int left, int right) {
+			if (head == null)
+				return head;
+			List<ListNode> list = expand(head);
+			left--;
+			right--;
+			while (left < right) {
+				ListNode node = list.get(left);
+				list.set(left++, list.get(right));
+				list.set(right--, node);
+			}
+			return generate(list);
+		}
+
+		private List<ListNode> expand(ListNode node) {
+			List<ListNode> list = new ArrayList<>();
+			while (node != null) {
+				list.add(node);
+				node = node.next;
+			}
+			return list;
+		}
+
+		private ListNode generate(List<ListNode> list) {
+			ListNode head = list.get(0), node = head;
+			for (int i = 1; i < list.size(); i++) {
+				node.next = list.get(i);
+				node = node.next;
+			}
+			node.next = null;
+			return head;
+		}
+	}
+}

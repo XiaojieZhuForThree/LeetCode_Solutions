@@ -1,23 +1,29 @@
-class Solution {
-    public int candy(int[] ratings) {
-        if (ratings == null || ratings.length == 0){
-            return 0;
-        }
-        int ans = 0;
-        int[] candies = new int[ratings.length];
-        Arrays.fill(candies, 1);
-        for (int i = 1; i < ratings.length; i++) {
-            if (ratings[i] > ratings[i-1]){
-                candies[i] = candies[i-1] + 1;
-            }
-        }
-        ans += candies[ratings.length - 1];
-        for (int i = ratings.length-2; i >= 0; i--){
-            if (ratings[i] > ratings[i+1]){
-                candies[i] = Math.max(candies[i], candies[i+1] + 1);
-            }
-            ans += candies[i];
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+public class Question135 {
+	class Solution {
+		public int candy(int[] ratings) {
+			if (ratings == null || ratings.length == 0)
+				return 0;
+			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> ratings[a] - ratings[b]);
+			for (int i = 0; i < ratings.length; i++)
+				pq.offer(i);
+			int[] candies = new int[ratings.length];
+			while (!pq.isEmpty()) {
+				int i = pq.poll();
+				int val = 1;
+				if (i - 1 >= 0 && ratings[i - 1] < ratings[i])
+					val = Math.max(val, candies[i - 1] + 1);
+				if (i + 1 < ratings.length && ratings[i + 1] < ratings[i])
+					val = Math.max(val, candies[i + 1] + 1);
+				candies[i] = val;
+			}
+			int ans = 0;
+			for (int i : candies)
+				ans += i;
+			return ans;
+		}
+	}
 }

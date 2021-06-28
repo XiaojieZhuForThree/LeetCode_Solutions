@@ -1,18 +1,24 @@
-class Solution {
-    public String removeDuplicates(String S) {
-        Deque<Character> deque = new ArrayDeque();
-        for (char c : S.toCharArray()) {
-            char s = deque.isEmpty() ? ' ' : deque.peekLast();
-            if (s == c) {
-                deque.pollLast();
-            } else {
-                deque.addLast(c);
-            }
-        }
-        StringBuilder sb = new StringBuilder();
-        while (!deque.isEmpty()) {
-            sb.append(deque.pollFirst());
-        }
-        return sb.toString();
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1047 {
+	class Solution {
+		public String removeDuplicates(String s) {
+			if (s == null || s.isEmpty())
+				return s;
+			Deque<Character> stack = new ArrayDeque<>();
+			for (final char c : s.toCharArray()) {
+				if (!stack.isEmpty() && stack.peekLast() == c)
+					stack.pollLast();
+				else
+					stack.offerLast(c);
+			}
+			StringBuilder sb = new StringBuilder();
+			for (final char c : stack)
+				sb.append(c);
+			return sb.toString();
+		}
+	}
 }

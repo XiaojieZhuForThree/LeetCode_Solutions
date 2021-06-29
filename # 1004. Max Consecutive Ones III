@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question1004 {
+	class Solution {
+		public int longestOnes(int[] nums, int k) {
+			if (nums == null || nums.length == 0)
+				return 0;
+			Deque<Integer> queue = new ArrayDeque<>();
+			int cur = 0, ans = 0;
+			for (int i = 0; i < nums.length; i++) {
+				if (nums[i] == 1)
+					cur++;
+				else {
+					cur++;
+					queue.offer(i);
+					if (queue.size() > k) {
+						int left = queue.pollFirst();
+						cur = i - left;
+					}
+				}
+				ans = Math.max(cur, ans);
+			}
+			return ans;
+		}
+	}
+}

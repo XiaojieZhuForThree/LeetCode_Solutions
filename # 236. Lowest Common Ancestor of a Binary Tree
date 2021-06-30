@@ -1,25 +1,26 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null) {
-            return root;
-        }
-        if (root == p || root == q) {
-            return root;
-        }
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if (left != null && right != null) {
-            return root;
-        }
-        return left == null ? right : left;
-    }
+package com.leetcode.problems;
+
+import com.leetcode.model.TreeNode;
+
+public class Question236 {
+	class Solution {
+		TreeNode ans = null;
+
+		public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+			dfs(root, p, q);
+			return ans;
+		}
+
+		private boolean[] dfs(TreeNode node, TreeNode p, TreeNode q) {
+			if (node == null)
+				return new boolean[2];
+			boolean[] left = dfs(node.left, p, q), right = dfs(node.right, p, q);
+			boolean[] rec = new boolean[2];
+			rec[0] = left[0] || right[0] || node.val == p.val;
+			rec[1] = left[1] || right[1] || node.val == q.val;
+			if (rec[0] && rec[1] && ans == null)
+				ans = node;
+			return rec;
+		}
+	}
 }

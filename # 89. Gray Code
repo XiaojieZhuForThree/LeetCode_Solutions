@@ -1,13 +1,20 @@
-class Solution {
-    public List<Integer> grayCode(int n) {
-        List<Integer> ans = new ArrayList<>();
-        ans.add(0);
-        for (int i = 1; i <= n; i++){
-            int size = ans.size(), base = 1 << (i-1);
-            for (int j = size-1; j >= 0; j--){
-                ans.add(base + ans.get(j));
-            }
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Question89 {
+	class Solution {
+		public List<Integer> grayCode(int n) {
+			if (n == 0)
+				return List.of();
+			if (n == 1)
+				return List.of(0, 1);
+			List<Integer> prev = grayCode(n - 1), ans = new ArrayList<>();
+			ans.addAll(prev);
+			for (int i = prev.size() - 1; i >= 0; i--)
+				ans.add(prev.get(i) ^ (1 << (n - 1)));
+			return ans;
+		}
+	}
 }

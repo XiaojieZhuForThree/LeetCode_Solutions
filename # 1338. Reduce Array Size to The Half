@@ -1,25 +1,25 @@
-package problems;
+package com.leetcode.problems;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Question1338 {
 	class Solution {
 		public int minSetSize(int[] arr) {
+			if (arr == null || arr.length == 0)
+				return 0;
+			int half = arr.length / 2;
 			Map<Integer, Integer> map = new HashMap<>();
-			for (int i : arr) {
+			for (int i : arr)
 				map.put(i, map.getOrDefault(i, 0) + 1);
-			}
 			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> map.get(b) - map.get(a));
-			for (int i : map.keySet()) {
+			for (int i : map.keySet())
 				pq.offer(i);
-			}
-			int ans = 0, size = arr.length;
-			while (!pq.isEmpty()) {
-				if (size <= arr.length / 2) {
-					return ans;
-				}
-				size -= map.get(pq.poll());
+			int ans = 0, count = 0;
+			while (!pq.isEmpty() && count < half) {
 				ans++;
+				count += map.get(pq.poll());
 			}
 			return ans;
 		}

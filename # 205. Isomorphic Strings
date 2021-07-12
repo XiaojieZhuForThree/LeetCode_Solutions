@@ -1,21 +1,29 @@
-class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        return helper(s, t) && helper(t, s);
-    }
-    private boolean helper(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
-        }
-        Map<Character, Character> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (map.containsKey(s.charAt(i)) && map.get(s.charAt(i))==t.charAt(i)) {
-                continue;
-            } else if (!map.containsKey(s.charAt(i))) {
-                map.put(s.charAt(i), t.charAt(i));
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question205 {
+	class Solution {
+		public boolean isIsomorphic(String s, String t) {
+			if (s == null && t == null)
+				return true;
+			if (s == null || t == null)
+				return false;
+			if (s.length() != t.length())
+				return false;
+			Map<Character, Character> mapA = new HashMap<>(), mapB = new HashMap<>();
+			for (int i = 0; i < s.length(); i++) {
+				char ca = s.charAt(i), cb = t.charAt(i);
+				if (!mapA.containsKey(ca) && !mapB.containsKey(cb)) {
+					mapA.put(ca, cb);
+					mapB.put(cb, ca);
+				} else if (!mapA.containsKey(ca) || !mapB.containsKey(cb))
+					return false;
+				else if (mapA.get(ca) != cb || mapB.get(cb) != ca)
+					return false;
+			}
+			return true;
+		}
+	}
 }

@@ -1,42 +1,43 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-	public ListNode reverseKGroup(ListNode head, int k) {
-		int count = 0;
-		ListNode node = head;
-		while (count < k-1) {
-			if (node == null) {
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leetcode.model.ListNode;
+
+public class Question25 {
+	class Solution {
+		public ListNode reverseKGroup(ListNode head, int k) {
+			if (head == null)
 				return head;
+			List<ListNode> list = new ArrayList<>();
+			ListNode dummy = head;
+			while (dummy != null) {
+				list.add(dummy);
+				dummy = dummy.next;
 			}
-			node = node.next;
-			count++;				
+			for (int i = 0; i + k - 1 < list.size(); i += k) {
+				reverse(list, i, i + k - 1);
+			}
+			ListNode node = list.get(0);
+			dummy = node;
+			for (int i = 1; i < list.size(); i++) {
+				dummy.next = list.get(i);
+				dummy = dummy.next;
+			}
+			dummy.next = null;
+			return node;
 		}
-		if (node == null) {
-			return head;
+
+		private void reverse(List<ListNode> list, int l, int r) {
+			while (l < r) {
+				ListNode temp = list.get(r);
+				list.set(r, list.get(l));
+				list.set(l, temp);
+				l++;
+				r--;
+			}
+			return;
 		}
-		ListNode next = node.next;
-		node.next = null;
-		ListNode newhead = swap(head), trav = newhead;
-		while (trav.next != null) {
-			trav = trav.next;
-		}
-		trav.next = reverseKGroup(next, k);
-		return newhead;
-	}
-	private ListNode swap(ListNode head) {
-		ListNode node = head, next = node.next, prev = node;
-		while (next != null) {
-			prev.next = next.next;
-			next.next = node;
-			node = next;
-			next = prev.next;
-		}
-		return node;
 	}
 }

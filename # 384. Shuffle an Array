@@ -1,0 +1,38 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Question384 {
+	class Solution {
+		int[] init;
+
+		public Solution(int[] nums) {
+			this.init = nums;
+		}
+
+		/** Resets the array to its original configuration and return it. */
+		public int[] reset() {
+			return init;
+		}
+
+		/** Returns a random shuffling of the array. */
+		public int[] shuffle() {
+			int[] shuffle = init.clone();
+			List<Integer> list = new ArrayList<>();
+			for (int i : shuffle)
+				list.add(i);
+			Collections.shuffle(list);
+			for (int i = 0; i < list.size(); i++)
+				shuffle[i] = list.get(i);
+			return shuffle;
+		}
+	}
+
+	/**
+	 * Your Solution object will be instantiated and called as such: Solution obj =
+	 * new Solution(nums); int[] param_1 = obj.reset(); int[] param_2 =
+	 * obj.shuffle();
+	 */
+}

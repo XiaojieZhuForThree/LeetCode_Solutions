@@ -1,53 +1,33 @@
-class Solution {
-    public String pushDominoes(String dominoes) {
-        int[] dp = new int[dominoes.length()];
-        boolean rs = false;
-        int lp = 0, rp = 0;
-        for (int i = 0; i < dominoes.length(); i++) {
-            char c = dominoes.charAt(i);
-            if (c == 'R') {
-                if (rs == false) {
-                    rp = i;
-                    rs = true;
-                } else {
-                    for (int j = rp; j <= i; j++) {
-                        dp[j] = 1;
-                    }
-                    rp = i;
-                }
-            } else if (c == 'L') {
-                if (rs == true) {
-                    int r = rp;
-                    int l = i;
-                    while (r < l) {
-                        dp[r++] = 1;
-                        dp[l--] = -1;
-                    }
-                    rs = false;
-                    lp = i;
-                } else {
-                    for (int j = lp; j <= i; j++) {
-                        dp[j] = -1;
-                    }
-                    lp = i;
-                }
-            }
-        }
-        if (rs == true) {
-            for (int i = rp; i < dominoes.length(); i++) {
-                dp[i] = 1;
-            }
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i : dp) {
-            if (i == 1) {
-                sb.append('R');
-            } else if (i == -1) {
-                sb.append('L');
-            } else {
-                sb.append('.');
-            }
-        }
-        return sb.toString();
-    }
+package com.leetcode.problems;
+
+public class Question838 {
+	class Solution {
+		public String pushDominoes(String d) {
+			d = 'L' + d + 'R';
+			StringBuilder res = new StringBuilder();
+			for (int i = 0, j = 1; j < d.length(); ++j) {
+				if (d.charAt(j) == '.')
+					continue;
+				int middle = j - i - 1;
+				if (i > 0)
+					res.append(d.charAt(i));
+				if (d.charAt(i) == d.charAt(j))
+					for (int k = 0; k < middle; k++)
+						res.append(d.charAt(i));
+				else if (d.charAt(i) == 'L' && d.charAt(j) == 'R')
+					for (int k = 0; k < middle; k++)
+						res.append('.');
+				else {
+					for (int k = 0; k < middle / 2; k++)
+						res.append('R');
+					if (middle % 2 == 1)
+						res.append('.');
+					for (int k = 0; k < middle / 2; k++)
+						res.append('L');
+				}
+				i = j;
+			}
+			return res.toString();
+		}
+	}
 }

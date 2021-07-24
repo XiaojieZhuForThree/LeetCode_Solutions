@@ -1,142 +1,106 @@
-class Solution {
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        Set<String> set = new HashSet<>();
-        for (String word : wordList) {
-            set.add(word);
-        }
-        if (!set.contains(endWord)) {
-            return (new ArrayList<>());
-        }
-        List<List<String>> result = new ArrayList<>();
-        int step = 0;
-        Set<String> beginSet = new HashSet<>();
-        Set<String> endSet = new HashSet<>();
-        beginSet.add(beginWord);
-        endSet.add(endWord);
-        set.remove(beginWord);
-        set.remove(endWord);
-        Map<String, List<List<String>>> beginNeighbors = new HashMap<>();
-        Map<String, List<List<String>>> endNeighbors = new HashMap<>();
-        Set<String> matchedWord = new HashSet<>();
-        beginNeighbors.put(beginWord, new ArrayList<>());
-        //beginNeighbors.get(beginWord).add(Arrays.asList(beginWord));
-        beginNeighbors.get(beginWord).add(new ArrayList<>());
-        endNeighbors.put(endWord, new ArrayList<>());
-        //endNeighbors.get(endWord).add(Arrays.asList(endWord));
-        endNeighbors.get(endWord).add(new ArrayList<>());
-        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
-            step++;
-            if (beginSet.size() > endSet.size()) {
-                Set<String> temp = beginSet;
-                beginSet = endSet;
-                endSet = temp;
-                Map<String, List<List<String>>> tempMap = beginNeighbors;
-                beginNeighbors = endNeighbors;
-                endNeighbors = tempMap;
-            }
-            Set<String> nextRound = new HashSet<>();
-            helper(set, beginSet, endSet, nextRound, beginNeighbors, endNeighbors, matchedWord);
-            if (!matchedWord.isEmpty()) {
-                break;
-            }
-            beginSet = nextRound;
-        }
-        if (!beginNeighbors.containsKey(beginWord)) {
-            Map<String, List<List<String>>> tempMap = beginNeighbors;
-            beginNeighbors = endNeighbors;
-            endNeighbors = tempMap;
-        }
-        for (String str : matchedWord) {
-            for (List<String> list1 : beginNeighbors.get(str)) {
-                for (List<String> list2 : endNeighbors.get(str)) {
-                    List<String> list = new ArrayList<>();
-                    list.addAll(list1);
-                    list.add(str);
-                    for (int i=list2.size()-1; i>=0; i--) {
-                        list.add(list2.get(i));
-                    }
-                    result.add(list);
-                }
-            }
-        }
-        return result;
-    }
-    
-    private void helper(Set<String> set, Set<String> beginSet, Set<String> endSet, Set<String> nextRound, Map<String, List<List<String>>> beginNeighbors, Map<String, List<List<String>>> endNeighbors, Set<String> matchedWord) {
-        boolean matched = false;
-        for (String word : beginSet) {
-            char[] chars = word.toCharArray();
-            for (int i=0; i<chars.length; i++) {
-                char origin = chars[i];
-                for (char c='a'; c<='z'; c++) {
-                    chars[i] = c;
-                    String str = String.valueOf(chars);
-                    if (endSet.contains(str)) {
-                        matchedWord.add(str);
-                    }
-                    if (set.contains(str)) {
-                        set.remove(str);
-                        nextRound.add(str);
-                    }
-                    if (nextRound.contains(str) || matchedWord.contains(str)) {
-                        if (!beginNeighbors.containsKey(str)) {
-                            beginNeighbors.put(str, new ArrayList<>());
-                        }
-                        for (List<String> list : beginNeighbors.get(word)) {
-                            List<String> newList = new ArrayList<>(list);
-                            newList.add(word);
-                            beginNeighbors.get(str).add(newList);
-                        }
-                    }
-                }
-                chars[i] = origin;
-            }
-        }
-    }
-}
+package com.leetcode.problems;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-class Solution {
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        Set<String> set = new HashSet<>(wordList);
-        Queue<List<String>> queue = new ArrayDeque<>();
-        List<String> list = new ArrayList<>();
-        list.add(beginWord);
-        queue.offer(list);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            Set<String> removed = new HashSet<>();
-            for (int i = 0; i < size; i++) {
-                List<String> cur = queue.poll();
-                String lastWord = cur.get(cur.size() - 1);
-                for (int j = 0; j < lastWord.length(); j++) {
-                    char[] array = lastWord.toCharArray();
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        array[j] = c;
-                        String next = new String(array);
-                        if (set.contains(next)) {
-                            removed.add(next);
-                            cur.add(next);
-                            queue.offer(new ArrayList<>(cur));
-                            cur.remove(cur.size()-1);
-                        }
-                    }
-                }
-            }
-            if (removed.contains(endWord)) {
-                break;
-            }
-            for (String s : removed) {
-                set.remove(s);
-            }
-        }
-        List<List<String>>res = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            list = queue.poll();
-            if (list.get(list.size() - 1).equals(endWord)) {
-                res.add(list);
-            }
-        }
-        return res;
-    }
+public class Question126 {
+	class Pair {
+		String word1;
+		String word2;
+		Pair parent;
+
+		public Pair(String word1, String word2, Pair parent) {
+			this.word1 = word1;
+			this.word2 = word2;
+			this.parent = parent;
+		}
+	}
+
+	class Solution {
+
+		public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+
+			List<List<String>> result = new LinkedList<>();
+
+			boolean pathFound = false;
+			int currentLevel = 0;
+
+			// indexes of words that has not been used before
+			List<Integer> notOperatedIndexes = new LinkedList<>();
+			for (int i = 0; i < wordList.size(); i++)
+				notOperatedIndexes.add(i);
+			// indexes that were adeed to the current level and will be deleted from the
+			// notOperatedIndexes list
+			Set<Integer> indexesToDelete = new HashSet<>();
+
+			// pares of the current level and pares of the next level
+			List<Pair> currentLevelPairs = new ArrayList<>();
+			List<Pair> nextLevelPairs = new ArrayList<>();
+
+			// the first pare with the begin word
+			Pair firstPair = new Pair(null, beginWord, null);
+			currentLevelPairs.add(firstPair);
+
+			// the worst case is if the only sequence contains all the words
+			while (currentLevel < wordList.size() && !pathFound) {
+				currentLevel++;
+
+				// get the words that were not used and check if they work for the current word.
+				for (Pair pair : currentLevelPairs) {
+					for (Integer index : notOperatedIndexes) {
+						String currentWord = wordList.get(index);
+						if (numberOfDifferentCharacters(pair.word2, currentWord) != 1)
+							continue;
+						if (currentWord.equals(endWord))
+							pathFound = true;
+						indexesToDelete.add(index);
+						nextLevelPairs.add(new Pair(pair.word2, currentWord, pair));
+					}
+				}
+
+				// remove all the words that were used during this step from the pool of not
+				// used words
+				for (Integer index : indexesToDelete)
+					notOperatedIndexes.remove(index);
+
+				currentLevelPairs = new ArrayList<>(nextLevelPairs);
+				nextLevelPairs.clear();
+
+			}
+
+			// all the paths were found and are kept in pairs, in currentLevelPairs variable
+			// there's need to go through them and save words in the result list.
+
+			// Collect the paths
+			LinkedList<String> path;
+			for (Pair pair : currentLevelPairs) {
+				if (!pair.word2.equals(endWord))
+					continue; // this sequence is usefull, because doesn't contain the end word
+				path = new LinkedList<>();
+				Pair currentPair = pair;
+				path.addFirst(currentPair.word2); // this is why I used a Linked list
+				while (currentPair.parent != null) {
+					path.addFirst(currentPair.word1);
+					currentPair = currentPair.parent;
+				}
+				result.add(path);
+			}
+
+			return result;
+		}
+
+		private int numberOfDifferentCharacters(String string1, String string2) {
+			int result = 0;
+			char[] c1 = string1.toCharArray();
+			char[] c2 = string2.toCharArray();
+			for (int i = 0; i < string1.length(); i++) {
+				if (c1[i] != c2[i])
+					result++;
+			}
+			return result;
+		}
+	}
 }

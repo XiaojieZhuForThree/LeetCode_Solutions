@@ -1,4 +1,4 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question932 {
 	class Solution {

@@ -1,0 +1,61 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question677 {
+	class Trie {
+		int[] cnt;
+		Trie[] next;
+
+		public Trie() {
+			this.cnt = new int[26];
+			this.next = new Trie[26];
+		}
+	}
+
+	class MapSum {
+		Trie trie;
+		Map<String, Integer> map;
+
+		/** Initialize your data structure here. */
+		public MapSum() {
+			this.trie = new Trie();
+			this.map = new HashMap<>();
+		}
+
+		public void insert(String key, int val) {
+			if (key == null || key.length() == 0)
+				return;
+			int diff = val - map.getOrDefault(key, 0);
+			update(key, diff);
+			map.put(key, val);
+		}
+
+		public int sum(String prefix) {
+			Trie dummy = trie;
+			for (char c : prefix.toCharArray()) {
+				if (dummy.next[c - 'a'] == null)
+					return 0;
+				dummy = dummy.next[c - 'a'];
+			}
+			return dummy.cnt[prefix.charAt(prefix.length() - 1) - 'a'];
+		}
+
+		private void update(String key, int diff) {
+			Trie dummy = trie;
+			for (char c : key.toCharArray()) {
+				if (dummy.next[c - 'a'] == null)
+					dummy.next[c - 'a'] = new Trie();
+				dummy.next[c - 'a'].cnt[c - 'a'] += diff;
+				dummy = dummy.next[c - 'a'];
+			}
+			dummy.cnt[key.charAt(key.length() - 1) - 'a'] += diff;
+		}
+	}
+
+	/**
+	 * Your MapSum object will be instantiated and called as such: MapSum obj = new
+	 * MapSum(); obj.insert(key,val); int param_2 = obj.sum(prefix);
+	 */
+}

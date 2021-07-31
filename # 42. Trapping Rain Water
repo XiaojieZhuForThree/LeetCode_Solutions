@@ -1,59 +1,28 @@
-class Solution {
-    public int trap(int[] height) {
-        int lo = 0;
-        int hi = height.length - 1;
-        int res = 0;
-        int maxlo = 0;
-        int maxhi = 0;
-        
-        while (lo < hi) {
-            if (height[lo] < height[hi]) {
-                if (height[lo] >= maxlo)  
-                    maxlo = height[lo];
-                else res += (maxlo - height[lo]);
-                lo++;
-            } else {
-                if (height[hi] >= maxhi) 
-                    maxhi = height[hi];
-                else res += (maxhi - height[hi]);
-                hi--;
-            }
-        }
-        return res;
-    }
-}
+package com.leetcode.problems;
 
-
-class Solution {
-    public int trap(int[] height) {
-        if (height.length < 2) {
-            return 0;
-        }
-        int max = Integer.MIN_VALUE;
-        int maxIndex = -1;
-        for (int i = 0; i < height.length; i++) {
-            if (height[i] > max) {
-                max = height[i];
-                maxIndex = i;
-            }
-        }
-        int leftMax = height[0];
-        int water = 0;
-        for (int i = 1; i < maxIndex; i++) {
-            if (height[i] > leftMax) {
-                leftMax = height[i];
-            } else {
-                water += leftMax - height[i];
-            }
-        }
-        int rightMax = height[height.length-1];
-        for (int j = height.length-2; j > maxIndex; j--) {
-            if (height[j] > rightMax) {
-                rightMax = height[j];
-            } else {
-                water += rightMax - height[j];
-            }
-        }
-        return water;
-    }
+public class Question42 {
+	class Solution {
+		public int trap(int[] height) {
+			if (height == null || height.length < 3)
+				return 0;
+			int[] dp = new int[height.length];
+			int max = height[0];
+			for (int i = 1; i < height.length - 1; i++) {
+				if (height[i] < max)
+					dp[i] = max - height[i];
+				else
+					max = height[i];
+			}
+			max = height[height.length - 1];
+			int ans = 0;
+			for (int i = height.length - 2; i > 0; i--) {
+				if (height[i] < max) {
+					dp[i] = Math.min(dp[i], max - height[i]);
+					ans += dp[i];
+				} else
+					max = height[i];
+			}
+			return ans;
+		}
+	}
 }

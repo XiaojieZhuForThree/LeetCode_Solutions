@@ -55,42 +55,47 @@ public class Question843 {
 	 */
 	class Solution2 {
 		public void findSecretWord(String[] wordlist, Master master) {
-			final int[][] rec = new int[26][6];
-			for (final String w : wordlist) {
-				for (int i = 0; i < w.length(); i++)
-					rec[w.charAt(i) - 'a'][i]++;
+			if (wordlist == null || wordlist.length == 0)
+				return;
+			int[][] records = new int[26][6];
+			for (String s : wordlist) {
+				for (int i = 0; i < s.length(); i++)
+					records[s.charAt(i) - 'a'][i]++;
 			}
-			List<String> list = Arrays.asList(wordlist);
+			List<String> list = new ArrayList<>();
+			for (String s : wordlist)
+				list.add(s);
 			for (int i = 0; i < 10; i++) {
-				int weight = 0;
-				String candidate = "";
-				for (final String s : list) {
-					int wgt = getWeight(s, rec);
-					if (wgt > weight) {
-						weight = wgt;
-						candidate = s;
-					}
-				}
-				final int overlap = master.guess(candidate);
-				if (overlap == 6)
+				String cand = findCand(list, records);
+				int match = master.guess(cand);
+				if (match == 6)
 					return;
 				List<String> next = new ArrayList<>();
-				for (final String s : list) {
-					if (getOverlap(s, candidate) == overlap)
+				for (String s : list) {
+					if (getMatch(s, cand) == match)
 						next.add(s);
 				}
 				list = next;
 			}
+			return;
 		}
 
-		private int getWeight(final String s, final int[][] rec) {
-			int ans = 0;
-			for (int i = 0; i < s.length(); i++)
-				ans += rec[s.charAt(i) - 'a'][i];
+		private String findCand(List<String> list, int[][] records) {
+			int weight = 0;
+			String ans = "";
+			for (String s : list) {
+				int curWeight = 0;
+				for (int i = 0; i < s.length(); i++)
+					curWeight += records[s.charAt(i) - 'a'][i];
+				if (curWeight > weight) {
+					weight = curWeight;
+					ans = s;
+				}
+			}
 			return ans;
 		}
 
-		private int getOverlap(final String a, final String b) {
+		private int getMatch(String a, String b) {
 			int ans = 0;
 			for (int i = 0; i < a.length(); i++) {
 				if (a.charAt(i) == b.charAt(i))

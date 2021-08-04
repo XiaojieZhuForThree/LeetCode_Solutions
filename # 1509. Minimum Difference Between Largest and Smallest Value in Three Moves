@@ -5,11 +5,10 @@ import java.util.Arrays;
 public class Question1509 {
 	class Solution {
 		public int minDifference(int[] nums) {
-			if (nums == null || nums.length <= 4)
+			if (nums == null || nums.length < 5)
 				return 0;
-			int ans = Integer.MAX_VALUE;
-			int l = 3, r = nums.length - 1;
 			Arrays.sort(nums);
+			int l = 3, r = nums.length - 1, ans = nums[r] - nums[l];
 			for (; l >= 0; l--)
 				ans = Math.min(ans, nums[r--] - nums[l]);
 			return ans;

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Question877 {
-	class Solution {
+	class Solution1 {
 		Map<String, Integer> map = new HashMap<>();
 
 		public boolean stoneGame(int[] piles) {
@@ -29,6 +29,31 @@ public class Question877 {
 			int ans = Math.max(val1, val2);
 			map.put(key, ans);
 			return ans;
+		}
+	}
+
+	class Solution2 {
+		public boolean stoneGame(int[] piles) {
+			if (piles == null || piles.length == 0)
+				return false;
+			int n = piles.length;
+			int[] accu = new int[n];
+			for (int i = 0; i < n; i++)
+				accu[i] = i == 0 ? piles[i] : piles[i] + accu[i - 1];
+			int[][] dp = new int[n][n];
+			for (int i = n - 1; i >= 0; i--) {
+				for (int j = i; j < n; j++) {
+					if (i == j)
+						dp[i][j] = piles[i];
+					else {
+						int curSum = accu[j] - (i == 0 ? 0 : accu[i - 1]);
+						int val1 = curSum - dp[i + 1][j];
+						int val2 = curSum - dp[i][j - 1];
+						dp[i][j] = Math.max(val1, val2);
+					}
+				}
+			}
+			return dp[0][n - 1] > accu[n - 1] / 2;
 		}
 	}
 }

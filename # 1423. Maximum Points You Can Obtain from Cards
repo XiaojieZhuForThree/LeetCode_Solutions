@@ -3,15 +3,18 @@ package com.leetcode.problems;
 public class Question1423 {
 	class Solution {
 		public int maxScore(int[] cardPoints, int k) {
-			if (cardPoints == null || cardPoints.length == 0 || k == 0)
+			if (cardPoints == null || cardPoints.length == 0)
 				return 0;
-			int ans = 0;
+			if (k == 0)
+				return 0;
+			k = Math.min(k, cardPoints.length);
+			int ans = 0, n = cardPoints.length;
 			for (int i = 0; i < k; i++)
 				ans += cardPoints[i];
-			int update = ans;
+			int cur = ans;
 			for (int i = k - 1; i >= 0; i--) {
-				update += cardPoints[cardPoints.length - k + i] - cardPoints[i];
-				ans = Math.max(ans, update);
+				cur = cur - cardPoints[i] + cardPoints[n - k + i];
+				ans = Math.max(ans, cur);
 			}
 			return ans;
 		}

@@ -5,40 +5,37 @@ import java.util.Deque;
 
 public class Question735 {
 	class Solution {
-		public int[] asteroidCollision(int[] asteroids) {
+		public int[] asteroidCollision(int[] A) {
+			if (A == null || A.length == 0)
+				return new int[0];
 			Deque<Integer> stack = new ArrayDeque<>();
-			for (int i = 0; i < asteroids.length; i++) {
-				int val = asteroids[i];
-				if (val > 0) {
-					stack.offerLast(i);
-					continue;
-				}
-				boolean exploded = false;
-				while (!stack.isEmpty()) {
-					int j = stack.peekLast();
-					int size = asteroids[j];
-					if (size < 0) {
-						break;
-					} else if (size > Math.abs(val)) {
-						exploded = true;
-						break;
-					} else if (size + val == 0) {
-						stack.pollLast();
-						exploded = true;
-						break;
-					} else {
-						stack.pollLast();
+			for (int i : A) {
+				if (stack.isEmpty())
+					stack.offer(i);
+				else if (i >= 0)
+					stack.offer(i);
+				else {
+					boolean exploded = false;
+					while (!stack.isEmpty() && !exploded) {
+						int prev = stack.peekLast();
+						if (prev < 0)
+							break;
+						else if (prev + i == 0) {
+							stack.pollLast();
+							exploded = true;
+						} else if (prev + i > 0)
+							exploded = true;
+						else
+							stack.pollLast();
 					}
-				}
-				if (!exploded) {
-					stack.offerLast(i);
+					if (!exploded)
+						stack.offerLast(i);
 				}
 			}
 			int[] ans = new int[stack.size()];
-			int i = 0;
-			for (int j : stack) {
-				ans[i++] = asteroids[j];
-			}
+			int index = 0;
+			for (int i : stack)
+				ans[index++] = i;
 			return ans;
 		}
 	}

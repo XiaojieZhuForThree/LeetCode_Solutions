@@ -1,25 +1,28 @@
 package com.leetcode.problems;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Question1525 {
 	class Solution {
 		public int numSplits(String s) {
-			Map<Character, Integer> left = new HashMap<>(), right = new HashMap<>();
-			for (char c : s.toCharArray()) {
-				right.put(c, right.getOrDefault(c, 0) + 1);
+			if (s == null || s.length() < 2)
+				return 0;
+			int[] left = new int[s.length()], right = new int[s.length()];
+			Set<Character> set = new HashSet<>();
+			for (int i = 0; i < s.length(); i++) {
+				set.add(s.charAt(i));
+				left[i] = set.size();
+			}
+			set.clear();
+			for (int i = s.length() - 1; i >= 0; i--) {
+				set.add(s.charAt(i));
+				right[i] = set.size();
 			}
 			int ans = 0;
-			for (char c : s.toCharArray()) {
-				left.put(c, left.getOrDefault(c, 0) + 1);
-				right.put(c, right.getOrDefault(c, 1) - 1);
-				if (right.get(c) == 0) {
-					right.remove(c);
-				}
-				if (left.size() == right.size()) {
+			for (int i = 0; i < s.length() - 1; i++) {
+				if (left[i] == right[i + 1])
 					ans++;
-				}
 			}
 			return ans;
 		}

@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class Question359 {
 	class Logger {
-		Map<String, Integer> record;
+		Map<String, Integer> map;
 
 		/** Initialize your data structure here. */
 		public Logger() {
-			this.record = new HashMap<>();
+			this.map = new HashMap<>();
 		}
 
 		/**
@@ -18,15 +18,10 @@ public class Question359 {
 		 * be printed. The timestamp is in seconds granularity.
 		 */
 		public boolean shouldPrintMessage(int timestamp, String message) {
-			if (!record.containsKey(message)) {
-				record.put(message, timestamp + 10);
-				return true;
-			}
-			if (record.get(message) <= timestamp) {
-				record.put(message, timestamp + 10);
-				return true;
-			}
-			return false;
+			if (map.containsKey(message) && map.get(message) > timestamp)
+				return false;
+			map.put(message, timestamp + 10);
+			return true;
 		}
 	}
 

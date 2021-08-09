@@ -4,23 +4,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.leetcode.api.Employee;
+import com.leetcode.model.Employee;
 
 public class Question690 {
 	class Solution {
 		public int getImportance(List<Employee> employees, int id) {
-			Map<Integer, Employee> map = new HashMap<>();
-			for (Employee emp : employees)
-				map.put(emp.id, emp);
+			if (employees == null || employees.size() == 0)
+				return 0;
+			final Map<Integer, Employee> map = new HashMap<>();
+			for (final Employee e : employees)
+				map.put(e.id, e);
 			return dfs(map, id);
 		}
 
-		private int dfs(Map<Integer, Employee> map, int id) {
-			int imp = map.get(id).importance;
-			for (int sub : map.get(id).subordinates) {
-				imp += dfs(map, sub);
-			}
-			return imp;
+		private int dfs(final Map<Integer, Employee> map, final int id) {
+			if (!map.containsKey(id))
+				return 0;
+			final Employee e = map.get(id);
+			int ans = e.importance;
+			for (int sub : e.subordinates)
+				ans += dfs(map, sub);
+			return ans;
 		}
 	}
 }

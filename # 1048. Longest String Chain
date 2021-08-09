@@ -1,36 +1,65 @@
 package com.leetcode.problems;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Question1048 {
 	class Solution {
 		public int longestStrChain(String[] words) {
-			Arrays.sort(words, (a, b) -> a.length() - b.length());
-			int[] dp = new int[words.length];
-			Arrays.fill(dp, 1);
-			int ans = 1;
-			for (int i = 0; i < words.length; i++) {
-				for (int j = i - 1; j >= 0; j--) {
-					if (isPred(words[i], words[j])) {
-						dp[i] = Math.max(dp[i], dp[j] + 1);
-						ans = Math.max(ans, dp[i]);
-					}
-				}
+			if (words == null || words.length == 0)
+				return 0;
+			List<String> list = new ArrayList<>();
+			Map<Integer, List<String>> map = new HashMap<>();
+			for (String s : words) {
+				list.add(s);
+				map.putIfAbsent(s.length(), new ArrayList<>());
+				map.get(s.length()).add(s);
 			}
-			return ans;
+			Collections.sort(list, (a, b) -> (a.length() - b.length()));
+			int n = list.size();
+			int startSize = list.get(n - 1).length();
+			Map<String, Integer> dp = new HashMap<>();
+			int res = 1;
+			for (int i = n - 1; i >= 0; i--) {
+				String s = list.get(i);
+				if (dp.containsKey(s))
+					continue;
+				if (s.length() == startSize) {
+					dp.put(s, 1);
+					continue;
+				}
+				List<String> prev = map.getOrDefault(s.length() + 1, new ArrayList<>());
+				int ans = 1;
+				for (String p : prev) {
+					if (canMatch(s, p))
+						ans = Math.max(ans, 1 + dp.getOrDefault(p, 1));
+				}
+				dp.put(s, ans);
+				res = Math.max(res, ans);
+			}
+			return res;
 		}
 
-		private boolean isPred(String a, String b) {
-			if (a.length() - 1 != b.length())
-				return false;
-			int ptr = 0;
-			for (char c : a.toCharArray()) {
-				if (c == b.charAt(ptr))
-					ptr++;
-				if (ptr == b.length())
-					return true;
+		private boolean canMatch(String a, String b) {
+			boolean alreadySkipped = false;
+			int i = 0, j = 0;
+			while (i < a.length() && j < b.length()) {
+				if (a.charAt(i) != b.charAt(j)) {
+					if (alreadySkipped)
+						return false;
+					alreadySkipped = true;
+					j++;
+				} else {
+					i++;
+					j++;
+				}
+
 			}
-			return ptr == b.length();
+			return true;
 		}
+
 	}
 }

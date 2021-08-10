@@ -1,29 +1,31 @@
 package com.leetcode.problems;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.PriorityQueue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Question853 {
 	class Solution {
 		public int carFleet(int target, int[] position, int[] speed) {
+			if (position == null || position.length == 0)
+				return 0;
 			for (int i = 0; i < position.length; i++)
 				position[i] = target - position[i];
-			PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> position[a] - position[b]);
+			List<Integer> list = new ArrayList<>();
 			for (int i = 0; i < position.length; i++)
-				pq.offer(i);
-			Deque<Integer> stack = new ArrayDeque<>();
-			while (!pq.isEmpty()) {
-				int i = pq.poll();
-				if (stack.isEmpty()) {
-					stack.offerLast(i);
-				} else {
-					int j = stack.peekLast();
-					if ((double) position[j] / speed[j] < (double) position[i] / speed[i])
-						stack.offerLast(i);
-				}
+				list.add(i);
+			Collections.sort(list, (a, b) -> position[a] - position[b]);
+			int ans = position.length;
+			double slowest = (position[list.get(0)] * 1.0) / speed[list.get(0)];
+			for (int i = 1; i < list.size(); i++) {
+				double time = (position[list.get(i)] * 1.0) / speed[list.get(i)];
+				if (time <= slowest)
+					ans--;
+				else
+					slowest = time;
 			}
-			return stack.size();
+			return ans;
 		}
 	}
 }

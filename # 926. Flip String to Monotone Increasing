@@ -1,39 +1,24 @@
-class Solution {
-    public int minFlipsMonoIncr(String S) {
-         int r0 = 0, l1 = 0;        
-        for (int i = 0; i < S.length(); i++) {
-            if (S.charAt(i) == '0') {
-                r0++;
-            } 
-        }        
-        int res = r0;        
-        for (int j = 0; j < S.length(); j++) {
-            if (S.charAt(j) == '0') {
-                r0--;
-            } else {
-                l1++;
-            }
-            res = Math.min(l1 + r0, res);
-        }
-        return res;          
-    }
-}
+package com.leetcode.problems;
 
-class Solution {
-    public int minFlipsMonoIncr(String S) {
-        int flip = 0, ones = 0;
-        for (char i : S.toCharArray()) {
-            if (i == '0') {
-                if (ones == 0) {
-                    continue;
-                } else {
-                    flip ++;
-                }
-            } else {
-                ones++;
-            }
-            flip = Math.min(flip, ones);
-        }
-        return flip;
-    }
+public class Question926 {
+	class Solution {
+		public int minFlipsMonoIncr(String s) {
+			if (s == null || s.length() == 0)
+				return 0;
+			int n = s.length();
+			int ones = s.charAt(0) - '0';
+			int[] ans = new int[n];
+			for (int i = 1; i < n; i++) {
+				if (s.charAt(i) == '1') {
+					ans[i] = ans[i - 1];
+					ones++;
+				} else {
+					int val1 = ones;
+					int val2 = ans[i - 1] + 1;
+					ans[i] = Math.min(val1, val2);
+				}
+			}
+			return ans[n - 1];
+		}
+	}
 }

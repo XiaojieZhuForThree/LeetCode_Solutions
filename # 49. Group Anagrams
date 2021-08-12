@@ -1,27 +1,43 @@
-class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> groups = new HashMap<>();
-        for (String i : strs) {
-        	Queue<Character> theOne= new PriorityQueue<>();
-        	for (char j:i.toCharArray()) {
-        		theOne.add(j);
-        	}
-        	StringBuilder sb = new StringBuilder();
-        	while (!theOne.isEmpty()){
-        		char c = theOne.poll();
-        		sb.append(c);
-        	}
-        	if (groups.containsKey(sb.toString()) == true) {
-        		groups.get(sb.toString()).add(i);
-        	}
-        	else {
-        		groups.put(sb.toString(), new ArrayList<String>(Arrays.asList(i)));
-        	}
-        }
-        List<List<String>> ans = new ArrayList<>();
-        for (List<String> list : groups.values()) {
-        	ans.add(list);
-        }
-        return ans;
-    }
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question49 {
+	class Solution {
+		public List<List<String>> groupAnagrams(String[] strs) {
+			List<List<String>> ans = new ArrayList<>();
+			if (strs == null || strs.length == 0)
+				return ans;
+			Map<String, List<String>> map = new HashMap<>();
+			for (String s : strs) {
+				String key = sort(s);
+				map.putIfAbsent(key, new ArrayList<>());
+				map.get(key).add(s);
+			}
+			for (List<String> list : map.values())
+				ans.add(list);
+			return ans;
+		}
+
+		private String sort(final String s) {
+			int[] arr = new int[26];
+			char[] chars = new char[26];
+			int index = 0;
+			for (char c = 'a'; c <= 'z'; c++) {
+				chars[index++] = c;
+			}
+			for (char c : s.toCharArray())
+				arr[c - 'a']++;
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < 26; i++) {
+				for (int j = 0; j < arr[i]; j++) {
+					sb.append(chars[i]);
+				}
+			}
+			return sb.toString();
+		}
+	}
 }

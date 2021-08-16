@@ -6,72 +6,51 @@ import java.util.Map;
 public class Question76 {
 	class Solution {
 		public String minWindow(String s, String t) {
-			int left = 0, right = 0;
-			Map<Character, Integer> charCounts = getCharCounts(t);
-			int totalChar = t.length();
-			int idealLeft = -1, idealRight = -1;
-			int minSize = Integer.MAX_VALUE;
-
-			while (left < s.length()) {
-				if (charCounts.containsKey(s.charAt(left))) {
-					charCounts.put(s.charAt(left), charCounts.get(s.charAt(left)) - 1);
-					totalChar--;
-					if (totalChar == 0) {
-						minSize = 1;
-						idealLeft = left;
-						idealRight = left + 1;
-					}
-					break;
-				}
-				left++;
-			}
-
-			right = left + 1;
-
-			while (right < s.length()) {
-				char c = s.charAt(right);
-				if (!charCounts.containsKey(c)) {
-					right++;
-					continue;
-				}
-				charCounts.put(c, charCounts.get(c) - 1);
-				if (charCounts.get(c) >= 0) {
-					totalChar--;
-				}
-				char leftCharacter = s.charAt(left);
-				if (charCounts.get(leftCharacter) < 0) {
-					for (; left < right; left++) {
-						if (!charCounts.containsKey(s.charAt(left))) {
-							continue;
+			int len = t.length(), cur = 0;
+			int l = 0, r = 0;
+			Map<Character, Integer> ref = new HashMap<>();
+			Map<Character, Integer> seen = new HashMap<>();
+			String ans = "";
+			int minLen = Integer.MAX_VALUE;
+			for (char c : t.toCharArray())
+				ref.put(c, ref.getOrDefault(c, 0) + 1);
+			while (r < s.length()) {
+				char c = s.charAt(r);
+				if (!ref.containsKey(c))
+					seen.put(c, seen.getOrDefault(c, 0) + 1);
+				else {
+					if (seen.getOrDefault(c, 0) >= ref.get(c))
+						seen.put(c, seen.getOrDefault(c, 0) + 1);
+					else {
+						seen.put(c, seen.getOrDefault(c, 0) + 1);
+						cur++;
+						if (cur == len) {
+							while (cur == len) {
+								c = s.charAt(l);
+								if (!ref.containsKey(c))
+									seen.put(c, seen.get(c) - 1);
+								else {
+									if (seen.get(c) > ref.get(c))
+										seen.put(c, seen.get(c) - 1);
+									else {
+										seen.put(c, seen.get(c) - 1);
+										cur--;
+										int nowLen = r - l + 1;
+										if (nowLen < minLen) {
+											minLen = nowLen;
+											ans = s.substring(l, r + 1);
+										}
+									}
+								}
+								l++;
+							}
 						}
-						if (charCounts.get(s.charAt(left)) >= 0) {
-							break;
-						}
-						charCounts.put(s.charAt(left), charCounts.get(s.charAt(left)) + 1);
 					}
 				}
-				if (totalChar == 0) {
-					int newSize = right - left + 1;
-					if (newSize < minSize) {
-						minSize = newSize;
-						idealLeft = left;
-						idealRight = right + 1;
-					}
-				}
-				right++;
+				r++;
 			}
-			if (minSize == Integer.MAX_VALUE) {
-				return "";
-			}
-			return s.substring(idealLeft, idealRight);
+			return ans;
 		}
 
-		private final Map<Character, Integer> getCharCounts(String t) {
-			Map<Character, Integer> charCounts = new HashMap<>();
-			for (char c : t.toCharArray()) {
-				charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
-			}
-			return charCounts;
-		}
 	}
 }

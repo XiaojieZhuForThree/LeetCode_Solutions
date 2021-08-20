@@ -1,35 +1,50 @@
-package problems;
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.leetcode.model.TreeNode;
 
 public class Question1339 {
 	class Solution {
-		long ans = Long.MIN_VALUE;
-		long sum;
+		long ans = 0;
+		Map<TreeNode, Long> map = new HashMap<>();
 
 		public int maxProduct(TreeNode root) {
-			sum = sum(root);
-			helper(root);
-			return (int) (ans % (long) (1e9 + 7));
-		}
-
-		private long sum(TreeNode node) {
-			if (node == null) {
+			if (root == null)
 				return 0;
-			}
-			return node.val + sum(node.left) + sum(node.right);
+			int mod = 1_000_000_007;
+			long sum = getSum(root);
+			getAns(root, sum);
+			return (int) (ans % mod);
 		}
 
-		private void helper(TreeNode node) {
-			if (node == null) {
+		private long getSum(TreeNode node) {
+			if (node == null)
+				return 0;
+			long ans = node.val + getSum(node.left) + getSum(node.right);
+			map.put(node, ans);
+			return ans;
+		}
+
+		private void getAns(TreeNode node, long sum) {
+			if (node == null)
 				return;
+			getAns(node.left, sum);
+			getAns(node.right, sum);
+			if (node.left == null && node.right == null)
+				return;
+			if (node.left == null) {
+				long val = map.get(node.right);
+				ans = Math.max(ans, val * (sum - val));
+			} else if (node.right == null) {
+				long val = map.get(node.left);
+				ans = Math.max(ans, val * (sum - val));
+			} else {
+				long val1 = map.get(node.left), val2 = map.get(node.right);
+				ans = Math.max(ans, Math.max(val1 * (sum - val1), val2 * (sum - val2)));
 			}
-			helper(node.left);
-			helper(node.right);
-			int nl = node.left == null ? 0 : node.left.val;
-			int nr = node.right == null ? 0 : node.right.val;
-			long val1 = ((sum - nl) * nl);
-			long val2 = ((sum - nr) * nr);
-			ans = Math.max(ans, Math.max(val1, val2));
-			node.val = node.val + nl + nr;
+
 		}
 	}
 }

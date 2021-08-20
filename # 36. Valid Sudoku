@@ -1,0 +1,70 @@
+package com.leetcode.problems;
+
+public class Question36 {
+	class Solution {
+		public boolean isValidSudoku(char[][] board) {
+			if (!validRows(board))
+				return false;
+			if (!validColumns(board))
+				return false;
+			for (int i = 0; i < 9; i += 3) {
+				for (int j = 0; j < 9; j += 3) {
+					if (!validSquare(board, i, j))
+						return false;
+				}
+			}
+			return true;
+		}
+
+		private boolean validRows(char[][] board) {
+			for (char[] row : board) {
+				int[] seen = new int[10];
+				for (char c : row) {
+					if (c == '.')
+						continue;
+					if (c < '0' || c > '9')
+						return false;
+					if (seen[c - '0'] == 1)
+						return false;
+					seen[c - '0'] = 1;
+				}
+			}
+
+			return true;
+		}
+
+		private boolean validColumns(char[][] board) {
+			for (int i = 0; i < 9; i++) {
+				int[] seen = new int[10];
+				for (int j = 0; j < 9; j++) {
+					char c = board[j][i];
+					if (c == '.')
+						continue;
+					if (c < '0' || c > '9')
+						return false;
+					if (seen[c - '0'] == 1)
+						return false;
+					seen[c - '0'] = 1;
+				}
+			}
+			return true;
+		}
+
+		private boolean validSquare(char[][] board, int row, int col) {
+			int[] seen = new int[10];
+			for (int i = row; i < row + 3; i++) {
+				for (int j = col; j < col + 3; j++) {
+					char c = board[i][j];
+					if (c == '.')
+						continue;
+					if (c < '0' || c > '9')
+						return false;
+					if (seen[c - '0'] == 1)
+						return false;
+					seen[c - '0'] = 1;
+				}
+			}
+			return true;
+		}
+	}
+}

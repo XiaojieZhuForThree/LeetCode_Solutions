@@ -3,10 +3,12 @@ package com.leetcode.problems;
 public class Question1526 {
 	class Solution {
 		public int minNumberOperations(int[] target) {
-			int pre = 0, ans = 0;
-			for (int i : target) {
-				ans += Math.max(i - pre, 0);
-				pre = i;
+			if (target == null || target.length == 0)
+				return 0;
+			int ans = target[0];
+			for (int i = 1; i < target.length; i++) {
+				if (target[i] > target[i - 1])
+					ans += target[i] - target[i - 1];
 			}
 			return ans;
 		}

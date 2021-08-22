@@ -1,6 +1,5 @@
 package com.leetcode.problems;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,16 +9,15 @@ public class Question853 {
 		public int carFleet(int target, int[] position, int[] speed) {
 			if (position == null || position.length == 0)
 				return 0;
-			for (int i = 0; i < position.length; i++)
-				position[i] = target - position[i];
-			List<Integer> list = new ArrayList<>();
-			for (int i = 0; i < position.length; i++)
-				list.add(i);
-			Collections.sort(list, (a, b) -> position[a] - position[b]);
-			int ans = position.length;
-			double slowest = (position[list.get(0)] * 1.0) / speed[list.get(0)];
-			for (int i = 1; i < list.size(); i++) {
-				double time = (position[list.get(i)] * 1.0) / speed[list.get(i)];
+			int n = position.length;
+			List<Integer> indices = new ArrayList<>();
+			for (int i = 0; i < n; i++)
+				indices.add(i);
+			Collections.sort(indices, (a, b) -> Integer.compare(target - position[a], target - position[b]));
+			double slowest = 1.0 * (target - position[indices.get(0)]) / speed[indices.get(0)];
+			int ans = n;
+			for (int i = 1; i < n; i++) {
+				double time = 1.0 * (target - position[indices.get(i)]) / speed[indices.get(i)];
 				if (time <= slowest)
 					ans--;
 				else

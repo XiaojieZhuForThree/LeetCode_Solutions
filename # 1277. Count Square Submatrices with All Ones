@@ -3,19 +3,20 @@ package com.leetcode.problems;
 public class Question1277 {
 	class Solution {
 		public int countSquares(int[][] matrix) {
+			if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
+				return 0;
 			int m = matrix.length, n = matrix[0].length;
 			int ans = 0;
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
-					if (matrix[i][j] == 1) {
-						ans++;
-						int l = j > 0 ? matrix[i][j - 1] : 0;
-						int u = i > 0 ? matrix[i - 1][j] : 0;
-						int d = i > 0 && j > 0 ? matrix[i - 1][j - 1] : 0;
-						int len = Math.min(l, Math.min(u, d));
-						ans += len;
-						matrix[i][j] += len;
-					}
+					if (matrix[i][j] == 0)
+						continue;
+					int up = i > 0 ? matrix[i - 1][j] : 0;
+					int left = j > 0 ? matrix[i][j - 1] : 0;
+					int diag = i > 0 && j > 0 ? matrix[i - 1][j - 1] : 0;
+					int side = 1 + Math.min(diag, Math.min(up, left));
+					ans += side;
+					matrix[i][j] = side;
 				}
 			}
 			return ans;

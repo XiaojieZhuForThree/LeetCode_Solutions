@@ -1,64 +1,60 @@
 package com.leetcode.problems;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Question1548 {
 	class Solution {
-		List<List<Integer>> graph = new ArrayList<>();
-		int[][] visited;
-		int[][] dp;
-
 		public List<Integer> mostSimilar(int n, int[][] roads, String[] names, String[] targetPath) {
-			dp = new int[n][targetPath.length];
-			visited = new int[n][targetPath.length];
-			for (int[] i : visited) {
-				Arrays.fill(i, -1);
-			}
-			for (int i = 0; i < n; i++) {
-				graph.add(new ArrayList<>());
-			}
+			if (n == 0 || roads == null || roads.length == 0)
+				return List.of();
+			int t = targetPath.length;
+			Map<Integer, List<Integer>> map = new HashMap<>();
+			int[][] dp = new int[n][t], prev = new int[n][t];
+			for (int i = 0; i < n; i++)
+				prev[i][0] = -1;
+			for (int i = 0; i < n; i++)
+				dp[i][0] = getDiff(names[i], targetPath[0]);
 			for (int[] road : roads) {
-				graph.get(road[0]).add(road[1]);
-				graph.get(road[1]).add(road[0]);
+				map.putIfAbsent(road[0], new ArrayList<>());
+				map.putIfAbsent(road[1], new ArrayList<>());
+				map.get(road[0]).add(road[1]);
+				map.get(road[1]).add(road[0]);
 			}
-			int min = Integer.MAX_VALUE;
-			int start = 0;
+			for (int i = 1; i < t; i++) {
+				for (int j = 0; j < n; j++) {
+					int diff = getDiff(names[j], targetPath[i]);
+					int min = Integer.MAX_VALUE;
+					for (int k : map.getOrDefault(j, new ArrayList<>())) {
+						if (dp[k][i - 1] + diff < min) {
+							min = dp[k][i - 1] + diff;
+							prev[j][i] = k;
+						}
+					}
+					dp[j][i] = min;
+				}
+			}
+			int min = Integer.MAX_VALUE, end = -1;
 			for (int i = 0; i < n; i++) {
-				int dis = dfs(i, 0, names, targetPath);
-				if (dis < min) {
-					min = dis;
-					start = i;
+				if (dp[i][t - 1] < min) {
+					min = dp[i][t - 1];
+					end = i;
 				}
 			}
 			List<Integer> ans = new ArrayList<>();
-			while (ans.size() < targetPath.length) {
-				ans.add(start);
-				start = dp[start][ans.size() - 1];
+			for (int i = t - 1; i >= 0; i--) {
+				ans.add(end);
+				end = prev[end][i];
 			}
+			Collections.reverse(ans);
 			return ans;
 		}
 
-		private int dfs(int index, int cur, String[] names, String[] targetPath) {
-			if (visited[index][cur] != -1) {
-				return visited[index][cur];
-			}
-			int dis = (names[index].equals(targetPath[cur])) ? 0 : 1;
-			if (cur == targetPath.length - 1) {
-				return dis;
-			}
-			int min = Integer.MAX_VALUE;
-			for (int next : graph.get(index)) {
-				int nextCost = dfs(next, cur + 1, names, targetPath);
-				if (nextCost < min) {
-					min = nextCost;
-					dp[index][cur] = next;
-				}
-			}
-			dis += min;
-			visited[index][cur] = dis;
-			return dis;
+		private int getDiff(String a, String b) {
+			return a.equals(b) ? 0 : 1;
 		}
 	}
 }

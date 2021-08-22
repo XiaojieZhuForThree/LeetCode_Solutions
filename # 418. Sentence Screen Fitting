@@ -1,25 +1,61 @@
 package com.leetcode.problems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Question418 {
 	class Solution {
 		public int wordsTyping(String[] sentence, int rows, int cols) {
-			int ans = 0;
-			int curRow = 1;
-			int ptr = 0;
-			int i = 0;
-			while (curRow <= rows) {
-				ptr += sentence[i].length();
-				if (ptr > cols) {
-					ptr = 0;
-					curRow++;
-				} else {
-					i++;
-					if (i == sentence.length) {
-						ans++;
-						i = 0;
+			List<Character> list = new ArrayList<>();
+			for (String s : sentence) {
+				for (char c : s.toCharArray())
+					list.add(c);
+				list.add(' ');
+			}
+			int size = list.size();
+			int ind = 0, ans = 0;
+			for (int i = 0; i < rows; i++) {
+				int overHead = size - ind;
+				if (overHead == cols || overHead - 1 == cols) {
+					ind = 0;
+					ans++;
+				} else if (overHead - 1 > cols) {
+					ind += cols - 1;
+					if (list.get(ind) == ' ')
+						ind = (ind + 1) % size;
+					else if (ind < size - 1 && list.get(ind + 1) == ' ')
+						ind = (ind + 2) % size;
+					else {
+						while (ind >= 0 && list.get(ind) != ' ')
+							ind--;
+						ind = (ind + 1) % size;
 					}
-					if (ptr < cols) {
-						ptr++;
+				} else {
+					ans++;
+					int rem = cols - overHead;
+					if (rem % size == 0) {
+						ans += rem / size;
+						ind = 0;
+					} else if (rem % size == size - 1) {
+						ans += (rem / size) + 1;
+						ind = 0;
+					} else {
+						ans += rem / size;
+						ind = (rem % size + size - 1) % size;
+						if (ind == size - 1 || ind == size - 2) {
+							ans++;
+							ind = 0;
+						} else {
+							if (list.get(ind) == ' ')
+								ind = (ind + 1) % size;
+							else if (ind < size - 1 && list.get(ind + 1) == ' ')
+								ind = (ind + 2) % size;
+							else {
+								while (ind >= 0 && list.get(ind) != ' ')
+									ind--;
+								ind = (ind + 1) % size;
+							}
+						}
 					}
 				}
 			}

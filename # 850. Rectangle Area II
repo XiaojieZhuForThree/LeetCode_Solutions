@@ -1,0 +1,83 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+
+public class Question850 {
+	class Solution {
+		public int rectangleArea(int[][] A) {
+			long mod = 1_000_000_007;
+			List<int[]> events = new ArrayList<>();
+			for (int i = 0; i < A.length; i++) {
+				int[] rec = A[i];
+				int x1 = rec[0], y1 = rec[1], x2 = rec[2], y2 = rec[3];
+				int[] enter = new int[] { 1, i, x1, y1, y2 };
+				int[] leave = new int[] { -1, i, x2, y1, y2 };
+				events.add(enter);
+				events.add(leave);
+			}
+			Collections.sort(events, new Comparator<int[]>() {
+				@Override
+				public int compare(int[] a, int[] b) {
+					if (a[2] == b[2]) {
+						return b[0] - a[0];
+					}
+					return a[2] - b[2];
+				}
+			});
+			TreeSet<int[]> set = new TreeSet<>((a, b) -> {
+				if (a[3] == b[3]) {
+					if (a[4] == b[4])
+						return a[1] - b[1];
+					return a[4] - b[4];
+				}
+				return a[3] - b[3];
+			});
+			int prevX = 0;
+			long ans = 0;
+			for (int i = 0; i < events.size(); i++) {
+				int[] cur = events.get(i);
+				int curX = cur[2];
+				long wid = curX - prevX;
+				long height = getH(set);
+				ans += (wid * height) % mod;
+				if (cur[0] == 1)
+					set.add(cur);
+				else
+					remove(set, cur);
+				prevX = curX;
+			}
+			return (int) (ans % mod);
+		}
+
+		private void remove(TreeSet<int[]> set, int[] cur) {
+			for (int[] event : set) {
+				if (event[1] == cur[1]) {
+					set.remove(event);
+					return;
+				}
+			}
+			return;
+		}
+
+		private long getH(TreeSet<int[]> set) {
+			long ans = 0, preS = 0, preE = 0;
+			for (int[] event : set) {
+				int curS = event[3], curE = event[4];
+				if (curS <= preE) {
+					preS = Math.min(preS, curS);
+					preE = Math.max(preE, curE);
+				} else {
+					ans += preE - preS;
+					preS = curS;
+					preE = curE;
+				}
+			}
+			ans += preE - preS;
+			return ans;
+		}
+	}
+}

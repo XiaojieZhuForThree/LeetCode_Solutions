@@ -7,31 +7,33 @@ import java.util.TreeSet;
 public class Question792 {
 	class Solution {
 		public int numMatchingSubseq(String s, String[] words) {
-			if (s == null || words == null || words.length == 0)
+			if (s == null || s.length() == 0 || words == null || words.length == 0)
 				return 0;
 			Map<Character, TreeSet<Integer>> map = new HashMap<>();
 			for (int i = 0; i < s.length(); i++) {
-				map.putIfAbsent(s.charAt(i), new TreeSet<>());
-				map.get(s.charAt(i)).add(i);
+				char c = s.charAt(i);
+				map.putIfAbsent(c, new TreeSet<>());
+				map.get(c).add(i);
 			}
 			int ans = 0;
 			for (String w : words) {
-				if (isSub(map, w))
+				if (isSubseq(w, map))
 					ans++;
 			}
 			return ans;
 		}
 
-		private boolean isSub(Map<Character, TreeSet<Integer>> map, String w) {
-			int pos = -1;
+		private boolean isSubseq(String w, Map<Character, TreeSet<Integer>> map) {
+			int p = 0;
 			for (int i = 0; i < w.length(); i++) {
 				char c = w.charAt(i);
 				if (!map.containsKey(c))
 					return false;
-				Integer val = map.get(c).higher(pos);
-				if (val == null)
+				TreeSet<Integer> set = map.get(c);
+				Integer ind = set.ceiling(p);
+				if (ind == null)
 					return false;
-				pos = val;
+				p = ind + 1;
 			}
 			return true;
 		}

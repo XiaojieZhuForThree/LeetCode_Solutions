@@ -1,0 +1,34 @@
+package com.leetcode.problems;
+
+import com.leetcode.model.TreeNode;
+
+public class Question653 {
+	class Solution {
+		public boolean findTarget(TreeNode root, int k) {
+			if (root == null)
+				return false;
+			return dfs(root, root, k);
+		}
+
+		private boolean dfs(TreeNode root, TreeNode node, int k) {
+			if (node == null)
+				return false;
+			if (getAns(root, node, k - node.val))
+				return true;
+			return dfs(root, node.left, k) || dfs(root, node.right, k);
+		}
+
+		private boolean getAns(TreeNode root, TreeNode cur, int val) {
+			TreeNode node = root;
+			while (node != null) {
+				if (node.val == val && node != cur)
+					return true;
+				if (node.val < val)
+					node = node.right;
+				else
+					node = node.left;
+			}
+			return false;
+		}
+	}
+}

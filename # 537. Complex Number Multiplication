@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import java.util.List;
+
+public class Question537 {
+	class Solution {
+		public String complexNumberMultiply(String num1, String num2) {
+			List<Integer> p1 = getParts(num1), p2 = getParts(num2);
+			int l = p1.get(0) * p2.get(0) - p1.get(1) * p2.get(1);
+			int r = p1.get(0) * p2.get(1) + p1.get(1) * p2.get(0);
+			return getNum(List.of(l, r));
+		}
+
+		private List<Integer> getParts(String num) {
+			int i = num.indexOf('+');
+			int val1 = Integer.parseInt(num.substring(0, i));
+			int val2 = Integer.parseInt(num.substring(i + 1, num.length() - 1));
+			return List.of(val1, val2);
+		}
+
+		private String getNum(List<Integer> list) {
+			return list.get(0) + "+" + list.get(1) + "i";
+		}
+	}
+}

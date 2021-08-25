@@ -1,0 +1,36 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question633 {
+	class Solution1 {
+		public boolean judgeSquareSum(int c) {
+			Map<Long, Long> map = new HashMap<>();
+			for (long i = 0; i * i <= c; i++)
+				map.put(i * i, i);
+			for (int i = 0; i * i <= c / 2; i++) {
+				long r = c - i * i;
+				if (map.containsKey(r))
+					return true;
+			}
+			return false;
+		}
+	}
+
+	class Solution2 {
+		public boolean judgeSquareSum(int c) {
+			int l = 0, r = (int) (Math.sqrt(c));
+			while (l <= r) {
+				int val = l * l + r * r;
+				if (val == c)
+					return true;
+				else if (val > c)
+					r--;
+				else
+					l++;
+			}
+			return false;
+		}
+	}
+}

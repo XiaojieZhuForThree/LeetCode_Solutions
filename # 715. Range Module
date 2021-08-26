@@ -1,7 +1,5 @@
 package com.leetcode.problems;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 public class Question715 {
@@ -13,21 +11,18 @@ public class Question715 {
 		}
 
 		public void addRange(int left, int right) {
-			if (left == right)
+			if (left >= right)
 				return;
-			List<Integer> list = new ArrayList<>();
-			for (int l : map.keySet()) {
-				int r = map.get(l);
-				if (r < left || l > right)
-					continue;
-				else {
-					left = Math.min(left, l);
-					right = Math.max(right, r);
-					list.add(l);
-				}
+			Integer floorOfRight = map.floorKey(right);
+			while (floorOfRight != null) {
+				int rightVal = map.get(floorOfRight);
+				if (rightVal < left)
+					break;
+				left = Math.min(left, floorOfRight);
+				right = Math.max(right, rightVal);
+				map.remove(floorOfRight);
+				floorOfRight = map.floorKey(right);
 			}
-			for (int i : list)
-				map.remove(i);
 			map.put(left, right);
 		}
 
@@ -47,6 +42,7 @@ public class Question715 {
 				addRange(l, left);
 				addRange(right, r);
 			}
+			return;
 		}
 	}
 

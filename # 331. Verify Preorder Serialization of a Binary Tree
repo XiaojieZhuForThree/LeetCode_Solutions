@@ -1,0 +1,49 @@
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Question331 {
+	class Solution {
+		public boolean isValidSerialization(String preorder) {
+			if (preorder == null || preorder.length() == 0)
+				return false;
+			if (preorder.equals("#"))
+				return true;
+			Deque<String> stack = new ArrayDeque<>();
+			Deque<Integer> subs = new ArrayDeque<>();
+			String[] nodes = preorder.split(",");
+			if (nodes[0].equals("#"))
+				return false;
+			stack.offerLast(nodes[0]);
+			subs.offerLast(0);
+			for (int i = 1; i < nodes.length; i++) {
+				String node = nodes[i];
+				if (node.equals("#")) {
+					if (stack.isEmpty())
+						return false;
+					int sub = subs.pollLast();
+					if (sub == 1) {
+						stack.pollLast();
+					} else {
+						subs.offerLast(1);
+					}
+				} else {
+					if (stack.isEmpty()) {
+						return false;
+					} else {
+						int sub = subs.pollLast();
+						if (sub == 1) {
+							stack.pollLast();
+						} else {
+							subs.offerLast(1);
+						}
+						subs.offerLast(0);
+						stack.offerLast(node);
+					}
+				}
+			}
+			return stack.isEmpty() && subs.isEmpty();
+		}
+	}
+}

@@ -1,13 +1,28 @@
-class Solution {
-    public int strStr(String haystack, String needle) {
-        if (needle == null || needle.length() == 0) {
-            return 0;
-        }
-        for (int i = 0; i <= haystack.length()-needle.length(); i++) {
-            if (haystack.substring(i, i+needle.length()).equals(needle)) {
-                return i;
-            }
-        }
-        return -1;
-    }
+package com.leetcode.problems;
+
+public class Question28 {
+	class Solution {
+		public int strStr(String haystack, String needle) {
+			int m = haystack.length(), n = needle.length();
+			if (n == 0)
+				return 0;
+			int[] preSuf = new int[n];
+			for (int i = 1, j = 0; i < n; i++) {
+				while (j > 0 && needle.charAt(i) != needle.charAt(j))
+					j = preSuf[j - 1];
+				if (needle.charAt(i) == needle.charAt(j))
+					j++;
+				preSuf[i] = j;
+			}
+			for (int i = 0, j = 0; i < m; i++) {
+				while (j > 0 && haystack.charAt(i) != needle.charAt(j))
+					j = preSuf[j - 1];
+				if (haystack.charAt(i) == needle.charAt(j))
+					j++;
+				if (j == n)
+					return i - n + 1;
+			}
+			return -1;
+		}
+	}
 }

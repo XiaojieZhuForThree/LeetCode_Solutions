@@ -3,40 +3,37 @@ package com.leetcode.problems;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.leetcode.api.Robot;
+import com.leetcode.model.Robot;
 
 public class Question489 {
 	class Solution {
-		int[][] dirs = new int[][] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
+		int[][] dirs = new int[][] { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 		Set<String> set = new HashSet<>();
 
 		public void cleanRoom(Robot robot) {
 			dfs(robot, 0, 0, 0);
 		}
 
-		private void dfs(Robot robot, int i, int j, int dir) {
-			if (!set.add(makeKey(i, j, dir))) {
+		private void dfs(Robot robot, int i, int j, int cur) {
+			String s = i + ", " + j + ", " + cur;
+			if (!set.add(s)) {
 				return;
 			}
 			robot.clean();
 			for (int k = 0; k < 4; k++) {
 				if (robot.move()) {
-					int index = (dir + k) % 4;
-					int[] next = dirs[index];
-					dfs(robot, i + next[0], j + next[1], index);
-					robot.turnRight();
-					robot.turnRight();
+					int index = (cur + k) % 4;
+					dfs(robot, i + dirs[index][0], j + dirs[index][1], index);
+					robot.turnLeft();
+					robot.turnLeft();
 					robot.move();
 					robot.turnLeft();
 					robot.turnLeft();
 				}
 				robot.turnRight();
 			}
-			return;
-		}
 
-		private String makeKey(int i, int j, int dir) {
-			return i + ", " + j + ", " + dir;
+			return;
 		}
 	}
 }

@@ -1,0 +1,52 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question1986 {
+	class Solution {
+		public int minSessions(int[] tasks, int sessionTime) {
+			int n = tasks.length;
+			int[][] dp = new int[n + 1][(1 << (n + 1))];
+			int[][] rems = new int[n + 1][1 << (n + 1)];
+			for (int[] arr : dp)
+				Arrays.fill(arr, -1);
+			for (int i = 0; i < n; i++) {
+				dp[1][1 << i] = 1;
+				rems[1][1 << i] = sessionTime - tasks[i];
+			}
+			for (int i = 1; i < n; i++) {
+				for (int j = 0; j < (1 << (n + 1)); j++) {
+					if (dp[i][j] == -1)
+						continue;
+					for (int k = 0; k < n; k++) {
+						if ((j & (1 << k)) != 0)
+							continue;
+						int left = rems[i][j];
+						if (left < tasks[k]) {
+							if (dp[i + 1][j | (1 << k)] == -1 || dp[i + 1][j | (1 << k)] > dp[i][j] + 1
+									|| dp[i + 1][j | (1 << k)] == dp[i][j] + 1
+											&& rems[i + 1][j | (1 << k)] < sessionTime - tasks[k]) {
+								dp[i + 1][j | (1 << k)] = dp[i][j] + 1;
+								rems[i + 1][j | (1 << k)] = sessionTime - tasks[k];
+							}
+						} else {
+							if (dp[i + 1][j | (1 << k)] == -1 || dp[i + 1][j | (1 << k)] > dp[i][j]
+									|| dp[i + 1][j | (1 << k)] == dp[i][j]
+											&& rems[i + 1][j | (1 << k)] < left - tasks[k]) {
+								dp[i + 1][j | (1 << k)] = dp[i][j];
+								rems[i + 1][j | (1 << k)] = left - tasks[k];
+							}
+						}
+					}
+				}
+			}
+			int ans = Integer.MAX_VALUE;
+			for (int i : dp[n]) {
+				if (i == -1)
+					continue;
+				ans = Math.min(ans, i);
+			}
+			return ans;
+		}
+	}
+}

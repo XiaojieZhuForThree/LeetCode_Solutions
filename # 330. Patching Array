@@ -1,0 +1,28 @@
+package com.leetcode.problems;
+
+public class Question330 {
+	class Solution {
+		public int minPatches(int[] nums, int n) {
+			int pat = 0;
+			long cur = 0;
+			for (int i : nums) {
+				if (cur >= n)
+					break;
+				if (cur >= i - 1)
+					cur += i;
+				else {
+					while (cur < Math.min(i - 1, n)) {
+						pat++;
+						cur = cur * 2 + 1;
+					}
+					cur += i;
+				}
+			}
+			while (cur < n) {
+				pat++;
+				cur = cur * 2 + 1;
+			}
+			return pat;
+		}
+	}
+}

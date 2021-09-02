@@ -1,0 +1,27 @@
+package com.leetcode.problems;
+
+public class Question565 {
+	class Solution {
+		public int arrayNesting(int[] nums) {
+			if (nums == null || nums.length == 0)
+				return 0;
+			int n = nums.length;
+			boolean seen[] = new boolean[n];
+			int ans = 0;
+			for (int i = 0; i < n; i++) {
+				if (seen[i])
+					continue;
+				seen[i] = true;
+				int cur = 1;
+				int start = nums[i];
+				while (start != i) {
+					cur++;
+					seen[start] = true;
+					start = nums[start];
+				}
+				ans = Math.max(ans, cur);
+			}
+			return ans;
+		}
+	}
+}

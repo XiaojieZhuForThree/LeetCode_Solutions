@@ -1,0 +1,64 @@
+package com.leetcode.problems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.leetcode.model.TreeNode;
+
+public class Question95 {
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+	class Solution {
+		Map<String, List<TreeNode>> map = new HashMap<>();
+
+		public List<TreeNode> generateTrees(int n) {
+			return helper(1, n);
+		}
+
+		private List<TreeNode> helper(int l, int r) {
+			if (l > r)
+				return List.of();
+			String key = l + ", " + r;
+			if (map.containsKey(key))
+				return map.get(key);
+			List<TreeNode> ans = new ArrayList<>();
+			for (int i = l; i <= r; i++) {
+				List<TreeNode> left = helper(l, i - 1);
+				List<TreeNode> right = helper(i + 1, r);
+				if (left.isEmpty() && right.isEmpty())
+					ans.add(new TreeNode(i));
+				else if (left.isEmpty()) {
+					for (TreeNode rn : right) {
+						TreeNode node = new TreeNode(i);
+						node.right = rn;
+						ans.add(node);
+					}
+				} else if (right.isEmpty()) {
+					for (TreeNode ln : left) {
+						TreeNode node = new TreeNode(i);
+						node.left = ln;
+						ans.add(node);
+					}
+				} else {
+					for (TreeNode ln : left) {
+						for (TreeNode rn : right) {
+							TreeNode node = new TreeNode(i);
+							node.left = ln;
+							node.right = rn;
+							ans.add(node);
+						}
+					}
+				}
+
+			}
+			map.put(key, ans);
+			return ans;
+		}
+	}
+}

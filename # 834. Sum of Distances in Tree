@@ -1,0 +1,52 @@
+package com.leetcode.problems;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+public class Question834 {
+	class Solution {
+		public int[] sumOfDistancesInTree(int n, int[][] edges) {
+			Map<Integer, List<Integer>> map = new HashMap<>();
+			if (n == 1) {
+				return new int[] { 0 };
+			}
+			for (int[] edge : edges) {
+				map.putIfAbsent(edge[0], new LinkedList<>());
+				map.putIfAbsent(edge[1], new LinkedList<>());
+				map.get(edge[0]).add(edge[1]);
+				map.get(edge[1]).add(edge[0]);
+			}
+
+			int[] ans = new int[n];
+			int[] count = new int[n];
+			getCountSum(0, -1, map, ans, count);
+			getAns(0, -1, map, ans, count);
+			return ans;
+		}
+
+		private void getCountSum(int root, int prev, Map<Integer, List<Integer>> map, int[] ans, int[] count) {
+			for (int next : map.get(root)) {
+				if (next == prev) {
+					continue;
+				}
+				getCountSum(next, root, map, ans, count);
+				count[root] += count[next];
+				ans[root] += ans[next] + count[next];
+			}
+			count[root] += 1;
+		}
+
+		private void getAns(int root, int prev, Map<Integer, List<Integer>> map, int[] ans, int[] count) {
+			for (int next : map.get(root)) {
+				if (next == prev) {
+					continue;
+				}
+				ans[next] = ans[root] - count[next] + ans.length - count[next];
+				getAns(next, root, map, ans, count);
+			}
+		}
+
+	}
+}

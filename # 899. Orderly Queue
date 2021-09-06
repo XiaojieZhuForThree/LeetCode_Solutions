@@ -1,0 +1,25 @@
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Question899 {
+	class Solution {
+		public String orderlyQueue(String s, int k) {
+			if (s == null || s.length() == 0 || k == 0)
+				return s;
+			if (k == 1) {
+				String ans = s;
+				for (int i = 1; i <= s.length(); i++) {
+					String cand = s.substring(i) + s.substring(0, i);
+					if (cand.compareTo(ans) < 0)
+						ans = cand;
+				}
+				return ans;
+			} else {
+				char[] chars = s.toCharArray();
+				Arrays.sort(chars);
+				return new String(chars);
+			}
+		}
+	}
+}

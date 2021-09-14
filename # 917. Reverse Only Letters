@@ -1,33 +1,27 @@
-package problems;
+package com.leetcode.problems;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Question917 {
 	class Solution {
-		public String reverseOnlyLetters(String S) {
-			if (S == null || S.length() == 0) {
-				return S;
+		public String reverseOnlyLetters(String s) {
+			if (s == null || s.length() == 0)
+				return s;
+			char[] arr = s.toCharArray();
+			Deque<Character> stack = new ArrayDeque<>();
+			for (char c : arr) {
+				if (Character.isLetter(c))
+					stack.offerLast(c);
 			}
-			char[] charS = S.toCharArray();
-			for (int i = 0, j = charS.length - 1; i < j;) {
-				char ci = charS[i], cj = charS[j];
-				if (Character.isLetter(ci) && Character.isLetter(cj)) {
-					swap(charS, i, j, ci, cj);
-					i++;
-					j--;
-				} else if (!Character.isLetter(ci) && Character.isLetter(cj)) {
-					i++;
-				} else if (Character.isLetter(ci) && !Character.isLetter(cj)) {
-					j--;
-				} else {
-					i++;
-					j--;
-				}
+			StringBuilder sb = new StringBuilder();
+			for (char c : arr) {
+				if (Character.isLetter(c))
+					sb.append(stack.pollLast());
+				else
+					sb.append(c);
 			}
-			return new String(charS);
-		}
-
-		private void swap(char[] charS, int i, int j, char ci, char cj) {
-			charS[j] = ci;
-			charS[i] = cj;
+			return sb.toString();
 		}
 	}
 }

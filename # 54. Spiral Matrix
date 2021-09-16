@@ -6,40 +6,30 @@ import java.util.List;
 public class Question54 {
 	class Solution {
 		public List<Integer> spiralOrder(int[][] matrix) {
+			if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
+				return List.of();
 			int m = matrix.length, n = matrix[0].length;
+			int l = 0, r = n - 1, u = 0, d = m - 1;
 			List<Integer> ans = new ArrayList<>();
-			traverse(matrix, 0, 0, m - 1, n - 1, ans);
+			while (l <= r && u <= d) {
+				for (int i = l; i <= r; i++)
+					ans.add(matrix[u][i]);
+				for (int i = u + 1; i <= d; i++)
+					ans.add(matrix[i][r]);
+				if (d > u) {
+					for (int i = r - 1; i >= l; i--)
+						ans.add(matrix[d][i]);
+				}
+				if (l < r) {
+					for (int i = d - 1; i > u; i--)
+						ans.add(matrix[i][l]);
+				}
+				l++;
+				r--;
+				u++;
+				d--;
+			}
 			return ans;
-		}
-
-		private void traverse(int[][] matrix, int lx, int ly, int rx, int ry, List<Integer> ans) {
-			if (lx > rx || ly > ry) {
-				return;
-			}
-			if (lx == rx) {
-				for (int i = ly; i <= ry; i++) {
-					ans.add(matrix[lx][i]);
-				}
-				return;
-			} else if (ly == ry) {
-				for (int i = lx; i <= rx; i++) {
-					ans.add(matrix[i][ly]);
-				}
-				return;
-			}
-			for (int i = ly; i <= ry; i++) {
-				ans.add(matrix[lx][i]);
-			}
-			for (int i = lx + 1; i <= rx; i++) {
-				ans.add(matrix[i][ry]);
-			}
-			for (int i = ry - 1; i >= ly; i--) {
-				ans.add(matrix[rx][i]);
-			}
-			for (int i = rx - 1; i > lx; i--) {
-				ans.add(matrix[i][ly]);
-			}
-			traverse(matrix, lx + 1, ly + 1, rx - 1, ry - 1, ans);
 		}
 	}
 }

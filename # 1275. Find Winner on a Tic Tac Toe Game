@@ -1,0 +1,49 @@
+package com.leetcode.problems;
+
+public class Question1275 {
+	class Solution {
+		public String tictactoe(int[][] moves) {
+			int[][] board = new int[3][3];
+			for (int i = 0; i < moves.length; i++) {
+				int[] move = moves[i];
+				int player = 1 + (i % 2);
+				board[move[0]][move[1]] = player;
+				if (win(board, player))
+					return player == 1 ? "A" : "B";
+			}
+			return moves.length == 9 ? "Draw" : "Pending";
+		}
+
+		private boolean win(int[][] board, int player) {
+			for (int i = 0; i < 3; i++) {
+				boolean rowMatch = true;
+				for (int j = 0; j < 3; j++) {
+					if (board[i][j] != player)
+						rowMatch = false;
+				}
+				if (rowMatch)
+					return true;
+			}
+			for (int j = 0; j < 3; j++) {
+				boolean colMatch = true;
+				for (int i = 0; i < 3; i++) {
+					if (board[i][j] != player)
+						colMatch = false;
+				}
+				if (colMatch)
+					return true;
+			}
+			boolean diagMatch = true;
+			for (int i = 0; i < 3; i++) {
+				if (board[i][i] != player)
+					diagMatch = false;
+			}
+			boolean aDiagMatch = true;
+			for (int i = 0; i < 3; i++) {
+				if (board[i][2 - i] != player)
+					aDiagMatch = false;
+			}
+			return diagMatch || aDiagMatch;
+		}
+	}
+}

@@ -1,0 +1,29 @@
+package com.leetcode.problems;
+
+public class Quest115 {
+	class Solution {
+		public int numDistinct(String s, String t) {
+			if (s == null || t == null || s.length() < t.length())
+				return 0;
+			int m = s.length(), n = t.length();
+			int[][] dp = new int[m][n];
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < m; j++) {
+					if (t.charAt(i) != s.charAt(j))
+						continue;
+					if (i == 0)
+						dp[j][i] = 1;
+					else {
+						for (int k = 0; k < j; k++) {
+							dp[j][i] += dp[k][i - 1];
+						}
+					}
+				}
+			}
+			int ans = 0;
+			for (int i = 0; i < m; i++)
+				ans += dp[i][n - 1];
+			return ans;
+		}
+	}
+}

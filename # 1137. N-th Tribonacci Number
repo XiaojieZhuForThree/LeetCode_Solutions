@@ -1,0 +1,23 @@
+package com.leetcode.problems;
+
+public class Question1137 {
+	class Solution {
+		public int tribonacci(int n) {
+			if (n == 0)
+				return 0;
+			if (n == 1)
+				return 1;
+			if (n == 2)
+				return 1;
+			int[] prev = new int[] { 0, 1, 1 };
+			for (int i = 3; i <= n; i++) {
+				int t = prev[0], j = prev[1], k = prev[2];
+				int ans = t + j + k;
+				prev[0] = j;
+				prev[1] = k;
+				prev[2] = ans;
+			}
+			return prev[2];
+		}
+	}
+}

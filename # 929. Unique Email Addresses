@@ -1,49 +1,33 @@
-class Solution {
-    public int numUniqueEmails(String[] emails) {
-        Set eSet = new HashSet();
-        for (String email : emails){
-            StringBuilder addr = new StringBuilder(16);
-            char[] elements = email.toCharArray();
-            int i = 0;
-            while (elements[i] != '@'){
-                if (elements[i] == '+'){
-                    while (elements[i] != '@'){
-                        i++;
-                    }
-                    break;
-                } else if (elements[i] != '.'){
-                    addr.append(elements[i]);
-                }
-                i++;
-            }            
-            addr.append(Arrays.copyOfRange(elements,i,elements.length));
-            eSet.add(addr.toString());
-        }
-        return eSet.size();
-    }
-}
+package com.leetcode.problems;
 
+import java.util.HashSet;
+import java.util.Set;
 
-class Solution {
-    public int numUniqueEmails(String[] emails) {
-        Set<String> set = new HashSet<>();
-        for (String email : emails) {
-            StringBuilder sb = new StringBuilder();
-            String[] sep = email.split("@");
-            String local = sep[0];
-            for (char c : local.toCharArray()) {
-                if (c == '.') {
-                    continue;
-                } else if (c == '+') {
-                    break;
-                } else {
-                    sb.append(c);
-                }
-            }
-            sb.append('@');
-            sb.append(sep[1]);
-            set.add(sb.toString());
-        }
-        return set.size();
-    }
+public class Question929 {
+	class Solution {
+		public int numUniqueEmails(String[] emails) {
+			Set<String> seen = new HashSet<>();
+			for (String email : emails) {
+				seen.add(processedEmail(email));
+			}
+			return seen.size();
+		}
+
+		private String processedEmail(String email) {
+			String[] comp = email.split("@");
+			String pref = comp[0];
+			StringBuilder sb = new StringBuilder();
+			for (char c : pref.toCharArray()) {
+				if (c == '+')
+					break;
+				else if (c == '.')
+					continue;
+				else
+					sb.append(c);
+			}
+			sb.append("@");
+			sb.append(comp[1]);
+			return sb.toString();
+		}
+	}
 }

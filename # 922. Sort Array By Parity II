@@ -1,20 +1,20 @@
-package problems;
+package com.leetcode.problems;
 
 public class Question922 {
 	class Solution {
-		public int[] sortArrayByParityII(int[] A) {
-			int[] sortA = new int[A.length];
-			int even = 0, odd = 1;
-			for (int i : A) {
-				if (i % 2 == 0) {
-					sortA[even] = i;
-					even += 2;
+		public int[] sortArrayByParityII(int[] nums) {
+			int[] ans = new int[nums.length];
+			int i = 0, j = 1;
+			for (int n : nums) {
+				if (n % 2 == 0) {
+					ans[i] = n;
+					i += 2;
 				} else {
-					sortA[odd] = i;
-					odd += 2;
+					ans[j] = n;
+					j += 2;
 				}
 			}
-			return sortA;
+			return ans;
 		}
 	}
 }

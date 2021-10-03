@@ -1,10 +1,20 @@
-class Solution {
-    public boolean canJump(int[] nums) {
-        int max = 0;
-        for(int i = 0; i < nums.length; i++) {
-            if(i > max) return  false;
-            max = Math.max(nums[i] + i, max);
-        }
-        return true;
-    }
-} 
+package com.leetcode.problems;
+
+public class Question55 {
+	class Solution {
+		public boolean canJump(int[] nums) {
+			if (nums == null || nums.length == 0)
+				return false;
+			int n = nums.length, cur = n - 1;
+			boolean[] dp = new boolean[n];
+			dp[n - 1] = true;
+			for (int i = n - 2; i >= 0; i--) {
+				if (i + nums[i] >= cur) {
+					dp[i] = true;
+					cur = i;
+				}
+			}
+			return dp[0];
+		}
+	}
+}

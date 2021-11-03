@@ -1,0 +1,26 @@
+package com.leetcode.problems;
+
+import com.leetcode.model.TreeNode;
+
+public class Question129 {
+	
+	class Solution {
+	    int sum = 0;
+	    
+	    public int sumNumbers(TreeNode root) {
+	        dfs(root, 0);
+	        return sum;
+	    }
+	    
+	    private void dfs(TreeNode node, int cur) {
+	        if (node == null) return;
+	        cur = cur * 10 + node.val;
+	        if (node.left == null && node.right == null) {
+	            sum += cur;
+	            return;
+	        }
+	        dfs(node.left, cur);
+	        dfs(node.right, cur);
+	    }
+	}
+}

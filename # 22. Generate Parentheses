@@ -8,15 +8,14 @@ import java.util.Set;
 public class Question22 {
 	class Solution1 {
 		public List<String> generateParenthesis(int n) {
-			if (n <= 0)
-				return List.of();
 			if (n == 1)
 				return List.of("()");
-			List<String> last = generateParenthesis(n - 1);
+			List<String> prev = generateParenthesis(n - 1);
 			Set<String> set = new HashSet<>();
-			for (String s : last) {
-				for (int i = 0; i <= s.length(); i++)
-					set.add("(" + s.substring(0, i) + ")" + s.substring(i));
+			for (String s : prev) {
+				for (int i = 0; i < s.length(); i++) {
+					set.add(s.substring(0, i) + "()" + s.substring(i, s.length()));
+				}
 			}
 			return new ArrayList<>(set);
 		}

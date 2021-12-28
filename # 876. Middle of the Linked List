@@ -1,0 +1,28 @@
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *slow = head, *fast = head;
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow;
+    }
+};
+
+package com.leetcode.problems;
+
+import com.leetcode.data.ListNode;
+
+public class Problem876 {
+	class Solution {
+		public ListNode middleNode(ListNode head) {
+			ListNode slow = head, fast = head;
+			while (fast != null && fast.next != null) {
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+			return slow;
+		}
+	}
+}

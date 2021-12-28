@@ -18,3 +18,13 @@ public class Question476 {
 	    }
 	}
 }
+
+
+class Solution {
+public:
+    int findComplement(int num) {
+        long base = 1;
+        while (base <= num) base <<= 1;
+        return base - 1 - num;
+    }
+};

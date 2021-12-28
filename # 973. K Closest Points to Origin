@@ -19,3 +19,19 @@ class Solution {
 		return ans;
 	}
 }
+
+class Solution {   
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        sort(points.begin(), points.end(), closerThan);
+        points.resize(k);
+        return points;
+    }
+    static int distance2 (vector<int>& point) {
+        return point[0] * point[0] + point[1] * point[1];
+    }
+
+    static bool closerThan(vector<int>& point1, vector<int>& point2) {
+        return distance2(point1) < distance2(point2);
+    }
+};

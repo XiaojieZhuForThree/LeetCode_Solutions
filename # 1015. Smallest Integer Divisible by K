@@ -34,3 +34,19 @@ public class Question1015 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    int smallestRepunitDivByK(int k) {
+        unordered_set<int> seen;
+        int n = 1, len = 1;
+        while (n % k != 0) {
+            n = (n % k) * 10 + 1;
+            len++;
+            if (seen.count(n)) return -1;
+            seen.insert(n);
+        }
+        return len;
+    }
+};

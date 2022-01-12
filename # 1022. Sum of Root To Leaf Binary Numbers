@@ -43,3 +43,16 @@ public class Question1022 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    int sumRootToLeaf(TreeNode* root) {
+        return helper(root, 0);
+    }
+    int helper(TreeNode* node, int cur) {
+        if (node == nullptr) return 0;
+        if (node -> left == nullptr && node -> right == nullptr) return cur * 2 + node -> val;
+        return helper(node -> left, cur * 2 + node -> val) + helper(node -> right, cur * 2 + node -> val);
+    }
+};

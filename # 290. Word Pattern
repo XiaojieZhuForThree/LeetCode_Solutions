@@ -1,38 +1,22 @@
-package com.leetcode.problems;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class Question290 {
-	class Solution {
-		public boolean wordPattern(String pattern, String str) {
-			String[] words = splitString(str);
-			return isWordPattern(words, pattern);
-		}
-
-		private final String[] splitString(String str) {
-			return str.split(" ");
-		}
-
-		private final boolean isWordPattern(String[] words, String pattern) {
-			if (words.length != pattern.length()) {
-				return false;
-			}
-			Map<String, Character> wordToCharacter = new HashMap<>();
-			Map<Character, String> characterToWord = new HashMap<>();
-			for (int i = 0; i < words.length; i++) {
-				String word = words[i];
-				char chr = pattern.charAt(i);
-				if (!wordToCharacter.containsKey(word) && !characterToWord.containsKey(chr)) {
-					wordToCharacter.put(word, chr);
-					characterToWord.put(chr, word);
-				} else if (!wordToCharacter.containsKey(word) || !characterToWord.containsKey(chr)) {
-					return false;
-				} else if (wordToCharacter.get(word) != chr || !characterToWord.get(chr).equals(word)) {
-					return false;
-				}
-			}
-			return true;
-		}
-	}
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        if (pattern == null || pattern.length() == 0) return false;
+        if (s == null || s.length() == 0) return false;
+        String[] words = s.split(" ");
+        if (words.length != pattern.length()) return false;
+        Map<Character, String> map1 = new HashMap<>();
+        Map<String, Character> map2 = new HashMap<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            char key = pattern.charAt(i);
+            if (map1.containsKey(key)) {
+                if (!map1.get(key).equals(words[i])) return false;
+            } else if (map2.containsKey(words[i])) {
+                if (map2.get(words[i]) != key) return false;
+            }else {
+                map1.put(key, words[i]);
+                map2.put(words[i], key);
+            }
+        }
+        return true;
+    }
 }

@@ -1,21 +1,17 @@
-package com.leetcode.problems;
-
-public class Question520 {
-	class Solution {
-		public boolean detectCapitalUse(String word) {
-			int cnt = 0;
-			for (char c : word.toCharArray()) {
-				if (Character.isUpperCase(c)) {
-					cnt++;
-				}
-			}
-			if (cnt == word.length() || cnt == 0) {
-				return true;
-			}
-			if (cnt == 1 && Character.isUpperCase(word.charAt(0))) {
-				return true;
-			}
-			return false;
-		}
-	}
+class Solution {
+    public boolean detectCapitalUse(String word) {
+        return isUpper(word) || isLower(word) || (isUpper(word.substring(0, 1)) && isLower(word.substring(1)));
+    }
+    private boolean isUpper(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isUpperCase(c)) return false;
+        }
+        return true;
+    }
+    private boolean isLower(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isLowerCase(c)) return false;
+        }
+        return true;
+    }
 }

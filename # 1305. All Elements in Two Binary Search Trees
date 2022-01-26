@@ -114,3 +114,36 @@ public class Question1305 {
 		}
 	}
 }
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
+        l1, l2 = self.getEle(root1), self.getEle(root2)
+        return self.merge(l1, l2)
+    
+    def getEle(self, node):
+        if node == None:
+            return []
+        return self.getEle(node.left) + [node.val] + self.getEle(node.right)
+    
+    def merge(self, l1, l2):
+        ans = []
+        p1, p2 = 0, 0
+        while (p1 < len(l1) and p2 < len(l2)):
+            if l1[p1] < l2[p2]:
+                ans.append(l1[p1])
+                p1 += 1
+            else:
+                ans.append(l2[p2])
+                p2 += 1
+        for i in range(p1, len(l1)):
+            ans.append(l1[i])
+        for i in range(p2, len(l2)):
+            ans.append(l2[i])
+        return ans

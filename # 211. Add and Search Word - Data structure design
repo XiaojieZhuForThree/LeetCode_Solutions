@@ -71,3 +71,55 @@ public class Question211 {
 	 * = obj.search(word);
 	 */
 }
+
+
+class TrieNode:
+    def __init__(self):
+        self.next = {}
+        self.end = False
+        
+class Trie:
+    def __init__(self):
+        self.node = TrieNode()
+    
+    def addWord(self, w):
+        dummy = self.node
+        for c in w:
+            if not c in dummy.next:
+                dummy.next[c] = TrieNode()
+            dummy = dummy.next[c]
+        dummy.end = True
+        
+    def searchWord(self, w):
+        return self.search(self.node, 0, w)
+    
+    def search(self, node, i, w):
+        if i == len(w):
+            return node.end
+        c = w[i]
+        if c == '.':
+            ans = False
+            for n in node.next.values():
+                ans = ans or self.search(n, i + 1, w)
+            return ans
+        elif c in node.next:
+            return self.search(node.next[c], i + 1, w)
+        else:
+            return False
+        
+class WordDictionary:
+
+    def __init__(self):
+        self.trie = Trie()
+
+    def addWord(self, word: str) -> None:
+        self.trie.addWord(word)
+
+    def search(self, word: str) -> bool:
+        return self.trie.searchWord(word)
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)

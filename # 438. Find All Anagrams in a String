@@ -1,0 +1,31 @@
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if len(s) < len(p):
+            return []
+        cur = {}
+        ref = {}
+        ans = []
+        for c in p:
+            ref[c] = 1 + (0 if c not in ref else ref[c])
+        for c in s[:len(p)]:
+            cur[c] = 1 + (0 if c not in cur else cur[c])
+        if self.match(cur, ref):
+            ans.append(0)
+        for i in range(len(p), len(s)):
+            cur[s[i - len(p)]] = cur[s[i - len(p)]] - 1
+            if cur[s[i - len(p)]] == 0:
+                del cur[s[i - len(p)]]
+            cur[s[i]] = 1 + (0 if s[i] not in cur else cur[s[i]])
+            if self.match(cur, ref):
+                ans.append(i - len(p) + 1)
+        return ans
+    
+    def match(self, cur, ref):
+        if len(cur) != len(ref):
+            return False
+        for i in ref:
+            if i not in cur:
+                return False
+            elif cur[i] != ref[i]:
+                return False
+        return True

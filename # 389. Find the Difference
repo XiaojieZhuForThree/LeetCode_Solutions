@@ -30,3 +30,22 @@ public class Question389 {
 		}
 	}
 }
+
+
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        s = sorted(s)
+        t = sorted(t)
+        for i in range(len(s)):
+            if s[i] != t[i]:
+                return t[i]
+        return t[-1]
+	
+	
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        a, b = Counter(s), Counter(t)
+        for k in b:
+            if b[k] != a[k]:
+                return k
+        return None

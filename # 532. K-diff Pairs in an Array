@@ -21,3 +21,20 @@ public class Question532 {
 		}
 	}
 }
+
+class Solution:
+    def findPairs(self, nums: List[int], k: int) -> int:
+        _map = {}
+        for i in nums:
+            if i not in _map:
+                _map[i] = 0
+            _map[i] = _map[i] + 1
+        ans = 0
+        for i in _map:
+            if i + k in _map:
+                if k == 0:
+                    if _map[i] > 1:
+                        ans += 1
+                else:
+                    ans += 1
+        return ans

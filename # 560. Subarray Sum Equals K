@@ -20,3 +20,15 @@ public class Question560 {
 		}
 	}
 }
+
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        _map = defaultdict(int)
+        _map[0] = 1
+        total = 0
+        ans = 0
+        for i in nums:
+            total += i
+            ans += _map[total - k]
+            _map[total] += 1
+        return ans

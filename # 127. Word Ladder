@@ -43,3 +43,27 @@ public class Question127 {
 		}
 	}
 }
+
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        seen = set(beginWord)
+        ans = 1
+        q = deque()
+        q.append(beginWord)
+        words = set(wordList)
+        while q:
+            level = set()
+            for i in range(len(q), 0, -1):
+                cur = q.popleft()
+                if cur == endWord:
+                    return ans
+                for i in range(len(cur)):
+                    for c in string.ascii_lowercase:
+                        if c != cur[i]:
+                            w = cur[:i] + c + cur[i+1:]
+                            if w in words and w not in seen:
+                                seen.add(w)
+                                q.append(w)
+            ans += 1
+        return 0

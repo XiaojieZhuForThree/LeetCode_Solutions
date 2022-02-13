@@ -41,3 +41,13 @@ private void backtrack(List<List<Integer>> list , List<Integer> tempList, int []
         tempList.remove(tempList.size() - 1);
     }
 }
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return [[]]
+        prev = self.subsets(nums[1:])
+        ans = []
+        for i in prev:
+            ans.append([nums[0]] + i.copy())
+        return prev + ans

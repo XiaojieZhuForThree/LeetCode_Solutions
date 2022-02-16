@@ -31,3 +31,18 @@ public class Question24 {
 		}
 	}
 }
+
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        a = head
+        b = head.next
+        b.next = self.swapPairs(b.next)
+        c = b.next
+        
+        b.next = a
+        a.next = c
+        head = b
+        
+        return head

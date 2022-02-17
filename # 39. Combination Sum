@@ -33,3 +33,25 @@ public class Question39 {
 		}
 	}
 }
+
+class Solution:
+    
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ans = []
+        candidates.sort()
+        self.dfs(candidates, target, ans, [], 0, 0)
+        return ans
+    
+    def dfs(self, candidates, target, ans, arr, index, cur):
+        if cur == target:
+            ans.append(arr.copy())
+            return
+        if cur > target:
+            return
+        for i in range(index, len(candidates)):
+            if cur + candidates[i] > target:
+                break
+            arr.append(candidates[i])
+            self.dfs(candidates, target, ans, arr, i, cur + candidates[i])
+            arr.pop()
+        return

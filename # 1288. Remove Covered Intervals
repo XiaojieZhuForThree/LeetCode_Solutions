@@ -33,3 +33,16 @@ public class Question1288 {
 		}
 	}
 }
+
+class Solution:
+    def removeCoveredIntervals(self, intervals: List[List[int]]) -> int:
+        intervals.sort(key=lambda x:(x[0], -x[1]))
+        ans = 0
+        l = -1
+        r = -1
+        for i in intervals:
+            if i[1] > r:
+                ans += 1
+                l = i[0]
+                r = i[1]
+        return ans

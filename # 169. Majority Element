@@ -11,3 +11,18 @@ class Solution {
         return ans;
     }
 }
+
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        cand = -1
+        freq = 0
+        for i in nums:
+            if freq == 0:
+                cand = i
+                freq = 1
+            elif i == cand:
+                freq += 1
+            else:
+                freq -= 1
+        return cand

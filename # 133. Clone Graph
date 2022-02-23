@@ -58,3 +58,28 @@ public class Question133 {
 		}
 	}
 }
+
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return node
+        return self.helper(node, {})
+    
+    def helper(self, node, _map):
+        if node in _map:
+            return _map[node]
+        copy = Node(node.val)
+        _map[node] = copy
+        for n in node.neighbors:
+            copy.neighbors.append(self.helper(n, _map))
+        return copy
+        

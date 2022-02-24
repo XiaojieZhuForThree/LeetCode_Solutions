@@ -63,3 +63,42 @@ public class Question148 {
 		}
 	}
 }
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        slow = head
+        fast = head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        half = slow.next
+        slow.next = None
+        node1 = self.sortList(head)
+        node2 = self.sortList(half)
+        return self.merge(node1, node2)
+    
+    def merge(self, node1, node2):
+        head = ListNode(0)
+        dummy = head
+        while node1 and node2:
+            if node1.val < node2.val:
+                dummy.next = node1
+                node1 = node1.next
+            else:
+                dummy.next = node2
+                node2 = node2.next
+            dummy = dummy.next
+        if node1:
+            dummy.next = node1
+        else:
+            dummy.next = node2
+        return head.next
+                

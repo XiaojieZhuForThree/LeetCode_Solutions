@@ -1,20 +1,17 @@
-package com.leetcode.problems;
-
-public class Question165 {
-	class Solution {
-		public int compareVersion(String version1, String version2) {
-			String[] partOfVersion1 = version1.split("\\.");
-			String[] partOfVersion2 = version2.split("\\.");
-			int len = Math.max(partOfVersion1.length, partOfVersion2.length);
-			for (int i = 0; i < len; i++) {
-				int version1LevelI = i >= partOfVersion1.length ? 0 : Integer.parseInt(partOfVersion1[i]);
-				int version2LevelI = i >= partOfVersion2.length ? 0 : Integer.parseInt(partOfVersion2[i]);
-				if (Integer.compare(version1LevelI, version2LevelI) == 0) {
-					continue;
-				}
-				return Integer.compare(version1LevelI, version2LevelI);
-			}
-			return 0;
-		}
-	}
-}
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        v1 = version1.split('.')
+        v2 = version2.split('.')
+        
+        i = 0
+        j = 0
+        
+        while i < len(v1) or j < len(v2):
+            num1 = 0 if i >= len(v1) else int(v1[i])
+            num2 = 0 if j >= len(v2) else int(v2[j])
+            if num1 != num2:
+                return 1 if num1 > num2 else -1
+            i += 1
+            j += 1
+            
+        return 0

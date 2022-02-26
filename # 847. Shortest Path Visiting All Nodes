@@ -86,3 +86,28 @@ class Solution:
                         level.append((nxt, new_val))
             ans += 1
         return -1
+
+
+class Solution:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        if not graph:
+            return 0
+        n = len(graph)
+        ans = 0
+        dp = [[0] * (1<<n) for i in range(n)]
+            
+        level = deque([(i, 1<<i) for i in range(n)])
+        target = (1 << n) - 1
+        
+        while level:
+            for i in range(len(level), 0, -1):
+                cur, val = level.popleft()
+                if val == (1 << n) - 1:
+                    return ans
+                for nxt in graph[cur]:
+                    new_val = val | 1 << nxt
+                    if dp[nxt][new_val] == 0:
+                        dp[nxt][new_val] = 1
+                        level.append((nxt, new_val))
+            ans += 1
+        return -1

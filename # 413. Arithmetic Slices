@@ -25,3 +25,19 @@ public class Question413 {
 		}
 	}
 }
+
+
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        ans = 0
+        i, j, k = 0, 1, 2
+        while k < len(nums):
+            while k < len(nums) and nums[k] - nums[k - 1] == nums[j] - nums[i]:
+                k += 1
+            if k - i >= 3:
+                t = k - i - 2
+                ans += (1 + t) * t // 2
+            i = k - 1
+            j = k
+            k = k + 1
+        return ans

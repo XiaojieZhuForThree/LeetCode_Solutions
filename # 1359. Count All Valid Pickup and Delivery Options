@@ -22,3 +22,14 @@ public class Question1359 {
 		}
 	}
 }
+
+
+class Solution:
+    def countOrders(self, n: int) -> int:
+        if n == 1:
+            return 1
+        prev = self.countOrders(n - 1)
+        return prev * (self.get_sum(2 * n - 1)) % 1_000_000_007
+    
+    def get_sum(self, n):
+        return (1 + n) * n // 2

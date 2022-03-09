@@ -51,3 +51,23 @@ public class Question82 {
 		}
 	}
 }
+
+
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        top = ListNode(-1)
+        trav = top
+        node = head
+        while node:
+            if node.next and node.val == node.next.val:
+                val = node.val
+                while node and node.val == val:
+                    node = node.next
+            else:
+                trav.next = node
+                trav = trav.next
+                node = node.next
+        trav.next = None
+        return top.next

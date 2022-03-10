@@ -36,3 +36,24 @@ public class Question2 {
 		}
 	}
 }
+
+
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        car = 0
+        head = ListNode(-1)
+        dummy = head
+        while l1 or l2 or car:
+            val = 0
+            if l1:
+                val += l1.val
+                l1 = l1.next
+            if l2:
+                val += l2.val
+                l2 = l2.next
+            if car:
+                val += car
+            car, val = divmod(val, 10)
+            dummy.next = ListNode(val)
+            dummy = dummy.next
+        return head.next

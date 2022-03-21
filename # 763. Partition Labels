@@ -61,3 +61,32 @@ public class Question763 {
 		}
 	}
 }
+
+
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        _map = {}
+        
+        for c in s:
+            if c not in _map:
+                _map[c] = 0
+            _map[c] += 1
+        
+        ans = []
+        cur = 0
+        queued = set()
+        
+        for c in s:
+            cur += 1
+            _map[c] -= 1
+            if _map[c] == 0:
+                if c in queued:
+                    queued.remove(c)
+                if not queued:
+                    ans.append(cur)
+                    cur = 0
+            else:
+                queued.add(c)
+                    
+        return ans
+                

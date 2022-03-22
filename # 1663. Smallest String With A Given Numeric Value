@@ -21,3 +21,16 @@ public class Question1663 {
 		}
 	}
 }
+
+
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        ans = ['a'] * n
+        ptr = n - 1
+        cur = k - n
+        while cur > 0:
+            added = min(cur, 25)
+            ans[ptr] = chr(ord(ans[ptr]) + added)
+            cur -= added
+            ptr -= 1
+        return ''.join(ans)

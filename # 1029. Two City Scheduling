@@ -53,3 +53,11 @@ public class Question1029 {
 		}
 	}
 }
+
+class Solution:
+    def twoCitySchedCost(self, costs: List[List[int]]) -> int:
+        ans = sum(cost[0] for cost in costs)
+        diffs = [cost[0] - cost[1] for cost in costs]
+        diffs.sort()
+        ans -= sum(diffs[len(diffs)//2:])
+        return ans

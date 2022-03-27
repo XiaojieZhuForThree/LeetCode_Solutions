@@ -32,13 +32,9 @@ public class Question1337 {
 class Solution:
     def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
         ans = []
+        
         for i, m in enumerate(mat):
             ans.append((m.count(1), i))
-        
         ans.sort()
         
-        res = []
-        for i in range(0, k):
-            tup = ans[i]
-            res.append(tup[1])
-        return res
+        return [ans[i][1] for i in range(0, k)]

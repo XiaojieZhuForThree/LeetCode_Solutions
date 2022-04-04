@@ -28,3 +28,23 @@ public class Question1721 {
 		}
 	}
 }
+
+
+class Solution:
+    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        memory = []
+        node = head
+        while node:
+            memory.append(node)
+            node = node.next
+        node1 = memory[k - 1]
+        node2 = memory[len(memory) - k]
+        memory[k - 1] = node2
+        memory[len(memory) - k] = node1
+        head = memory[0]
+        node = head
+        for i in range(1, len(memory)):
+            node.next = memory[i]
+            node = node.next
+        node.next = None
+        return head

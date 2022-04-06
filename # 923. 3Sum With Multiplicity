@@ -32,3 +32,21 @@ class Solution:
             for j in range(0, i):
                 ref[arr[i] + arr[j]] += 1
         return ans
+
+
+class Solution:
+    def threeSumMulti(self, arr: List[int], target: int) -> int:
+        ref = [0 for i in range(0, 301)]
+        cnts = [0 for i in range(0, 101)]
+        arr.sort()
+        cnts[arr[0]] += 1
+        ans = 0
+        for i in range(1, len(arr)):
+            if target - arr[i] >= 0:
+                ans += ref[target - arr[i]]
+                ans %= 1_000_000_007
+            for j in range(0, arr[i] + 1):
+                if cnts[j] > 0:
+                    ref[j + arr[i]] += cnts[j]
+            cnts[arr[i]] += 1
+        return ans

@@ -15,3 +15,18 @@ public class Question1046 {
 		}
 	}
 }
+
+
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        neg = [-i for i in stones]
+        heapq.heapify(neg)
+        while len(neg) > 1:
+            a = heapq.heappop(neg)
+            b = heapq.heappop(neg)
+            val = a - b
+            if val < 0:
+                heapq.heappush(neg, val)
+        if neg:
+            return -neg[0]
+        return 0

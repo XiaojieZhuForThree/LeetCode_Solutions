@@ -34,8 +34,18 @@ public class Question703 {
 }
 
 
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  8 02:58:43 2022
+
+@author: xiaoj
+"""
+from typing import List
+import heapq
+
+
 class KthLargest:
-    
+
     def __init__(self, k: int, nums: List[int]):
         self.k = k
         self.heap = nums
@@ -53,3 +63,4 @@ class KthLargest:
 # Your KthLargest object will be instantiated and called as such:
 # obj = KthLargest(k, nums)
 # param_1 = obj.add(val)
+

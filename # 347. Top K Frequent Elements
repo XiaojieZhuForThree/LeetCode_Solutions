@@ -88,3 +88,28 @@ public class Question347 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr  9 11:52:57 2022
+
+@author: xiaoj
+"""
+from typing import List
+from collections import Counter
+import heapq
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        _map = Counter(nums)
+        queue = []
+        heapq.heapify(queue)
+        for key, val in _map.items():
+            heapq.heappush(queue, (val, key))
+            if len(queue) > k:
+                heapq.heappop(queue)
+        ans = []
+        for i in queue:
+            ans.append(i[1])
+        return ans

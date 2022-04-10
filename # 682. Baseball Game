@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr  9 23:09:26 2022
+
+@author: xiaoj
+"""
+
+from typing import List
+
+class Solution:
+    def calPoints(self, ops: List[str]) -> int:
+        ans = []
+        for o in ops:
+            if o == 'C':
+                ans.pop()
+            elif o == 'D':
+                add = ans[-1] * 2
+                ans.append(add)
+            elif o == '+':
+                add = ans[-2] + ans[-1]
+                ans.append(add)
+            else:
+                ans.append(int(o))
+        return sum(ans)

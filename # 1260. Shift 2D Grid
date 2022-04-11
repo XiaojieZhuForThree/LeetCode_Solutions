@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr 10 21:00:18 2022
+
+@author: xiaoj
+"""
+
+from typing import List
+
+class Solution:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        nums = []
+        n = len(grid[0])
+        for l in grid:
+            nums += l
+        rot = k % len(nums)
+        nums = nums[-rot:] + nums[:-rot]
+        start = 0
+        ans = []
+        while start < len(nums):
+            ans.append(nums[start: start + n])
+            start += n
+        return ans

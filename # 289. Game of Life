@@ -46,3 +46,51 @@ public class Question289 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 11 20:23:53 2022
+
+@author: xiaoj
+"""
+from typing import List
+
+
+class Solution:
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        dirs = [[1, 0], [-1, 0], [0, 1], [0, -1],
+                [1, 1], [1, -1], [-1, 1], [-1, -1]]
+        m, n = len(board), len(board[0])
+        for i in range(m):
+            for j in range(n):
+                val = board[i][j]
+                livings = self.calcLiv(board, i, j, dirs)
+                if val == 1:
+                    if livings < 2 or livings > 3:
+                        board[i][j] = -1
+                elif val == 0:
+                    if livings == 3:
+                        board[i][j] = 2
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == -1:
+                    board[i][j] = 0
+                elif board[i][j] == 2:
+                    board[i][j] = 1
+        return
+
+    def calcLiv(self, board, i, j, dirs):
+        ones = 0
+        m, n = len(board), len(board[0])
+        for d in dirs:
+            ni = i + d[0]
+            nj = j + d[1]
+            if ni < 0 or ni >= m or nj < 0 or nj >= n:
+                continue
+            if board[ni][nj] == 1 or board[ni][nj] == -1:
+                ones += 1
+        return ones

@@ -39,3 +39,37 @@ public class Question538 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 15 21:21:54 2022
+
+@author: xiaoj
+"""
+
+from typing import Optional
+
+# Definition for a binary tree node.
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Solution:
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        self.dfs(root, 0)
+        return root
+
+    def dfs(self, node, cur):
+        if not node:
+            return cur
+        cur = self.dfs(node.right, cur)
+        node.val += cur
+        cur = node.val
+        cur = self.dfs(node.left, cur)
+        return cur

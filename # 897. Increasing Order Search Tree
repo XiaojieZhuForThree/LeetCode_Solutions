@@ -30,3 +30,38 @@ public class Question897 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr 17 09:27:53 2022
+
+@author: xiaoj
+"""
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def increasingBST(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return root
+        container = []
+        self.addNodes(root, container)
+        for i in range(1, len(container)):
+            container[i - 1].left = None
+            container[i - 1].right = container[i]
+            container[i].left = None
+        return container[0]
+    
+    def addNodes(self, node, container):
+        if not node:
+            return
+        self.addNodes(node.left, container)
+        container.append(node)
+        self.addNodes(node.right, container)
+            
+        

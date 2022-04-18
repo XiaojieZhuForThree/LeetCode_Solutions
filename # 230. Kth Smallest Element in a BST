@@ -22,3 +22,33 @@ class Solution {
         helper(root.right);
     }
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr 17 21:23:44 2022
+
+@author: xiaoj
+"""
+from typing import Optional
+# Definition for a binary tree node.
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        if not root:
+            return -1
+        l = self.addNodes(root)
+        return l[k - 1]
+
+    def addNodes(self, node):
+        if not node:
+            return []
+        return self.addNodes(node.left) + [node.val] + self.addNodes(node.right)

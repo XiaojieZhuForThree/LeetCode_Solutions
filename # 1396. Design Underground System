@@ -45,3 +45,39 @@ public class Question1396 {
 	 * = obj.getAverageTime(startStation,endStation);
 	 */
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr 23 19:58:21 2022
+
+@author: xiaoj
+"""
+
+class UndergroundSystem:
+
+    def __init__(self):
+        self.ave = {}
+        self.p2i = {}
+
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.p2i[id] = (stationName, t)
+
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        prev = self.p2i[id]
+        key = prev[0] + '-' + stationName
+        if key not in self.ave:
+            self.ave[key] = (t - prev[1], 1)
+        else:
+            self.ave[key] = (t - prev[1] + self.ave[key][0], 1 + self.ave[key][1])
+
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        key = startStation + '-' + endStation
+        return self.ave[key][0] / self.ave[key][1]
+
+
+# Your UndergroundSystem object will be instantiated and called as such:
+# obj = UndergroundSystem()
+# obj.checkIn(id,stationName,t)
+# obj.checkOut(id,stationName,t)
+# param_3 = obj.getAverageTime(startStation,endStation)

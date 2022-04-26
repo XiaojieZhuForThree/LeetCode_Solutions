@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 25 22:38:02 2022
+
+@author: xiaoj
+"""
+from typing import List
+import heapq
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        values = [(0, 0)]
+        heapq.heapify(values)
+        seen = [False] * len(points)
+        cnt = 0
+        ans = 0
+        while cnt < len(points):
+            val, index = heapq.heappop(values)
+            if seen[index]:
+                continue
+            seen[index] = True
+            ans += val
+            for i in range(len(points)):
+                if not seen[i]:
+                    dist = abs(points[i][0] - points[index][0]) + abs(points[i][1] - points[index][1])
+                    heapq.heappush(values, (dist, i))
+            cnt += 1
+        return ans
+        

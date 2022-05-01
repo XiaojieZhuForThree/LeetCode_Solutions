@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr 30 21:30:02 2022
+
+@author: xiaoj
+"""
+
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        l1 = []
+        l2 = []
+        for c in s:
+            if c == '#':
+                if len(l1) > 0:
+                    l1.pop()
+            else:
+                l1.append(c)
+        for c in t:
+            if c == '#':
+                if len(l2) > 0:
+                    l2.pop()
+            else:
+                l2.append(c)
+        return ''.join(l1) == ''.join(l2)

@@ -18,3 +18,38 @@ public class Question581 {
 		}
 	}
 }
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May  2 22:10:45 2022
+
+@author: xiaoj
+"""
+from typing import List
+
+
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        stack = []
+        size = 0
+        start_point = -1
+        for i in range(len(nums)):
+            if not stack:
+                stack.append(i)
+            else:
+                if nums[stack[-1]] <= nums[i]:
+                    stack.append(i)
+                else:
+                    cur_max = stack[-1]
+                    cur_index = stack[-1]
+                    while stack and nums[stack[-1]] > nums[i]:
+                        cur_index = stack.pop(-1)
+                    if not stack:
+                        start_point = 0
+                    elif start_point == -1:
+                        start_point = cur_index
+                    elif cur_index < start_point:
+                        start_point = cur_index
+                    stack.append(cur_max)
+                    size = i - start_point + 1
+        return size

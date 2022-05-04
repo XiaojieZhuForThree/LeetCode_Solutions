@@ -30,3 +30,31 @@ public class Question1679 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May  4 06:54:20 2022
+
+@author: xiaoj
+"""
+from typing import List
+
+
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        l = 0
+        r = len(nums) - 1
+        ans = 0
+        while l < r:
+            val = nums[l] + nums[r]
+            if val > k:
+                r -= 1
+            elif val < k:
+                l += 1
+            else:
+                ans += 1
+                l += 1
+                r -= 1
+        return ans

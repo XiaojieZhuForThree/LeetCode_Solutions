@@ -55,3 +55,33 @@ public class Question1209 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May  5 22:19:07 2022
+
+@author: xiaoj
+"""
+
+
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -> str:
+        if not k or not s:
+            return ''
+        stack = []
+        _counts = {}
+        for i in range(len(s)):
+            if not stack or s[stack[-1]] != s[i]:
+                stack.append(i)
+                _counts[i] = 1
+            else:
+                _counts[i] = _counts[stack[-1]] + 1
+                stack.append(i)
+                if _counts[i] == k:
+                    for i in range(k):
+                        stack.pop(-1)
+        ans = ''
+        for i in stack:
+            ans += s[i]
+        return ans

@@ -43,3 +43,29 @@ public class Question17 {
 		}
 	}
 }
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May  8 22:12:21 2022
+
+@author: xiaoj
+"""
+from typing import List
+
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        _map = {2: ['a', 'b', 'c'], 3: ['d', 'e', 'f'], 4: ['g', 'h', 'i'], 5: ['j', 'k', 'l'], 6: [
+            'm', 'n', 'o'], 7: ['p', 'q', 'r', 's'], 8: ['t', 'u', 'v'], 9: ['w', 'x', 'y', 'z']}
+        ans = []
+        if not digits:
+            return []
+        self.dfs(ans, digits, '', 0, _map)
+        return ans
+
+    def dfs(self, ans, digits, comb, cur, _map):
+        if cur == len(digits):
+            ans.append(comb)
+            return
+        for c in _map[int(digits[cur])]:
+            self.dfs(ans, digits, comb + c, cur + 1, _map)

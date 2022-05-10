@@ -35,3 +35,30 @@ public class Question216 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May  9 19:37:52 2022
+
+@author: xiaoj
+"""
+from typing import List
+
+
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        ans = []
+        self.dfs(ans, k, n, 0, 0, [])
+        return ans
+
+    def dfs(self, ans, k, n, used, cur, cand):
+        if used == k and cur == n:
+            ans.append(cand.copy())
+            return
+        last = cand[-1] if cand else 0
+        for i in range(last + 1, 10):
+            cand.append(i)
+            self.dfs(ans, k, n, used + 1, cur + i, cand)
+            cand.pop(-1)
+        return

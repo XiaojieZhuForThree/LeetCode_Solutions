@@ -32,3 +32,20 @@ public class Question1641 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May 10 20:43:05 2022
+
+@author: xiaoj
+"""
+
+class Solution:
+    def countVowelStrings(self, n: int) -> int:
+        ans = [1 for i in range(5)]
+        for i in range(n - 1):
+            for j in range(3, -1, -1):
+                ans[j] += ans[j + 1]
+        return sum(ans)
+        

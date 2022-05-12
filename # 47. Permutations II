@@ -32,3 +32,36 @@ public class Question47 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May 11 19:31:23 2022
+
+@author: xiaoj
+"""
+
+from typing import List
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        self.dfs(ans, nums, [], set(), set())
+        return ans
+    
+    def dfs(self, ans, nums, cur, used, seen):
+        if len(cur) == len(nums):
+            if str(cur) not in seen:
+                seen.add(str(cur))
+                ans.append(cur.copy())
+            return
+        else:
+            for i in range(len(nums)):
+                if i not in used:
+                    used.add(i)
+                    cur.append(nums[i])
+                    self.dfs(ans, nums, cur, used, seen)
+                    used.remove(i)
+                    cur.pop()
+        return
+        

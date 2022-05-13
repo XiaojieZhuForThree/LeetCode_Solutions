@@ -92,3 +92,41 @@ public class Question117 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May 12 19:54:49 2022
+
+@author: xiaoj
+"""
+
+from collections import deque
+
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+
+
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        stack = deque()
+        if root:
+            stack.append(root)
+        while stack:
+            nex = deque()
+            while stack:
+                cur = stack.popleft()
+                if stack:
+                    cur.next = stack[0]
+                if cur.left:
+                    nex.append(cur.left)
+                if cur.right:
+                    nex.append(cur.right)
+            stack = nex
+        return root
+        

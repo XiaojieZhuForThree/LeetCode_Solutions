@@ -54,3 +54,45 @@ public class Question1091 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May 16 19:06:00 2022
+
+@author: xiaoj
+"""
+from collections import deque
+from typing import List
+
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        if grid[0][0] == 1:
+            return -1
+        m = len(grid)
+        n = len(grid[0])
+        seen = [[0 for i in range(n)] for i in range(m)]
+        queue = deque([])
+        queue.append([0, 0])
+        seen[0][0] = 1
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0],
+                [1, 1], [1, -1], [-1, 1], [-1, -1]]
+        ans = 0
+        while queue:
+            ans += 1
+            l = len(queue)
+            for i in range(l):
+                cur = queue.popleft()
+                if cur[0] == m - 1 and cur[1] == n - 1:
+                    return ans
+                for d in dirs:
+                    nx = cur[0] + d[0]
+                    ny = cur[1] + d[1]
+                    if nx < 0 or nx >= m or ny < 0 or ny >= n or seen[nx][ny]:
+                        continue
+                    if grid[nx][ny] == 1:
+                        continue
+                    seen[nx][ny] = 1
+                    queue.append([nx, ny])
+        return -1

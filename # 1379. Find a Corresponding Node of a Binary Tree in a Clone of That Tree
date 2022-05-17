@@ -19,3 +19,29 @@ public class Question1379 {
 		}
 	}
 }
+
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May 16 19:11:25 2022
+
+@author: xiaoj
+"""
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def getTargetCopy(self, original: TreeNode, cloned: TreeNode, target: TreeNode) -> TreeNode:
+        if not (original and cloned and target):
+            return None
+        if original == target:
+            return cloned
+        ans = self.getTargetCopy(original.left, cloned.left, target)
+        if not ans:
+            ans = self.getTargetCopy(original.right, cloned.right, target)
+        return ans

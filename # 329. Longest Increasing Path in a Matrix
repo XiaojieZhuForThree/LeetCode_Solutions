@@ -45,3 +45,29 @@ public class Question329 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        longest = 0
+        depthMap = {}
+        m = len(matrix)
+        n = len(matrix[0])
+        def findDepth(row, col):
+            if (row, col) in depthMap:
+                return depthMap[(row, col)]
+            maxDepth = 1
+            num = matrix[row][col]
+            for i, j in ((row, col+1), (row+1, col), (row, col-1), (row-1, col)):
+                if 0 <= i < m and 0 <= j < n and matrix[i][j] > num:
+                    maxDepth = max(maxDepth, findDepth(i, j)+1)
+            depthMap[(row, col)] = maxDepth
+            return maxDepth
+                
+        for i in range(m):
+            for j in range(n):
+                longest = max(longest, findDepth(i, j))
+        return longest        

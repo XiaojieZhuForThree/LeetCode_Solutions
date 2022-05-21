@@ -40,3 +40,28 @@ class Solution:
                 else:
                     dp[i] = min(dp[i], dp[i - j] + 1)
         return dp[amount]
+
+
+from typing import List
+
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if not amount:
+            return 0
+        dp = [-1 for i in range(amount + 1)]
+        dp[0] = 0
+        for i in coins:
+            if i <= amount:
+                dp[i] = 1
+        for i in range(amount + 1):
+            for j in coins:
+                prev = i - j
+                if prev < 0 or dp[prev] == -1:
+                    continue
+                if dp[i] == -1:
+                    dp[i] = dp[prev] + 1
+                else:
+                    dp[i] = min(dp[i], dp[prev] + 1)
+        return dp[amount]
+        

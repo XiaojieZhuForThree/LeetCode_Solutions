@@ -22,3 +22,22 @@ public class Question647 {
 		}
 	}
 }
+
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        if not s:
+            return 0
+        ans = 0
+        for i in range(len(s)):
+            ans += self.getCounts(s, i, i) + self.getCounts(s, i-1, i)
+        return ans
+    
+    def getCounts(self, s, i, j):
+        ans = 0
+        while i >= 0 and j < len(s) and s[i] == s[j]:
+            ans += 1
+            i -= 1
+            j += 1
+        return ans
+            

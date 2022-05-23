@@ -28,3 +28,63 @@ public class Question474 {
 		}
 	}
 }
+
+
+from copy import deepcopy
+from typing import List
+
+
+class Solution1:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        _map = {}
+        for s in strs:
+            cnts = [0, 0]
+            for c in s:
+                if c == '0':
+                    cnts[0] += 1
+                else:
+                    cnts[1] += 1
+            _map[s] = cnts
+        dp = [[-1 for i in range(n + 1)] for i in range(m + 1)]
+        dp[0][0] = 0
+        for s in strs:
+            nex = deepcopy(dp)
+            cnts = _map[s]
+            for i in range(m + 1):
+                for j in range(n + 1):
+                    ni = i - cnts[0]
+                    nj = j - cnts[1]
+                    if ni >=0 and nj >=0 and dp[ni][nj] != -1:
+                        nex[i][j] = max(nex[i][j], dp[ni][nj] + 1)
+            dp = nex
+        ans = -1
+        for i in range(m + 1):
+            for j in range(n + 1):
+                ans = max(ans, dp[i][j])
+        return ans
+
+
+class Solution2:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        _map = {}
+        for s in strs:
+            cnts = [0, 0]
+            for c in s:
+                if c == '0':
+                    cnts[0] += 1
+                else:
+                    cnts[1] += 1
+            _map[s] = cnts
+        dp = [[-1 for i in range(n + 1)] for i in range(m + 1)]
+        dp[0][0] = 0
+        ans = 0
+        for s in strs:
+            cnts = _map[s]
+            for i in range(m, cnts[0] - 1, -1):
+                for j in range(n, cnts[1] - 1, -1):
+                    ni = i - cnts[0]
+                    nj = j - cnts[1]
+                    if dp[ni][nj] != -1:
+                        dp[i][j] = max(dp[i][j], dp[ni][nj] + 1)
+                        ans = max(ans, dp[i][j])
+        return ans

@@ -40,3 +40,34 @@ public class Question354 {
 		}
 	}
 }
+
+from typing import List
+
+
+class Solution:
+    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
+        n = len(envelopes)
+        envelopes.sort(key = lambda x : (x[0], -x[1]))
+        nums = []
+        for i in range(n):
+            nums.append(envelopes[i][1])
+        piles = 0
+        top = []
+        
+        for i in range(n):
+            cur = nums[i]
+            l, r = 0, piles
+            while l < r:
+                mid = l + (r - l) // 2
+                if top[mid] >= cur:
+                    r = mid
+                else:
+                    l = mid + 1
+            if l >= piles:
+                piles += 1
+                top.append(cur)
+            else:
+                top[l] = cur
+        return piles
+                
+        

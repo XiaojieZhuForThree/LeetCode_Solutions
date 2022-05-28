@@ -13,3 +13,16 @@ public class Question268 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        n = len(nums)
+        total = self._GetTotal(n)
+        return total - sum(nums)
+    
+    def _GetTotal(self, n: int) -> int:
+        return (n + 1) * n // 2

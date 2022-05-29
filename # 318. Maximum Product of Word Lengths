@@ -1,0 +1,23 @@
+from typing import List
+
+
+class Solution:
+    def maxProduct(self, words: List[str]) -> int:
+        _map = {}
+        for w in words:
+            mask = 0
+            for c in w:
+                mask |= 1 << (ord(c) - ord('a'))
+            _map[w] = mask
+        cur = 0
+        for i in range(1, len(words)):
+            w1 = words[i]
+            for j in range(i):
+                w2 = words[j]
+                mask1 = _map[w1]
+                mask2 = _map[w2]
+                found = True
+                if mask1 & mask2:
+                    continue
+                cur = max(cur, len(w1) * len(w2))
+        return cur

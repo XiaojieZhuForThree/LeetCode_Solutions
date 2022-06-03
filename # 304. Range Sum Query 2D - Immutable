@@ -30,3 +30,29 @@ public class Question304 {
 	 * = new NumMatrix(matrix); int param_1 = obj.sumRegion(row1,col1,row2,col2);
 	 */
 }
+
+
+
+from typing import List
+
+
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        self.matrix = matrix
+        m = len(matrix)
+        n = len(matrix[0])
+        for i in range(n):
+            for j in range(1, m):
+                self.matrix[j][i] += self.matrix[j - 1][i]
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        ans = 0
+        for i in range(col1, col2 + 1):
+            ans += self.matrix[row2][i] - (self.matrix[row1 - 1][i] if row1 > 0 else 0)
+        return ans
+
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)

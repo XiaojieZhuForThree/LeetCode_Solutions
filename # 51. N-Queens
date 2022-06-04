@@ -56,3 +56,39 @@ public class Question51 {
 		}
 	}
 }
+
+
+from collections import defaultdict
+from typing import List
+
+
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        ans = []
+        self.dfs([], n, defaultdict(int), defaultdict(
+            int), defaultdict(int), ans)
+        return ans
+
+    def dfs(self, cur, n, cols, upper, lower, ans):
+        if len(cur) == n:
+            sol = []
+            for i in range(n):
+                row = ['.' for j in range(n)]
+                row[cur[i]] = 'Q'
+                sol.append(''.join(row))
+            ans.append(sol)
+            return
+        i = len(cur)
+        for j in range(n):
+            if cols[j] > 0 or upper[i + j] > 0 or lower[i - j] > 0:
+                continue
+            cur.append(j)
+            cols[j] += 1
+            upper[i + j] += 1
+            lower[i - j] += 1
+            self.dfs(cur, n, cols, upper, lower, ans)
+            cur.pop(-1)
+            cols[j] -= 1
+            upper[i + j] -= 1
+            lower[i - j] -= 1
+        return

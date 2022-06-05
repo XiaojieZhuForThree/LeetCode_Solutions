@@ -36,3 +36,28 @@ public class Question52 {
 		}
 	}
 }
+
+
+from collections import defaultdict
+
+
+class Solution:
+    def totalNQueens(self, n: int) -> int:
+        return self.dfs(0, n, defaultdict(int), defaultdict(int), defaultdict(int))
+    
+    def dfs(self, cur, n, cols, upper, lower):
+        if cur == n:
+            return 1
+        i = cur
+        ans = 0
+        for j in range(n):
+            if cols[j] or upper[i + j] or lower[i - j]:
+                continue
+            cols[j] += 1
+            upper[i + j] += 1
+            lower[i - j] += 1
+            ans += self.dfs(cur + 1, n, cols, upper, lower)
+            cols[j] -= 1
+            upper[i + j] -= 1
+            lower[i - j] -= 1
+        return ans

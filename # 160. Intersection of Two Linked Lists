@@ -36,3 +36,32 @@ public class Question160 {
 		}
 	}
 }
+
+
+# Definition for singly-linked list.
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        l1 = []
+        l2 = []
+        while headA:
+            l1.append(headA)
+            headA = headA.next
+        while headB:
+            l2.append(headB)
+            headB = headB.next
+        l1.reverse()
+        l2.reverse()
+        ans = None
+        start = 0
+        while start < min(len(l1), len(l2)) and l1[start] == l2[start]:
+            ans = l1[start]
+            start += 1
+        return ans

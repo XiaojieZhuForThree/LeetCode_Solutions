@@ -20,3 +20,20 @@ public class Question1332 {
 		}
 	}
 }
+
+
+class Solution:
+    def removePalindromeSub(self, s: str) -> int:
+        if not s:
+            return 0
+        return 1 if self._isPali(s) else 2
+    
+    def _isPali(self, s):
+        l = 0
+        r = len(s) - 1
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+        return True

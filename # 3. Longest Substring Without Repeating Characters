@@ -24,3 +24,22 @@ public class Question3 {
 		}
 	}
 }
+
+
+from typing import DefaultDict
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not s:
+            return 0
+        i = 0
+        ans = 0
+        cnts = DefaultDict(int)
+        for j in range(len(s)):
+            cnts[s[j]] += 1
+            while cnts[s[j]] > 1:
+                cnts[s[i]] -= 1
+                i += 1
+            ans = max(ans, j - i + 1)
+        return ans

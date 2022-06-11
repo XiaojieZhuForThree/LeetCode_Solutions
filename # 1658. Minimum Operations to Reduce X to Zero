@@ -27,3 +27,36 @@ public class Question1658 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def minOperations(self, nums: List[int], x: int) -> int:
+        s = 0
+        cnt = 0
+        _map = {s: cnt}
+        for i in range(len(nums) - 1, -1, -1):
+            s += nums[i]
+            cnt += 1
+            _map[s] = cnt
+        cur = 0
+        ans = -1
+        cnt = 0
+        while cnt <= len(nums):
+            if cur > x:
+                break
+            rem = x - cur
+            if rem in _map:
+                other = _map[rem]
+                total = cnt + other
+                if total <= len(nums):
+                    if ans == -1:
+                        ans = total
+                    else:
+                        ans = min(ans, total)
+            if cnt < len(nums):
+                cur += nums[cnt]
+            cnt += 1
+        return ans

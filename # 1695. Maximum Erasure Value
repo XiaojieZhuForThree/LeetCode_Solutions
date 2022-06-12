@@ -27,3 +27,24 @@ public class Question1695 {
 		}
 	}
 }
+
+
+from typing import DefaultDict, List
+
+
+class Solution:
+    def maximumUniqueSubarray(self, nums: List[int]) -> int:
+        ans = 0
+        cur = 0
+        rec = DefaultDict(int)
+        ptr = 0
+        for i in nums:
+            while rec[i] == 1:
+                now = nums[ptr]
+                cur -= now
+                rec[now] -= 1
+                ptr += 1
+            rec[i] = 1
+            cur += i
+            ans = max(ans, cur)
+        return ans

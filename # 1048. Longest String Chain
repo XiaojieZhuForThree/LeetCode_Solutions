@@ -63,3 +63,47 @@ public class Question1048 {
 
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        if not words:
+            return 0
+        _map = {}
+        _dp = {}
+        for w in words:
+            if len(w) not in _map:
+                _map[len(w)] = [w]
+            else:
+                _map[len(w)].append(w)
+        for i in range(16, 0, -1):
+            if i not in _map:
+                continue
+            for w in _map[i]:
+                if i + 1 not in _map:
+                    _dp[w] = 1
+                else:
+                    cur = 1
+                    for c in _map[i + 1]:
+                        if self.diffByOne(w, c):
+                            cur = max(cur, 1 + _dp[c])
+                    _dp[w] = cur
+        return max(_dp.values())
+    
+    def diffByOne(self, w, c):
+        p1, p2 = 0, 0
+        already = False
+        while p1 < len(w):
+            if w[p1] != c[p2]:
+                if already:
+                    return False
+                else:
+                    p2 += 1
+                    already = True
+            else:
+                p1 += 1
+                p2 += 1
+        return True

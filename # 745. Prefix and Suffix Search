@@ -36,3 +36,36 @@ public class Question745 {
 	 * obj = new WordFilter(words); int param_1 = obj.f(prefix,suffix);
 	 */
 }
+
+
+from typing import List
+
+
+class WordFilter:
+
+    def __init__(self, words: List[str]):
+        self._rec = {}
+        for ind in range(len(words)):
+            w = words[ind]
+            for i in range(len(w)):
+                pre = w[:i + 1]
+                for j in range(len(w) - 1, -1, -1):
+                    suf = w[j:]
+                    if pre not in self._rec:
+                        self._rec[pre] = {}
+                    if suf not in self._rec[pre]:
+                        self._rec[pre][suf] = ind
+                    else:
+                        self._rec[pre][suf] = max(self._rec[pre][suf], ind)
+
+    def f(self, prefix: str, suffix: str) -> int:
+        if prefix not in self._rec:
+            return -1
+        if suffix not in self._rec[prefix]:
+            return -1
+        return self._rec[prefix][suffix]
+
+
+# Your WordFilter object will be instantiated and called as such:
+# obj = WordFilter(words)
+# param_1 = obj.f(prefix,suffix)

@@ -29,3 +29,31 @@ public class Question1268 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        _map = {}
+        for p in products:
+            matched = True
+            i = 0
+            while matched:
+                if i >= min(len(p), len(searchWord)):
+                    matched = False
+                elif p[i] != searchWord[i]:
+                    matched = False
+                else:
+                    if i not in _map:
+                        _map[i] = []
+                    _map[i].append(p)
+                    i += 1
+        ans = []
+        for i in range(len(searchWord)):
+            if i in _map:
+                ans.append(sorted(_map[i])[:min(3, len(_map[i]))])
+            else:
+                ans.append([])
+        return ans

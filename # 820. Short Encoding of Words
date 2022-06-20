@@ -42,3 +42,22 @@ public class Question820 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def minimumLengthEncoding(self, words: List[str]) -> int:
+        ans = 0
+        pres = set()
+        words.sort(key=lambda w: -len(w))
+        for w in words:
+            if w in pres:
+                continue
+            for i in range(len(w)):
+                sub = w[i:]
+                if sub not in pres:
+                    pres.add(sub)
+            ans += len(w) + 1
+        return ans

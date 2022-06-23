@@ -20,3 +20,32 @@ public class Question630 {
 		}
 	}
 }
+
+
+from typing import List
+import heapq
+
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        validCourses = []
+        for c in courses:
+            if c[0] <= c[1]:
+                validCourses.append((c[1], c[0]))
+        validCourses.sort()
+        pq = []
+        heapq.heapify(pq)
+        cur = 0
+        las = 0
+        for c in validCourses:
+            prevLas = las
+            las = c[0]
+            cur += c[1]
+            heapq.heappush(pq, (-c[1], -c[0]))
+            if las < cur:
+                cand = heapq.heappop(pq)
+                time, ddl = -cand[0], -cand[1]
+                cur -= time
+                if las == ddl:
+                    las = prevLas
+        return len(pq)
+        

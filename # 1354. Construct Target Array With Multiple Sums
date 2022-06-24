@@ -25,3 +25,29 @@ public class Question1354 {
 		}
 	}
 }
+
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def isPossible(self, target: List[int]) -> bool:
+        queue = []
+        heapq.heapify(queue)
+        total = 0
+        for i in target:
+            total += i
+            heapq.heappush(queue, -i)
+        while queue[0] < -1:
+            cur = -heapq.heappop(queue)
+            red = total - cur
+            if red == 0 or cur <= red:
+                return False
+            div, mod = divmod(cur, red)
+            if mod == 0:
+                div -= 1
+                mod = red
+            total -= red * div
+            heapq.heappush(queue, -mod)
+        return True

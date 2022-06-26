@@ -20,3 +20,21 @@ public class Question1423 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def maxScore(self, cardPoints: List[int], k: int) -> int:
+        cur = 0
+        ans = 0
+        for i in range(k):
+            cur += cardPoints[i]
+        ans = cur
+        end = len(cardPoints)
+        for i in range(k - 1, -1, -1):
+            cur -= cardPoints[i] 
+            cur += cardPoints[end - k + i]
+            ans = max(ans, cur)
+        return ans

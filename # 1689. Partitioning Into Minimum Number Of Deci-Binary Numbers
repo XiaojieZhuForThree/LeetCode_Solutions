@@ -10,3 +10,8 @@ public class Question1689 {
 		}
 	}
 }
+
+
+class Solution:
+    def minPartitions(self, n: str) -> int:
+        return max(ord(i) - ord('0') for i in n)

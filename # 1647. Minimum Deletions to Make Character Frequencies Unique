@@ -1,0 +1,16 @@
+class Solution:
+    def minDeletions(self, s: str) -> int:
+        cnts = [0 for i in range(26)]
+        for c in s:
+            cnts[ord(c) - ord('a')] += 1
+        cnts.sort()
+        ans = 0
+        target = max(cnts[25] - 1, 0)
+        for i in range(24, -1, -1):
+            cur = cnts[i]
+            if cur > target:
+                ans += cur - target
+                target = max(target - 1, 0)
+            else:
+                target = max(cur - 1, 0)
+        return ans

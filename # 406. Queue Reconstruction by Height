@@ -49,3 +49,35 @@ class Solution {
         return ans.toArray(new int[people.length][2]);
     }
 }
+
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+        queue = []
+        heapq.heapify(queue)
+        backup = []
+        for p in people:
+            if p[1] == 0:
+                heapq.heappush(queue, (p[0], p))
+            else:
+                backup.append([p[0], p[1], p])
+        ans = []
+        while queue:
+            new_backup = []
+            cur = heapq.heappop(queue)
+            ans.append(cur[1])
+            for cand in backup:
+                if cand[0] <= cur[0]:
+                    cand[1] -= 1
+                    if cand[1] == 0:
+                        heapq.heappush(queue, (cand[0], cand[2]))
+                    else:
+                        new_backup.append([cand[0], cand[1], cand[2]])
+                else:
+                    new_backup.append([cand[0], cand[1], cand[2]])
+            backup = new_backup
+        return ans

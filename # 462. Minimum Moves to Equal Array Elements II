@@ -14,3 +14,18 @@ public class Question462 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def minMoves2(self, nums: List[int]) -> int:
+        nums.sort()
+        l, r = 0, len(nums) - 1
+        ans = 0
+        while nums[l] < nums[r]:
+            ans += nums[r] - nums[l]
+            l += 1
+            r -= 1
+        return ans

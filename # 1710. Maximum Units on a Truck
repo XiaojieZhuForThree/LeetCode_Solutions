@@ -18,3 +18,41 @@ public class Question1710 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        boxTypes.sort(key=lambda x : -x[1])
+        ans = 0
+        for i in boxTypes:
+            if truckSize == 0:
+                break
+            j = min(i[0], truckSize)
+            ans += j * i[1]
+            truckSize -= j
+        return ans
+
+
+package com.leetcode.problems;
+
+import java.util.Arrays;
+
+public class Problem1710 {
+	class Solution {
+		public int maximumUnits(int[][] boxTypes, int truckSize) {
+			Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+			int ans = 0;
+			for (int[] i : boxTypes) {
+				if (truckSize == 0)
+					break;
+				int j = Math.min(truckSize, i[0]);
+				ans += j * i[1];
+				truckSize -= j;
+			}
+			return ans;
+		}
+	}
+}

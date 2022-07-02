@@ -30,3 +30,29 @@ public class Question1465 {
 
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
+        m_h = 0
+        m_w = 0
+        p_h = 0
+        p_w = 0
+        
+        horizontalCuts.sort()
+        verticalCuts.sort()
+        
+        for i in horizontalCuts:
+            m_h = max(m_h, i - p_h)
+            p_h = i
+        m_h = max(m_h, h - p_h)
+        
+        for i in verticalCuts:
+            m_w = max(m_w, i - p_w)
+            p_w = i
+        m_w = max(m_w, w - p_w)
+        
+        return (m_h * m_w) % 1_000_000_007

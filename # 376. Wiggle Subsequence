@@ -38,3 +38,37 @@ public class Question376 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution1:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        ups = []
+        downs = []
+        for i in range(len(nums)):
+            up = 1
+            down = 1
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    up = max(up, 1 + downs[j])
+                elif nums[i] < nums[j]:
+                    down = max(down, 1 + ups[j])
+            ups.append(up)
+            downs.append(down)
+        return max(max(ups), max(downs))
+
+
+class Solution2:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        up = 1
+        down = 1
+        
+        for i in range(1, len(nums)):
+            if nums[i] > nums[i - 1]:
+                up = down + 1
+            elif nums[i] < nums[i - 1]:
+                down = up + 1
+        return max(up, down)
+ 

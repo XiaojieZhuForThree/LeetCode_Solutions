@@ -27,3 +27,54 @@ public class Question135 {
 		}
 	}
 }
+
+
+package com.leetcode.problems;
+
+import java.util.PriorityQueue;
+
+public class Problem135 {
+	class Solution {
+		public int candy(int[] ratings) {
+			PriorityQueue<Integer> pq = new PriorityQueue<>(
+					(a, b) -> ratings[a] != ratings[b] ? ratings[a] - ratings[b] : a - b);
+			int ans = 0;
+			for (int i = 0; i < ratings.length; i++)
+				pq.offer(i);
+			int[] records = new int[ratings.length];
+			while (!pq.isEmpty()) {
+				int cur = pq.poll();
+				int cand = 1;
+				if (cur - 1 >= 0 && ratings[cur] > ratings[cur - 1])
+					cand = Math.max(cand, records[cur - 1] + 1);
+				if (cur + 1 < ratings.length && ratings[cur] > ratings[cur + 1])
+					cand = Math.max(cand, records[cur + 1] + 1);
+				records[cur] = cand;
+				ans += cand;
+			}
+			return ans;
+		}
+	}
+}
+
+
+from typing import List
+
+
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        n = len(ratings)
+        record = [0 for i in range(n)]
+        indexes = []
+        for i in range(n):
+            indexes.append((ratings[i], i))
+        indexes.sort()
+        for val in indexes:
+            index = val[1]
+            cand = 1
+            if index - 1 >= 0 and ratings[index] > ratings[index - 1]:
+                cand = max(cand, record[index - 1] + 1)
+            if index + 1 < n and ratings[index] > ratings[index + 1]:
+                cand = max(cand, record[index + 1] + 1)
+            record[index] = cand
+        return sum(record)

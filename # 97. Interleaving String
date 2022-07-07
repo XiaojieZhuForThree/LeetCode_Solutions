@@ -28,3 +28,33 @@ public class Question97 {
 		}
 	}
 }
+
+
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        _map = {}
+
+        def dfs(i, j, k):
+            if k == len(s3):
+                ans = i == len(s1) and j == len(s2)
+                _map[(i, j, k)] = ans
+                return ans
+            if (i, j, k) in _map:
+                return _map[(i, j, k)]
+            key = (i, j, k)
+            ans = False
+            c = s3[k]
+            c1 = '' if i == len(s1) else s1[i]
+            c2 = '' if j == len(s2) else s2[j]
+            if c1 != c and c2 != c:
+                ans = False
+            elif c1 != c:
+                ans = dfs(i, j + 1, k + 1)
+            elif c2 != c:
+                ans = dfs(i + 1, j, k + 1)
+            else:
+                ans = dfs(i + 1, j, k + 1) or dfs(i, j + 1, k + 1)
+            _map[key] = ans
+            return ans
+
+        return dfs(0, 0, 0)

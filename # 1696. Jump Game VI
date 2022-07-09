@@ -49,3 +49,21 @@ public class Question1696 {
 		}
 	}
 }
+
+
+from collections import deque
+from typing import List
+
+
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        queue = deque([])
+        for i in range(len(nums)):
+            while queue and queue[0] + k < i:
+                queue.popleft()
+            if queue:
+                nums[i] += nums[queue[0]]
+            while queue and nums[queue[-1]] < nums[i]:
+                queue.pop()
+            queue.append(i)
+        return nums[queue[-1]]

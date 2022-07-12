@@ -29,3 +29,35 @@ public class Question473 {
 		}
 	}
 }
+
+
+from functools import cache
+from typing import List
+
+
+class Solution:
+    def makesquare(self, m: List[int]) -> bool:
+            
+        if sum(m) % 4:
+            return False
+
+        side = sum(m) // 4
+        tot = (1 << len(m)) - 1
+        
+        @cache
+        def helper(mask, s):
+            if mask == tot:
+                return s == 0
+            else:
+                for i in range(len(m)):
+                    if mask & (1<<i):
+                        continue
+                    s += m[i]
+                    if s == side and helper(mask | (1<<i), 0):
+                        return True
+                    elif s < side and helper(mask | (1<<i), s):
+                        return True
+                    s -= m[i]
+            return False
+
+        return helper(0, 0)

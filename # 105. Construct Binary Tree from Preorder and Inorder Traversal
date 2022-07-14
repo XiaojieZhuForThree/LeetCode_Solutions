@@ -25,3 +25,23 @@ public class Question105 {
 		}
 	}
 }
+
+
+
+from typing import List, Optional
+from data.TreeNode import TreeNode
+
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder:
+            return None
+        head = TreeNode(preorder[0])
+        left_part = 0
+        while inorder[left_part] != preorder[0]:
+            left_part += 1
+        head.left = self.buildTree(
+            preorder[1:left_part + 1], inorder[:left_part])
+        head.right = self.buildTree(
+            preorder[left_part + 1:], inorder[left_part + 1:])
+        return head

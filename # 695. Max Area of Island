@@ -29,3 +29,29 @@ public class Question695 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ans = 0
+        m = len(grid)
+        n = len(grid[0])
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    ans = max(ans, self.dfs(grid, i, j))
+        return ans
+
+    def dfs(self, grid, i, j):
+        if i >= len(grid) or i < 0 or j >= len(grid[0]) or j < 0:
+            return 0
+        if grid[i][j] == 0:
+            return 0
+        grid[i][j] = 0
+        ans = 1
+        for d in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+            ans += self.dfs(grid, i + d[0], j + d[1])
+        return ans

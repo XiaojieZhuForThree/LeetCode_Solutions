@@ -35,3 +35,26 @@ public class Question576 {
 		}
 	}
 }
+
+
+class Solution:
+    def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
+        seen = {}
+        def dfs(x, y, cur):
+            key = str([x, y, cur])
+            if key in seen:
+                return seen[key]
+            ans = 0
+            if x < 0 or x >= m or y < 0 or y >= n:
+                if cur >= 0:
+                    ans = 1
+                else:
+                    ans = 0
+            elif cur < 0:
+                ans = 0
+            else:
+                for d in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+                    ans += dfs(x + d[0], y + d[1], cur - 1)
+            seen[key] = ans % 1_000_000_007
+            return seen[key]
+        return dfs(startRow, startColumn, maxMove)

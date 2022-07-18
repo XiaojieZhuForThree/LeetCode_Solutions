@@ -56,3 +56,33 @@ public class Question1074 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def numSubmatrixSumTarget(self, matrix: List[List[int]], target: int) -> int:
+        m, n = len(matrix), len(matrix[0])
+        self.process(matrix, m, n)
+        ans = 0
+        for i in range(m):
+            for j in range(-1, i):
+                rec = {0: 1}
+                cur = 0
+                for k in range(n):
+                    cur += matrix[i][k] - (matrix[j][k] if j >= 0 else 0)
+                    diff = cur - target
+                    if diff in rec:
+                        ans += rec[diff]
+                    if cur not in rec:
+                        rec[cur] = 1
+                    else:
+                        rec[cur] += 1
+        return ans
+
+    def process(self, matrix, m, n):
+        for i in range(m):
+            for j in range(n):
+                if i > 0:
+                    matrix[i][j] += matrix[i-1][j]

@@ -39,3 +39,38 @@ public class Question792 {
 		}
 	}
 }
+
+
+
+import bisect
+from typing import List
+
+
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        if not words:
+            return 0
+        rec = {}
+        for i in range(len(s)):
+            c = s[i]
+            if c not in rec:
+                rec[c] = []
+            rec[c].append(i)
+        ans = 0
+        for w in words:
+            if w and self.isSub(w, rec):
+                ans += 1
+        return ans
+    
+    def isSub(self, w, rec):
+        cur = 0
+        for c in w:
+            if c not in rec:
+                return False
+            cand = rec[c]
+            i = bisect.bisect_left(cand, cur)
+            if i < 0 or i >= len(cand):
+                return False
+            cur = cand[i] + 1
+        return True
+            

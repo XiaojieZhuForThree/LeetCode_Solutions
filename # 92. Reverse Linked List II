@@ -41,3 +41,30 @@ public class Question92 {
 		}
 	}
 }
+
+
+
+from typing import Optional
+
+from data.ListNode import ListNode
+
+
+class Solution:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        nodes = []
+        while head:
+            nodes.append(head)
+            head = head.next
+        while left < right:
+            tmp = nodes[left - 1]
+            nodes[left - 1] = nodes[right - 1]
+            nodes[right - 1] = tmp
+            left += 1
+            right -= 1
+        top = ListNode(-1)
+        dummy = top
+        for node in nodes:
+            dummy.next = node
+            dummy = dummy.next
+        dummy.next = None
+        return top.next

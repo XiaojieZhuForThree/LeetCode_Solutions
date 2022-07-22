@@ -36,3 +36,29 @@ public class Question86 {
 		}
 	}
 }
+
+
+from typing import Optional
+from data.ListNode import ListNode
+
+
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        less, more = [], []
+        dummy = head
+        while dummy:
+            if dummy.val < x:
+                less.append(dummy)
+            else:
+                more.append(dummy)
+            dummy = dummy.next
+        pivot = ListNode(-1)
+        dummy = pivot
+        for n in less:
+            dummy.next = n
+            dummy = dummy.next
+        for n in more:
+            dummy.next = n
+            dummy = dummy.next
+        dummy.next = None
+        return pivot.next

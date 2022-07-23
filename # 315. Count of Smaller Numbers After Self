@@ -62,3 +62,44 @@ public class Question315 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        ans = [0 for i in range(n)]
+        idxes = [i for i in range(n)]
+
+        def merge_sort(idxes):
+            if len(idxes) <= 1:
+                return idxes
+            m = len(idxes) // 2
+            lef = merge_sort(idxes[:m])
+            rig = merge_sort(idxes[m:])
+            return sort(lef, rig)
+
+        def sort(a, b):
+            new = []
+            ptr1, ptr2 = 0, 0
+            cnt = 0
+            while ptr1 < len(a) and ptr2 < len(b):
+                if nums[a[ptr1]] <= nums[b[ptr2]]:
+                    ans[a[ptr1]] += cnt
+                    new.append(a[ptr1])
+                    ptr1 += 1
+                else:
+                    cnt += 1
+                    new.append(b[ptr2])
+                    ptr2 += 1
+            for i in range(ptr1, len(a)):
+                new.append(a[i])
+                ans[a[i]] += cnt
+            for i in range(ptr2, len(b)):
+                new.append(b[i])
+            return new
+
+        merge_sort(idxes)
+        return ans

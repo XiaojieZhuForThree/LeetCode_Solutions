@@ -29,3 +29,25 @@ public class Question1499 {
 		}
 	}
 }
+
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
+        ans = -float('inf')
+        prev = []
+        heapq.heapify(prev)
+        for p in points:
+            while prev and p[0] - prev[0][1] > k:
+                heapq.heappop(prev)
+            if prev:
+                cand = prev[0]
+                ans = max(ans, p[1] + p[0] - cand[0])
+            p[1] -= p[0]
+            p[1] = -p[1]
+            p.reverse()
+            heapq.heappush(prev, p)
+        return ans

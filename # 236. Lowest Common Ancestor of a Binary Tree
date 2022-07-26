@@ -24,3 +24,44 @@ public class Question236 {
 		}
 	}
 }
+
+
+from data.TreeNode import TreeNode
+
+
+class Solution1:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def dfs(node):
+            if not node:
+                return [False, False, None]
+            lef = dfs(node.left)
+            rig = dfs(node.right)
+            cur = []
+            cur.append(lef[0] or rig[0] or node == p)
+            cur.append(lef[1] or rig[1] or node == q)
+            if lef[2]:
+                cur.append(lef[2])
+            elif rig[2]:
+                cur.append(rig[2])
+            elif cur[0] and cur[1]:
+                cur.append(node)
+            else:
+                cur.append(None)
+            return cur
+        return dfs(root)[2]
+
+
+class Solution2:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def dfs(node):
+            if not node:
+                return None
+            if node == p or node == q:
+                return node
+            l = dfs(node.left)
+            r = dfs(node.right)
+            if l and r:
+                return node
+            return l if l else r
+        return dfs(root)
+

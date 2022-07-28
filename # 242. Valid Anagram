@@ -19,3 +19,20 @@ public class Question242 {
 		}
 	}
 }
+
+
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        _map = {}
+        for c in s:
+            if c not in _map:
+                _map[c] = 1
+            else:
+                _map[c] += 1
+        for c in t:
+            if c not in _map:
+                return False
+            _map[c] -= 1
+            if _map[c] == 0:
+                del _map[c]
+        return not _map

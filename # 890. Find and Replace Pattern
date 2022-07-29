@@ -32,3 +32,32 @@ public class Question890 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
+        def match(w, p):
+            if len(w) != len(p):
+                return False
+            m = {}
+            k = {}
+            n = len(w)
+            for i in range(n):
+                a = w[i]
+                b = p[i]
+                if b not in m:
+                    if a in k:
+                        return False
+                    m[b] = a
+                    k[a] = b
+                elif m[b] != a:
+                    return False
+            return True
+        ans = []
+        for w in words:
+            if match(w, pattern):
+                ans.append(w)
+        return ans

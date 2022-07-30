@@ -37,3 +37,28 @@ public class Question916 {
 		}
 	}
 }
+
+
+from collections import Counter
+from typing import List
+
+
+class Solution:
+    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
+        _records = {}
+        for w in words2:
+            for ch, num in Counter(w).items():
+                if ch not in _records:
+                    _records[ch] = num
+                else:
+                    _records[ch] = max(_records[ch], num)
+        ans = []
+        for w in words1:
+            isCand = True
+            for ch in _records:
+                if _records[ch] > w.count(ch):
+                    isCand = False
+                    break
+            if isCand:
+                ans.append(w)
+        return ans

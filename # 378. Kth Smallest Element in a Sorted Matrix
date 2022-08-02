@@ -17,3 +17,28 @@ public class Question378 {
 		}
 	}
 }
+
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        n = len(matrix)
+        queue = []
+        heapq.heapify(queue)
+        for i in range(n):
+            heapq.heappush(queue, (matrix[i][0], i, 0))
+        cnt = 0
+        while queue:
+            cur = heapq.heappop(queue)
+            cnt += 1
+            if cnt == k:
+                return cur[0]
+            i = cur[1]
+            j = cur[2]
+            if j < n - 1:
+                heapq.heappush(queue, (matrix[i][j + 1], i, j + 1))
+        return -1
+            

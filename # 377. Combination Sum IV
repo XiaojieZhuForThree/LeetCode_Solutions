@@ -26,3 +26,25 @@ public class Question377 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        self.seen = {}
+
+        def helper(target):
+            if target in self.seen:
+                return self.seen[target]
+            elif target == 0:
+                return 1
+            ans = 0
+            for i in nums:
+                if target - i >= 0:
+                    ans += helper(target - i)
+            self.seen[target] = ans
+            return ans
+
+        return helper(target)

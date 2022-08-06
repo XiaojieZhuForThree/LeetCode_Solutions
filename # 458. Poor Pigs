@@ -17,3 +17,16 @@ public class Question458 {
 		}
 	}
 }
+
+
+class Solution:
+    def poorPigs(self, buckets: int, minutesToDie: int, minutesToTest: int) -> int:
+        if buckets == 1:
+            return 0
+        n = minutesToTest // minutesToDie
+        for i in range(1, 11):
+            if (n + 1) ** i >= buckets:
+                return i
+        return -1
+            
+        

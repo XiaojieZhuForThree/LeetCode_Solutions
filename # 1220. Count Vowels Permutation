@@ -29,3 +29,23 @@ public class Question1220 {
 		}
 	}
 }
+
+
+class Solution:
+    def countVowelPermutation(self, n: int) -> int:
+        return sum(self.helper(n).values()) % 1_000_000_007
+
+    def helper(self, n):
+        if n == 1:
+            return {'a': 1, 'e': 1, 'i': 1, 'o': 1, 'u': 1}
+        prev = self.helper(n - 1)
+        cur = {}
+        cur['a'] = prev['e'] % 1_000_000_007
+        cur['e'] = (prev['a'] % 1_000_000_007 + prev['i'] %
+                    1_000_000_007) % 1_000_000_007
+        cur['i'] = (prev['a'] % 1_000_000_007 + prev['e'] % 1_000_000_007 +
+                    prev['o'] % 1_000_000_007 + prev['u'] % 1_000_000_007) % 1_000_000_007
+        cur['o'] = (prev['i'] % 1_000_000_007 + prev['u'] %
+                    1_000_000_007) % 1_000_000_007
+        cur['u'] = prev['a'] % 1_000_000_007
+        return cur

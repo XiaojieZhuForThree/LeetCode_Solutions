@@ -22,3 +22,18 @@ public class Question300 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        ans = [1]
+        for i in range(1, len(nums)):
+            cur = 1
+            for j in range(i):
+                if nums[j] < nums[i]:
+                    cur = max(cur, ans[j] + 1)
+            ans.append(cur)
+        return max(ans)

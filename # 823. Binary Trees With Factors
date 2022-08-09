@@ -35,3 +35,24 @@ public class Question823 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def numFactoredBinaryTrees(self, arr: List[int]) -> int:
+        arr.sort()
+        rec = {}
+        for i in arr:
+            rec[i] = 1
+            j = 2
+            for j in arr:
+                if j == i:
+                    break
+                if i % j == 0:
+                    k = i // j
+                    if k in rec:
+                        rec[i] += rec[j] * rec[k]
+                rec[i] %= 1_000_000_007
+        return (sum(rec.values()) % 1_000_000_007)

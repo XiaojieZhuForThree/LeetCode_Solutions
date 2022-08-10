@@ -21,3 +21,20 @@ public class Question108 {
 		}
 	}
 }
+
+
+from typing import List, Optional
+from data.TreeNode import TreeNode
+
+
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.helper(nums, 0, len(nums) - 1)
+    def helper(self, nums, l, r):
+        if l > r:
+            return None
+        mid = l + (r - l) // 2
+        node = TreeNode(nums[mid])
+        node.left = self.helper(nums, l, mid - 1)
+        node.right = self.helper(nums, mid + 1, r)
+        return node

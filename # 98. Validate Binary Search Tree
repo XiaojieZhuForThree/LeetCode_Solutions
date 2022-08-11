@@ -38,3 +38,18 @@ public class Question98 {
 		}
 	}
 }
+
+
+from typing import Optional
+from data.TreeNode import TreeNode
+
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        vals = self.getVals(root)
+        return vals == sorted(set(vals))
+
+    def getVals(self, node):
+        if not node:
+            return []
+        return self.getVals(node.left) + [node.val] + self.getVals(node.right)

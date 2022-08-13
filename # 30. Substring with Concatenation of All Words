@@ -1,0 +1,22 @@
+from collections import Counter
+from typing import List
+
+
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        m = len(words)
+        n = len(words[0])
+        t = m * n
+        ans = []
+        for i in range(n):
+            l = i
+            c = Counter(words)
+            for r in range(l, len(s) - n + 1, n):
+                word = s[r:r+n]
+                c[word] -= 1
+                while c[word] < 0:
+                    c[s[l:l+n]] += 1
+                    l += n
+                if l + t == r + n:
+                    ans.append(l)
+        return ans

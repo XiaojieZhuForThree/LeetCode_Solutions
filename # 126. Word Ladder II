@@ -104,3 +104,59 @@ public class Question126 {
 		}
 	}
 }
+
+
+
+
+from collections import deque
+from typing import List
+
+
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        rec = {}
+        queue = deque([beginWord])
+        while queue:
+            seen = {}
+            for i in range(len(queue), 0, -1):
+                cur = queue.popleft()
+                if cur == endWord:
+                    return self.getAns(beginWord, cur, rec)
+                for w in wordList:
+                    if w in rec:
+                        continue
+                    if not self.diffByOne(cur, w):
+                        continue
+                    elif w not in seen:
+                        seen[w] = []
+                    seen[w].append(cur)
+            for w in seen:
+                rec[w] = seen[w]
+                queue.append(w)
+        return []
+
+    def getAns(self, begin, end, rec):
+        ans = []
+        self.dfs(begin, end, rec, [], ans)
+        return ans
+
+    def dfs(self, s, w, rec, cur, ans):
+        cur.append(w)
+        if w == s:
+            path = cur.copy()
+            path.reverse()
+            ans.append(path)
+            cur.pop()
+            return
+        for n in rec[w]:
+            self.dfs(s, n, rec, cur, ans)
+        cur.pop()
+        return
+
+    def diffByOne(self, s, w):
+        diff = 0
+        for i in range(len(s)):
+            if s[i] != w[i]:
+                diff += 1
+        return diff == 1
+

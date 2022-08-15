@@ -28,3 +28,44 @@ public class Question13 {
 		}
 	}
 }
+
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        ans = 0
+        prev = ''
+        for c in s:
+            if c == 'I':
+                ans += 1
+            elif c == 'V':
+                if prev and prev == 'I':
+                    ans += 3
+                else:
+                    ans += 5
+            elif c == 'X':
+                if prev and prev == 'I':
+                    ans += 8
+                else:
+                    ans += 10
+            elif c == 'L':
+                if prev and prev == 'X':
+                    ans += 30
+                else:
+                    ans += 50
+            elif c == 'C':
+                if prev and prev == 'X':
+                    ans += 80
+                else:
+                    ans += 100
+            elif c == 'D':
+                if prev and prev == 'C':
+                    ans += 300
+                else:
+                    ans += 500
+            elif c == 'M':
+                if prev and prev == 'C':
+                    ans += 800
+                else:
+                    ans += 1000
+            prev = c
+        return ans

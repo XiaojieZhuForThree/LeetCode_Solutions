@@ -25,3 +25,19 @@ public class Question804 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def uniqueMorseRepresentations(self, words: List[str]) -> int:
+        code = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
+                "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."]
+        ans = set()
+        for w in words:
+            cur = ''
+            for c in w:
+                cur += code[ord(c) - ord('a')]
+            ans.add(cur)
+        return len(ans)

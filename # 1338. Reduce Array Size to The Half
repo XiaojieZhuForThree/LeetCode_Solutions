@@ -25,3 +25,24 @@ public class Question1338 {
 		}
 	}
 }
+
+
+from collections import Counter
+import heapq
+import math
+from typing import List
+
+
+class Solution:
+    def minSetSize(self, arr: List[int]) -> int:
+        counter = Counter(arr)
+        heap = []
+        heapq.heapify(heap)
+        for i in counter:
+            heapq.heappush(heap, (-counter[i], i))
+        half = math.ceil(len(arr) / 2)
+        ans = 0
+        while half > 0:
+            half += heapq.heappop(heap)[0]
+            ans += 1
+        return ans

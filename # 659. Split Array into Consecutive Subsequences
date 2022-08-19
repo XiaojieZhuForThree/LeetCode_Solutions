@@ -37,3 +37,25 @@ public class Question659 {
 		}
 	}
 }
+
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        rec = {}
+        for i in nums:
+            cur = 1
+            if i - 1 in rec and rec[i - 1]:
+                cur = heapq.heappop(rec[i - 1]) + 1
+            if i not in rec:
+                container = []
+                heapq.heapify(container)
+                rec[i] = container
+            heapq.heappush(rec[i], cur)
+        for i in rec:
+            if rec[i] and rec[i][0] < 3:
+                return False
+        return True

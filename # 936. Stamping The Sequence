@@ -62,3 +62,42 @@ public class Question936 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def movesToStamp(self, stamp: str, target: str) -> List[int]:
+        chars = [c for c in target]
+        ans = []
+        used = set()
+        changed = True
+        while changed:
+            changed = False
+            for i in range(len(target) - len(stamp) + 1):
+                if i in used:
+                    continue
+                if not self.canReplace(chars, i, stamp):
+                    continue
+                used.add(i)
+                for j in range(i, i + len(stamp)):
+                    chars[j] = '?'
+                ans.append(i)
+                changed = True
+                break
+        if self.resetted(chars):
+            return reversed(ans)
+        return []
+
+    def canReplace(self, chars, i, stamp):
+        for j in range(len(stamp)):
+            if chars[i + j] != stamp[j] and chars[i + j] != '?':
+                return False
+        return True
+
+    def resetted(self, chars):
+        for c in chars:
+            if c != '?':
+                return False
+        return True

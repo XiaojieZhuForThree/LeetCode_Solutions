@@ -38,3 +38,26 @@ public class Question234 {
 		}
 	}
 }
+
+
+
+from typing import Optional
+from data.ListNode import ListNode
+
+
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        vals = []
+        while head:
+            vals.append(head.val)
+            head = head.next
+        return self.isPali(vals)
+
+    def isPali(self, vals):
+        l, r = 0, len(vals) - 1
+        while l < r:
+            if vals[l] != vals[r]:
+                return False
+            l += 1
+            r -= 1
+        return True

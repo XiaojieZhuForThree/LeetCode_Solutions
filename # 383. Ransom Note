@@ -10,3 +10,16 @@ class Solution:
             if c not in b or a[c] > b[c]:
                 return False
         return True
+        
+        
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        Map<Character, Integer> a = new HashMap<>(), b = new HashMap<>();
+        for (char c : ransomNote.toCharArray()) a.put(c, a.getOrDefault(c, 0) + 1);
+        for (char c : magazine.toCharArray()) b.put(c, b.getOrDefault(c, 0) + 1);
+        for (char c : a.keySet()) {
+            if (!b.containsKey(c) || a.get(c) > b.get(c)) return false;
+        }
+        return true;
+    }
+}

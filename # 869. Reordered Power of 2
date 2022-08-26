@@ -38,3 +38,19 @@ public class Question869 {
 		}
 	}
 }
+
+
+class Solution:
+    def reorderedPowerOf2(self, n: int) -> bool:
+        cand = []
+        i = 1
+        l = len(str(n))
+        ns = str(n)
+        while len(str(i)) <= len(ns):
+            if len(str(i)) == l:
+                cand.append(str(i))
+            i <<= 1
+        for i in cand:
+            if sorted(i) == sorted(ns):
+                return True
+        return False

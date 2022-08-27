@@ -47,3 +47,51 @@ public class Question363 {
 		}
 	}
 }
+
+
+from typing import List
+from sortedcontainers import SortedDict
+
+class Solution:
+    def maxSumSubmatrix(self, matrix: List[List[int]], k: int) -> int:
+        self.processCol(matrix)
+
+        m = len(matrix)
+        n = len(matrix[0])
+        
+        def getSum(i, j):
+            if i < 0 or j < 0:
+                return 0
+            return matrix[i][j]
+
+        ans = -float('inf')
+
+        for i in range(m):
+            for j in range(i + 1):
+                seen = SortedDict({0:1})
+                cur_sum = 0
+                for t in range(n):
+                    cur_sum += getSum(i, t) - getSum(j - 1, t)
+                    diff = cur_sum - k
+                    cand = cur_sum
+                    if diff in seen:
+                        cand -= diff
+                    else:
+                        idx = seen.bisect(diff)
+                        if idx >= len(seen):
+                            cand -= seen.peekitem()[0]
+                        else:
+                            cand -= seen.peekitem(idx)[0]
+                    if cand <= k:
+                        ans = max(ans, cand)
+                    seen.setdefault(cur_sum, 1)
+        return ans
+
+    def processCol(self, matrix):
+        m = len(matrix)
+        n = len(matrix[0])
+        for i in range(m):
+            for j in range(n):
+                if i == 0:
+                    continue
+                matrix[i][j] += matrix[i - 1][j]

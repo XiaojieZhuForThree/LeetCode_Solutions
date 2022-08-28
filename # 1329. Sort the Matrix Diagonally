@@ -39,3 +39,36 @@ public class Question1329 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:
+        m = len(mat)
+        n = len(mat[0])
+        for i in range(n):
+            self.process(mat, 0, i)
+        for i in range(1, m):
+            self.process(mat, i, 0)
+        return mat
+    
+    def process(self, mat, i, j):
+        container = []
+        m = len(mat)
+        n = len(mat[0])
+        x = i
+        y = j
+        while x < m and y < n:
+            container.append(mat[x][y])
+            x += 1
+            y += 1
+        container.sort()
+        x = i
+        y = j
+        while x < m and y < n:
+            mat[x][y] = container.pop(0)
+            x += 1
+            y += 1
+        

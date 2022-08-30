@@ -25,3 +25,51 @@ public class Question48 {
 		}
 	}
 }
+
+
+from typing import List
+
+
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        l = 0
+        r = len(matrix) - 1
+        while l < r:
+            self.helper(matrix, l, r)
+            l += 1
+            r -= 1
+
+    def helper(self, matrix, l, r):
+        width = r - l
+        container = matrix[l][l + 1:r + 1]
+        x = l + 1
+        y = r
+        for i in range(width):
+            temp = matrix[x][y]
+            matrix[x][y] = container[i]
+            container[i] = temp
+            x += 1
+        x -= 1
+        y = r - 1
+        for i in range(width):
+            temp = matrix[x][y]
+            matrix[x][y] = container[i]
+            container[i] = temp
+            y -= 1
+        y += 1
+        x -= 1
+        for i in range(width):
+            temp = matrix[x][y]
+            matrix[x][y] = container[i]
+            container[i] = temp
+            x -= 1
+        x += 1
+        y += 1
+        for i in range(width):
+            temp = matrix[x][y]
+            matrix[x][y] = container[i]
+            container[i] = temp
+            y += 1

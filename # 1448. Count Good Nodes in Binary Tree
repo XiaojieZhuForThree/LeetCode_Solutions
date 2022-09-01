@@ -1,0 +1,18 @@
+from data.TreeNode import TreeNode
+
+
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        self.ans = 0
+
+        def dfs(node, cur_max):
+            if not node:
+                return
+            if node.val >= cur_max:
+                self.ans += 1
+            dfs(node.left, max(cur_max, node.val))
+            dfs(node.right, max(cur_max, node.val))
+        dfs(root, root.val)
+        return self.ans

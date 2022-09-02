@@ -32,3 +32,30 @@ public class Question637 {
 		}
 	}
 }
+
+
+from typing import List, Optional
+from data.TreeNode import TreeNode
+
+
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        self.nums = []
+        self.sums = []
+
+        def dfs(node, level):
+            if not node:
+                return
+            if level >= len(self.nums):
+                self.nums.append(1)
+                self.sums.append(node.val)
+            else:
+                self.nums[level] += 1
+                self.sums[level] += node.val
+            dfs(node.left, level + 1)
+            dfs(node.right, level + 1)
+        dfs(root, 0)
+        ans = []
+        for i in range(len(self.nums)):
+            ans.append(self.sums[i] / self.nums[i])
+        return ans

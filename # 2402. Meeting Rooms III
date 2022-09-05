@@ -28,6 +28,12 @@ class Solution:
         return nums.index(max(nums))
 
 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
 
 class Solution {
 public:
@@ -39,7 +45,7 @@ public:
         for (int i = 0; i < n; i++) {
             free.push(i);
         }
-        for (vector<int> &m : meetings) {
+        for (vector<int>& m : meetings) {
             int s = m[0], e = m[1];
             while (!occupied.empty() && occupied.top().first <= s) {
                 free.push(occupied.top().second);
@@ -48,14 +54,15 @@ public:
             if (!free.empty()) {
                 int reserved = free.top();
                 free.pop();
-                occupied.push({e, reserved});
+                occupied.push({ e, reserved });
                 ans[reserved]++;
-            } else {
+            }
+            else {
                 pair<long, int> cur = occupied.top();
                 occupied.pop();
                 int reserved = cur.second;
                 long end = cur.first + e - s;
-                occupied.push({end, reserved});
+                occupied.push({ end, reserved });
                 ans[reserved]++;
             }
         }

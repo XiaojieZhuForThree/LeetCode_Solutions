@@ -1,0 +1,28 @@
+import heapq
+from typing import List
+
+
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        free = [i for i in range(n)]
+        occupied = []
+
+        nums = [0 for i in range(n)]
+
+        heapq.heapify(free)
+        heapq.heapify(occupied)
+        meetings.sort()
+
+        for meeting in meetings:
+            while occupied and occupied[0][0] <= meeting[0]:
+                heapq.heappush(free, heapq.heappop(occupied)[1])
+            if free:
+                reserved = heapq.heappop(free)
+                heapq.heappush(occupied, (meeting[1], reserved))
+                nums[reserved] += 1
+            else:
+                start, reserved = heapq.heappop(occupied)
+                duration = meeting[1] - meeting[0]
+                heapq.heappush(occupied, (start + duration, reserved))
+                nums[reserved] += 1
+        return nums.index(max(nums))

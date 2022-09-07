@@ -1,0 +1,25 @@
+#include <string>;
+#include "TreeNode.cpp";
+
+using namespace std;
+
+class Solution {
+public:
+    string tree2str(TreeNode* root) {
+        if (!root) return "";
+        string ans = to_string(root->val);
+        if (!root->left && !root->right) return ans;
+        else if (!root->left) {
+            ans.append("()");
+            ans.append("(" + tree2str(root->right) + ")");
+        }
+        else if (!root->right) {
+            ans.append("(" + tree2str(root->left) + ")");
+        }
+        else {
+            ans.append("(" + tree2str(root->left) + ")");
+            ans.append("(" + tree2str(root->right) + ")");
+        }
+        return ans;
+    }
+};

@@ -50,3 +50,21 @@ public class Question94 {
 		}
 	}
 }
+
+
+#include "TreeNode.cpp"
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        if (!root) return {};
+        vector<int> ans = inorderTraversal(root->left);
+        ans.push_back(root->val);
+        vector<int> second = inorderTraversal(root->right);
+        ans.insert(ans.end(), second.begin(), second.end());
+        return ans;
+    }
+};

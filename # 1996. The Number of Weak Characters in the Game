@@ -5,16 +5,19 @@ using namespace std;
 
 class Solution {
 public:
-    int numberOfWeakCharacters(vector<vector<int>>& prop) {
-        int n = prop.size();
-        sort(prop.begin(), prop.end(), [](vector<int>& a, vector<int>& b) {
-            return (a[0] == b[0]) ? a[1]<b[1] : a[0]>b[0];
-            });
-        int ans = 0, mx = -1;
-        for (auto p : prop) {
+    int numberOfWeakCharacters(vector<vector<int>>& properties) {
+        sort(properties.begin(), properties.end(), compare);
+        int ans = 0;
+        int mx = -1;
+        for (auto p : properties) {
             ans += (p[1] < mx);
             mx = max(mx, p[1]);
         }
         return ans;
+    }
+private:
+    static bool compare(vector<int>& a, vector<int>& b) {
+        if (a[0] == b[0]) return a[1] < b[1];
+        return b[0] < a[0];
     }
 };

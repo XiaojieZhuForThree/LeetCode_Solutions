@@ -1,0 +1,20 @@
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int numberOfWeakCharacters(vector<vector<int>>& prop) {
+        int n = prop.size();
+        sort(prop.begin(), prop.end(), [](vector<int>& a, vector<int>& b) {
+            return (a[0] == b[0]) ? a[1]<b[1] : a[0]>b[0];
+            });
+        int ans = 0, mx = -1;
+        for (auto p : prop) {
+            ans += (p[1] < mx);
+            mx = max(mx, p[1]);
+        }
+        return ans;
+    }
+};

@@ -53,3 +53,33 @@ public:
         return (int)(ans % (long)(1e9 + 7));
     }
 };
+
+
+# include <vector>
+# include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) {
+        vector<pair<int, int>> data;
+        for (int i = 0; i < n; i++) data.push_back({ efficiency[i], speed[i] });
+        sort(data.rbegin(), data.rend());
+
+        priority_queue<int, vector<int>, greater<int>> pq;
+        long sum = 0, ans = 0;
+        const long mod = 1000000007;
+        for (auto p : data) {
+            sum += p.second;
+            pq.push(p.second);
+            if (pq.size() > k) {
+                sum -= pq.top();
+                pq.pop();
+            }
+            long cand = sum * p.first;
+            ans = max(ans, cand);
+        }
+        return (int)(ans % mod);
+    }
+};

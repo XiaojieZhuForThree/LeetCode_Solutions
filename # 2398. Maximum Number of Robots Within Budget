@@ -1,0 +1,60 @@
+#include <vector>
+#include <map>
+#include <deque>
+
+using namespace std;
+
+class Solution1 {
+public:
+    int maximumRobots(vector<int>& chargeTimes, vector<int>& runningCosts, long long budget) {
+        int l = 0, r = 0, n = chargeTimes.size();
+        int ans = 0, cur = 0;
+        long long sum = 0;
+        long long total = 0;
+        map<int, int> charges;
+        for (; r < n; r++) {
+            charges[chargeTimes[r]]++;
+            sum += runningCosts[r];
+            cur++;
+            total = (charges.rbegin()->first) + cur * sum;
+            while (total > budget) {
+                cur--;
+                sum -= runningCosts[l];
+                charges[chargeTimes[l]]--;
+                if (charges[chargeTimes[l]] == 0) {
+                    charges.erase(chargeTimes[l]);
+                }
+                l++;
+                total = (charges.empty() ? 0 : charges.rbegin()->first) + cur * sum;
+            }
+            ans = max(ans, cur);
+        }
+        return ans;
+    }
+};
+
+class Solution2 {
+public:
+    int maximumRobots(vector<int>& chargeTimes, vector<int>& runningCosts, long long budget) {
+        deque<int> queue;
+        int l = 0, r = 0, n = chargeTimes.size();
+        int ans = 0, cur = 0;
+        long long total = 0, sum = 0;
+        for (; r < n; r++) {
+            while (!queue.empty() && queue.back() < chargeTimes[r]) queue.pop_back();
+            queue.push_back(chargeTimes[r]);
+            sum += runningCosts[r];
+            cur++;
+            total = queue.front() + cur * sum;
+            while (total > budget) {
+                cur--;
+                sum -= runningCosts[l];
+                if (queue.front() == chargeTimes[l]) queue.pop_front();
+                l++;
+                total = (queue.empty() ? 0 : queue.front()) + cur * sum;
+            }
+            ans = max(ans, cur);
+        }
+        return ans;
+    }
+};

@@ -29,3 +29,35 @@ public class Question948 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int power) {
+        sort(tokens.begin(), tokens.end());
+        int l = 0, r = tokens.size() - 1;
+        int ans = 0, cur = 0;
+        while (l <= r) {
+            if (power >= tokens[l]) {
+                cur++;
+                power -= tokens[l];
+                l++;
+                ans = max(ans, cur);
+            }
+            else if (cur > 0) {
+                cur -= 1;
+                power += tokens[r];
+                r--;
+            }
+            else {
+                break;
+            }
+        }
+        return ans;
+    }
+};

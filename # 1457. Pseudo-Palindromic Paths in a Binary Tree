@@ -42,3 +42,41 @@ public class Question1457 {
 		}
 	}
 }
+
+
+#include "TreeNode.cpp"
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int pseudoPalindromicPaths(TreeNode* root) {
+        vector<int> log;
+        log.resize(9, 0);
+        return dfs(root, log);
+    }
+private:
+    int dfs(TreeNode* node, vector<int> log) {
+        if (!node) {
+            return 0;
+        }
+        log[node->val - 1]++;
+        if (!node->left && !node->right) return canConvert(log);
+        int ans = 0;
+        ans += dfs(node->left, log);
+        ans += dfs(node->right, log);
+        log[node->val - 1]--;
+        return ans;
+    }
+    int canConvert(vector<int> log) {
+        bool used = false;
+        for (int i : log) {
+            if (i % 2 == 1) {
+                if (used) return 0;
+                else used = true;
+            }
+        }
+        return 1;
+    }
+};

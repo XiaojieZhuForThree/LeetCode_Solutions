@@ -1,0 +1,29 @@
+#include <map>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        vector<int> ans;
+        map<int, int> map;
+        if (changed.size() % 2 == 1) return ans;
+        for (int i : changed) map[i]++;
+        while (!map.empty()) {
+            int cur = map.rbegin()->first;
+            if (cur % 2 == 1) return {};
+            else {
+                map[cur]--;
+                if (map[cur] == 0) map.erase(cur);
+                int half = cur / 2;
+                if (map[half] == 0) return {};
+                ans.push_back(half);
+                map[half]--;
+                if (map[half] == 0) map.erase(half);
+            }
+        }
+        if (ans.size() == changed.size() / 2) return ans;
+        return {};
+    }
+};

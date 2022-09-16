@@ -1,0 +1,21 @@
+# include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int maximumScore(vector<int>& nums, vector<int>& multipliers) {
+        vector<vector<int>> dp(multipliers.size(), vector<int>(multipliers.size(), INT_MIN));
+        return dfs(nums, multipliers, 0, nums.size() - 1, 0, dp);
+    }
+private:
+    int dfs(vector<int>& nums, vector<int>& multipliers, int l, int r, int cur, vector<vector<int>>& dp) {
+        if (cur == multipliers.size()) return 0;
+        if (dp[cur][l] != INT_MIN) return dp[cur][l];
+        int ans1 = multipliers[cur] * nums[l] + dfs(nums, multipliers, l + 1, r, cur + 1, dp);
+        int ans2 = multipliers[cur] * nums[r] + dfs(nums, multipliers, l, r - 1, cur + 1, dp);
+        int ans = max(ans1, ans2);
+        dp[cur][l] = ans;
+        return ans;
+    }
+};

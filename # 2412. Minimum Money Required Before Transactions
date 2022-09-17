@@ -1,0 +1,29 @@
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    long long minimumMoney(vector<vector<int>>& transactions) {
+        vector<vector<int>> loss;
+        for (auto& t : transactions) {
+            if (t[0] > t[1]) loss.push_back(t);
+        }
+        sort(loss.begin(), loss.end(), [](vector<int>& a, vector<int>& b) {
+            if (a[1] == b[1]) return a[0] > b[0];
+            return a[1] < b[1];
+            });
+        long long ans = 0;
+        int cur = 0;
+        for (auto& t : loss) {
+            ans += t[0] - cur;
+            cur = t[1];
+        }
+        int end = 0;
+        for (auto& t : transactions) {
+            if (t[0] <= t[1]) end = max(end, t[0] - cur);
+        }
+        return ans + end;
+    }
+};

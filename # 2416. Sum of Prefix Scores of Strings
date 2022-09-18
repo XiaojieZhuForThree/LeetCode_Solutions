@@ -1,0 +1,36 @@
+from typing import List
+
+
+class Trie:
+    def __init__(self):
+        self.cnt = 0
+        self.cd = [None for i in range(26)]
+
+class Solution:
+    def sumPrefixScores(self, words: List[str]) -> List[int]:
+        root = Trie()
+        for w in words:
+            self.addWord(root, w)
+        ans = []
+        for w in words:
+            ans.append(self.query(root, w))
+        return ans
+    
+    def addWord(self, root, w):
+        for c in w:
+            idx = ord(c) - ord('a')
+            if root.cd[idx] == None:
+                root.cd[idx] = Trie()
+            root.cd[idx].cnt += 1
+            root = root.cd[idx]
+            
+    def query(self, root, w):
+        ans = 0
+        
+        for c in w:
+            idx = ord(c) - ord('a')
+            if root.cd[idx] == None:
+                break
+            ans += root.cd[idx].cnt
+            root = root.cd[idx]
+        return ans;

@@ -26,3 +26,27 @@ public class Question42 {
 		}
 	}
 }
+
+
+#include <vector> 
+
+using namespace std;
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int ans = 0, n = height.size();
+        int cur = height[0];
+        vector<int> lm;
+        for (int i = 0; i < n; i++) {
+            lm.push_back(cur);
+            cur = max(cur, height[i]);
+        }
+        cur = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (height[i] < min(cur, lm[i])) ans += min(cur, lm[i]) - height[i];
+            cur = max(cur, height[i]);
+        }
+        return ans;
+    }
+};

@@ -33,7 +33,7 @@ class Solution:
                 break
             ans += root.cd[idx].cnt
             root = root.cd[idx]
-        return ans;
+        return ans
 
 
 #include <vector>

@@ -34,3 +34,50 @@ class Solution:
             ans += root.cd[idx].cnt
             root = root.cd[idx]
         return ans;
+
+
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    struct TrieNode {
+        TrieNode() : cnt(0), cd(26, nullptr) {}
+        int cnt;
+        vector<TrieNode*> cd;
+    };
+
+    vector<int> sumPrefixScores(vector<string>& words) {
+        TrieNode* root = new TrieNode();
+        vector<int> ans;
+
+        for (auto& w : words) addWord(root, w);
+        for (auto& w : words) ans.push_back(query(root, w));
+
+        return ans;
+    }
+
+private:
+    void addWord(TrieNode* root, string& w) {
+        for (char c : w) {
+            int idx = c - 'a';
+            if (!root->cd[idx]) {
+                root->cd[idx] = new TrieNode();
+            }
+            root->cd[idx]->cnt++;
+            root = root->cd[idx];
+        }
+    }
+    int query(TrieNode* root, string& w) {
+        int ans = 0;
+        for (char c : w) {
+            int idx = c - 'a';
+            if (!root->cd[idx]) break;
+            ans += root->cd[idx]->cnt;
+            root = root->cd[idx];
+        }
+        return ans;
+    }
+};

@@ -38,3 +38,51 @@ public class Question609 {
 		}
 	}
 }
+
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        unordered_map<string, vector<string>> map;
+        for (auto& s : paths) {
+            int split = s.find(' ');
+            string dir = s.substr(0, split);
+            string subs = s.substr(split + 1, s.size());
+            int i = 0, j = 0;
+            for (; j < subs.size(); j++) {
+                if (subs[j] == ' ') {
+                    string part = subs.substr(i, j - i);
+                    vector<string> processed = process(part);
+                    if (map.find(processed[1]) == map.end()) {
+                        map[processed[1]] = {};
+                    }
+                    map[processed[1]].push_back(dir + "/" + processed[0]);
+                    i = j + 1;
+                }
+            }
+            vector<string> processed = process(subs.substr(i, j - i));
+            if (map.find(processed[1]) == map.end()) {
+                map[processed[1]] = {};
+            }
+            map[processed[1]].push_back(dir + "/" + processed[0]);
+        }
+        vector<vector<string>> ans;
+        for (auto s : map) {
+            if (s.second.size() > 1) ans.push_back(s.second);
+        }
+        return ans;
+    }
+
+private:
+    vector<string> process(string s) {
+        int split = s.find('(');
+        string name = s.substr(0, split);
+        string content = s.substr(split + 1, s.size() - split - 2);
+        return { name, content };
+    }
+};

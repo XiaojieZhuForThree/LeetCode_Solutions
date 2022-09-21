@@ -28,3 +28,30 @@ public class Question985 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> sumEvenAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
+        vector<int> ans;
+        int sum = 0;
+        for (int i : nums) {
+            if (i % 2 == 0) sum += i;
+        }
+        for (auto q : queries) {
+            int prev = nums[q[1]];
+            int cur = prev + q[0];
+            int prev_ab = abs(prev), cur_ab = abs(cur);
+            if (prev_ab % 2 == 0 && cur_ab % 2 == 0) sum += q[0];
+            else if (prev_ab % 2 == 0 && cur_ab % 2 == 1) sum -= prev;
+            else if (prev_ab % 2 == 1 && cur_ab % 2 == 0) sum += cur;
+            nums[q[1]] = cur;
+            ans.push_back(sum);
+        }
+        return ans;
+    }
+};

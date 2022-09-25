@@ -1,0 +1,68 @@
+#include <vector>
+#include <unordered_set>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
+        vector<unordered_set<int>> rowRef(k + 1, unordered_set<int>());
+        vector<unordered_set<int>> colRef(k + 1, unordered_set<int>());
+        vector<int> rowInd(k + 1, 0);
+        vector<int> colInd(k + 1, 0);
+        for (auto& rc : rowConditions) {
+            if (rowRef[rc[0]].find(rc[1]) != rowRef[rc[0]].end()) continue;
+            rowRef[rc[0]].insert(rc[1]);
+            rowInd[rc[1]]++;
+        }
+        for (auto& cc : colConditions) {
+            if (colRef[cc[0]].find(cc[1]) != colRef[cc[0]].end()) continue;
+            colRef[cc[0]].insert(cc[1]);
+            colInd[cc[1]]++;
+        }
+        queue<int> queue;
+        unordered_map<int, int> rows;
+        unordered_map<int, int> cols;
+        for (int i = 1; i <= k; i++) {
+            if (rowInd[i] == 0) queue.push(i);
+        }
+        int cnt = 0;
+        while (!queue.empty()) {
+            for (int i = queue.size(); i > 0; i--) {
+                int cur = queue.front();
+                rows[cur] = cnt;
+                cnt++;
+                queue.pop();
+                for (int j : rowRef[cur]) {
+                    rowInd[j]--;
+                    if (rowInd[j] == 0) queue.push(j);
+                }
+            }
+        }
+        if (cnt < k) return {};
+
+        for (int i = 1; i <= k; i++) {
+            if (colInd[i] == 0) queue.push(i);
+        }
+        cnt = 0;
+        while (!queue.empty()) {
+            for (int i = queue.size(); i > 0; i--) {
+                int cur = queue.front();
+                cols[cur] = cnt;
+                cnt++;
+                queue.pop();
+                for (int j : colRef[cur]) {
+                    colInd[j]--;
+                    if (colInd[j] == 0) queue.push(j);
+                }
+            }
+        }
+        if (cnt < k) return {};
+        vector<vector<int>> ans(k, vector<int>(k, 0));
+        for (int i = 1; i <= k; i++) {
+            ans[rows[i]][cols[i]] = i;
+        }
+        return ans;
+    }
+};

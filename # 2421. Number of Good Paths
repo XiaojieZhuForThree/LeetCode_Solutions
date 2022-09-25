@@ -1,0 +1,65 @@
+#include <vector>
+#include <map>
+#include <unordered_map>
+
+using namespace std;
+class UF {
+private:
+    vector<int> id;
+    int cnt;
+public:
+    UF(int cnt) : cnt(cnt) {
+        id = vector<int>(cnt);
+        for (int i = 0; i < cnt; i++) {
+            id[i] = i;
+        }
+    }
+    int find(int p) {
+        if (id[p] == p) {
+            return p;
+        }
+        id[p] = find(id[p]);
+        return id[p];
+    }
+    void combine(int p, int q) {
+        int i = find(p), j = find(q);
+        if (i == j) return;
+        if (i < j) {
+            id[i] = j;
+        }
+        else {
+            id[j] = i;
+        }
+    }
+};
+class Solution {
+public:
+    int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) {
+        int n = vals.size(), ans = 0;
+        vector<vector<int>> graph(n);
+        map<int, vector<int>> sameValues;
+        for (int i = 0; i < n; i++) sameValues[vals[i]].push_back(i);
+        for (auto& e : edges) {
+            int i = e[0], j = e[1];
+            if (vals[i] >= vals[j]) graph[i].push_back(j);
+            else if (vals[j] >= vals[i]) graph[j].push_back(i);
+        }
+        UF uf(n);
+        for (auto& p : sameValues) {
+            for (int i : p.second) {
+                for (int j : graph[i]) uf.combine(i, j);
+            }
+            unordered_map<int, int> group;
+            for (int i : p.second) {
+                group[uf.find(i)]++;
+            }
+            ans += p.second.size();
+            for (auto& p : group) {
+                int size = p.second;
+                ans += (size * (size - 1) / 2);
+            }
+        }
+        return ans;
+
+    }
+};

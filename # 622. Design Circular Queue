@@ -81,3 +81,58 @@ public class Question622 {
 	 * boolean param_6 = obj.isFull();
 	 */
 }
+
+
+#include <vector>
+
+using namespace std;
+
+class MyCircularQueue {
+public:
+    vector<int> vec;
+    int n = 0;
+    int eptr = 0, dptr = 0;
+    int s = 0;
+    MyCircularQueue(int k) {
+        s = k;
+        for (int i = 0; i < k; i++) vec.push_back(-1);
+    }
+
+    bool enQueue(int value) {
+        if (isFull()) return false;
+        if (!isEmpty()) eptr = (eptr + 1) % s;
+        vec[eptr] = value;
+        n++;
+        return true;
+    }
+
+    bool deQueue() {
+        if (isEmpty()) return false;
+        vec[dptr] = -1;
+        dptr = (dptr + 1) % s;
+        n--;
+        if (isEmpty()) {
+            eptr = 0;
+            dptr = 0;
+        }
+        return true;
+    }
+
+    int Front() {
+        if (isEmpty()) return -1;
+        return vec[dptr];
+    }
+
+    int Rear() {
+        if (isEmpty()) return -1;
+        return vec[eptr];
+    }
+
+    bool isEmpty() {
+        return n == 0;
+    }
+
+    bool isFull() {
+        return n == s;
+    }
+};

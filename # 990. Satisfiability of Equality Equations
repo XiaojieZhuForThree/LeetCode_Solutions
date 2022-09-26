@@ -88,3 +88,51 @@ public class Question990 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class UF {
+    vector<int> par;
+public:
+    UF() {
+        par = vector<int>(26);
+        for (int i = 0; i < 26; i++) par[i] = i;
+    }
+
+    void combine(char a, char b) {
+        int p1 = find(a), p2 = find(b);
+        if (p1 == p2) return;
+        par[p2] = p1;
+        return;
+    }
+
+    int find(char p) {
+        int ord = p - 'a';
+        if (par[ord] != ord) par[ord] = find(par[ord] + 'a');
+        return par[ord];
+    }
+};
+
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+        UF uf;
+        for (auto& s : equations) {
+            if (s[1] == '=') {
+                char a = s[0], b = s[3];
+                uf.combine(a, b);
+            }
+        }
+        for (auto& s : equations) {
+            if (s[1] == '!') {
+                char a = s[0], b = s[3];
+                if (uf.find(a) == uf.find(b)) return false;
+            }
+        }
+        return true;
+    }
+};

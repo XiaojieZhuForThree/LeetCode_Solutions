@@ -31,3 +31,51 @@ public class Question838 {
 		}
 	}
 }
+
+
+
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	string pushDominoes(string dominoes) {
+		string ans = "";
+		int prev = 0;
+		for (int i = 0; i < dominoes.size(); i++) ans += '.';
+		for (int i = 0; i < dominoes.size(); i++) {
+			char d = dominoes[i];
+			if (d == '.');
+			else if (d == 'R') {
+				if (dominoes[prev] != 'R') {
+					prev = i;
+				}
+				else {
+					for (; prev <= i; prev++) {
+						ans[prev] = 'R';
+					}
+					prev--;
+				}
+			}
+			else {
+				if (dominoes[prev] != 'R') {
+					for (; prev <= i; prev++) {
+						ans[prev] = 'L';
+					}
+				}
+				else {
+					int l = prev, r = i;
+					while (l < r) {
+						ans[l++] = 'R';
+						ans[r--] = 'L';
+					}
+					prev = i + 1;
+				}
+			}
+		}
+		if (prev < dominoes.size() && dominoes[prev] == 'R') {
+			for (; prev < dominoes.size(); prev++) ans[prev] = 'R';
+		}
+		return ans;
+	}
+};

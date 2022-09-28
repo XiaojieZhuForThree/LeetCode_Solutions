@@ -27,3 +27,31 @@ public class Question19 {
 		}
 	}
 }
+
+
+#include "ListNode.h"
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        vector<ListNode*> nodes;
+        ListNode* dummy = head;
+        while (dummy != nullptr) {
+            nodes.push_back(dummy);
+            dummy = dummy->next;
+        }
+        int i = nodes.size() - n;
+        ListNode* target = nodes[i];
+        if (i == 0) return target->next;
+        ListNode* prev = nodes[i - 1];
+        if (i == nodes.size() - 1) {
+            prev->next = nullptr;
+        }
+        else {
+            prev->next = nodes[i + 1];
+        }
+        return head;
+    }
+};

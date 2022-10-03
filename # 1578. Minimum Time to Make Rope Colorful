@@ -1,0 +1,25 @@
+#include <string>
+#include <vector>
+using namespace std;
+class Solution {
+public:
+	int minCost(string colors, vector<int>& neededTime) {
+		int ans = 0;
+		int ptr = 0;
+		for (int i = 1; i < colors.size(); i++) {
+			if (colors[i] == colors[ptr]) {
+				if (neededTime[ptr] < neededTime[i]) {
+					ans += neededTime[ptr];
+					ptr = i;
+				}
+				else {
+					ans += neededTime[i];
+				}
+			}
+			else {
+				ptr = i;
+			}
+		}
+		return ans;
+	}
+};

@@ -1,0 +1,10 @@
+#include "TreeNode.h"
+class Solution {
+public:
+	bool hasPathSum(TreeNode* root, int targetSum) {
+		if (!root) return false;
+		int nxt = targetSum - root->val;
+		if (!root->left && !root->right) return nxt == 0;
+		return hasPathSum(root->left, nxt) || hasPathSum(root->right, nxt);
+	}
+};

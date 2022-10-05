@@ -31,3 +31,44 @@ public class Question623 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if (depth == 1) {
+            TreeNode* node = new TreeNode(val);
+            node->left = root;
+            return node;
+        }
+        else {
+            deque<TreeNode*> queue;
+            queue.push_back(root);
+            int start = 1;
+            while (start < depth - 1) {
+                for (int i = queue.size(); i > 0; i--) {
+                    TreeNode* cur = queue.front();
+                    queue.pop_front();
+                    if (cur->left) queue.push_back(cur->left);
+                    if (cur->right) queue.push_back(cur->right);
+                }
+                start++;
+            }
+            while (!queue.empty()) {
+                TreeNode* cur = queue.front();
+                queue.pop_front();
+                TreeNode* nl = new TreeNode(val);
+                TreeNode* nr = new TreeNode(val);
+                nl->left = cur->left;
+                nr->right = cur->right;
+                cur->left = nl;
+                cur->right = nr;
+            }
+            return root;
+        }
+    }
+};

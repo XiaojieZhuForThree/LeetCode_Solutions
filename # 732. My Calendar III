@@ -35,3 +35,29 @@ public class Question732 {
 	 * obj.book(start,end);
 	 */
 }
+
+
+#include <algorithm>
+#include <map>
+using namespace std;
+
+class MyCalendarThree {
+    int maxCnt;
+    map<int, int> mp;
+public:
+    MyCalendarThree() {
+        maxCnt = 0;
+    }
+
+    int book(int start, int end) {
+        mp[start]++;
+        mp[end]--;
+        int cnt = 0;
+        for (auto it = mp.begin(); it != mp.end(); it++)
+        {
+            cnt += it->second;
+            maxCnt = max(cnt, maxCnt);
+        }
+        return maxCnt;
+    }
+};

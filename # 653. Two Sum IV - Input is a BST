@@ -32,3 +32,31 @@ public class Question653 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	bool findTarget(TreeNode* root, int k) {
+		vector<int> vals;
+		getVals(root, vals);
+		int l = 0, r = vals.size() - 1;
+		while (l < r) {
+			int sum = vals[l] + vals[r];
+			if (sum == k) return true;
+			else if (sum < k) l++;
+			else r--;
+		}
+		return false;
+	}
+private:
+	void getVals(TreeNode* node, vector<int>& vals) {
+		if (!node) return;
+		getVals(node->left, vals);
+		vals.push_back(node->val);
+		getVals(node->right, vals);
+	}
+};

@@ -20,3 +20,31 @@ public class Question334 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        if (nums.size() < 3) return false;
+        int s = nums[0], m = nums[0], cur = 1;
+        for (int i = 1; i < nums.size(); i++) {
+            int c = nums[i];
+            if (c > m) {
+                m = c;
+                cur++;
+                if (cur == 3) return true;
+            }
+            else if (c <= s) {
+                s = c;
+            }
+            else {
+                m = c;
+                if (m > s) cur = 2;
+            }
+        }
+        return false;
+    }
+};

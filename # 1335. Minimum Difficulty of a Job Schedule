@@ -1,31 +1,33 @@
 #include <vector>
 using namespace std;
+
 class Solution {
 public:
-	int minDifficulty(vector<int>& jobDifficulty, int d) {
-		int n = jobDifficulty.size();
-		vector<int> seq = jobDifficulty;
-		vector<vector<int>> dp(n + 1, vector<int>(d + 1, 1e9));
-		if (d > n) return -1;
-		int val = 0;
-		for (int i = 0; i < n; i++) {
-			val = max(val, seq[i]);
-			dp[i][1] = val;
-		}
-		for (int i = 1; i < n; i++) {
-			for (int j = 2; j <= d; j++) {
-				if (j > i + 1) {
-					dp[i][j] = 1e9;
-					continue;
-				}
-				int maxval = 0;
-				for (int k = i - 1; k >= 0; k--) {
-					maxval = max(maxval, seq[k + 1]);
-					dp[i][j] = min(dp[i][j], dp[k][j - 1] + maxval);
-				}
-			}
-		}
-		return dp[n - 1][d];
-
-	}
+    int minDifficulty(vector<int>& a, int d) {
+        if (a.size() < d) return -1;
+        vector<vector<int>> dp(a.size() + 1, vector<int>(d + 1, -1));
+        return dfs(a, 0, d, dp);
+    }
+private:
+    long dfs(vector<int>& a, int cur, int d, vector<vector<int>>& dp) {
+        if (d == 0) {
+            if (cur == a.size()) return 0;
+            return INT_MAX;
+        }
+        else if (cur == a.size()) {
+            if (d == 0) return 0;
+            return INT_MAX;
+        }
+        else if (dp[cur][d] != -1) return dp[cur][d];
+        else {
+            long ans = INT_MAX;
+            int curMax = 0;
+            for (int i = cur; i < a.size(); i++) {
+                curMax = max(curMax, a[i]);
+                ans = min(ans, curMax + dfs(a, i + 1, d - 1, dp));
+            }
+            dp[cur][d] = ans;
+            return ans;
+        }
+    }
 };

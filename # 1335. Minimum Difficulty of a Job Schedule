@@ -1,0 +1,31 @@
+#include <vector>
+using namespace std;
+class Solution {
+public:
+	int minDifficulty(vector<int>& jobDifficulty, int d) {
+		int n = jobDifficulty.size();
+		vector<int> seq = jobDifficulty;
+		vector<vector<int>> dp(n + 1, vector<int>(d + 1, 1e9));
+		if (d > n) return -1;
+		int val = 0;
+		for (int i = 0; i < n; i++) {
+			val = max(val, seq[i]);
+			dp[i][1] = val;
+		}
+		for (int i = 1; i < n; i++) {
+			for (int j = 2; j <= d; j++) {
+				if (j > i + 1) {
+					dp[i][j] = 1e9;
+					continue;
+				}
+				int maxval = 0;
+				for (int k = i - 1; k >= 0; k--) {
+					maxval = max(maxval, seq[k + 1]);
+					dp[i][j] = min(dp[i][j], dp[k][j - 1] + maxval);
+				}
+			}
+		}
+		return dp[n - 1][d];
+
+	}
+};

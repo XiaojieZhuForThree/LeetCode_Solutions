@@ -1,0 +1,13 @@
+#include <string>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool checkIfPangram(string s) {
+        vector<bool> seen(26, false);
+        for (auto c : s) seen[c - 'a'] = true;
+        for (auto c : seen) if (!c) return false;
+        return true;
+    }
+};

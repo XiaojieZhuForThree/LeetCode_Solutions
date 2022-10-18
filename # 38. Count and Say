@@ -1,0 +1,27 @@
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	string countAndSay(int n) {
+		if (n == 1) return "1";
+		string prev = countAndSay(n - 1);
+		int cnt = 1;
+		char c = prev[0];
+		string ans = "";
+		for (int i = 1; i < prev.size(); i++) {
+			if (prev[i] == c) {
+				cnt++;
+			}
+			else {
+				ans += to_string(cnt);
+				ans += c;
+				c = prev[i];
+				cnt = 1;
+			}
+		}
+		ans += to_string(cnt);
+		ans += c;
+		return ans;
+	}
+};

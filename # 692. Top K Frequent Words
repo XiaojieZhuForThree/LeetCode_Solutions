@@ -1,0 +1,25 @@
+#include <string>
+#include <unordered_map>
+#include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+	vector<string> topKFrequent(vector<string>& words, int k) {
+		unordered_map<string, int> map;
+		for (auto w : words) map[w]++;
+		auto compare = [map](const string a, const string b) {
+			if (map.at(a) == map.at(b)) return a > b;
+			return map.at(a) < map.at(b);
+		};
+		priority_queue<string, vector<string>, decltype(compare)> pq(compare);
+		for (auto const& i : map) pq.push(i.first);
+		vector<string> ans;
+		for (int i = 0; i < k; i++) {
+			ans.push_back(pq.top());
+			pq.pop();
+		}
+		return ans;
+	}
+};

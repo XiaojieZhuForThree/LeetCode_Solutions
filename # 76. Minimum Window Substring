@@ -54,3 +54,43 @@ public class Question76 {
 
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	string minWindow(string s, string t) {
+		int cnt = t.size();
+		unordered_map<char, int> map;
+		for (char c : t) map[c]++;
+		int l = 0, r = 0;
+		int size = INT_MAX, pos = 0;
+		for (; r < s.size(); r++) {
+			char c = s[r];
+			if (map.find(c) == map.end()) continue;
+			map[c]--;
+			if (map[c] >= 0) cnt--;
+			if (cnt == 0) {
+				while (canMove(l, s, map)) l++;
+				if (r - l + 1 < size) {
+					size = r - l + 1;
+					pos = l;
+				}
+			}
+		}
+		return size == INT_MAX ? "" : s.substr(pos, size);
+	}
+private:
+	bool canMove(int l, string& s, unordered_map<char, int>& map) {
+		char c = s[l];
+		if (map.find(c) == map.end()) return true;
+		if (map[c] + 1 <= 0) {
+			map[c]++;
+			return true;
+		}
+		return false;
+	}
+};

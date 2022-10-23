@@ -22,17 +22,19 @@ public class Question645 {
 	}
 }
 
+# include <vector>
+using namespace std;
 
 class Solution {
 public:
-    vector<int> findErrorNums(vector<int>& nums) {
-        vector<int> ans(2, -1);
-        vector<int> ref(nums.size(), 0);
-        for (int i : nums) ref[i - 1]++;
-        for (int i = 0; i < nums.size(); i++) {
-            if (ref[i] == 0) ans[1] = i + 1;
-            if (ref[i] == 2) ans[0] = i + 1;
-        }
-        return ans;
-    }
+	vector<int> findErrorNums(vector<int>& nums) {
+		vector<int> ans(2, -1);
+		vector<int> ref(nums.size(), 0);
+		for (int i : nums) ref[i - 1]++;
+		for (int i = 0; i < nums.size(); i++) {
+			if (ref[i] == 0) ans[1] = i + 1;
+			if (ref[i] == 2) ans[0] = i + 1;
+		}
+		return ans;
+	}
 };

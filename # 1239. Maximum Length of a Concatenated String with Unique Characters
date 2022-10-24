@@ -51,3 +51,47 @@ public class Question1239 {
 		}
 	}
 }
+
+
+#include <unordered_set>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+	int maxLength(vector<string>& arr) {
+		unordered_set<char> set;
+		return dfs(arr, 0, set);
+	}
+private:
+	int dfs(vector<string>& arr, int cur, unordered_set<char>& set) {
+		if (cur == arr.size()) return set.size();
+		string cand = arr[cur];
+		int val = dfs(arr, cur + 1, set);
+		if (isValid(cand) && canAdd(cand, set)) {
+			for (char c : cand) {
+				set.insert(c);
+			}
+			val = max(val, dfs(arr, cur + 1, set));
+			for (char c : cand) {
+				set.erase(c);
+			}
+		}
+		return val;
+	}
+	bool isValid(string& cand) {
+		vector<int> seen(26, 0);
+		for (char c : cand) {
+			if (seen[c - 'a'] == 1) return false;
+			seen[c - 'a'] = 1;
+		}
+		return true;
+	}
+	bool canAdd(string& cand, unordered_set<char>& set) {
+		for (char c : cand) {
+			if (set.count(c)) return false;
+		}
+		return true;
+	}
+};

@@ -1,0 +1,23 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	int earliestFullBloom(vector<int>& plantTime, vector<int>& growTime) {
+		vector<int> idx;
+		for (int i = 0; i < plantTime.size(); i++) idx.push_back(i);
+		sort(idx.begin(), idx.end(), [&plantTime, &growTime](int a, int b) -> bool {
+			if (growTime[a] == growTime[b]) {
+				return plantTime[a] > plantTime[b];
+			}
+			return growTime[a] > growTime[b];
+			});
+		int ans = 0, prevPlant = 0;
+		for (int i : idx) {
+			prevPlant += plantTime[i];
+			ans = max(ans, prevPlant + growTime[i]);
+		}
+		return ans;
+	}
+};

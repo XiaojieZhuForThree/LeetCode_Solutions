@@ -50,3 +50,44 @@ public class Question1293 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+class Solution {
+	struct state {
+		int x;
+		int y;
+		int k;
+	};
+
+public:
+	int shortestPath(vector<vector<int>>& grid, int k) {
+		deque<state> queue;
+		queue.push_back({ 0, 0, k });
+		int ans = 0, m = grid.size(), n = grid[0].size();
+		vector<vector<int>> visited(m, vector<int>(n, -1));
+		visited[0][0] = true;
+		vector<vector<int>> dir = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+		while (!queue.empty()) {
+			for (int i = queue.size(); i > 0; i--) {
+				state cur = queue.front();
+				queue.pop_front();
+				if (cur.x == m - 1 && cur.y == n - 1) return ans;
+				for (auto& d : dir) {
+					int nx = cur.x + d[0], ny = cur.y + d[1];
+					if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+					if (grid[nx][ny] == 1 && cur.k == 0) continue;
+					if (visited[nx][ny] >= cur.k - grid[nx][ny]) continue;
+					visited[nx][ny] = cur.k - grid[nx][ny];
+					queue.push_back({ nx, ny, cur.k - grid[nx][ny] });
+				}
+			}
+			ans++;
+		}
+		return -1;
+	}
+};

@@ -1,47 +1,44 @@
-package problems;
+#include <string>
+#include <unordered_set>
+#include <deque>
+using namespace std;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
-
-public class Question433 {
-	class Solution {
-		public int minMutation(String start, String end, String[] bank) {
-			Deque<String> queue = new ArrayDeque<>();
-			queue.offer(start);
-			int step = -1;
-			Set<String> seen = new HashSet<>();
-			seen.add(start);
-			while (!queue.isEmpty()) {
-				step++;
-				for (int i = queue.size(); i > 0; i--) {
-					String s = queue.poll();
-					if (s.equals(end)) {
-						return step;
-					}
-					for (String b : bank) {
-						if (isMutation(s, b) && !seen.contains(b)) {
-							queue.offer(b);
-							seen.add(b);
-						}
-					}
-				}
+class Solution {
+public:
+	int minMutation(string start, string end, vector<string>& bank) {
+		unordered_set<string> seen, pool;
+		int ans = 0;
+		vector<char> chars{ 'A', 'C', 'G', 'T' };
+		deque<string> queue;
+		queue.push_back(start);
+		seen.insert(start);
+		for (auto s : bank) pool.insert(s);
+		while (!queue.empty()) {
+			for (int i = queue.size(); i > 0; i--) {
+				string cur = queue.front();
+				queue.pop_front();
+				if (cur == end) return ans;
+				update(cur, queue, chars, seen, pool);
 			}
-			return -1;
+			ans++;
 		}
-
-		private boolean isMutation(String s, String b) {
-			if (s.length() != b.length()) {
-				return false;
+		return -1;
+	}
+private:
+	void update(string& cur,
+		deque<string>& queue,
+		vector<char>& chars,
+		unordered_set<string>& seen,
+		unordered_set<string>& pool) {
+		for (int i = 0; i < 8; i++) {
+			for (char c : chars) {
+				if (c == cur[i]) continue;
+				string cand = cur.substr(0, i) + c + cur.substr(i + 1, 8 - i);
+				if (seen.count(cand) || !pool.count(cand)) continue;
+				seen.insert(cand);
+				pool.erase(cand);
+				queue.push_back(cand);
 			}
-			int mut = 0;
-			for (int i = 0; i < s.length(); i++) {
-				if (s.charAt(i) != b.charAt(i)) {
-					mut++;
-				}
-			}
-			return mut == 1;
 		}
 	}
-}
+};

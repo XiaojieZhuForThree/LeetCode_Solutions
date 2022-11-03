@@ -1,0 +1,33 @@
+#include <string>
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int longestPalindrome(vector<string>& words) {
+		unordered_map<string, int> map;
+		for (string s : words) map[s]++;
+		int ans = 0;
+		bool counted = false;
+		for (auto& p : map) {
+			string s = p.first;
+			if (s[0] == s[1]) {
+				if (map[s] % 2 == 0) ans += 2 * map[s];
+				else if (!counted) {
+					ans += 2 * map[s];
+					counted = true;
+				}
+				else ans += 2 * (map[s] - 1);
+			}
+			else {
+				string rs = s;
+				reverse(rs.begin(), rs.end());
+				if (map.find(rs) != map.end()) {
+					ans += 2 * (min(map[s], map[rs]));
+				}
+			}
+		}
+		return ans;
+	}
+};

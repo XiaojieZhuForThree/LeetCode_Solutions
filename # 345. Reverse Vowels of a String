@@ -1,0 +1,23 @@
+#include <string>
+#include <unordered_set>
+
+using namespace std;
+class Solution {
+public:
+	string reverseVowels(string s) {
+		unordered_set<char> set{ 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+		int l = 0, r = s.size() - 1;
+		while (l < r) {
+			while (l < s.size() && set.find(s[l]) == set.end()) l++;
+			while (r >= 0 && set.find(s[r]) == set.end()) r--;
+			if (l < r) {
+				char tmp = s[l];
+				s[l] = s[r];
+				s[r] = tmp;
+				l++;
+				r--;
+			}
+		}
+		return s;
+	}
+};

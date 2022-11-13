@@ -33,3 +33,32 @@ public class Question151 {
 		}
 	}
 }
+
+
+#include <string>
+#include <deque>
+
+using namespace std;
+class Solution {
+public:
+	string reverseWords(string s) {
+		deque<string> stack;
+		int l = 0, r = 0;
+		for (; l < s.size(); l++) {
+			if (s[l] == ' ') continue;
+			r = l;
+			while (r < s.size() && s[r] != ' ') r++;
+			r--;
+			stack.push_back(s.substr(l, r - l + 1));
+			l = r + 1;
+		}
+		string ans;
+		while (!stack.empty()) {
+			ans += stack.back();
+			stack.pop_back();
+			ans.push_back(' ');
+		}
+		ans.pop_back();
+		return ans;
+	}
+};

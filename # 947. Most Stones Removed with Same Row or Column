@@ -45,3 +45,50 @@ class Solution {
         return ans;
     }
 }
+
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class UF {
+public:
+    unordered_map<int, int> par;
+    UF() {
+    }
+    int findPar(int c) {
+        if (par[c] == c) return c;
+        par[c] = findPar(par[c]);
+        return par[c];
+    }
+    void merge(int a, int b) {
+        int parA = findPar(a);
+        int parB = findPar(b);
+        par[parB] = parA;
+    }
+};
+
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        UF uf;
+        for (auto& s : stones) {
+            uf.par[s[0]] = s[0];
+        }
+        unordered_map<int, vector<int>> cols;
+        for (auto& s : stones) {
+            cols[s[1]].push_back(s[0]);
+        }
+        for (auto& p : cols) {
+            vector<int> group = p.second;
+            for (int i = 1; i < group.size(); i++) {
+                uf.merge(group[0], group[i]);
+            }
+        }
+        int ans = stones.size();
+        for (auto& p : uf.par) {
+            if (p.first == uf.findPar(p.first)) ans--;
+        }
+        return ans;
+    }
+};

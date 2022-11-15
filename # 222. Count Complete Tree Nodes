@@ -48,3 +48,28 @@ class Solution {
         return height;
     }
 }
+
+
+#include "TreeNode.h"
+class Solution1 {
+public:
+    int countNodes(TreeNode* root) {
+        if (!root) return 0;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};
+
+class Solution2 {
+public:
+    int countNodes(TreeNode* root) {
+        if (!root) return 0;
+        int leftDep = getDep(root->left), rightDep = getDep(root->right);
+        if (leftDep == rightDep) return countNodes(root->right) + (1 << leftDep);
+        return countNodes(root->left) + (1 << rightDep);
+    }
+private:
+    int getDep(TreeNode* node) {
+        if (!node) return 0;
+        return 1 + getDep(node->left);
+    }
+};

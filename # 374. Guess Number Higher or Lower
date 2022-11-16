@@ -1,0 +1,16 @@
+#include "Guess.h"
+using namespace Guess;
+class Solution {
+public:
+	int guessNumber(int n) {
+		int l = 1, h = n;
+		while (l <= h) {
+			int mid = l + (h - l) / 2;
+			int info = guess(mid);
+			if (info == 0) return mid;
+			else if (info == -1) h = mid;
+			else l = mid + 1;
+		}
+		return -1;
+	}
+};

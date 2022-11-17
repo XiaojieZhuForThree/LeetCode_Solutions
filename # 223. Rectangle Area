@@ -1,0 +1,36 @@
+#include <utility>
+using namespace std;
+
+struct rectange {
+    int x1, y1, x2, y2;
+};
+
+class Solution {
+public:
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        rectange a{ ax1, ay1, ax2, ay2 };
+        rectange b{ bx1, by1, bx2, by2 };
+        return area(a) + area(b) - overlapped(a, b);
+    }
+private:
+    int area(rectange& r) {
+        int l = r.x2 - r.x1;
+        int w = r.y2 - r.y1;
+        return l * w;
+    }
+    int overlapped(rectange& a, rectange& b) {
+        if (a.x1 > b.x1) return overlapped(b, a);
+        if (b.x1 >= a.x2) return 0;
+        if (b.y2 <= a.y1) return 0;
+        if (b.y1 >= a.y2) return 0;
+        int left = b.x1, right = min(b.x2, a.x2);
+        if (b.y2 <= a.y2) {
+            int upper = b.y2;
+            int lower = max(a.y1, b.y1);
+            return (upper - lower) * (right - left);
+        }
+        int upper = a.y2;
+        int lower = max(a.y1, b.y1);
+        return (upper - lower) * (right - left);
+    }
+};

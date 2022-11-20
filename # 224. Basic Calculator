@@ -1,48 +1,48 @@
-#include <algorithm>
 #include <string>
 using namespace std;
 
 class Solution {
 public:
-	int calculate(string s) {
-		s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
-		if (s.size() == 0) return 0;
-		int i = 0, ans = 0;
-		bool sub = false;
-		while (i < s.size()) {
-			if (s[i] == '(') {
-				int l = 1;
-				int j = i + 1;
-				while (j < s.size() && l != 0) {
-					if (s[j] == '(') l++;
-					else if (s[j] == ')') l--;
-					j++;
-				}
-				int part = calculate(s.substr(i + 1, j - i - 1));
-				if (sub) ans -= part;
-				else ans += part;
-				i = j;
-				sub = false;
-			}
-			else if (isdigit(s[i])) {
-				int part = 0;
-				int j = i;
-				while (j < s.size() && isdigit(s[j])) {
-					part *= 10;
-					part += s[j] - '0';
-					j++;
-				}
-				if (sub) ans -= part;
-				else ans += part;
-				sub = false;
-				i = j;
-			}
-			else if (s[i] == '-') {
-				sub = true;
-				i++;
-			}
-			else i++;
-		}
-		return ans;
-	}
+    int calculate(string s) {
+        if (s.size() == 0) return 0;
+        int i = 0, ans = 0;
+        bool sub = false;
+        while (i < s.size()) {
+            if (s[i] == '(') {
+                int l = 1;
+                int j = i + 1;
+                while (j < s.size() && l != 0) {
+                    if (s[j] == '(') l++;
+                    else if (s[j] == ')') l--;
+                    j++;
+                }
+                int part = calculate(s.substr(i + 1, j - i - 1));
+                if (sub) ans -= part;
+                else ans += part;
+                i = j;
+                sub = false;
+            }
+            else if (isdigit(s[i])) {
+                int part = 0;
+                int j = i;
+                while (j < s.size() && (isdigit(s[j]) || s[j] == ' ')) {
+                    if (isdigit(s[j])) {
+                        part *= 10;
+                        part += s[j] - '0';
+                    }
+                    j++;
+                }
+                if (sub) ans -= part;
+                else ans += part;
+                sub = false;
+                i = j;
+            }
+            else if (s[i] == '-') {
+                sub = true;
+                i++;
+            }
+            else i++;
+        }
+        return ans;
+    }
 };

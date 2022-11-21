@@ -1,0 +1,39 @@
+#include <vector>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int m = maze.size(), n = maze[0].size();
+        vector<vector<int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+        deque<pair<int, int>> queue;
+        queue.push_back({ entrance[0], entrance[1] });
+        maze[entrance[0]][entrance[1]] = '+';
+
+        int ans = 0;
+        while (!queue.empty()) {
+            for (int i = queue.size(); i > 0; i--) {
+                pair<int, int> cur = queue.front();
+                queue.pop_front();
+                if (isExit(cur, m, n) && !isEntrance(cur, entrance)) return ans;
+                for (auto& dir : dirs) {
+                    int nx = cur.first + dir[0], ny = cur.second + dir[1];
+                    if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                    if (maze[nx][ny] == '+') continue;
+                    maze[nx][ny] = '+';
+                    queue.push_back({ nx, ny });
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+private:
+    bool isExit(pair<int, int>& p, int m, int n) {
+        return p.first == 0 || p.first == m - 1 || p.second == 0 || p.second == n - 1;
+    }
+    bool isEntrance(pair<int, int>& p, vector<int>& entrance) {
+        return p.first == entrance[0] && p.second == entrance[1];
+    }
+};

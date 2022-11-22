@@ -30,3 +30,30 @@ class Solution {
 		return ans;
 	}
 }
+
+
+class Solution {
+public:
+    int numSquares(int n) {
+        unordered_set<int> squares, seen;
+        deque<int> queue;
+        for (int i = 1; i <= 100; i++) squares.insert(i * i);
+        queue.push_back(n);
+        seen.insert(n);
+        int ans = 0;
+        while (!queue.empty()) {
+            for (int i = queue.size(); i > 0; i--) {
+                int cur = queue.front();
+                queue.pop_front();
+                if (cur == 0) return ans;
+                for (int j : squares) {
+                    if (cur - j < 0 || seen.count(cur - j)) continue;
+                    seen.insert(cur - j);
+                    queue.push_back(cur - j);
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};

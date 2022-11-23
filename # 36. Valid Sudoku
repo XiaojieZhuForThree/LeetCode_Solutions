@@ -68,3 +68,63 @@ public class Question36 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        unordered_set<char> set;
+        if (!isRowValid(board, set)) return false;
+        if (!isColValid(board, set)) return false;
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                if (!isPatchValid(board, i, j, set)) return false;
+            }
+        }
+        return true;
+    }
+
+private:
+    bool isRowValid(vector<vector<char>>& board, unordered_set<char>& set) {
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c == '.') continue;
+                if (set.count(c)) return false;
+                set.insert(c);
+            }
+        }
+        return true;
+    }
+
+    bool isColValid(vector<vector<char>>& board, unordered_set<char>& set) {
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = 0; j < 9; j++) {
+                char c = board[j][i];
+                if (c == '.') continue;
+                if (set.count(c)) return false;
+                set.insert(c);
+            }
+        }
+        return true;
+    }
+
+    bool isPatchValid(vector<vector<char>>& board, int i, int j, unordered_set<char>& set) {
+        set.clear();
+        for (int m = 0; m < 3; m++) {
+            for (int n = 0; n < 3; n++) {
+                char c = board[i + m][j + n];
+                if (c == '.') continue;
+                if (set.count(c)) return false;
+                set.insert(c);
+            }
+        }
+        return true;
+    }
+};

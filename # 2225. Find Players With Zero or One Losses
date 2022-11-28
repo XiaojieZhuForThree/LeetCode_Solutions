@@ -1,0 +1,25 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+		unordered_map<int, int> winners, losers;
+		for (auto& m : matches) {
+			int w = m[0], l = m[1];
+			if (winners.count(l)) winners.erase(l);
+			losers[l]++;
+			if (!losers.count(w)) winners[w] = 1;
+		}
+		vector<int> all_win, lose_one;
+		for (auto& i : winners) all_win.push_back(i.first);
+		for (auto& i : losers) {
+			if (i.second == 1) lose_one.push_back(i.first);
+		}
+		sort(all_win.begin(), all_win.end());
+		sort(lose_one.begin(), lose_one.end());
+		return { all_win, lose_one };
+	}
+};

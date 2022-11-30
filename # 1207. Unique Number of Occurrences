@@ -19,3 +19,23 @@ public class Question1207 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+	bool uniqueOccurrences(vector<int>& arr) {
+		vector<int> occurrences(2001, 0);
+		unordered_set<int> seen;
+		for (int i : arr) occurrences[i + 1000]++;
+		for (int i : occurrences) {
+			if (i == 0) continue;
+			if (seen.count(i)) return false;
+			seen.insert(i);
+		}
+		return true;
+	}
+};

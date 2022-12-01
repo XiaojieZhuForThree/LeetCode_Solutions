@@ -21,3 +21,24 @@ public class Question1704 {
 		}
 	}
 }
+
+
+#include <unordered_set>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	bool halvesAreAlike(string s) {
+		unordered_set<char> vowels = { 'a', 'e', 'i', 'o', 'u' };
+		int n = s.size() / 2;
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			if (vowels.find(tolower(s[i])) != vowels.end()) cnt++;
+		}
+		for (int i = n; i < 2 * n; i++) {
+			if (vowels.find(tolower(s[i])) != vowels.end()) cnt--;
+		}
+		return cnt == 0;
+	}
+};

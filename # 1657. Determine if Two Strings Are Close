@@ -37,3 +37,37 @@ public class Question1657 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	bool closeStrings(string word1, string word2) {
+		if (word1.size() != word2.size()) return false;
+		unordered_map<char, int> w1, w2;
+		unordered_map<int, int> c1, c2;
+		for (int i = 0; i < word1.size(); i++) {
+			w1[word1[i]]++;
+			w2[word2[i]]++;
+		}
+		for (auto& i : w1) {
+			if (!w2.count(i.first)) return false;
+		}
+		for (auto& i : w2) {
+			if (!w1.count(i.first)) return false;
+		}
+		for (auto& i : w1) c1[i.second]++;
+		for (auto& i : w2) c2[i.second]++;
+
+		for (auto& i : c1) {
+			if (c2[i.first] != i.second) return false;
+		}
+		for (auto& i : c2) {
+			if (c1[i.first] != i.second) return false;
+		}
+		return true;
+	}
+};

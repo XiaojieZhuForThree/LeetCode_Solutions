@@ -1,0 +1,30 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minimumAverageDifference(vector<int>& nums) {
+		vector<int> front, back;
+		long long sum = 0, ans = -1, diff = INT_MAX, n = nums.size();
+		for (int i = 0; i < n; i++) {
+			sum += nums[i];
+			front.push_back(sum / (i + 1));
+		}
+
+		back.push_back(0);
+		sum = 0;
+		for (int i = n - 1; i > 0; i--) {
+			sum += nums[i];
+			back.push_back(sum / (n - i));
+		}
+		for (int i = 0; i < n; i++) {
+			int cur = abs(front[i] - back[n - i - 1]);
+			if (cur < diff) {
+				diff = cur;
+				ans = i;
+			}
+		}
+
+		return ans;
+	}
+};

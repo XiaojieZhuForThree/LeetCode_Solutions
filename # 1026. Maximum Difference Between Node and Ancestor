@@ -65,3 +65,26 @@ public class Question1026 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <climits>
+#include <utility>
+using namespace std;
+
+class Solution {
+public:
+    int ans = 0;
+    int maxAncestorDiff(TreeNode* root) {
+        dfs(root);
+        return ans;
+    }
+    pair<int, int> dfs(TreeNode* node) {
+        if (!node) return { INT_MAX, INT_MIN };
+        pair<int, int> left = dfs(node->left), right = dfs(node->right);
+        int minval = min({ left.first, right.first, node->val }), maxval = max({ left.second, right.second, node->val });
+        int cand = max(abs(node->val - minval), abs(node->val - maxval));
+        ans = max(ans, cand);
+        return { min(minval, node->val), max(maxval, node->val) };
+    }
+};

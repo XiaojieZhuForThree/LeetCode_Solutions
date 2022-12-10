@@ -48,3 +48,34 @@ public class Question1339 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <utility>
+
+class Solution {
+public:
+    long long ans = 0;
+    int maxProduct(TreeNode* root) {
+        process(root);
+        long long sum = root->val;
+        helper(root, sum);
+        return ans % 1000000007;
+    }
+private:
+    void process(TreeNode* node) {
+        if (!node) return;
+        process(node->left);
+        process(node->right);
+        if (node->left) node->val += node->left->val;
+        if (node->right) node->val += node->right->val;
+    }
+    void helper(TreeNode* node, long long sum) {
+        if (!node) return;
+        long long rem = sum - node->val;
+        long long cand = rem * node->val;
+        ans = std::max(ans, cand);
+        helper(node->left, sum);
+        helper(node->right, sum);
+    }
+};

@@ -66,3 +66,28 @@ class Solution {
         return ans;
     }
 }
+
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minFallingPathSum(vector<vector<int>>& matrix) {
+		int m = matrix.size(), n = matrix[0].size();
+		int ans = INT_MAX;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i > 0) {
+					int cand1 = matrix[i - 1][j];
+					int cand2 = j > 0 ? matrix[i - 1][j - 1] : INT_MAX;
+					int cand3 = j < n - 1 ? matrix[i - 1][j + 1] : INT_MAX;
+					matrix[i][j] += min({ cand1, cand2, cand3 });
+				}
+				if (i == m - 1) ans = min(ans, matrix[i][j]);
+			}
+		}
+		return ans;
+	}
+};

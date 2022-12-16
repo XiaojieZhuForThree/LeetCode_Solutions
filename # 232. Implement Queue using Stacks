@@ -1,0 +1,52 @@
+#include <stack>
+using namespace std;
+
+class MyQueue {
+public:
+    int size;
+    stack<int> for_push, for_pop;
+    MyQueue() {
+        size = 0;
+    }
+
+    void push(int x) {
+        for_push.push(x);
+        size++;
+    }
+
+    int pop() {
+        if (for_pop.empty()) {
+            while (!for_push.empty()) {
+                for_pop.push(for_push.top());
+                for_push.pop();
+            }
+        }
+        int ans = for_pop.top();
+        for_pop.pop();
+        size--;
+        return ans;
+    }
+
+    int peek() {
+        if (for_pop.empty()) {
+            while (!for_push.empty()) {
+                for_pop.push(for_push.top());
+                for_push.pop();
+            }
+        }
+        return for_pop.top();
+    }
+
+    bool empty() {
+        return size == 0;
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */

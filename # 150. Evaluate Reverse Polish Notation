@@ -32,3 +32,50 @@ public class Question150 {
 		}
 	}
 }
+
+
+#include <stack>
+#include <string>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int evalRPN(vector<string>& tokens) {
+		stack<long> stack;
+		for (auto& s : tokens) {
+			if (s == "+") {
+				long val1 = stack.top();
+				stack.pop();
+				long val2 = stack.top();
+				stack.pop();
+				stack.push(val2 + val1);
+			}
+			else if (s == "-") {
+				long val1 = stack.top();
+				stack.pop();
+				long val2 = stack.top();
+				stack.pop();
+				stack.push(val2 - val1);
+			}
+			else if (s == "*") {
+				long val1 = stack.top();
+				stack.pop();
+				long val2 = stack.top();
+				stack.pop();
+				stack.push(val2 * val1);
+			}
+			else if (s == "/") {
+				long val1 = stack.top();
+				stack.pop();
+				long val2 = stack.top();
+				stack.pop();
+				stack.push(val2 / val1);
+			}
+			else {
+				stack.push(stoi(s));
+			}
+		}
+		return stack.top();
+	}
+};

@@ -20,3 +20,31 @@ class Solution {
         return true;
     }
 }
+
+
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	bool wordPattern(string pattern, string s) {
+		unordered_map<char, string> c2w;
+		unordered_map<string, char> w2c;
+		int l = 0, r = 0;
+		int ptr = 0;
+		while (l < s.length()) {
+			while (r < s.length() && s[r] != ' ') r++;
+			string w = s.substr(l, r - l);
+			char p = pattern[ptr];
+			if (c2w.count(p) && c2w[p] != w) return false;
+			else if (w2c.count(w) && w2c[w] != p) return false;
+			c2w[p] = w;
+			w2c[w] = p;
+			l = r + 1;
+			r = l + 1;
+			ptr++;
+		}
+		return ptr == pattern.length();
+	}
+};

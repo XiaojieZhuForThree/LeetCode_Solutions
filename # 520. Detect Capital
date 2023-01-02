@@ -21,3 +21,27 @@ class Solution:
     def detectCapitalUse(self, word: str) -> bool:
         return word.isupper() or word.islower() or (word[0].isupper() and word[1:].islower())
         
+
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	bool detectCapitalUse(string word) {
+		if (word.size() == 0) return true;
+		string sub = word.substr(1, word.size() - 1);
+		if (isupper(word[0])) return checkUpper(sub) || checkLower(sub);
+		return checkLower(sub);
+	}
+
+private:
+	bool checkUpper(string w) {
+		for (char c : w) if (!isupper(c)) return false;
+		return true;
+	}
+
+	bool checkLower(string w) {
+		for (char c : w) if (!islower(c)) return false;
+		return true;
+	}
+};

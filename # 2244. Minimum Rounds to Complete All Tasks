@@ -1,0 +1,20 @@
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minimumRounds(vector<int>& tasks) {
+		unordered_map<int, int> map;
+		for (int i : tasks) map[i]++;
+		int ans = 0;
+		for (auto& p : map) {
+			if (p.second < 2) return -1;
+			int d = p.second / 3;
+			int r = p.second % 3;
+			if (r > 0) d++;
+			ans += d;
+		}
+		return ans;
+	}
+};

@@ -62,9 +62,7 @@ public:
             thres += gas[i] - cost[i];
             tot += gas[i] - cost[i];
             if (thres >= 0) thres = 0;
-            if (thres == 0) {
-                if (tot + needed[i] >= 0) return i;
-            }
+            if (thres == 0 && tot + needed[i] >= 0) return i;
         }
         return -1;
     }

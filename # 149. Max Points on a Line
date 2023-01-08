@@ -89,3 +89,36 @@ class Solution {
         return max;
     }
 }
+
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	int maxPoints(vector<vector<int>>& points) {
+		if (points.size() < 2) return points.size();
+		int ans = 0;
+		for (int i = 0; i < points.size(); i++) {
+			unordered_map<double, int> map;
+			for (int j = 0; j < points.size(); j++) {
+				if (samePoint(points[i], points[j])) continue;
+				double slope = getTan(points[i], points[j]);
+				if (!map.count(slope)) map[slope] = 2;
+				else map[slope]++;
+				ans = max(ans, map[slope]);
+			}
+		}
+		return ans;
+	}
+private:
+	bool samePoint(vector<int>& a, vector<int>& b) {
+		return a[0] == b[0] && a[1] == b[1];
+	}
+
+	double getTan(vector<int>& a, vector<int>& b) {
+		double x = b[0] - a[0], y = b[1] - a[1];
+		return atan2(y, x);
+	}
+};

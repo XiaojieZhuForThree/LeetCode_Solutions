@@ -43,3 +43,30 @@ class Solution {
     	getAns(root.right);
     }
 }
+
+
+#include "TreeNode.h"
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> preorderTraversal(TreeNode* root) {
+		vector<int> ans;
+		stack<TreeNode*> stack;
+		TreeNode* node = root;
+		while (node || !stack.empty()) {
+			if (node) {
+				stack.push(node);
+				ans.push_back(node->val);
+				node = node->left;
+			}
+			else {
+				node = stack.top()->right;
+				stack.pop();
+			}
+		}
+		return ans;
+	}
+};

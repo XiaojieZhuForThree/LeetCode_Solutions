@@ -39,3 +39,34 @@ public class Question1443 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) {
+		vector<vector<int>> graph(hasApple.size());
+		vector<bool> visited(hasApple.size(), false);
+		for (auto& edge : edges) {
+			graph[edge[0]].push_back(edge[1]);
+			graph[edge[1]].push_back(edge[0]);
+		}
+		return dfs(0, visited, graph, hasApple);
+	}
+private:
+	int dfs(int i, vector<bool>& visited, vector<vector<int>>& graph, vector<bool>& hasApple) {
+		visited[i] = true;
+		int ans = 0;
+		for (int j : graph[i]) {
+			if (visited[j]) continue;
+			int subCost = dfs(j, visited, graph, hasApple);
+			if (hasApple[j]) {
+				hasApple[i] = true;
+				ans += 2 + subCost;
+			}
+		}
+		return ans;
+	}
+};

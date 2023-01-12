@@ -1,0 +1,31 @@
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
+		vector<int> ans(n, 0);
+		vector<vector<int>> graph(n);
+		vector<bool> visited(n, false);
+		for (auto& e : edges) {
+			graph[e[0]].push_back(e[1]);
+			graph[e[1]].push_back(e[0]);
+		}
+		dfs(0, visited, graph, ans, labels);
+		return ans;
+	}
+private:
+	vector<int> dfs(int i, vector<bool>& visited, vector<vector<int>>& graph, vector<int>& ans, string& labels) {
+		visited[i] = true;
+		vector<int> cnt(26, 0);
+		for (int j : graph[i]) {
+			if (visited[j]) continue;
+			vector<int> sub = dfs(j, visited, graph, ans, labels);
+			for (int k = 0; k < 26; k++) cnt[k] += sub[k];
+		}
+		cnt[labels[i] - 'a']++;
+		ans[i] = cnt[labels[i] - 'a'];
+		return cnt;
+	}
+};

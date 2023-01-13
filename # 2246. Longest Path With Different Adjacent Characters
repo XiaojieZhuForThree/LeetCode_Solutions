@@ -1,0 +1,35 @@
+#include <string>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int ans = 1;
+    int longestPath(vector<int>& parent, string s) {
+        int n = parent.size();
+        vector<vector<int>> tree(n);
+        for (int i = 1; i < n; i++) {
+            tree[parent[i]].push_back(i);
+        }
+        helper(tree, 0, s);
+        return ans;
+    }
+
+private:
+    int helper(vector<vector<int>>& tree, int i, string& s) {
+        if (tree[i].empty()) return 1;
+        int mBranch1 = 0, mBranch2 = 0;
+        for (int j : tree[i]) {
+            int branch = helper(tree, j, s);
+            if (s[i] != s[j]) {
+                if (branch >= mBranch1) {
+                    mBranch2 = mBranch1;
+                    mBranch1 = branch;
+                }
+                else if (branch >= mBranch2) mBranch2 = branch;
+            }
+            ans = max(ans, 1 + mBranch1 + mBranch2);
+        }
+        return 1 + mBranch1;
+    }
+};

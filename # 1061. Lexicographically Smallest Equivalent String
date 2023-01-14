@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+using namespace std;
+
+class UF {
+	vector<char> pars;
+public:
+	UF() {
+		for (char c = 'a'; c <= 'z'; c++) pars.push_back(c);
+	}
+	void uf_union(char a, char b) {
+		char pA = uf_find(a), pB = uf_find(b);
+		if (pA < pB) pars[pB - 'a'] = pA;
+		else pars[pA - 'a'] = pB;
+	}
+	char uf_find(char c) {
+		if (pars[c - 'a'] != c) pars[c - 'a'] = uf_find(pars[c - 'a']);
+		return pars[c - 'a'];
+	}
+};
+
+class Solution {
+public:
+	string smallestEquivalentString(string s1, string s2, string baseStr) {
+		UF uf;
+		for (int i = 0; i < s1.size(); i++) uf.uf_union(s1[i], s2[i]);
+		for (int i = 0; i < baseStr.size(); i++) baseStr[i] = uf.uf_find(baseStr[i]);
+		return baseStr;
+	}
+};

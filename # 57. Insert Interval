@@ -38,3 +38,31 @@ public class Question57 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+		vector<vector<int>> ans;
+		int l = newInterval[0], r = newInterval[1];
+		for (auto& i : intervals) {
+			if (i[1] < l) {
+				ans.push_back(i);
+			}
+			else if (i[0] > r) {
+				ans.push_back({ l, r });
+				l = i[0];
+				r = i[1];
+			}
+			else {
+				l = min(l, i[0]);
+				r = max(r, i[1]);
+			}
+		}
+		ans.push_back({ l, r });
+		return ans;
+	}
+};

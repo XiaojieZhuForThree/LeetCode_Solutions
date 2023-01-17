@@ -31,14 +31,13 @@ class Solution {
 public:
     int minFlipsMonoIncr(string s) {
         vector<int> zeros, ones;
-        zeros.push_back(s[0] == '0' ? 0 : 1);
-        ones.push_back(s[1] == '1' ? 0 : 1);
+        int last_zero = s[0] == '0' ? 0 : 1;
+        int last_one = s[0] == '1' ? 0 : 1;
         for (int i = 1; i < s.size(); i++) {
             char c = s[i];
-            int last_zero = zeros.back(), last_one = ones.back();
-            zeros.push_back(last_zero + (c == '0' ? 0 : 1));
-            ones.push_back(min(last_zero, last_one) + (c == '1' ? 0 : 1));
+            last_one = min(last_zero, last_one) + (c == '1' ? 0 : 1);
+            last_zero += (c == '0' ? 0 : 1);
         }
-        return min(zeros.back(), ones.back());
+        return min(last_zero, last_one);
     }
 };

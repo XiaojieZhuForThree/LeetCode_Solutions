@@ -1,0 +1,28 @@
+#include <map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int maxSubarraySumCircular(vector<int>& nums) {
+		int n = nums.size();
+		for (int i = 0; i < n; i++) nums.push_back(nums[i]);
+		int ans = nums[0], cur = nums[0], ptr = 0;
+		map<int, int> map;
+		map[nums[0]] = 1;
+		for (int i = 1; i < nums.size(); i++) {
+			nums[i] += nums[i - 1];
+			int cand = nums[i];
+			if (i >= n) {
+				cand -= map.begin()->first;
+				map[nums[ptr]]--;
+				if (map[nums[ptr]] == 0) map.erase(nums[ptr]);
+				ptr++;
+			}
+			else if (map.begin()->first < 0) cand -= map.begin()->first;
+			ans = max(ans, cand);
+			map[nums[i]]++;
+		}
+		return ans;
+	}
+};

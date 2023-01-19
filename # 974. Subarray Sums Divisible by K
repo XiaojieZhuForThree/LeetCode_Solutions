@@ -10,3 +10,25 @@ class Solution {
         return ans;
     }
 }
+
+
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	int subarraysDivByK(vector<int>& nums, int k) {
+		unordered_map<int, int> map;
+		map[0] = 1;
+		int cur = 0, ans = 0;
+		for (int i : nums) {
+			cur += i;
+			int mod = cur % k;
+			if (map.count(mod)) ans += map[mod];
+			if (map.count(mod - k)) ans += map[mod - k];
+			if (map.count(k + mod)) ans += map[k + mod];
+			map[mod]++;
+		}
+		return ans;
+	}
+};

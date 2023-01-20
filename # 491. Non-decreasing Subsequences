@@ -1,0 +1,30 @@
+#include <vector>
+#include <set>
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> findSubsequences(vector<int>& nums) {
+		vector<vector<int>> prevs, container, ans;
+		set<vector<int>> seen;
+		prevs.push_back({});
+		int old_num = -101;
+		for (int i : nums) {
+			container.clear();
+			for (auto& prev : prevs) {
+				if (prev.empty() || prev.back() <= i) {
+					vector<int> v(prev);
+					v.push_back(i);
+					if (seen.count(v)) continue;
+					container.push_back(v);
+					seen.insert(v);
+				}
+			}
+			prevs.insert(prevs.end(), container.begin(), container.end());
+		}
+		for (auto& cand : prevs) {
+			if (cand.size() >= 2) ans.push_back(cand);
+		}
+		return ans;
+	}
+};

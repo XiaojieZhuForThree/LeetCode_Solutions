@@ -24,3 +24,39 @@ class Solution {
         return true;
     }
 }
+
+
+#include <string>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+	vector<string> restoreIpAddresses(string s) {
+		unordered_set<string> ans;
+		dfs(s, "", ans, 0, 0);
+		vector<string> res(ans.begin(), ans.end());
+		return res;
+	}
+private:
+	void dfs(string& s, string cur, unordered_set<string>& ans, int pos, int dots) {
+		if (dots == 3) {
+			if (pos >= s.size() || pos < s.size() - 3) return;
+			string piece = s.substr(pos, s.size() - pos);
+			if (piece.size() > 1 && piece[0] == '0') return;
+			int last_num = stoi(piece);
+			if (last_num > 255) return;
+			ans.insert(cur + piece);
+		}
+		else {
+			for (int i = 1; i <= 3 && pos + i < s.size(); i++) {
+				string piece = s.substr(pos, i);
+				if (piece.size() > 1 && piece[0] == '0') continue;
+				int cur_num = stoi(piece);
+				if (cur_num > 255) continue;
+				dfs(s, cur + s.substr(pos, i) + ".", ans, pos + i, dots + 1);
+			}
+		}
+	}
+};

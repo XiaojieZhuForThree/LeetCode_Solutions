@@ -17,3 +17,27 @@ public class Question997 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        unordered_map<int, int> trusted, trustee;
+        for (int i = 1; i <= n; i++) {
+            trusted[i] = 0;
+            trustee[i] = 0;
+        }
+        for (auto& t : trust) {
+            trusted[t[0]]++;
+            trustee[t[1]]++;
+        }
+        for (auto& e : trusted) {
+            if (e.second == 0 && trustee[e.first] == n - 1) return e.first;
+        }
+        return -1;
+    }
+};

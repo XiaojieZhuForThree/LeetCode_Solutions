@@ -1,0 +1,55 @@
+#include <vector>
+#include <unordered_map>
+#include <deque>
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+	int snakesAndLadders(vector<vector<int>>& board) {
+		int n = board.size();
+		unordered_map<int, int> vals;
+		bool reversed = false;
+		for (int i = n - 1; i >= 0; i--) {
+			if (reversed) {
+				for (int j = n - 1; j >= 0; j--) {
+					vals[n * (n - 1 - i) + (n - j)] = board[i][j];
+				}
+			}
+			else {
+				for (int j = 0; j < n; j++) {
+					vals[n * (n - 1 - i) + j + 1] = board[i][j];
+				}
+			}
+			reversed = !reversed;
+		}
+		deque<int> cur;
+		unordered_set<int> seen;
+		int ans = 0;
+		cur.push_back(1);
+		while (!cur.empty()) {
+			for (int i = cur.size(); i > 0; i--) {
+				int p = cur.front();
+				if (p == n * n) return ans;
+				for (int j = 1; j <= 6; j++) {
+					int nxt = min(p + j, n * n);
+					if (vals[nxt] == -1) {
+						int cand = nxt;
+						if (seen.count(cand)) continue;
+						seen.insert(cand);
+						cur.push_back(cand);
+					}
+					else {
+						int cand = vals[nxt];
+						if (seen.count(cand)) continue;
+						seen.insert(cand);
+						cur.push_back(cand);
+					}
+				}
+				cur.pop_front();
+			}
+			ans++;
+		}
+		return -1;
+	}
+};

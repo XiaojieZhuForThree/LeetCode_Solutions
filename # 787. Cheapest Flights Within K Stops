@@ -1,0 +1,36 @@
+#include <vector>
+#include <unordered_map>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	int ans = -1;
+	int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+		unordered_map<int, unordered_map<int, int>> graph;
+		for (auto& f : flights) {
+			graph[f[0]][f[1]] = f[2];
+		}
+		auto compare = [](vector<int> a, vector<int> b) {
+			if (a[0] == b[0]) return a[1] > b[1];
+			return a[0] > b[0];
+		};
+		deque<pair<int, int>> q;
+		q.push_back({ src, 0 });
+		unordered_map<int, int> map;
+		map[src] = 0;
+		while (!q.empty() && k >= 0) {
+			for (int i = q.size(); i > 0; i--) {
+				pair<int, int> cur = q.front();
+				q.pop_front();
+				for (auto& nxt : graph[cur.first]) {
+					if (map.count(nxt.first) && map[nxt.first] <= cur.second + nxt.second) continue;
+					q.push_back({ nxt.first, cur.second + nxt.second });
+					map[nxt.first] = cur.second + nxt.second;
+				}
+			}
+			k--;
+		}
+		return map.count(dst) ? map[dst] : -1;
+	}
+};

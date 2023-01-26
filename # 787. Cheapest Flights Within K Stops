@@ -11,10 +11,6 @@ public:
 		for (auto& f : flights) {
 			graph[f[0]][f[1]] = f[2];
 		}
-		auto compare = [](vector<int> a, vector<int> b) {
-			if (a[0] == b[0]) return a[1] > b[1];
-			return a[0] > b[0];
-		};
 		deque<pair<int, int>> q;
 		q.push_back({ src, 0 });
 		unordered_map<int, int> map;

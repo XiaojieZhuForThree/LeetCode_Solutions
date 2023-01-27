@@ -1,0 +1,31 @@
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+		unordered_map<string, int> map;
+		unordered_set<string> cand;
+		for (string w : words) cand.insert(w);
+		vector<string> ans;
+		for (string w : words) {
+			if (dfs(cand, map, w) > 1) ans.push_back(w);
+		}
+		return ans;
+	}
+private:
+	int dfs(unordered_set<string>& cand, unordered_map<string, int>& map, string w) {
+		if (w.empty()) return 0;
+		if (map.count(w)) return map[w];
+		int cnt = INT_MIN;
+		for (int i = 0; i < w.size(); i++) {
+			string sub = w.substr(0, i + 1);
+			if (cand.count(sub)) cnt = max(cnt, 1 + dfs(cand, map, w.substr(i + 1, w.size() - i - 1)));
+		}
+		map[w] = cnt;
+		return cnt;
+	}
+};

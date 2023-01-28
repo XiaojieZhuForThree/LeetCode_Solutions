@@ -1,0 +1,49 @@
+#include <map>
+#include <unordered_set>
+#include <vector>
+
+using namespace std;
+
+class SummaryRanges {
+public:
+	map<int, vector<int>> heads, tails;
+	unordered_set<int> added;
+	SummaryRanges() {
+
+	}
+
+	void addNum(int value) {
+		if (added.count(value)) return;
+		heads[value] = { value, value };
+		tails[value] = { value, value };
+		merge(value);
+		added.insert(value);
+	}
+
+	vector<vector<int>> getIntervals() {
+		vector<vector<int>> ans;
+		for (auto& p : heads) ans.push_back(p.second);
+		return ans;
+	}
+private:
+	void merge(int value) {
+		int front, end;
+		if (heads.count(value + 1)) end = heads[value + 1][1];
+		else end = value;
+		if (tails.count(value - 1)) front = tails[value - 1][0];
+		else front = value;
+		heads.erase(value);
+		heads.erase(value + 1);
+		tails.erase(value);
+		tails.erase(value - 1);
+		heads[front] = { front, end };
+		tails[end] = { front, end };
+	}
+};
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges* obj = new SummaryRanges();
+ * obj->addNum(value);
+ * vector<vector<int>> param_2 = obj->getIntervals();
+ */

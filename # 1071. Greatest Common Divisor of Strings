@@ -51,27 +51,28 @@ public class Question1071 {
 }
 
 
+#include <numeric>
 #include <string>
+
 using namespace std;
 
 class Solution {
 public:
-	string gcdOfStrings(string str1, string str2) {
-		string ans = "";
-		for (int i = 0; i < min(str1.size(), str2.size()); i++) {
-			if (str1[i] != str2[i]) break;
-			string cand = str1.substr(0, i + 1);
-			if (isGcd(cand, str1) && isGcd(cand, str2)) ans = cand;
-		}
-		return ans;
-	}
+    string gcdOfStrings(string str1, string str2) {
+        string ans = "";
+        int i = gcd(size(str1), size(str2));
+        if (i == 0) return ans;
+        string cand = str1.substr(0, i);
+        if (isGcd(cand, str1) && isGcd(cand, str2)) ans = cand;
+        return ans;
+    }
 private:
-	bool isGcd(string cand, string str) {
-		int a = cand.size(), b = str.size();
-		if (b % a != 0) return false;
-		for (int i = 0; i < b; i += a) {
-			if (str.substr(i, a) != cand) return false;
-		}
-		return true;
-	}
+    bool isGcd(string cand, string str) {
+        int a = cand.size(), b = str.size();
+        if (b % a != 0) return false;
+        for (int i = 0; i < b; i += a) {
+            if (str.substr(i, a) != cand) return false;
+        }
+        return true;
+    }
 };

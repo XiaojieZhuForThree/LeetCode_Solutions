@@ -26,3 +26,23 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if (numRows == 1) return s;
+        bool down = true;
+        int cnt = 0;
+        vector<string> vec(numRows, "");
+        for (char c : s) {
+            vec[cnt] += c;
+            if (down) cnt++;
+            else cnt--;
+            if (cnt == numRows - 1 || cnt == 0) down = !down;
+        }
+        string ans;
+        for (string s : vec) ans.append(s);
+        return ans;
+    }
+};

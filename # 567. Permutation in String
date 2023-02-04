@@ -38,3 +38,32 @@ public class Question567 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+	bool checkInclusion(string s1, string s2) {
+		unordered_map<char, int> map1, map2;
+		for (char c : s1) map1[c]++;
+		int i = 0, j = 0;
+		for (; j < s2.size(); j++) {
+			map2[s2[j]]++;
+			if (j - i + 1 > s1.size()) map2[s2[i++]]--;
+			if (isEqual(map1, map2)) return true;
+		}
+		return false;
+	}
+private:
+	bool isEqual(unordered_map<char, int>& map1, unordered_map<char, int>& map2) {
+		for (auto& p : map1) {
+			if (!map2.count(p.first)) return false;
+			if (map2[p.first] != p.second) return false;
+		}
+		return true;
+	}
+};

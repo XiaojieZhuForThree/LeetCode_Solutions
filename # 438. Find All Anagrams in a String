@@ -29,3 +29,33 @@ class Solution:
             elif cur[i] != ref[i]:
                 return False
         return True
+
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+	vector<int> findAnagrams(string s, string p) {
+		vector<int> ans;
+		unordered_map<char, int> m1, m2;
+		for (char c : p) m2[c]++;
+		for (int i = 0; i < s.size(); i++) {
+			m1[s[i]]++;
+			if (i >= p.size()) m1[s[i - p.size()]]--;
+			if (isAnagram(m1, m2)) ans.push_back(i - p.size() + 1);
+		}
+		return ans;
+	}
+private:
+	bool isAnagram(unordered_map<char, int>& m1, unordered_map<char, int>& m2) {
+		for (auto& p : m2) {
+			if (!m1.count(p.first)) return false;
+			if (m1[p.first] != p.second) return false;
+		}
+		return true;
+	}
+};

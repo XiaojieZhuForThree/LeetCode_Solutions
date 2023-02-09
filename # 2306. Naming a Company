@@ -1,0 +1,48 @@
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+    long long distinctNames(vector<string>& ideas) {
+        unordered_map<string, unordered_set<char>> map;
+        unordered_map<char, int> cnt;
+        unordered_map<char, int> starts;
+        vector<vector<int>> overlaps;
+        for (int i = 0; i < 26; i++) {
+            vector<int> cont(26, 0);
+            overlaps.push_back(cont);
+        }
+        int n = size(ideas);
+        for (string s : ideas) {
+            map[s.substr(1, s.size() - 1)].insert(s[0]);
+            starts[s[0]]++;
+        }
+        for (auto& p : map) {
+            for (char c : p.second) cnt[c] += size(p.second);
+            for (char c : p.second) {
+                for (char d : p.second) {
+                    if (c == d) continue;
+                    overlaps[c - 'a'][d - 'a']++;
+                }
+            }
+        }
+        long long ans = 0;
+        for (auto& p : map) {
+            if (size(p.second) == n) continue;
+            int cand = n - size(p.second);
+            for (char c : p.second) {
+                int valid = cand - (cnt[c] - size(p.second));
+                if (valid > 0) {
+                    for (char d : p.second) {
+                        if (d == c) continue;
+                        valid -= starts[d] - overlaps[c - 'a'][d - 'a'];
+                    }
+                }
+                ans += valid;
+            }
+        }
+        return ans;
+    }
+};

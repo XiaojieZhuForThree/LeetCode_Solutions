@@ -1,0 +1,35 @@
+#include <vector>
+#include <unordered_map>
+#include <set>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+		unordered_map<int, vector<pair<int, int>>> map;
+		set<pair<int, int>> visited;
+		deque<pair<int, int>> deque;
+		for (auto& e : redEdges) map[e[0]].push_back({ e[1], 0 });
+		for (auto& e : blueEdges) map[e[0]].push_back({ e[1], 1 });
+		vector<int> ans(n, -1);
+		ans[0] = 0;
+		int step = 0;
+		for (auto& p : map[0]) deque.push_back(p);
+		while (!deque.empty()) {
+			step++;
+			for (int i = size(deque); i > 0; i--) {
+				pair<int, int> cur = deque.front();
+				deque.pop_front();
+				if (visited.count(cur)) continue;
+				visited.insert(cur);
+				if (ans[cur.first] == -1 || ans[cur.first] > step) ans[cur.first] = step;
+				for (auto& nxt : map[cur.first]) {
+					if (visited.count(nxt) || cur.second == nxt.second) continue;
+					deque.push_back(nxt);
+				}
+			}
+		}
+		return ans;
+	}
+};

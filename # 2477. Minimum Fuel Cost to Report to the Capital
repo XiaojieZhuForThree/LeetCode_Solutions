@@ -1,0 +1,33 @@
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+public:
+	long long ans = 0;
+	long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+		if (roads.empty()) return 0;
+		unordered_map<int, vector<int>> graph;
+		unordered_set<int> seen;
+		for (auto& p : roads) {
+			graph[p[0]].push_back(p[1]);
+			graph[p[1]].push_back(p[0]);
+		}
+		dfs(graph, seen, 0, seats);
+		return ans;
+	}
+private:
+	int dfs(unordered_map<int, vector<int>>& graph, unordered_set<int>& seen, int cur, int seats) {
+		int nodes = 0;
+		seen.insert(cur);
+		for (int i : graph[cur]) {
+			if (seen.count(i)) continue;
+			int bn = dfs(graph, seen, i, seats);
+			ans += (bn / seats);
+			if (bn % seats != 0) ans++;
+			nodes += bn;
+		}
+		return nodes + 1;
+	}
+};

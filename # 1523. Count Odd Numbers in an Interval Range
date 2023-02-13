@@ -11,3 +11,16 @@ public class Question1523 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    int countOdds(int low, int high) {
+        if (low % 2 == 1) {
+            int ans = (high - low + 1) / 2;
+            if (high % 2 == 1) ans++;
+            return ans;
+        }
+        return (high - low + 1) / 2;
+    }
+};

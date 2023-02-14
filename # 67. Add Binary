@@ -1,0 +1,22 @@
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string ans;
+        int car = 0;
+        int i = size(a) - 1, j = size(b) - 1;
+        while (i >= 0 || j >= 0 || car == 1) {
+            int cur = 0;
+            if (i < size(a)) cur += a[i--] - '0';
+            if (j < size(b)) cur += b[j--] - '0';
+            if (car == 1) cur += car;
+            car = cur / 2;
+            cur %= 2;
+            ans.append(to_string(cur));
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};

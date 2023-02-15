@@ -1,0 +1,24 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> addToArrayForm(vector<int>& num, int k) {
+		vector<int> ans;
+		int car = 0;
+		int i = size(num) - 1;
+		while (i >= 0 || k != 0 || car != 0) {
+			int cur = 0;
+			if (i >= 0) cur += num[i--];
+			if (k != 0) {
+				cur += k % 10;
+				k /= 10;
+			}
+			if (car != 0) cur += car;
+			ans.push_back(cur % 10);
+			car = cur / 10;
+		}
+		reverse(ans.begin(), ans.end());
+		return ans;
+	}
+};

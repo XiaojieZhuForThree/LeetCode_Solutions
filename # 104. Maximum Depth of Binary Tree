@@ -75,3 +75,16 @@ class Solution:
         if not root.left and not root.right:
             return 1
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+
+
+#include "TreeNode.h"
+#include <utility>
+using namespace std;
+
+class Solution {
+public:
+	int maxDepth(TreeNode* root) {
+		if (!root) return 0;
+		return 1 + max(maxDepth(root->left), maxDepth(root->right));
+	}
+};

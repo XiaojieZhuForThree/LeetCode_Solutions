@@ -1,0 +1,28 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int singleNonDuplicate(vector<int>& nums) {
+		int l = 0, r = size(nums) - 1;
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (isSingle(nums, m)) return nums[m];
+			else if (onRight(nums, m)) l = m + 1;
+			else r = m;
+		}
+		return nums[l];
+	}
+private:
+	bool isSingle(vector<int>& nums, int m) {
+		if (m > 0 && nums[m - 1] == nums[m]) return false;
+		if (m < size(nums) - 1 && nums[m + 1] == nums[m]) return false;
+		return true;
+	}
+	bool onRight(vector<int>& nums, int m) {
+		if (m > 0 && nums[m - 1] == nums[m]) {
+			return m % 2 == 1;
+		}
+		return (m + 1) % 2 == 1;
+	}
+};

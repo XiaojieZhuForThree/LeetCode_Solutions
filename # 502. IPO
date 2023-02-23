@@ -1,0 +1,21 @@
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+	int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+		priority_queue<pair<int, int>> todo;
+		priority_queue<int> cand;
+		for (int i = 0; i < size(profits); i++) todo.push({ -capital[i], profits[i] });
+		for (int i = 0; i < k; i++) {
+			while (!todo.empty() && -todo.top().first <= w) {
+				cand.push(todo.top().second);
+				todo.pop();
+			}
+			if (cand.empty()) break;
+			w += cand.top();
+			cand.pop();
+		}
+		return w;
+	}
+};

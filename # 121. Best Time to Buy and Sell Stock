@@ -27,3 +27,19 @@ class Solution:
             if i < buy:
                 buy = i
         return ans
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int maxProfit(vector<int>& prices) {
+		int ans = 0, low = INT_MAX;
+		for (int i : prices) {
+			if (i > low) ans = max(ans, i - low);
+			else low = i;
+		}
+		return ans;
+	}
+};

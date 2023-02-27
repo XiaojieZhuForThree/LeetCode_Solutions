@@ -1,0 +1,41 @@
+#include "Node.h"
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+	Node* construct(vector<vector<int>>& grid) {
+		if (grid.empty()) return NULL;
+		int n = size(grid);
+		return helper(grid, 0, 0, n - 1);
+	}
+private:
+	Node* helper(vector<vector<int>>& grid, int top, int left, int right) {
+		if (allSame(grid, top, left, right)) {
+			return new Node(grid[top][left] == 1, 1);
+		}
+
+		int n = right - left + 1;
+		int div = n / 2;
+
+		Node* ans = new Node(false, false);
+		ans->topLeft = helper(grid, top, left, left + (div - 1));
+		ans->topRight = helper(grid, top, left + div, right);
+		ans->bottomLeft = helper(grid, top + div, left, left + (div - 1));
+		ans->bottomRight = helper(grid, top + div, left + div, right);
+
+		return ans;
+	}
+
+	bool allSame(vector<vector<int>>& grid, int top, int left, int right) {
+		int n = right - left + 1;
+		int val = grid[top][left];
+		for (int i = top; i < top + n; i++) {
+			for (int j = left; j < left + n; j++) {
+				if (grid[i][j] != val) return false;
+			}
+		}
+		return true;
+	}
+};

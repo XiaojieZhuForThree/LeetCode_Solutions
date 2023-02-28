@@ -63,3 +63,36 @@ public class Question652 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+public:
+	vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+		vector<TreeNode*> ans;
+		unordered_map<string, TreeNode*> stn;
+		unordered_set<TreeNode*> added;
+		dfs(root, ans, stn, added);
+		return ans;
+	}
+private:
+	string dfs(TreeNode* node, vector<TreeNode*>& ans, unordered_map<string, TreeNode*>& stn, unordered_set<TreeNode*>& added) {
+		if (!node) return "";
+		string l = dfs(node->left, ans, stn, added), r = dfs(node->right, ans, stn, added);
+		string cand = "root: " + to_string(node->val) + ", left: " + l + ", right: " + r;
+		if (stn.count(cand) && !added.count(stn[cand])) {
+			ans.push_back(stn[cand]);
+			added.insert(stn[cand]);
+		}
+		else if (!stn.count(cand)) {
+			stn[cand] = node;
+		}
+		return cand;
+	}
+};

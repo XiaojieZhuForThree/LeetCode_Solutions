@@ -10,3 +10,59 @@ public class Question912 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> sortArray(vector<int>& nums) {
+		if (alreadySorted(nums)) return nums;
+		int n = size(nums);
+		qs(nums, 0, n - 1);
+		return nums;
+	}
+private:
+	bool alreadySorted(vector<int>& nums) {
+		for (int i = 1; i < size(nums); i++) {
+			if (nums[i] < nums[i - 1]) return false;
+		}
+		return true;
+	}
+	void qs(vector<int>& nums, int l, int r) {
+		if (l >= r) return;
+		int m = l + (r - l) / 2;
+		int tmp = nums[m];
+		nums[m] = nums[l];
+		nums[l] = tmp;
+		int p = l, e = r;
+		while (p != e) {
+			if (p < e) {
+				if (nums[p] < nums[e]) e--;
+				else {
+					int tmp = nums[e];
+					int tp = p;
+					nums[e] = nums[p];
+					nums[p] = tmp;
+					p = e;
+					e = tp + 1;
+				}
+			}
+			else {
+				if (nums[e] <= nums[p]) e++;
+				else {
+					int tmp = nums[p];
+					int tp = p;
+					nums[p] = nums[e];
+					nums[e] = tmp;
+					p = e;
+					e = tp - 1;
+				}
+			}
+		}
+		qs(nums, l, p - 1);
+		qs(nums, p + 1, r);
+
+	}
+};

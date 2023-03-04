@@ -1,0 +1,63 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+		if (minK > maxK) return 0;
+		if (minK == maxK) return sameK(nums, minK);
+		long long ans = 0, sm = -1, lg = -1, bg = -1, csm = -1, clg = -1;
+		for (int i = 0; i < size(nums); i++) {
+			int cur = nums[i];
+			if (cur < minK || cur > maxK) {
+				if (sm != -1 && lg != -1) ans += (min(sm, lg) - bg) * (i - max(sm, lg));
+				bg = i;
+				sm = -1;
+				lg = -1;
+				csm = -1;
+				clg = -1;
+			}
+			else if (cur == minK) {
+				if (sm == -1 || lg == -1) {
+					sm = i;
+					csm = i;
+				}
+				else if (sm > lg) csm = i;
+				else {
+					ans += (sm - bg) * (i - lg);
+					sm = i;
+					csm = i;
+					lg = clg;
+				}
+			}
+			else if (cur == maxK) {
+				if (sm == -1 || lg == -1) {
+					lg = i;
+					clg = i;
+				}
+				else if (lg > sm) clg = i;
+				else {
+					ans += (lg - bg) * (i - sm);
+					lg = i;
+					clg = i;
+					sm = csm;
+				}
+			}
+		}
+		if (sm != -1 && lg != -1) ans += (min(sm, lg) - bg) * (size(nums) - max(sm, lg));
+		return ans;
+	}
+private:
+	long long sameK(vector<int>& nums, int k) {
+		long long ans = 0, cnt = 0;
+		for (int i = 0; i < size(nums); i++) {
+			if (nums[i] == k) cnt++;
+			else {
+				ans += cnt == 0 ? 0 : ((cnt + 1) * cnt) / 2;
+				cnt = 0;
+			}
+		}
+		ans += cnt == 0 ? 0 : ((cnt + 1) * cnt) / 2;
+		return ans;
+	}
+};

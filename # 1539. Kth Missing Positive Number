@@ -20,3 +20,21 @@ public class Question1539 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int findKthPositive(vector<int>& arr, int k) {
+		int cur = 1, ptr = 0, cnt = 0;
+		while (cnt < k) {
+			if (ptr >= size(arr)) cnt++;
+			else if (cur == arr[ptr]) ptr++;
+			else cnt++;
+			cur++;
+		}
+		return cur - 1;
+	}
+};

@@ -1,0 +1,27 @@
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	long long minimumTime(vector<int>& time, int totalTrips) {
+		unordered_map<int, int> freq;
+		int min_time = time[0];
+		for (int i : time) {
+			freq[i]++;
+			min_time = min(min_time, i);
+		}
+
+		long long l = 1, r = (long long)min_time * totalTrips;
+		while (l < r) {
+			long long m = l + (r - l) / 2;
+			long long cand = 0;
+			for (auto& p : freq) {
+				cand += p.second * (m / p.first);
+				if (cand >= totalTrips) break;
+			}
+			if (cand >= totalTrips) r = m;
+			else l = m + 1;
+		}
+		return l;
+	}
+};

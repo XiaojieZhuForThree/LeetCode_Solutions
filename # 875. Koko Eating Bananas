@@ -22,3 +22,31 @@ class Solution {
         return ans;
     }
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minEatingSpeed(vector<int>& piles, int h) {
+		int l = 1, r = piles[0];
+		for (int i : piles) r = max(r, i);
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (canFinish(piles, m, h)) r = m;
+			else l = m + 1;
+		}
+		return l;
+	}
+private:
+	bool canFinish(vector<int>& piles, int m, int h) {
+		int cur = 0;
+		for (int i : piles) {
+			cur += i / m;
+			if (i % m != 0) cur++;
+			if (cur > h) break;
+		}
+		return cur <= h;
+	}
+};

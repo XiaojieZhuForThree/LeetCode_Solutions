@@ -87,3 +87,25 @@ public class Question382 {
 	 * new Solution(head); int param_1 = obj.getRandom();
 	 */
 }
+
+
+#include "ListNode.h"
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+    unordered_map<int, ListNode*> map;
+    int ptr = 0;
+public:
+    Solution(ListNode* head) {
+        while (head) {
+            map[ptr++] = head;
+            head = head->next;
+        }
+    }
+
+    int getRandom() {
+        return map[rand() % ptr]->val;
+    }
+};

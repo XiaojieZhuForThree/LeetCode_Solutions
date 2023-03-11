@@ -32,3 +32,30 @@ public class Question109 {
 		}
 	}
 }
+
+
+#include "ListNode.h"
+#include "TreeNode.h"
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	TreeNode* sortedListToBST(ListNode* head) {
+		vector<int> nodes;
+		while (head) {
+			nodes.push_back(head->val);
+			head = head->next;
+		}
+		return helper(nodes, 0, size(nodes) - 1);
+	}
+private:
+	TreeNode* helper(vector<int>& nodes, int l, int r) {
+		if (l > r) return nullptr;
+		int mid = l + (r - l) / 2;
+		TreeNode* head = new TreeNode(nodes[mid]);
+		head->left = helper(nodes, l, mid - 1);
+		head->right = helper(nodes, mid + 1, r);
+		return head;
+	}
+};

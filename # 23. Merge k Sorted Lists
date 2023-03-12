@@ -75,3 +75,37 @@ class Solution:
                 heapq.heappush(queue, cur.next)
         ptr.next = None
         return root.next
+
+
+#include "ListNode.h"
+#include <queue>
+using namespace std;
+
+struct compare {
+public:
+	bool operator()(ListNode* a, ListNode* b) {
+		return a->val > b->val;
+	}
+
+};
+
+class Solution {
+public:
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+		for (ListNode* node : lists) {
+			if (node) pq.push(node);
+		}
+		ListNode* ans = new ListNode();
+		ListNode* dummy = ans;
+		while (!pq.empty()) {
+			ListNode* cur = pq.top();
+			pq.pop();
+			dummy->next = cur;
+			dummy = dummy->next;
+			if (cur->next) pq.push(cur->next);
+		}
+		dummy->next = nullptr;
+		return ans->next;
+	}
+};

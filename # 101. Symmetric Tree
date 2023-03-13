@@ -65,3 +65,19 @@ class Solution {
     	return true;
     }
 }
+
+
+
+#include "TreeNode.h"
+class Solution {
+public:
+	bool isSymmetric(TreeNode* root) {
+		return dfs(root, root);
+	}
+private:
+	bool dfs(TreeNode* l, TreeNode* r) {
+		if (!l && !r) return true;
+		else if (l && r && l->val == r->val) return dfs(l->left, r->right) && dfs(l->right, r->left);
+		return false;
+	}
+};

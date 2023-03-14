@@ -24,3 +24,26 @@ public class Question129 {
 	    }
 	}
 }
+
+
+#include "TreeNode.h"
+
+class Solution {
+public:
+	int ans = 0;
+	int sumNumbers(TreeNode* root) {
+		dfs(root, 0);
+		return ans;
+	}
+private:
+	void dfs(TreeNode* node, int cur) {
+		if (!node) return;
+		cur = cur * 10 + node->val;
+		if (!node->left && !node->right) {
+			ans += cur;
+			return;
+		}
+		dfs(node->left, cur);
+		dfs(node->right, cur);
+	}
+};

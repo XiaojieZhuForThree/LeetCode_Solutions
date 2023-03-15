@@ -22,3 +22,49 @@ class Solution {
         return bfs.isEmpty();
     }
 }
+
+
+#include "TreeNode.h"
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        if (!root) return true;
+        deque<TreeNode*> dq;
+        dq.push_back(root);
+        while (!dq.empty()) {
+            bool shouldEnd = false;
+            for (int i = size(dq); i > 0; i--) {
+                TreeNode* cur = dq.front();
+                dq.pop_front();
+                if (cur->right && !cur->left) return false;
+                else if (cur->left && cur->right) {
+                    if (shouldEnd) return false;
+                    dq.push_back(cur->left);
+                    dq.push_back(cur->right);
+                }
+                else if (!cur->left && !cur->right) {
+                    shouldEnd = true;
+                }
+                else {
+                    if (shouldEnd) return false;
+                    else {
+                        shouldEnd = true;
+                        dq.push_back(cur->left);
+                    }
+                }
+            }
+            if (shouldEnd) return lastRow(dq);
+        }
+        return true;
+    }
+private:
+    bool lastRow(deque<TreeNode*> dq) {
+        for (TreeNode* node : dq) {
+            if (node->left || node->right) return false;
+        }
+        return true;
+    }
+};

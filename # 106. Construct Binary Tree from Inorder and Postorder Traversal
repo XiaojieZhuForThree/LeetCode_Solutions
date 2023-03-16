@@ -24,3 +24,28 @@ class Solution {
         return root;
     }
 }
+
+
+#include "TreeNode.h"
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+	TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+		return helper(inorder, postorder, 0, size(inorder) - 1, 0, size(postorder) - 1);
+	}
+private:
+	TreeNode* helper(vector<int>& inorder, vector<int>& postorder, int il, int ir, int pl, int pr) {
+		if (il > ir) return nullptr;
+		else if (il == ir) return new TreeNode(inorder[il]);
+		TreeNode* h = new TreeNode(postorder[pr]);
+		int ptr = il;
+		while (inorder[ptr] != postorder[pr]) ptr++;
+		int left_len = ptr - il;
+		h->left = helper(inorder, postorder, il, ptr - 1, pl, pl + left_len - 1);
+		h->right = helper(inorder, postorder, ptr + 1, ir, pl + left_len, pr - 1);
+		return h;
+	}
+};

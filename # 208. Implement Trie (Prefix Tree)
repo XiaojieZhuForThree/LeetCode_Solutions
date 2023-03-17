@@ -48,11 +48,51 @@ class Trie {
         return true;         
     }
 }
+#include <string>
+#include <unordered_map>
 
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie obj = new Trie();
- * obj.insert(word);
- * boolean param_2 = obj.search(word);
- * boolean param_3 = obj.startsWith(prefix);
- */
+using namespace std;
+
+struct TrieNode {
+    unordered_map<int, TrieNode*> nxt;
+    bool isWord;
+public:
+    TrieNode() {
+        isWord = false;
+    }
+};
+
+class Trie {
+    TrieNode* node;
+public:
+    Trie() {
+        node = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* dummy = node;
+        for (char c : word) {
+            if (!dummy->nxt[c - 'a']) dummy->nxt[c - 'a'] = new TrieNode();
+            dummy = dummy->nxt[c - 'a'];
+        }
+        dummy->isWord = true;
+    }
+
+    bool search(string word) {
+        TrieNode* dummy = node;
+        for (char c : word) {
+            if (!dummy->nxt[c - 'a']) return false;
+            dummy = dummy->nxt[c - 'a'];
+        }
+        return dummy->isWord;
+    }
+
+    bool startsWith(string prefix) {
+        TrieNode* dummy = node;
+        for (char c : prefix) {
+            if (!dummy->nxt[c - 'a']) return false;
+            dummy = dummy->nxt[c - 'a'];
+        }
+        return true;
+    }
+};

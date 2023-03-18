@@ -46,3 +46,51 @@ public class Question1472 {
 	 * param_2 = obj.back(steps); String param_3 = obj.forward(steps);
 	 */
 }
+
+
+#include <deque>
+#include <string>
+using namespace std;
+
+class BrowserHistory {
+    deque<string> bk, ft;
+    string cur;
+public:
+    BrowserHistory(string homepage) {
+        cur = homepage;
+    }
+
+    void visit(string url) {
+        bk.push_back(cur);
+        cur = url;
+        ft.clear();
+    }
+
+    string back(int steps) {
+        for (int i = steps; i > 0; i--) {
+            if (bk.empty()) break;
+            ft.push_front(cur);
+            cur = bk.back();
+            bk.pop_back();
+        }
+        return cur;
+    }
+
+    string forward(int steps) {
+        for (int i = steps; i > 0; i--) {
+            if (ft.empty()) break;
+            bk.push_back(cur);
+            cur = ft.front();
+            ft.pop_front();
+        }
+        return cur;
+    }
+};
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory* obj = new BrowserHistory(homepage);
+ * obj->visit(url);
+ * string param_2 = obj->back(steps);
+ * string param_3 = obj->forward(steps);
+ */

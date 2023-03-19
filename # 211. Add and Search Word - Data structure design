@@ -123,3 +123,50 @@ class WordDictionary:
 # obj = WordDictionary()
 # obj.addWord(word)
 # param_2 = obj.search(word)
+
+
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+struct TrieNode {
+	bool isWord;
+	unordered_map<char, TrieNode*> nxt;
+public:
+	TrieNode() {
+		isWord = false;
+	}
+};
+
+class WordDictionary {
+	TrieNode* node;
+public:
+	WordDictionary() {
+		node = new TrieNode();
+	}
+
+	void addWord(string word) {
+		TrieNode* dummy = node;
+		for (char c : word) {
+			if (!dummy->nxt.count(c)) dummy->nxt[c] = new TrieNode();
+			dummy = dummy->nxt[c];
+		}
+		dummy->isWord = true;
+	}
+
+	bool search(string word) {
+		return helper(node, word, 0);
+	}
+private:
+	bool helper(TrieNode* cur, string& word, int i) {
+		if (i == size(word)) return cur->isWord;
+		char c = word[i];
+		if (c == '.') {
+			bool ans = false;
+			for (auto& p : cur->nxt) ans |= helper(p.second, word, i + 1);
+			return ans;
+		}
+		else if (!cur->nxt.count(c)) return false;
+		return helper(cur->nxt[c], word, i + 1);
+	}
+};

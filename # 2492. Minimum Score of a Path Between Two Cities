@@ -1,0 +1,36 @@
+#include <vector>
+#include <unordered_map>
+#include <deque>
+
+using namespace std;
+
+class Solution {
+public:
+	int minScore(int n, vector<vector<int>>& roads) {
+		unordered_map<int, vector<pair<int, int>>> map;
+		for (auto& r : roads) {
+			map[r[0]].push_back({ r[1], r[2] });
+			map[r[1]].push_back({ r[0], r[2] });
+		}
+		int ans = INT_MAX;
+		deque<int> queue;
+		unordered_map<int, int> seen;
+		if (map.count(n)) {
+			queue.push_back(n);
+			seen[n] = 0;
+		}
+		while (!queue.empty()) {
+			for (int i = size(queue); i > 0; i--) {
+				int cur = queue.front();
+				queue.pop_front();
+				for (auto& p : map[cur]) {
+					ans = min(ans, p.second);
+					if (seen.count(p.first) && seen[p.first] >= ans) continue;
+					seen[p.first] = ans;
+					queue.push_back(p.first);
+				}
+			}
+		}
+		return ans;
+	}
+};

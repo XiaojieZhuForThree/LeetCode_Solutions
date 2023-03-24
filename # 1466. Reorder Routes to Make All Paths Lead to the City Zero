@@ -1,0 +1,41 @@
+#include <vector>
+#include <unordered_map>
+#include <deque>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        unordered_map<int, vector<int>> outs, ins;
+        deque<int> q;
+        unordered_set<int> seen;
+        for (auto& c : connections) {
+            outs[c[0]].push_back(c[1]);
+            ins[c[1]].push_back(c[0]);
+        }
+
+        int ans = 0;
+        q.push_back(0);
+        seen.insert(0);
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                for (int j : ins[cur]) {
+                    if (seen.count(j)) continue;
+                    q.push_back(j);
+                    seen.insert(j);
+                }
+                for (int j : outs[cur]) {
+                    if (seen.count(j)) continue;
+                    ans++;
+                    q.push_back(j);
+                    seen.insert(j);
+                }
+            }
+        }
+        return ans;
+    }
+};

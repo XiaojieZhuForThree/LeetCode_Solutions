@@ -1,0 +1,40 @@
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class UF {
+	vector<int> pars;
+public:
+	unordered_map<int, int> cnts;
+	UF(int n) {
+		for (int i = 0; i < n; i++) {
+			pars.push_back(i);
+			cnts[i] = 1;
+		}
+	}
+	void merge(int i, int j) {
+		int pi = find(i), pj = find(j);
+		if (pi == pj) return;
+		pars[pi] = pj;
+		cnts[pj] += cnts[pi];
+		cnts.erase(pi);
+	}
+	int find(int i) {
+		if (i == pars[i]) return i;
+		pars[i] = find(pars[i]);
+		return pars[i];
+	}
+};
+
+class Solution {
+public:
+	long long countPairs(int n, vector<vector<int>>& edges) {
+		UF uf(n);
+		for (auto& e : edges) uf.merge(e[0], e[1]);
+		long long ans = 0;
+		for (auto& i : uf.cnts) ans += (long long)i.second * (n - i.second);
+		ans /= 2;
+		return ans;
+	}
+};

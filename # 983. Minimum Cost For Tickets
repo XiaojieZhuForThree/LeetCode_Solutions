@@ -30,3 +30,32 @@ public class Question983 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int mincostTickets(vector<int>& days, vector<int>& costs) {
+		vector<int> dp;
+		dp.push_back(0);
+		int ptr = 0;
+		for (int i = 1; i <= 365; i++) {
+			if (ptr >= size(days)) break;
+			if (i < days[ptr]) dp.push_back(dp[i - 1]);
+			else {
+				int ans = INT_MAX;
+				if (i - 1 < 0) ans = min(ans, costs[0]);
+				else ans = min(ans, dp[i - 1] + costs[0]);
+				if (i - 7 < 0) ans = min(ans, costs[1]);
+				else ans = min(ans, dp[i - 7] + costs[1]);
+				if (i - 30 < 0) ans = min(ans, costs[2]);
+				else ans = min(ans, dp[i - 30] + costs[2]);
+				dp.push_back(ans);
+				ptr++;
+			}
+		}
+		return dp[days[size(days) - 1]];
+	}
+};

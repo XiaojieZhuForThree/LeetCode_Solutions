@@ -16,3 +16,36 @@ public class Question1402 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	int maxSatisfaction(vector<int>& satisfaction) {
+		sort(satisfaction.begin(), satisfaction.end());
+		vector<int> neg, nonneg;
+		int batch = 0, debt = 0, cur = 0, nbatch = 0, ptr = 0;
+		for (int i : satisfaction) {
+			if (i < 0) neg.push_back(i);
+			else {
+				nonneg.push_back(i);
+				batch += i;
+			}
+		}
+		for (int i : neg) {
+			cur++;
+			debt += cur * i;
+			nbatch += i;
+			if (nbatch + batch >= 0) continue;
+			debt -= nbatch;
+			cur--;
+			nbatch -= neg[ptr];
+			ptr++;
+		}
+		for (int i : nonneg) debt += i * (++cur);
+		return debt;
+	}
+};

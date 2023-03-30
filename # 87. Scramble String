@@ -1,0 +1,35 @@
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+	unordered_map<string, bool> dp;
+public:
+	bool isScramble(string s1, string s2) {
+		if (s1 == s2) return true;
+		string key;
+		if (s1 < s2) key = s1 + ", " + s2;
+		else key = s2 + ", " + s1;
+		if (dp.count(key)) return dp[key];
+		bool ans = false;
+		for (int i = 1; i < size(s1); i++) {
+			if (sameChars(s1.substr(0, i), s2.substr(0, i))) {
+				int j = size(s1) - i;
+				ans |= isScramble(s1.substr(0, i), s2.substr(0, i)) && isScramble(s1.substr(i, j), s2.substr(i, j));
+			}
+			if (sameChars(s1.substr(0, i), s2.substr(size(s2) - i, i))) {
+				int j = size(s1) - i;
+				ans |= isScramble(s1.substr(0, i), s2.substr(size(s2) - i, i)) && isScramble(s1.substr(i, j), s2.substr(0, j));
+			}
+		}
+		dp[key] = ans;
+		return ans;
+	}
+private:
+	bool sameChars(string a, string b) {
+		sort(a.begin(), a.end());
+		sort(b.begin(), b.end());
+		return a == b;
+	}
+};

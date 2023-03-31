@@ -1,0 +1,48 @@
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+	long long mod = 1000000007;
+	unordered_map<string, long long> map;
+	unordered_map<string, bool> valids;
+
+public:
+	int ways(vector<string>& pizza, int k) {
+		int m = size(pizza), n = size(pizza[0]);
+		return dfs(pizza, 0, 0, m, n, 0, k - 1) % mod;
+	}
+
+private:
+	int dfs(vector<string>& pizza, int i, int j, int m, int n, int cur, int k) {
+		string key = "r" + to_string(i) + "c" + to_string(j) + "k" + to_string(cur);
+		if (map.count(key)) return map[key];
+		if (cur == k) {
+			return isValid(pizza, i, j, m, n) ? 1 : 0;
+		}
+		long long ans = 0;
+		for (int ni = i + 1; ni < m; ni++) {
+			if (isValid(pizza, i, j, ni, n)) ans += dfs(pizza, ni, j, m, n, cur + 1, k);
+		}
+		for (int nj = j + 1; nj < n; nj++) {
+			if (isValid(pizza, i, j, m, nj)) ans += dfs(pizza, i, nj, m, n, cur + 1, k);
+		}
+		map[key] = ans % mod;
+		return map[key];
+	}
+
+	bool isValid(vector<string>& pizza, int i, int j, int m, int n) {
+		string key = to_string(i) + ", " + to_string(j) + ", " + to_string(m) + ", " + to_string(n);
+		if (valids.count(key)) return valids[key];
+		for (int ii = i; ii < m; ii++) {
+			for (int ij = j; ij < n; ij++) {
+				if (pizza[ii][ij] == 'A') {
+					valids[key] = true;
+					return true;
+				}
+			}
+		}
+		valids[key] = false;
+		return false;
+	}
+};

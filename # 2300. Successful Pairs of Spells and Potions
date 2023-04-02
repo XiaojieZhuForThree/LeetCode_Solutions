@@ -1,0 +1,23 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+		vector<int> ds(spells), dp(potions);
+		sort(ds.begin(), ds.end(), greater<int>());
+		sort(dp.begin(), dp.end(), greater<int>());
+
+		unordered_map<int, int> map;
+		int ptr = size(dp) - 1;
+		for (int i : ds) {
+			while (ptr >= 0 && (i * (long long)dp[ptr] < success)) ptr--;
+			map[i] = ptr + 1;
+		}
+		vector<int> ans;
+		for (int i : spells) ans.push_back(map[i]);
+		return ans;
+	}
+};

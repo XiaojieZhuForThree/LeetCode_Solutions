@@ -34,3 +34,31 @@ public class Question1254 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+	int closedIsland(vector<vector<int>>& grid) {
+		int ans = 0;
+		for (int i = 0; i < size(grid); i++) {
+			for (int j = 0; j < size(grid[0]); j++) {
+				if (grid[i][j] == 1) continue;
+				ans += dfs(grid, i, j);
+			}
+		}
+		return ans;
+	}
+private:
+	int dfs(vector<vector<int>>& grid, int i, int j) {
+		if (i < 0 || i >= size(grid) || j < 0 || j >= size(grid[0])) return 0;
+		if (grid[i][j] == 1) return 1;
+		int ans = 1;
+		grid[i][j] = 1;
+		for (auto& p : dirs) ans &= dfs(grid, i + p.first, j + p.second);
+		return ans;
+	}
+};

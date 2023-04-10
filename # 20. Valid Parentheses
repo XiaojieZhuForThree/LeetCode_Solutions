@@ -25,3 +25,23 @@ public class Question20 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	bool isValid(string s) {
+		unordered_map<char, char> map = { {')', '('}, {']', '['}, {'}', '{'} };
+		deque<char> queue;
+		for (char c : s) {
+			if (!map.count(c)) queue.push_back(c);
+			else if (queue.empty() || queue.back() != map[c]) return false;
+			else queue.pop_back();
+		}
+		return queue.empty();
+	}
+};

@@ -1,0 +1,15 @@
+#include <string>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	string removeStars(string s) {
+		deque<char> stack;
+		for (char c : s) {
+			if (c == '*') stack.pop_back();
+			else stack.push_back(c);
+		}
+		return string(stack.begin(), stack.end());
+	}
+};

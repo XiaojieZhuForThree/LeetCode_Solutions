@@ -28,3 +28,38 @@ public class Question71 {
 		}
 	}
 }
+
+
+#include <string>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	string simplifyPath(string path) {
+		string ans;
+		deque<string> stack;
+		int i = 0;
+		for (int j = 0; j < size(path);) {
+			if (path[j] == '/') {
+				process(stack, path.substr(i, j - i));
+				i = j + 1;
+				j = i;
+			}
+			else j++;
+		}
+		if (i < size(path)) process(stack, path.substr(i, size(path) - i));
+		for (string s : stack) {
+			ans += "/";
+			ans += s;
+		}
+		return ans.empty() ? "/" : ans;
+	}
+private:
+	void process(deque<string>& stack, string s) {
+		if (s == "..") {
+			if (!stack.empty()) stack.pop_back();
+		}
+		else if (!s.empty() && s != ".") stack.push_back(s);
+	}
+};

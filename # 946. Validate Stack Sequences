@@ -26,3 +26,31 @@ public class Question946 {
 		}
 	}
 }
+
+
+#include <deque>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+	bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+		deque<int> stack;
+		int i = 0, j = 0, n = size(pushed);
+		for (; j < n; ) {
+			int target = popped[j];
+			if (!stack.empty() && stack.back() == target) {
+				stack.pop_back();
+				j++;
+			}
+			else if (i < n && pushed[i] == target) {
+				i++;
+				j++;
+			}
+			else if (i < n) stack.push_back(pushed[i++]);
+			else return false;
+		}
+		return true;
+	}
+};

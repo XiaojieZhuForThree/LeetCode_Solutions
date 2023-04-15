@@ -1,0 +1,28 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+		int m = size(piles);
+		vector<vector<int>>dp(m, vector<int>(k + 1, 0));
+		for (int i = 1; i <= k; i++) {
+			if (i > size(piles[0])) break;
+			dp[0][i] = dp[0][i - 1] + piles[0][i - 1];
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 0; j <= k; j++) {
+				int cand = 0;
+				int cur = 0;
+				for (int t = 0; t <= k; t++) {
+					if (t > size(piles[i])) break;
+					if (t > 0) cur += piles[i][t - 1];
+					if (j < t) break;
+					cand = max(cand, cur + dp[i - 1][j - t]);
+				}
+				dp[i][j] = cand;
+			}
+		}
+		return dp[m - 1][k];
+	}
+};

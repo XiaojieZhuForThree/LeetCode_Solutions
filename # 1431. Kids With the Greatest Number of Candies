@@ -18,3 +18,18 @@ public class Question1431 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+		int maxC = 0;
+		for (int i : candies) maxC = max(maxC, i);
+		vector<bool> ans;
+		for (int i : candies) ans.push_back(i + extraCandies >= maxC);
+		return ans;
+	}
+};

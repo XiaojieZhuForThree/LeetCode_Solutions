@@ -23,3 +23,24 @@ public class Question1768 {
 		}
 	}
 }
+
+
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	string mergeAlternately(string word1, string word2) {
+		int m = 0, n = 0;
+		string ans;
+		bool isOne = true;
+		while (m < size(word1) || n < size(word2)) {
+			if (m >= size(word1)) ans += word2[n++];
+			else if (n >= size(word2)) ans += word1[m++];
+			else if (isOne) ans += word1[m++];
+			else ans += word2[n++];
+			isOne = !isOne;
+		}
+		return ans;
+	}
+};

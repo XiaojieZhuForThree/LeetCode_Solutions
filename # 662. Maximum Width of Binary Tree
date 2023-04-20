@@ -19,3 +19,33 @@ class Solution:
                 if node.right:
                     queue.append((pos * 2 + 1, node.right))
         return ans
+
+
+#include "TreeNode.h"
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	int widthOfBinaryTree(TreeNode* root) {
+		if (!root) return 0;
+		deque<pair<TreeNode*, long long>> queue;
+		queue.push_back({ root, 1 });
+		long long ans = 0;
+		while (!queue.empty()) {
+			long long l = queue.front().second, r = queue.back().second;
+			ans = max(ans, r - l + 1);
+			for (int i = queue.size(); i > 0; i--) {
+				auto& cur = queue.front();
+				if (cur.first->left) {
+					queue.push_back({ cur.first->left, (cur.second - l) * 2 - 1 });
+				}
+				if (cur.first->right) {
+					queue.push_back({ cur.first->right, (cur.second - l) * 2 });
+				}
+				queue.pop_front();
+			}
+		}
+		return ans;
+	}
+};

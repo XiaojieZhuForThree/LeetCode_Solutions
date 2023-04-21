@@ -23,3 +23,36 @@ public class Question879 {
 		}
 	}
 }
+
+
+#include <map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	struct Comp {
+		bool operator()(const pair<int, int>& a, const pair<int, int>& b) const {
+			if (a.second == b.second) return a.first > b.first;
+			return a.second > b.second;
+		}
+	};
+	int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+		map<pair<int, int>, long long> dp;
+		dp[{n, 0}] = 1;
+		for (int i = 0; i < size(group); i++) {
+			for (auto& p : dp) {
+				if (p.first.first < group[i]) continue;
+				dp[{p.first.first - group[i], p.first.second + profit[i]}] += p.second;
+			}
+		}
+		long long ans = 0, mod = 1000000007;
+		for (auto& p : dp) {
+			if (p.first.second >= minProfit) {
+				ans += p.second;
+				ans %= mod;
+			}
+		}
+		return ans;
+	}
+};

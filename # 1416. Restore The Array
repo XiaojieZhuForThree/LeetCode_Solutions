@@ -24,3 +24,32 @@ public class Question1416 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	unordered_map<int, long long> dp;
+	int numberOfArrays(string s, int k) {
+		return dfs(s, 0, k);
+	}
+private:
+	long long dfs(string& s, int i, int k) {
+		if (i >= size(s)) return 1;
+		if (s[i] == '0') return 0;
+		if (dp.count(i)) return dp[i];
+		long long cur = 0, ans = 0;
+		for (int j = i; j < size(s); j++) {
+			cur *= 10;
+			cur += (s[j] - '0');
+			if (cur > k) break;
+			ans += dfs(s, j + 1, k);
+			ans %= 1000000007;
+		}
+		dp[i] = ans;
+		return ans;
+	}
+};

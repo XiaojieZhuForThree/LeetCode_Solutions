@@ -30,3 +30,23 @@ class Solution:
         if neg:
             return -neg[0]
         return 0
+
+
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+	int lastStoneWeight(vector<int>& stones) {
+		priority_queue<int> pq;
+		for (int i : stones) pq.push(i);
+		while (size(pq) > 1) {
+			int f = pq.top();
+			pq.pop();
+			int s = pq.top();
+			pq.pop();
+			pq.push(abs(f - s));
+		}
+		return pq.top();
+	}
+};

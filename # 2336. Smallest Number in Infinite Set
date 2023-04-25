@@ -1,0 +1,38 @@
+#include <vector>
+#include <queue>
+#include <unordered_set>
+using namespace std;
+
+class SmallestInfiniteSet {
+	priority_queue<int, vector<int>, greater<int>> pq;
+	unordered_set<int> popped;
+	int cur;
+public:
+	SmallestInfiniteSet() {
+		cur = 1;
+	}
+
+	int popSmallest() {
+		if (!pq.empty()) {
+			int cand = pq.top();
+			popped.insert(cand);
+			pq.pop();
+			return cand;
+		}
+		popped.insert(cur++);
+		return cur - 1;
+	}
+
+	void addBack(int num) {
+		if (!popped.count(num)) return;
+		popped.erase(num);
+		pq.push(num);
+	}
+};
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
+ * int param_1 = obj->popSmallest();
+ * obj->addBack(num);
+ */

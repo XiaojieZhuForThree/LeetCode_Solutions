@@ -46,3 +46,18 @@ class Solution {
         return pq.size();
     }
 }
+
+class Solution {
+public:
+	int addDigits(int num) {
+		while (num > 9) {
+			int rep = 0;
+			while (num) {
+				rep += num % 10;
+				num /= 10;
+			}
+			num = rep;
+		}
+		return num;
+	}
+};

@@ -1,0 +1,53 @@
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+struct UF {
+    unordered_map<string, string> map;
+    string find(string& s) {
+        if (map[s] == s) return s;
+        map[s] = find(map[s]);
+        return map[s];
+    }
+    void group(string& a, string& b) {
+        string pa = find(a), pb = find(b);
+        map[pb] = pa;
+    }
+};
+
+class Solution {
+public:
+    int numSimilarGroups(vector<string>& strs) {
+        UF uf;
+        for (string s : strs) uf.map[s] = s;
+
+        int ans = 0;
+        for (int i = 0; i < size(strs) - 1; i++) {
+            for (int j = i + 1; j < size(strs); j++) {
+                if (isSim(strs[i], strs[j])) {
+                    uf.group(strs[i], strs[j]);
+                }
+            }
+        }
+        for (auto& p : uf.map) {
+            if (p.first == p.second) ans++;
+        }
+        return ans;
+    }
+private:
+    bool isSim(string& a, string& b) {
+        char f = '\0', s = '\0';
+        bool paired = false;
+        for (int i = 0; i < size(a); i++) {
+            if (a[i] == b[i]) continue;
+            if (paired) return false;
+            if (!f && !s) {
+                f = a[i];
+                s = b[i];
+            }
+            else if (a[i] == s && b[i] == f) paired = true;
+            else return false;
+        }
+        return true;
+    }
+};

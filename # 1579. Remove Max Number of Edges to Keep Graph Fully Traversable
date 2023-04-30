@@ -1,0 +1,77 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	bool static cmp(vector<int>& v1, vector<int>& v2) {
+		return v1[0] > v2[0];
+	}
+	int find(vector<int>& parent, int node) {
+		if (node == parent[node]) return node;
+		return parent[node] = find(parent, parent[node]);
+	}
+	void Union(vector<int>& parent, vector<int>& size, int u, int v) {
+		u = find(parent, u);
+		v = find(parent, v);
+		if (u == v) return;
+		if (size[v] > size[u]) {
+			parent[u] = v;
+			size[v] += size[u];
+		}
+		else {
+			parent[v] = u;
+			size[u] += size[v];
+		}
+	}
+	int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
+		sort(edges.begin(), edges.end(), cmp);
+		vector<int> size_A(n + 1), size_B(n + 1);
+		vector<int> parent_A(n + 1), parent_B(n + 1);
+		for (int i = 0; i <= n; i++) {
+			parent_A[i] = i;
+			parent_B[i] = i;
+			size_A[i] = 1;
+			size_B[i] = 1;
+		}
+		int cntA = 1, cntB = 1;
+		int ans = 0;
+
+		for (auto x : edges) {
+			int type = x[0];
+			int u = x[1];
+			int v = x[2];
+			if (type == 3) {
+				if (find(parent_A, u) == find(parent_A, v) and find(parent_B, u) == find(parent_B, v)) {
+					ans++;
+					continue;
+				}
+				if (find(parent_B, u) != find(parent_B, v)) {
+					Union(parent_B, size_B, u, v);
+					cntB++;
+				}
+				if (find(parent_A, u) != find(parent_A, v)) {
+					Union(parent_A, size_A, u, v);
+					cntA++;
+				}
+			}
+			else if (type == 2) {
+				if (find(parent_B, u) != find(parent_B, v)) {
+					Union(parent_B, size_B, u, v);
+					cntB++;
+				}
+				else ans++;
+			}
+			else {
+				if (find(parent_A, u) != find(parent_A, v)) {
+					Union(parent_A, size_A, u, v);
+					cntA++;
+				}
+				else ans++;
+			}
+		}
+
+		if (cntA != n or cntB != n) return -1;
+		return ans;
+	}
+};

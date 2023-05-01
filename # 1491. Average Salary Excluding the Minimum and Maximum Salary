@@ -1,0 +1,15 @@
+#include <vector>
+#include <numeric>
+using namespace std;
+
+class Solution {
+public:
+	double average(vector<int>& salary) {
+		int s = 1000000, l = 1000;
+		for (int i : salary) {
+			s = min(s, i);
+			l = max(l, i);
+		}
+		return (accumulate(salary.begin(), salary.end(), 0) - s - l) / double(size(salary) - 2);
+	}
+};

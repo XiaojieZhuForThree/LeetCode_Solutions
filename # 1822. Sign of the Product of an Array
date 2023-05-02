@@ -1,0 +1,14 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int arraySign(vector<int>& nums) {
+		int n = 0;
+		for (int i : nums) {
+			if (i == 0) return 0;
+			else if (i < 0) n++;
+		}
+		return n % 2 == 0 ? 1 : -1;
+	}
+};

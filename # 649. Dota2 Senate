@@ -1,0 +1,39 @@
+#include <string>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	string predictPartyVictory(string senate) {
+		deque<int> rs, ds;
+		for (int i = 0; i < size(senate); i++) {
+			if (senate[i] == 'R') rs.push_back(i);
+			else ds.push_back(i);
+		}
+		while (!rs.empty() && !ds.empty()) {
+			deque<int> nrs, nds;
+			while (!rs.empty() && !ds.empty()) {
+				int r = rs.front(), d = ds.front();
+				rs.pop_front();
+				ds.pop_front();
+				if (r < d) nrs.push_back(r);
+				else nds.push_back(d);
+			}
+			if (!rs.empty()) {
+				for (int i : rs) {
+					if (!nds.empty()) nds.pop_front();
+					nrs.push_back(i);
+				}
+			}
+			else {
+				for (int i : ds) {
+					if (!nrs.empty()) nrs.pop_front();
+					nds.push_back(i);
+				}
+			}
+			rs = nrs;
+			ds = nds;
+		}
+		return !rs.empty() ? "Radiant" : "Dire";
+	}
+};

@@ -20,3 +20,27 @@ public class Question1456 {
 		}
 	}
 }
+
+#include <string>
+#include <unordered_set>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	int maxVowels(string s, int k) {
+		unordered_set<char> vs = { 'a', 'e', 'i', 'o', 'u' };
+		deque<char> q;
+		int ans = 0, cur = 0;
+		for (char c : s) {
+			if (size(q) == k) {
+				if (vs.count(q.front())) cur--;
+				q.pop_front();
+			}
+			q.push_back(c);
+			if (vs.count(c)) cur++;
+			ans = max(ans, cur);
+		}
+		return ans;
+	}
+};

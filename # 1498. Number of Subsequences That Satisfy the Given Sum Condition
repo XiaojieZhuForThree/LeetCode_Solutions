@@ -1,0 +1,31 @@
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	int numSubseq(vector<int>& nums, int target) {
+		long long ans = 0, mod = 1000000007;
+		unordered_map<int, long long> dp;
+		sort(nums.begin(), nums.end());
+		int l = 0, r = size(nums) - 1;
+		for (; l <= r; l++) {
+			while (r >= l && target - nums[r] < nums[l]) r--;
+			if (l > r) break;
+			int n = r - l;
+			ans += 1 + helper(n, mod, dp);
+			ans %= mod;
+		}
+		return ans;
+	}
+private:
+	long long helper(int n, long long mod, unordered_map<int, long long>& dp) {
+		if (dp.count(n)) return dp[n];
+		if (n == 0 || n == 1) return n;
+		long long prev = helper(n - 1, mod, dp);
+		long long ans = prev * 2 + 1;
+		ans %= mod;
+		dp[n] = ans;
+		return ans;
+	}
+};

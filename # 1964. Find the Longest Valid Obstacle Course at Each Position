@@ -1,0 +1,30 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+		vector<int> ans, queue;
+		for (int i : obstacles) {
+			if (queue.empty() || queue[size(queue) - 1] <= i) {
+				ans.push_back(1 + size(queue));
+				queue.push_back(i);
+			}
+			else {
+				ans.push_back(helper(queue, i));
+			}
+		}
+		return ans;
+	}
+private:
+	int helper(vector<int>& queue, int i) {
+		int l = 0, r = size(queue) - 1;
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (queue[m] <= i) l = m + 1;
+			else r = m;
+		}
+		queue[r] = i;
+		return r + 1;
+	}
+};

@@ -33,3 +33,30 @@ public class Question54 {
 		}
 	}
 }
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> spiralOrder(vector<vector<int>>& matrix) {
+		vector<int> ans;
+		int m = size(matrix), n = size(matrix[0]);
+		helper(matrix, ans, 0, m - 1, 0, n - 1);
+		return ans;
+	}
+private:
+	void helper(vector<vector<int>>& matrix, vector<int>& ans, int u, int d, int l, int r) {
+		if (u > d || l > r) return;
+		for (int i = l; i <= r; i++) ans.push_back(matrix[u][i]);
+		for (int i = u + 1; i <= d; i++) ans.push_back(matrix[i][r]);
+		if (d > u) {
+			for (int i = r - 1; i >= l; i--) ans.push_back(matrix[d][i]);
+		}
+		if (r > l) {
+			for (int i = d - 1; i > u; i--) ans.push_back(matrix[i][l]);
+		}
+		helper(matrix, ans, u + 1, d - 1, l + 1, r - 1);
+	}
+};

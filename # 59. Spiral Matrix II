@@ -75,3 +75,27 @@ class Solution:
                 else:
                     x -= 1
         return ans
+
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> generateMatrix(int n) {
+		vector<vector<int>> ans(n, vector<int>(n, 0));
+		int u = 0, d = n - 1, cntr = 1;
+		while (u <= d) {
+			if (u == d) ans[u][u] = cntr++;
+			else {
+				for (int i = u; i <= d; i++) ans[u][i] = cntr++;
+				for (int i = u + 1; i <= d; i++) ans[i][d] = cntr++;
+				for (int i = d - 1; i >= u; i--) ans[d][i] = cntr++;
+				for (int i = d - 1; i > u; i--) ans[i][u] = cntr++;
+			}
+			u++;
+			d--;
+		}
+		return ans;
+	}
+};

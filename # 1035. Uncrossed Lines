@@ -18,3 +18,22 @@ public class Question1035 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+		unordered_map<int, unordered_map<int, int>> dp;
+		for (int i = 0; i < size(nums1); i++) {
+			for (int j = 0; j < size(nums2); j++) {
+				if (nums1[i] != nums2[j]) dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+				else dp[i][j] = max(dp[i][j], 1 + dp[i - 1][j - 1]);
+			}
+		}
+		return dp[size(nums1) - 1][size(nums2) - 1];
+	}
+};

@@ -1,0 +1,20 @@
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	long long mostPoints(vector<vector<int>>& questions) {
+		unordered_map<int, long long> dp;
+		return helper(questions, dp, 0);
+	}
+private:
+	long long helper(vector<vector<int>>& q, unordered_map<int, long long>& dp, int i) {
+		if (i >= size(q)) return 0;
+		if (dp.count(i)) return dp[i];
+		if (i == size(q) - 1) return q[i][0];
+		long long ans = max(helper(q, dp, i + 1), q[i][0] + helper(q, dp, i + q[i][1] + 1));
+		dp[i] = ans;
+		return ans;
+	}
+};

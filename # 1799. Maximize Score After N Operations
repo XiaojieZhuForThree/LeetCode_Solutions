@@ -1,0 +1,39 @@
+#include <unordered_map>
+#include <numeric>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+    unordered_map<int, int> dp;
+public:
+    int maxScore(vector<int>& nums) {
+        int n = size(nums);
+        vector<bool> checked(n, false);
+        return dfs(nums, checked, 1);
+    }
+private:
+    int dfs(vector<int>& nums, vector<bool>& checked, int cur) {
+        int key = getKey(checked);
+        if (dp.count(key)) return dp[key];
+        int ans = 0;
+        for (int i = 0; i < size(nums) - 1; i++) {
+            if (checked[i]) continue;
+            checked[i] = true;
+            for (int j = i + 1; j < size(nums); j++) {
+                if (checked[j]) continue;
+                checked[j] = true;
+                ans = max(ans, (cur * gcd(nums[i], nums[j]) + dfs(nums, checked, cur + 1)));
+                checked[j] = false;
+            }
+            checked[i] = false;
+        }
+        dp[key] = ans;
+        return ans;
+    }
+    int getKey(vector<bool>& checked) {
+        int ans = 0;
+        for (bool i : checked) ans = ans * 2 + i;
+        return ans;
+    }
+};

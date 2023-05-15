@@ -48,3 +48,26 @@ class Solution:
             node = node.next
         node.next = None
         return head
+
+
+#include "ListNode.h"
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	ListNode* swapNodes(ListNode* head, int k) {
+		vector<ListNode*> l;
+		while (head) {
+			l.push_back(head);
+			head = head->next;
+		}
+		int n = size(l);
+		ListNode* n1 = l[k - 1];
+		ListNode* n2 = l[n - k];
+		int tmp = n1->val;
+		n1->val = n2->val;
+		n2->val = tmp;
+		return l[0];
+	}
+};

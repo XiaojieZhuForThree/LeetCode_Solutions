@@ -1,0 +1,18 @@
+#include "ListNode.h"
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int pairSum(ListNode* head) {
+		vector<int> vals;
+		while (head) {
+			vals.push_back(head->val);
+			head = head->next;
+		}
+		int l = 0, r = size(vals) - 1;
+		int ans = 0;
+		while (l < r) ans = max(ans, vals[l++] + vals[r--]);
+		return ans;
+	}
+};

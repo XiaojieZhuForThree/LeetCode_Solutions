@@ -69,3 +69,51 @@ public class Question399 {
 		}
 	}
 }
+
+
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class UF {
+	unordered_map<string, string> pars;
+	unordered_map<string, double> coeffs;
+public:
+	UF() {
+	}
+	string get(string& s) {
+		if (!pars.count(s)) {
+			pars[s] = s;
+			coeffs[s] = 1.0;
+		}
+		if (s != pars[s]) {
+			string prevP = pars[s];
+			pars[s] = get(pars[s]);
+			coeffs[s] *= coeffs[prevP];
+		}
+		return pars[s];
+	}
+	void group(string& a, string& b, double val) {
+		string pa = get(a), pb = get(b);
+		double ca = coeffs[a], cb = coeffs[b];
+		pars[pb] = pa;
+		coeffs[pb] = (ca / cb) / val;
+	}
+	double check(string& a, string& b) {
+		if (!pars.count(a) || !pars.count(b)) return -1.0;
+		string pa = get(a), pb = get(b);
+		if (pa != pb) return -1.0;
+		return coeffs[a] / coeffs[b];
+	}
+};
+class Solution {
+public:
+	vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+		UF uf;
+		vector<double> ans;
+		for (int i = 0; i < size(equations); i++) uf.group(equations[i][0], equations[i][1], values[i]);
+		for (auto& q : queries) ans.push_back(uf.check(q[0], q[1]));
+
+		return ans;
+	}
+};

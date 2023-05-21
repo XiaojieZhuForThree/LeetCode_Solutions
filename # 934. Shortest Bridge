@@ -1,0 +1,47 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+	vector<pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+	vector<pair<int, int>> groupA, groupB;
+public:
+	int shortestBridge(vector<vector<int>>& grid) {
+		int n = size(grid), mark = 1;
+		vector<vector<bool>> visited(n, vector<bool>(n, false));
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (!visited[i][j] && grid[i][j] == 1) {
+					dfs(grid, visited, i, j, mark);
+					mark++;
+				}
+			}
+		}
+		int ans = 10000;
+		for (auto& a : groupA) {
+			for (auto& b : groupB) {
+				ans = min(ans, getDist(a.first, a.second, b.first, b.second));
+			}
+		}
+		return ans;
+	}
+private:
+	void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int mark) {
+		if (i < 0 || i >= size(grid) || j < 0 || j >= size(grid[0]) || grid[i][j] == 0 || visited[i][j]) return;
+		visited[i][j] = true;
+		if (isEdge(grid, i, j)) {
+			if (mark == 1) groupA.push_back({ i, j });
+			else groupB.push_back({ i, j });
+		}
+		for (auto& d : dirs) dfs(grid, visited, i + d.first, j + d.second, mark);
+	}
+	bool isEdge(vector<vector<int>>& grid, int x, int y) {
+		for (auto& d : dirs) {
+			int nx = x + d.first, ny = y + d.second;
+			if (nx < 0 || nx >= size(grid) || ny < 0 || ny >= size(grid[0]) || grid[nx][ny] == 0) return true;
+		}
+		return false;
+	}
+	int getDist(int x1, int y1, int x2, int y2) {
+		return abs(x1 - x2) + abs(y1 - y2) - 1;
+	}
+};

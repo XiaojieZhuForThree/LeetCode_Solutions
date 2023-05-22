@@ -113,3 +113,36 @@ class Solution:
         for i in queue:
             ans.append(i[1])
         return ans
+
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> topKFrequent(vector<int>& nums, int k) {
+		unordered_map<int, int> map;
+		int bound = 0;
+		for (int i : nums) {
+			map[i]++;
+			bound = max(bound, map[i]);
+		}
+		vector<vector<int>> c(bound + 1);
+		for (auto& p : map) c[p.second].push_back(p.first);
+		vector<int> ans;
+		int i = 0;
+		while (i < k) {
+			for (int j = bound; j >= 0; j--) {
+				if (c[j].empty()) continue;
+				for (int t = 0; t < size(c[j]); t++) {
+					if (i == k) break;
+					ans.push_back(c[j][t]);
+					i++;
+				}
+				if (i == k) break;
+			}
+		}
+		return ans;
+	}
+};

@@ -64,3 +64,35 @@ class KthLargest:
 # obj = KthLargest(k, nums)
 # param_1 = obj.add(val)
 
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+class KthLargest {
+	priority_queue<int, vector<int>, greater<int>> q;
+	int s = 0;
+public:
+	KthLargest(int k, vector<int>& nums) {
+		sort(nums.begin(), nums.end());
+		for (int i : nums) q.push(i);
+		s = k;
+		while (size(q) > s) {
+			q.pop();
+		}
+	}
+
+	int add(int val) {
+		if (size(q) == s && val <= q.top()) return q.top();
+		q.push(val);
+		while (size(q) > s) q.pop();
+		return q.top();
+	}
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */

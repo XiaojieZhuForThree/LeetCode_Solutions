@@ -1,0 +1,37 @@
+#include <vector>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+	long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+		int n = size(nums1);
+		vector<int> v;
+		priority_queue<int, vector<int>, greater<int>> pq;
+		for (int i = 0; i < n; i++) v.push_back(i);
+		sort(v.begin(), v.end(), [&nums1, &nums2](int a, int b) {
+			if (nums2[a] == nums2[b]) return nums1[a] < nums1[b];
+			return nums2[a] < nums2[b];
+			});
+		long long ans = 0, cur = 0;
+		for (int i = n - 1; i >= 0; i--) {
+			int t = v[i];
+			if (size(pq) == k) {
+				int cand = pq.top();
+				long long s = cur - cand + nums1[t];
+				ans = max(ans, s * nums2[t]);
+			}
+			else if (size(pq) == k - 1) {
+				long long s = cur + nums1[t];
+				ans = max(ans, s * nums2[t]);
+			}
+			cur += nums1[t];
+			pq.push(nums1[t]);
+			if (size(pq) > k) {
+				cur -= pq.top();
+				pq.pop();
+			}
+		}
+		return ans;
+	}
+};

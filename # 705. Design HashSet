@@ -57,3 +57,37 @@ class MyHashSet:
 # obj.add(key)
 # obj.remove(key)
 # param_3 = obj.contains(key)
+
+
+#include <vector>
+using namespace std;
+
+class MyHashSet {
+	vector<int> s;
+public:
+	MyHashSet() {
+		for (int i = 0; i <= 1000000; i++) {
+			s.push_back(-1);
+		}
+	}
+
+	void add(int key) {
+		s[key] = 0;
+	}
+
+	void remove(int key) {
+		s[key] = -1;
+	}
+
+	bool contains(int key) {
+		return s[key] != -1;
+	}
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */

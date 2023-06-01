@@ -96,3 +96,38 @@ class Solution:
                     seen[nx][ny] = 1
                     queue.append([nx, ny])
         return -1
+
+
+#include <vector>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+		int n = size(grid);
+		vector<vector<bool>> visited(n, vector<bool>(n, false));
+		vector<pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+		deque<pair<int, int>> q;
+		if (grid[0][0] == 0) {
+			q.push_back({ 0, 0 });
+			visited[0][0] == true;
+		}
+		int ans = 0;
+		while (!q.empty()) {
+			ans++;
+			for (int i = size(q); i > 0; i--) {
+				pair<int, int> cur = q.front();
+				q.pop_front();
+				if (cur.first == n - 1 && cur.second == n - 1) return ans;
+				for (auto& d : dirs) {
+					int nx = cur.first + d.first, ny = cur.second + d.second;
+					if (nx < 0 || nx >= n || ny < 0 || ny >= n || grid[nx][ny] == 1 || visited[nx][ny]) continue;
+					visited[nx][ny] = true;
+					q.push_back({ nx, ny });
+				}
+			}
+		}
+		return -1;
+	}
+};

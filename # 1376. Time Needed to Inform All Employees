@@ -32,3 +32,31 @@ public class Question1376 {
 		}
 	}
 }
+
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+	int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+		unordered_map<int, vector<int>> m;
+		int head = -1;
+		for (int i = 0; i < n; i++) {
+			if (manager[i] == -1) {
+				head = i;
+				continue;
+			}
+			m[manager[i]].push_back(i);
+		}
+		return dfs(m, informTime, head);
+	}
+private:
+	int dfs(unordered_map<int, vector<int>>& m, vector<int>& informTime, int i) {
+		if (m[i].empty()) return 0;
+		int t = informTime[i], nxt = 0;
+		for (int j : m[i]) {
+			nxt = max(nxt, dfs(m, informTime, j));
+		}
+		return t + nxt;
+	}
+};

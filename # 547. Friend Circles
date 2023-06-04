@@ -76,3 +76,37 @@ public class Solution {
         return uf.count();
     }
 }
+
+
+#include <vector>
+using namespace std;
+
+struct UF {
+    vector<int> pars;
+    int find(int i) {
+        if (pars[i] == i) return i;
+        pars[i] = find(pars[i]);
+        return pars[i];
+    }
+    void merge(int i, int j) {
+        int pi = find(i), pj = find(j);
+        pars[pj] = pi;
+    }
+};
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = size(isConnected);
+        UF uf;
+        for (int i = 0; i < n; i++) uf.pars.push_back(i);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (isConnected[i][j] == 1) uf.merge(i, j);
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) ans += uf.pars[i] == i;
+        return ans;
+    }
+};

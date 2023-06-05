@@ -1,0 +1,23 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	bool checkStraightLine(vector<vector<int>>& coordinates) {
+		if (size(coordinates) <= 2) return true;
+		sort(coordinates.begin(), coordinates.end(), [](vector<int>& x, vector<int>& y) {
+			return x[0] < y[0];
+			});
+		double slope = getSlope(coordinates[0], coordinates[1]);
+		for (int i = 2; i < size(coordinates); i++) {
+			if (getSlope(coordinates[i - 1], coordinates[i]) != slope) return false;
+		}
+		return true;
+	}
+private:
+	double getSlope(vector<int>& x, vector<int>& y) {
+		if (x[0] == y[0]) return INT_MAX * 1.0;
+		return (1.0 * (y[1] - x[1]) / (y[0] - x[0]));
+	}
+};

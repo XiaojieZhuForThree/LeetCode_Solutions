@@ -20,3 +20,21 @@ public class Question1502 {
 		}
 	}
 }
+
+
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	bool canMakeArithmeticProgression(vector<int>& arr) {
+		if (size(arr) <= 2) return true;
+		sort(arr.begin(), arr.end());
+		int diff = arr[1] - arr[0];
+		for (int i = 2; i < size(arr); i++) {
+			if (arr[i] - arr[i - 1] != diff) return false;
+		}
+		return true;
+	}
+};

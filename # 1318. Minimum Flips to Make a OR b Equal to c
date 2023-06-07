@@ -1,0 +1,18 @@
+class Solution {
+public:
+	int minFlips(int a, int b, int c) {
+		int ans = 0;
+		while (a > 0 || b > 0 || c > 0) {
+			int am = a % 2, bm = b % 2, cm = c % 2;
+			if (cm == 0) {
+				ans += am == 1;
+				ans += bm == 1;
+			}
+			else ans += am == 0 && bm == 0;
+			a /= 2;
+			b /= 2;
+			c /= 2;
+		}
+		return ans;
+	}
+};

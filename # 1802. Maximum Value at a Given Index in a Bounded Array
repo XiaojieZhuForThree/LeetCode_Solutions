@@ -1,0 +1,22 @@
+class Solution {
+public:
+	int maxValue(int n, int index, int maxSum) {
+		int l = 1, r = maxSum;
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (isValid(m, n, index, maxSum)) l = m + 1;
+			else r = m;
+		}
+		return isValid(l, n, index, maxSum) ? l : l - 1;
+	}
+private:
+	bool isValid(int m, int n, int index, int maxSum) {
+		long long ans = 0;
+		int lp = index + 1, rp = n - index - 1, k = m - 1;
+		if (m > lp - 1) ans += (long long)(m + m - (lp - 1)) * lp / 2;
+		else ans += (long long)m * (m + 1) / 2 + lp - m;
+		if (k > rp - 1) ans += (long long)(k + k - (rp - 1)) * rp / 2;
+		else ans += (long long)k * (k + 1) / 2 + rp - k;
+		return ans <= maxSum;
+	}
+};

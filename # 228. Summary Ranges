@@ -56,3 +56,33 @@ class Solution:
         else:
             ans.append(start + "->" + str(last))
         return ans
+
+
+#include <string>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<string> summaryRanges(vector<int>& nums) {
+		vector<string> ans;
+		if (nums.empty()) return ans;
+		int i = nums[0], j = nums[0];
+		for (int k = 1; k < size(nums); k++) {
+			if (nums[k] == j + 1) j++;
+			else if (j == i) {
+				ans.push_back(to_string(i));
+				i = nums[k];
+				j = nums[k];
+			}
+			else {
+				ans.push_back(to_string(i) + "->" + to_string(j));
+				i = nums[k];
+				j = nums[k];
+			}
+		}
+		if (j == i) ans.push_back(to_string(i));
+		else ans.push_back(to_string(i) + "->" + to_string(j));
+		return ans;
+	}
+};

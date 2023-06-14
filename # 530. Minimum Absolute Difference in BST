@@ -1,0 +1,26 @@
+#include "TreeNode.h"
+#include <climits>
+#include <utility>
+using namespace std;
+
+class Solution {
+public:
+	int getMinimumDifference(TreeNode* root) {
+		if (!root) return INT_MAX;
+		int l = getMinimumDifference(root->left);
+		int r = getMinimumDifference(root->right);
+		int ans = min(l, r);
+		if (root->left) ans = min(ans, abs(root->val - getR(root->left)));
+		if (root->right) ans = min(ans, abs(root->val - getL(root->right)));
+		return ans;
+	}
+private:
+	int getR(TreeNode* n) {
+		while (n->right) n = n->right;
+		return n->val;
+	}
+	int getL(TreeNode* n) {
+		while (n->left) n = n->left;
+		return n->val;
+	}
+};

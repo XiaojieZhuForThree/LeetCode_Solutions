@@ -39,3 +39,33 @@ public class Question1161 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	int maxLevelSum(TreeNode* root) {
+		int l = 0, cur = INT_MIN, ans = 0;
+		deque<TreeNode*> q;
+		if (root) q.push_back(root);
+		while (!q.empty()) {
+			l++;
+			int s = 0;
+			for (int i = size(q); i > 0; i--) {
+				TreeNode* n = q.front();
+				q.pop_front();
+				s += n->val;
+				if (n->left) q.push_back(n->left);
+				if (n->right) q.push_back(n->right);
+			}
+			if (s > cur) {
+				cur = s;
+				ans = l;
+			}
+		}
+		return ans;
+	}
+};

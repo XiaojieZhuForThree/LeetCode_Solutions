@@ -3,48 +3,31 @@ using namespace std;
 
 class Solution {
 public:
-	vector<vector<int>> data;
-	int r, c;
-	int modulo;
-	vector<vector<int>> dp;
+	vector<vector<long long>> dp;
+	int m, n;
+	long long ans, mod;
 	int countPaths(vector<vector<int>>& grid) {
-		data = grid;
-		r = grid.size();
-		c = grid[0].size();
-		int res = 0;
-		modulo = 1e9 + 7;
-		dp.resize(r + 2, vector<int>(c + 2, -1));
-
-		for (int i = 0; i < grid.size(); i++) {
-			for (int j = 0; j < grid[i].size(); j++) {
-				res += increasingPath(i, j) % modulo;
-				res = res % modulo;
+		m = size(grid);
+		n = size(grid[0]);
+		ans = 0;
+		mod = 1e9 + 7;
+		dp.resize(m, vector<long long>(n, -1));
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				ans += dfs(i, j, grid) % mod;
 			}
 		}
-
-
-
-		return res;
+		return ans % mod;
 	}
 private:
-	int increasingPath(int x, int y) {
-		int ans = 1;
-		if (x >= 0 && x < r && y >= 0 && y < c) {
-			if (dp[x][y] != -1) {
-				return dp[x][y] % modulo;
-			}
-
-			if (x + 1 < r && data[x][y] < data[x + 1][y])
-				ans += increasingPath(x + 1, y) % modulo;
-			if (x - 1 >= 0 && data[x][y] < data[x - 1][y])
-				ans += increasingPath(x - 1, y) % modulo;
-			if (y + 1 < c && data[x][y] < data[x][y + 1])
-				ans += increasingPath(x, y + 1) % modulo;
-			if (y - 1 >= 0 && data[x][y] < data[x][y - 1])
-				ans += increasingPath(x, y - 1) % modulo;
-
-			return dp[x][y] = ans % modulo;
-		}
-		return dp[x][y] = ans % modulo;
+	long long dfs(int i, int j, vector<vector<int>>& grid) {
+		if (dp[i][j] != -1) return dp[i][j] % mod;
+		long long val = 1;
+		if (i > 0 && grid[i - 1][j] < grid[i][j]) val += dfs(i - 1, j, grid) % mod;
+		if (i < m - 1 && grid[i + 1][j] < grid[i][j]) val += dfs(i + 1, j, grid) % mod;
+		if (j > 0 && grid[i][j - 1] < grid[i][j]) val += dfs(i, j - 1, grid) % mod;
+		if (j < n - 1 && grid[i][j + 1] < grid[i][j]) val += dfs(i, j + 1, grid) % mod;
+		dp[i][j] = val % mod;
+		return dp[i][j];
 	}
 };

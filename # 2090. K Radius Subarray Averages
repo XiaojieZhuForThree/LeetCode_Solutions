@@ -1,0 +1,26 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> getAverages(vector<int>& nums, int k) {
+		vector<int> ans;
+		vector<long long> lefts;
+		long long cur = 0;
+		for (int i = 0; i < size(nums); i++) {
+			cur += nums[i];
+			lefts.push_back(cur);
+		}
+		for (int i = 0; i < size(nums); i++) {
+			if (i - k < 0 || i + k >= size(nums)) ans.push_back(-1);
+			else {
+				long long l = 0;
+				if (i - k == 0) l = lefts[i];
+				else l = lefts[i] - lefts[i - k - 1];
+				long long r = lefts[i + k] - lefts[i];
+				ans.push_back((l + r) / (1 + k + k));
+			}
+		}
+		return ans;
+	}
+};

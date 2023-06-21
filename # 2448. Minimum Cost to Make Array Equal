@@ -1,0 +1,55 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+	long long minCost(vector<int>& nums, vector<int>& cost) {
+
+		vector<vector<int>> pairs;
+		long long total_cost = 0;
+		long long ans = 0;
+
+		long long case1 = 0;
+		long long case2 = 0;
+		for (int i = 0; i < nums.size(); i++) {
+			pairs.push_back({ nums[i], cost[i] });
+			total_cost += cost[i];
+			case1 += abs(nums[i] - nums[0]) * (long long)cost[i];
+			case2 += abs(nums[i] - nums[nums.size() - 1]) * (long long)cost[i];
+		}
+
+		ans = min(case1, case2);
+
+		sort(pairs.begin(), pairs.end(), [](auto& a, auto& b) {
+			return a[0] < b[0];
+			});
+
+		long long pre_cost = 0;
+		long long target_val = -1;
+		for (int i = 0; i < pairs.size(); i++) {
+			int j = i;
+			while (j < pairs.size() && pairs[j][0] == pairs[i][0]) {
+				pre_cost += pairs[j][1];
+				j++;
+			}
+
+			i = j - 1;
+			long long rest_of_cost = total_cost - pre_cost;
+			if (pre_cost >= rest_of_cost) {
+				target_val = pairs[i][0];
+				break;
+			}
+
+
+		}
+
+		long long tmp = 0;
+		for (int i = 0; i < nums.size(); i++) {
+			tmp += abs(nums[i] - target_val) * (long long)cost[i];
+		}
+		ans = min(ans, tmp);
+		return ans;
+
+	}
+};

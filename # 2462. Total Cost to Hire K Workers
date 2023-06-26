@@ -1,0 +1,31 @@
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+	long long totalCost(vector<int>& costs, int k, int candidates) {
+		priority_queue<int, vector<int>, greater<int>> left;
+		priority_queue<int, vector<int>, greater<int>> right;
+		int l = 0, r = costs.size() - 1;
+		long long out = 0;
+		while (k--) {
+			while (left.size() < candidates && l <= r) left.push(costs[l++]);
+			while (right.size() < candidates && l <= r) right.push(costs[r--]);
+			int a = (left.empty()) ? INT_MAX : left.top();
+			int b = (right.empty()) ? INT_MAX : right.top();
+			if (a < b) {
+				out += a;
+				left.pop();
+			}
+			else if (b < a) {
+				out += b;
+				right.pop();
+			}
+			else {
+				out += a;
+				left.pop();
+			}
+		}
+		return out;
+	}
+};

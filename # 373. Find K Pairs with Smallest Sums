@@ -1,0 +1,25 @@
+#include <vector>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> kSmallestPairs(vector<int>& numbers1, vector<int>& numbers2, int k) {
+		vector<vector<int>> pairs;
+		auto comparator = [](vector<pair<int, int>>::const_reference pair1, vector<pair<int, int>>::const_reference pair2) {
+			return pair1.first + pair1.second < pair2.first + pair2.second;
+		};
+		priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(comparator)> max_heap(comparator);
+
+		for (vector<int>::const_reference number1 : numbers1)
+			for (vector<int>::const_reference number2 : numbers2)
+				if (max_heap.size() < k || number1 + number2 < max_heap.top().first + max_heap.top().second)
+					max_heap.size() == k ? max_heap.push({ number1, number2 }), max_heap.pop() : max_heap.push({ number1, number2 });
+				else break;
+
+		while (!max_heap.empty())
+			pairs.push_back({ max_heap.top().first, max_heap.top().second }), max_heap.pop();
+
+		return pairs;
+	}
+};

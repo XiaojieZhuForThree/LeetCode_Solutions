@@ -1,0 +1,62 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int f_par(int a, int par[]) {
+		if (par[a] == a) return a;
+		else return par[a] = f_par(par[a], par);
+	}
+
+	void f_union(int a, int b, int par[]) {
+		int root_a = f_par(a, par);
+		int root_b = f_par(b, par);
+		if (root_a == root_b) return;
+		if (root_a > root_b) par[root_b] = par[root_a];
+		if (root_a < root_b) par[root_a] = par[root_b];
+	}
+	int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+		int N = row, M = col, tot = N * M;
+		int par[20002];
+		vector<int> waters(tot, 0);
+		int mv[4] = { M, -M, 1, -1 };
+
+		int i, j;
+		for (i = 0; i < cells.size(); ++i) waters[(cells[i][0] - 1) * M + (cells[i][1] - 1)] = 1;
+		for (i = 0; i < tot; ++i) par[i] = i;
+		par[20000] = 20000, par[20001] = 20001;
+
+
+		int next;
+		for (i = 0; i < M; ++i) f_union(20000, i, par);
+		for (i = tot - M; i < tot; ++i) f_union(20001, i, par);
+
+		for (i = 0; i < tot; ++i) {
+			if (waters[i]) continue;
+			for (j = 0; j < 4; ++j) {
+				if (i % M == 0 && j == 3) continue;
+				if (i % M == M - 1 && j == 2) continue;
+				next = i + mv[j];
+				if (next < 0 || next >= tot || waters[next]) continue;
+				f_union(i, next, par);
+			}
+		}
+
+		int cur;
+		for (i = cells.size() - 1; i >= 0; --i) {
+			if (f_par(20000, par) == f_par(20001, par)) return i + 1;
+
+			cur = (cells[i][0] - 1) * M + (cells[i][1] - 1);
+			waters[cur] = 0;
+			for (j = 0; j < 4; ++j) {
+				if (cur % M == 0 && j == 3) continue;
+				if (cur % M == M - 1 && j == 2) continue;
+				next = cur + mv[j];
+				if (next < 0 || next >= tot || waters[next]) continue;
+				f_union(cur, next, par);
+			}
+		}
+
+		return 0;
+	}
+};

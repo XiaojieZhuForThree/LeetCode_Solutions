@@ -1,0 +1,17 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+	int minSubArrayLen(int target, vector<int>& nums) {
+		int ans = INT_MAX;
+		long long s = 0;
+		int l = 0, r = 0;
+		for (; r < size(nums); r++) {
+			s += nums[r];
+			while (l < r && s - nums[l] >= target) s -= nums[l++];
+			if (s >= target) ans = min(ans, r - l + 1);
+		}
+		return ans == INT_MAX ? 0 : ans;
+	}
+};

@@ -1,0 +1,27 @@
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	int maxConsecutiveAnswers(string answerKey, int k) {
+		return max(getAns(answerKey, k, 'F'), getAns(answerKey, k, 'T'));
+	}
+
+private:
+	int getAns(string& s, int k, char t) {
+		int l = 0, r = 0, c = 0, ans = 0, n = size(s);
+		for (; r < n; r++) {
+			if (s[r] == t) continue;
+			else if (c < k) c++;
+			else {
+				while (c >= k) {
+					ans = max(ans, r - l);
+					if (s[l++] != t) c--;
+
+				}
+				if (c < k) c++;
+			}
+		}
+		return max(ans, n - l);
+	}
+};

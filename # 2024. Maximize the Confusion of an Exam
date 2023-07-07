@@ -4,24 +4,17 @@ using namespace std;
 class Solution {
 public:
 	int maxConsecutiveAnswers(string answerKey, int k) {
-		return max(getAns(answerKey, k, 'F'), getAns(answerKey, k, 'T'));
+		return max(helper(answerKey, k, 'T'), helper(answerKey, k, 'F'));
 	}
 
 private:
-	int getAns(string& s, int k, char t) {
-		int l = 0, r = 0, c = 0, ans = 0, n = size(s);
-		for (; r < n; r++) {
-			if (s[r] == t) continue;
-			else if (c < k) c++;
-			else {
-				while (c >= k) {
-					ans = max(ans, r - l);
-					if (s[l++] != t) c--;
-
-				}
-				if (c < k) c++;
-			}
+	int helper(string& s, int k, char c) {
+		int l = 0, r = 0, cur = 0, cnt = 0;
+		for (; r < size(s); r++) {
+			cnt += s[r] != c;
+			while (cnt > k) cnt -= s[l++] != c;
+			cur = max(cur, r - l + 1);
 		}
-		return max(ans, n - l);
+		return cur;
 	}
 };

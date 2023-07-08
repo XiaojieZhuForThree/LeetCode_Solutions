@@ -3,24 +3,19 @@ using namespace std;
 
 class Solution {
 public:
-	long long putMarbles(vector<int>& v, int k) {
-		priority_queue<int> pq1;
-		priority_queue<int, vector<int>, greater<int>> pq2;
-		for (int i = 0; i < v.size() - 1; i++) {
-			pq1.push(v[i] + v[i + 1]);
-			pq2.push(v[i] + v[i + 1]);
-			if (pq1.size() > k - 1) {
-				pq1.pop();
-				pq2.pop();
-			}
+	long long putMarbles(vector<int>& weights, int k) {
+		priority_queue<int> gr;
+		priority_queue<int, vector<int>, greater<int>> sm;
+		for (int i = 0; i < size(weights) - 1; i++) {
+			gr.push(weights[i] + weights[i + 1]);
+			sm.push(weights[i] + weights[i + 1]);
 		}
-		long long int ans1 = 0, ans2 = 0;
-		while (!pq1.empty()) {
-			ans1 += pq1.top();
-			ans2 += pq2.top();
-			pq1.pop();
-			pq2.pop();
+		long long ans = 0;
+		for (int i = 0; i < k - 1; i++) {
+			ans += gr.top() - sm.top();
+			gr.pop();
+			sm.pop();
 		}
-		return ans2 - ans1;
+		return ans;
 	}
 };

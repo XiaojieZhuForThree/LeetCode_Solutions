@@ -119,3 +119,36 @@ public class Question207 {
 	}
 
 }
+
+
+#include <unordered_map>
+#include <unordered_set>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+	bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+		unordered_map<int, unordered_set<int>> dep;
+		unordered_map<int, int> ind;
+		for (int i = 0; i < numCourses; i++) ind[i] = 0;
+		for (auto& p : prerequisites) {
+			dep[p[1]].insert(p[0]);
+			ind[p[0]]++;
+		}
+		deque<int> q;
+		for (auto& p : ind) {
+			if (p.second == 0) q.push_back(p.first);
+		}
+		int cur = 0;
+		while (!q.empty()) {
+			int i = q.front();
+			q.pop_front();
+			cur++;
+			for (int j : dep[i]) {
+				if (--ind[j] == 0) q.push_back(j);
+			}
+		}
+		return cur == numCourses;
+	}
+};

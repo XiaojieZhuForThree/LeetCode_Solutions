@@ -43,3 +43,55 @@ public class Question1125 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+	vector<int> ans;
+	int target, m;
+	vector<int> smallestSufficientTeam(vector<string>& rs, vector<vector<string>>& p) {
+		int n = rs.size();
+		target = (1 << n) - 1;
+		vector< pair<int, int> > ps;
+		unordered_map<string, int>mp;
+		unordered_map<int, int> mp1;
+		for (int i = 0; i < n; i++)
+			mp[rs[i]] = i;
+
+		for (int i = 0; i < p.size(); i++) {
+			int mask = 0;
+			for (int j = 0; j < p[i].size(); j++) {
+				mask |= (1 << mp[p[i][j]]);
+			}
+			if (mask == 0 || (mp1.find(mask) != mp1.end())) continue;
+			ps.push_back({ i, mask });
+			mp1[mask] = i;
+		}
+		m = ps.size();
+		ans.clear();
+		vector<int>temp;
+		dfs(0, 0, ps, temp);
+		return ans;
+	}
+
+	void dfs(int i, int mask, vector<pair<int, int>>& ps, vector<int>& temp) {
+		if (mask == target) {
+			if (ans.size() == 0 || ans.size() > temp.size()) {
+				ans = temp;
+			}
+			return;
+		}
+		if (i >= m || (ans.size() != 0 && ans.size() <= temp.size())) return;
+		dfs(i + 1, mask, ps, temp);
+		if ((mask | ps[i].second) != mask) {
+			temp.push_back(ps[i].first);
+			dfs(i + 1, (mask | ps[i].second), ps, temp);
+			temp.pop_back();
+		}
+	}
+};

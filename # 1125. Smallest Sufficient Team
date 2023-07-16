@@ -52,46 +52,39 @@ using namespace std;
 
 class Solution {
 public:
-	vector<int> ans;
-	int target, m;
-	vector<int> smallestSufficientTeam(vector<string>& rs, vector<vector<string>>& p) {
-		int n = rs.size();
-		target = (1 << n) - 1;
-		vector< pair<int, int> > ps;
-		unordered_map<string, int>mp;
-		unordered_map<int, int> mp1;
-		for (int i = 0; i < n; i++)
-			mp[rs[i]] = i;
-
-		for (int i = 0; i < p.size(); i++) {
+	vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<string>>& people) {
+		const int n = size(req_skills);
+		const int target = (1 << n) - 1;
+		unordered_map<string, int> map;
+		for (int i = 0; i < n; i++) map[req_skills[i]] = i;
+		vector<int> skills;
+		for (const auto& p : people) {
 			int mask = 0;
-			for (int j = 0; j < p[i].size(); j++) {
-				mask |= (1 << mp[p[i][j]]);
-			}
-			if (mask == 0 || (mp1.find(mask) != mp1.end())) continue;
-			ps.push_back({ i, mask });
-			mp1[mask] = i;
+			for (const string& s : p) mask |= (1 << map[s]);
+			skills.push_back(mask);
 		}
-		m = ps.size();
-		ans.clear();
-		vector<int>temp;
-		dfs(0, 0, ps, temp);
-		return ans;
-	}
 
-	void dfs(int i, int mask, vector<pair<int, int>>& ps, vector<int>& temp) {
-		if (mask == target) {
-			if (ans.size() == 0 || ans.size() > temp.size()) {
-				ans = temp;
+		vector<int> dp((1 << n), size(people));
+		vector<pair<int, int>> pt((1 << n));
+		dp[0] = 0;
+
+		for (int i = 0; i < size(people); i++) {
+			const int k = skills[i];
+			if (k == 0) continue;
+			for (int j = target; j >= 0; j--) {
+				if (dp[j] + 1 < dp[j | k]) {
+					dp[j | k] = dp[j] + 1;
+					pt[j | k] = { j, i };
+				}
 			}
-			return;
 		}
-		if (i >= m || (ans.size() != 0 && ans.size() <= temp.size())) return;
-		dfs(i + 1, mask, ps, temp);
-		if ((mask | ps[i].second) != mask) {
-			temp.push_back(ps[i].first);
-			dfs(i + 1, (mask | ps[i].second), ps, temp);
-			temp.pop_back();
+
+		vector<int> ans;
+		int t = target;
+		while (t > 0) {
+			ans.push_back(pt[t].second);
+			t = pt[t].first;
 		}
+		return ans;
 	}
 };

@@ -322,3 +322,104 @@ class LRUCache {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+
+
+
+
+#include "DoubleNode.h"
+#include <unordered_map>
+
+using std::unordered_map;
+
+class LRUCache {
+    int cap = 0;
+    DoubleNode* head = nullptr;
+    DoubleNode* end = nullptr;
+    unordered_map<int, int> map;
+    unordered_map<int, DoubleNode*> nodes;
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+
+    int get(int key) {
+        if (!map.count(key)) return -1;
+        bump(key);
+        return map[key];
+    }
+
+    void put(int key, int value) {
+        if (!map.count(key)) {
+            add(key, value);
+            cap--;
+            if (cap < 0) remove();
+        }
+        else {
+            map[key] = value;
+            bump(key);
+        }
+    }
+private:
+    void bump(int key) {
+        DoubleNode* node = nodes[key];
+        if (!node->next) return;
+        if (!node->prev) {
+            head = node->next;
+            head->prev = nullptr;
+            end->next = node;
+            node->prev = end;
+            node->next = nullptr;
+            end = node;
+            return;
+        }
+        DoubleNode* prev = node->prev;
+        DoubleNode* next = node->next;
+        prev->next = next;
+        next->prev = prev;
+        end->next = node;
+        node->prev = end;
+        node->next = nullptr;
+        end = node;
+        return;
+    }
+
+    void add(int key, int val) {
+        DoubleNode* node = new DoubleNode(key);
+        nodes[key] = node;
+        map[key] = val;
+        if (!head) {
+            head = node;
+            end = node;
+        }
+        else {
+            end->next = node;
+            node->prev = end;
+            end = node;
+        }
+    }
+
+    void remove() {
+        cap++;
+        int val = head->val;
+        nodes.erase(val);
+        map.erase(val);
+        if (head == end) {
+            head = nullptr;
+            end = nullptr;
+        }
+        else {
+            DoubleNode* node = head->next;
+            node->prev = nullptr;
+            head->prev = nullptr;
+            head->next = nullptr;
+            head = node;
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */

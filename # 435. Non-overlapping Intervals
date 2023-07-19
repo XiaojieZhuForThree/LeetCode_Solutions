@@ -40,3 +40,31 @@ public class Question435 {
 		}
 	}
 }
+
+
+#include <algorithm>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        std::sort(intervals.begin(), intervals.end(), comp);
+        int ans = 0, end = INT_MIN / 2;
+        for (auto& i : intervals) {
+            if (i[0] >= end) {
+                ans++;
+                end = i[1];
+            }
+            else end = std::min(end, i[1]);
+        }
+        return size(intervals) - ans;
+    }
+
+private:
+    static bool comp(vector<int>& a, vector<int>& b) {
+        if (a[0] == b[0]) return a[1] < b[1];
+        return a[0] < b[0];
+    }
+};

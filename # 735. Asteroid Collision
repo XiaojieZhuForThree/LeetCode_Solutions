@@ -40,3 +40,31 @@ public class Question735 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <deque>
+
+using std::vector;
+using std::deque;
+
+class Solution {
+public:
+	vector<int> asteroidCollision(vector<int>& asteroids) {
+		deque<int> q;
+		for (int i : asteroids) {
+			if (i > 0) q.push_back(i);
+			else {
+				while (!q.empty() && q.back() > 0 && q.back() + i < 0) {
+					q.pop_back();
+				}
+				if (q.empty() || q.back() < 0) q.push_back(i);
+				else if (q.back() + i == 0) q.pop_back();
+			}
+		}
+		vector<int> ans;
+		for (int i : q) ans.push_back(i);
+		return ans;
+
+	}
+};

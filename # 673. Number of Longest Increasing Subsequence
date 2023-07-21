@@ -37,3 +37,36 @@ public class Question673 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int findNumberOfLIS(vector<int>& nums) {
+		int maxL = 0, ans = 0;
+		vector<int> lens(size(nums), 0);
+		vector<int> cnts(size(nums), 0);
+		for (int i = 0; i < size(nums); i++) {
+			int cand = 1, cnt = 1;
+			for (int j = 0; j < i; j++) {
+				if (nums[j] >= nums[i]) continue;
+				int val = 1 + lens[j];
+				if (val > cand) {
+					cand = val;
+					cnt = cnts[j];
+				}
+				else if (val == cand) cnt += cnts[j];
+			}
+			if (cand > maxL) {
+				maxL = cand;
+				ans = cnt;
+			}
+			else if (cand == maxL) ans += cnt;
+			lens[i] = cand;
+			cnts[i] = cnt;
+		}
+		return ans;
+	}
+};

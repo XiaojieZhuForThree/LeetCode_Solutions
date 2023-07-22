@@ -1,0 +1,28 @@
+#include <vector>
+#include <unordered_map>
+#include <string>
+using std::vector;
+
+class Solution {
+public:
+	vector<std::pair<int, int>> dirs{ {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2} };
+	std::unordered_map<std::string, double> map;
+	double knightProbability(int n, int k, int row, int column) {
+		return dfs(n, k, row, column);
+	}
+private:
+	double dfs(int n, int k, int r, int c) {
+		std::string key = std::to_string(k) + ", " + std::to_string(r) + ",  " + std::to_string(c);
+		if (map.count(key)) return map[key];
+		if (r < 0 || r >= n || c < 0 || c >= n) {
+			return 0;
+		}
+		if (k == 0) {
+			return 1;
+		}
+		double ans = 0;
+		for (auto& d : dirs) ans += 0.125 * dfs(n, k - 1, r + d.first, c + d.second);
+		map[key] = ans;
+		return ans;
+	}
+};

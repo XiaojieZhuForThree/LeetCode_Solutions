@@ -1,0 +1,25 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int minSpeedOnTime(vector<int>& dist, double hour) {
+		int l = 1, r = INT_MAX;
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (canPass(dist, m, hour)) r = m;
+			else l = m + 1;
+		}
+		return canPass(dist, l, hour) ? l : -1;
+	}
+private:
+	bool canPass(vector<int>& dist, int s, double hour) {
+		double ans = 0;
+		for (int i = 0; i < size(dist) - 1; i++) {
+			if (dist[i] % s != 0) ans++;
+			ans += dist[i] / s;
+		}
+		ans += 1.0 * dist[size(dist) - 1] / s;
+		return ans <= hour;
+	}
+};

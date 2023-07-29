@@ -1,0 +1,29 @@
+#include <unordered_map>
+#include <string>
+
+class Solution {
+public:
+    std::unordered_map<std::string, std::pair<double, double>> dp;
+    double soupServings(int n) {
+        if (n >= 5000) return 1.0;
+        std::pair<double, double> ans = helper(n, n);
+        return ans.first + 0.5 * ans.second;
+    }
+private:
+    std::pair<double, double> helper(int a, int b) {
+        std::string key = std::to_string(a) + ", " + std::to_string(b);
+        if (dp.count(key)) return dp[key];
+        if (a == 0 && b == 0) return { 0.0, 1.0 };
+        else if (a == 0) return { 1.0, 0.0 };
+        else if (b == 0) return { 0.0, 0.0 };
+        double x, y;
+        auto ans1 = helper(a - std::min(a, 100), b);
+        auto ans2 = helper(a - std::min(a, 75), b - std::min(b, 25));
+        auto ans3 = helper(a - std::min(a, 50), b - std::min(b, 50));
+        auto ans4 = helper(a - std::min(a, 25), b - std::min(b, 75));
+        x = 0.25 * (ans1.first + ans2.first + ans3.first + ans4.first);
+        y = 0.25 * (ans1.second + ans2.second + ans3.second + ans4.second);
+        dp[key] = { x, y };
+        return dp[key];
+    }
+};

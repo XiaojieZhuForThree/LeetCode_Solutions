@@ -20,3 +20,41 @@ class Solution {
 		return new ArrayList<>(ans);
 	}
 }
+
+
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+	vector<vector<int>> combine(int n, int k) {
+		vector<vector<int>> ans;
+		vector<int> cur;
+		std::unordered_set<int> seen;
+		for (int i = 1; i <= n; i++) {
+			cur.push_back(i);
+			seen.insert(i);
+			dfs(n, i, k, ans, cur, seen);
+			seen.erase(i);
+			cur.pop_back();
+		}
+		return ans;
+	}
+
+private:
+	void dfs(int n, int i, int k, vector<vector<int>>& ans, vector<int>& cur, std::unordered_set<int>& seen) {
+		if (size(cur) == k) {
+			ans.push_back(vector<int>(cur));
+			return;
+		}
+		for (int j = i + 1; j <= n; j++) {
+			if (seen.count(j)) continue;
+			seen.insert(j);
+			cur.push_back(j);
+			dfs(n, j, k, ans, cur, seen);
+			cur.pop_back();
+			seen.erase(j);
+		}
+	}
+};

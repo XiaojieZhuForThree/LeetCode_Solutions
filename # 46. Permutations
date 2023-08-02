@@ -23,3 +23,37 @@ class Solution {
     	}
     }
 }
+
+
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+	vector<vector<int>> ans;
+	vector<vector<int>> permute(vector<int>& nums) {
+		vector<int> cur;
+		std::unordered_set<int> seen;
+		for (int i : nums) {
+			seen.insert(i);
+			cur.push_back(i);
+			dfs(cur, nums, seen);
+			seen.erase(i);
+			cur.pop_back();
+		}
+		return ans;
+	}
+private:
+	void dfs(vector<int>& cur, vector<int>& nums, std::unordered_set<int>& seen) {
+		if (size(cur) == size(nums)) ans.push_back(vector<int>(cur));
+		for (int i : nums) {
+			if (seen.count(i)) continue;
+			seen.insert(i);
+			cur.push_back(i);
+			dfs(cur, nums, seen);
+			seen.erase(i);
+			cur.pop_back();
+		}
+	}
+};

@@ -77,7 +77,6 @@ class Solution {
     }
 }
 
-
 #include <vector>
 using std::vector;
 

@@ -49,3 +49,43 @@ class Solution:
             if i == target:
                 return True
         return False
+
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	bool search(vector<int>& nums, int target) {
+		if (nums.empty()) return false;
+		int p = findPiv(nums, 0, size(nums) - 1);
+		return bs(nums, 0, p, target) || bs(nums, p + 1, size(nums) - 1, target);
+	}
+private:
+	int findPiv(vector<int>& nums, int l, int r) {
+		if (l >= r) {
+			return -1;
+		}
+		int m = l + (r - l) / 2;
+		if (nums[m] > nums[m + 1]) {
+			return m;
+		}
+		else {
+			int leftPiv = findPiv(nums, l, m);
+			if (leftPiv == -1) {
+				return findPiv(nums, m + 1, r);
+			}
+			return leftPiv;
+		}
+	}
+	bool bs(vector<int>& nums, int l, int r, int target) {
+		while (l <= r) {
+			int m = l + (r - l) / 2;
+			if (nums[m] == target) return true;
+			else if (nums[m] < target) l = m + 1;
+			else r = m - 1;
+		}
+		return false;
+	}
+};

@@ -1,0 +1,22 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int change(int amount, vector<int>& coins) {
+		vector<vector<int>>dp(amount + 1, vector<int>(size(coins), -1));
+		return dfs(amount, 0, coins, dp);
+	}
+private:
+	int dfs(int amount, int i, vector<int>& coins, vector<vector<int>>& dp) {
+		if (amount == 0) return 1;
+		if (amount < 0) return 0;
+		if (dp[amount][i] != -1) return dp[amount][i];
+		int ans = 0;
+		for (int j = i; j < size(coins); j++) {
+			if (coins[j] <= amount) ans += dfs(amount - coins[j], j, coins, dp);
+		}
+		dp[amount][i] = ans;
+		return ans;
+	}
+};

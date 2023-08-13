@@ -1,0 +1,22 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+	std::unordered_map<int, bool> dp;
+public:
+	bool validPartition(vector<int>& nums) {
+		return dfs(nums, 0);
+	}
+private:
+	bool dfs(vector<int>& nums, int i) {
+		if (i >= size(nums)) return true;
+		if (dp.count(i)) return dp[i];
+		bool ans = false;
+		if (i + 1 < size(nums) && nums[i] == nums[i + 1]) ans |= dfs(nums, i + 2);
+		if (i + 2 < size(nums) && nums[i] == nums[i + 1] && nums[i] == nums[i + 2]) ans |= dfs(nums, i + 3);
+		if (i + 2 < size(nums) && nums[i] == nums[i + 1] - 1 && nums[i + 1] == nums[i + 2] - 1) ans |= dfs(nums, i + 3);
+		dp[i] = ans;
+		return ans;
+	}
+};

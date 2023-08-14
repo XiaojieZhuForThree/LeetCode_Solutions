@@ -20,3 +20,17 @@ class Solution:
         nums.sort()
         nums.reverse()
         return nums[k - 1]
+
+
+
+#include <algorithm>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int findKthLargest(vector<int>& nums, int k) {
+		sort(nums.begin(), nums.end(), std::greater<int>());
+		return nums[k - 1];
+	}
+};

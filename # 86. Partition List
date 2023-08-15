@@ -62,3 +62,32 @@ class Solution:
             dummy = dummy.next
         dummy.next = None
         return pivot.next
+
+
+
+#include "ListNode.h"
+
+class Solution {
+public:
+	ListNode* partition(ListNode* head, int x) {
+		ListNode* l = new ListNode(), * r = new ListNode();
+		ListNode* lp = l, * rp = r;
+		while (head) {
+			if (head->val < x) {
+				lp->next = head;
+				lp = lp->next;
+			}
+			else {
+				rp->next = head;
+				rp = rp->next;
+			}
+			head = head->next;
+		}
+		lp->next = nullptr;
+		rp->next = nullptr;
+		if (!l->next) return r->next;
+		if (!r->next) return l->next;
+		lp->next = r->next;
+		return l->next;
+	}
+};

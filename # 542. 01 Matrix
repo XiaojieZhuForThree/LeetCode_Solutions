@@ -33,3 +33,43 @@ public class Question542 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+	vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+		int m = size(mat), n = size(mat[0]);
+		vector<vector<int>> ans(m, vector<int>(n, -1));
+		vector<vector<int>> visited(m, vector<int>(n, 0));
+		vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+		std::deque<std::pair<int, int>> dq;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (mat[i][j] == 0) {
+					visited[i][j] = 1;
+					dq.push_back({ i, j });
+				}
+			}
+		}
+		int step = 0;
+		while (!dq.empty()) {
+			for (int i = size(dq); i > 0; i--) {
+				std::pair<int, int> cur = dq.front();
+				dq.pop_front();
+				ans[cur.first][cur.second] = step;
+				for (auto d : dirs) {
+					int r = cur.first + d.first, c = cur.second + d.second;
+					if (r < 0 || r >= m || c < 0 || c >= n || visited[r][c]) continue;
+					visited[r][c] = 1;
+					dq.push_back({ r, c });
+				}
+			}
+			step++;
+		}
+		return ans;
+	}
+};

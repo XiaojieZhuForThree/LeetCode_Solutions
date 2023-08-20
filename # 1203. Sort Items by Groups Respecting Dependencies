@@ -96,3 +96,95 @@ public class Question1203 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems) {
+        std::unordered_map<int, int> group_ind, item_ind, gbi;
+        std::unordered_map<int, vector<int>> ibg, group_deps, item_deps;
+        int more = m;
+        for (int i = 0; i < n; i++) {
+            if (group[i] == -1) {
+                gbi[i] = more;
+                if (!ibg.count(more)) {
+                    vector<int> c;
+                    ibg[more] = c;
+                }
+                ibg[more].push_back(i);
+                more++;
+            }
+            else {
+                gbi[i] = group[i];
+                if (!ibg.count(group[i])) {
+                    vector<int> c;
+                    ibg[group[i]] = c;
+                }
+                ibg[group[i]].push_back(i);
+            }
+        }
+        for (int i = 0; i < n; i++) item_ind[i] = 0;
+        for (int j = 0; j < more; j++) group_ind[j] = 0;
+        for (int i = 0; i < n; i++) {
+            if (beforeItems[i].empty()) continue;
+            for (int j : beforeItems[i]) {
+                if (gbi[i] == gbi[j]) {
+                    item_ind[i]++;
+                    if (!item_deps.count(j)) {
+                        vector<int> c;
+                        item_deps[j] = c;
+                    }
+                    item_deps[j].push_back(i);
+                }
+                else {
+                    group_ind[gbi[i]]++;
+                    if (!group_deps.count(gbi[j])) {
+                        vector<int> c;
+                        group_deps[gbi[j]] = c;
+                    }
+                    group_deps[gbi[j]].push_back(gbi[i]);
+                }
+            }
+        }
+        std::deque<int> gp, it;
+        vector<int> ans;
+        int cnt = 0;
+        for (auto p : group_ind) {
+            if (p.second == 0) gp.push_back(p.first);
+        }
+        while (cnt < n) {
+            if (gp.empty()) return {};
+            int cur_g = gp.front();
+            gp.pop_front();
+            vector<int> is = ibg[cur_g];
+            int s = 0;
+            for (int i : is) {
+                if (item_ind[i] == 0) {
+                    it.push_back(i);
+                }
+            }
+            while (s < size(is)) {
+                if (it.empty()) return {};
+                int cur_i = it.front();
+                it.pop_front();
+                ans.push_back(cur_i);
+                for (int cand_i : item_deps[cur_i]) {
+                    item_ind[cand_i]--;
+                    if (item_ind[cand_i] == 0) it.push_back(cand_i);
+                }
+                s++;
+                cnt++;
+            }
+            for (int cand_g : group_deps[cur_g]) {
+                group_ind[cand_g]--;
+                if (group_ind[cand_g] == 0) gp.push_back(cand_g);
+            }
+        }
+        return ans;
+    }
+};

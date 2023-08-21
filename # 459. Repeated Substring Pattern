@@ -22,3 +22,28 @@ public class Question459 {
 		}
 	}
 }
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	bool repeatedSubstringPattern(string s) {
+		for (int i = 1; i <= size(s) / 2; i++) {
+			string p = s.substr(0, i);
+			if (canRep(s, p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+private:
+	bool canRep(string& s, string& p) {
+		if (size(s) % size(p)) return false;
+		for (int i = 0; i <= size(s) - size(p); i += size(p)) {
+			if (s.substr(i, size(p)) != p) return false;
+		}
+		return true;
+	}
+};

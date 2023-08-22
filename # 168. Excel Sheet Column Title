@@ -14,3 +14,16 @@ class Solution {
         return ans.reverse().toString();
     }
 }
+
+
+#include <string>
+using std::string;
+class Solution {
+public:
+	string convertToTitle(int columnNumber) {
+		columnNumber--;
+		if (columnNumber < 26) return string(1, char('A' + columnNumber));
+		int div = columnNumber / 26, rem = columnNumber % 26;
+		return convertToTitle(div) + convertToTitle(rem + 1);
+	}
+};

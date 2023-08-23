@@ -1,0 +1,50 @@
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+using std::string;
+
+class Solution {
+public:
+	string reorganizeString(string s) {
+		std::unordered_map<char, int> cs;
+		auto compare = [&cs](char a, char b) { return cs[a] < cs[b]; };
+		std::priority_queue<char, std::vector<char>, decltype(compare)> pq(compare);
+		int cur = 0;
+		char ch = '1';
+		for (char c : s) {
+			if (!cs.count(c)) cs[c] = 0;
+			cs[c]++;
+			if (cs[c] > cur) {
+				cur = cs[c];
+				ch = c;
+			}
+		}
+		int rem = size(s) - cur;
+		if (rem < cur - 1) return "";
+		for (auto& p : cs) pq.push(p.first);
+		string ans = "";
+		while (!pq.empty()) {
+			if (size(pq) == 1) {
+				char cur = pq.top();
+				pq.pop();
+				ans += cur;
+				cs[cur]--;
+				if (cs[cur] > 0) pq.push(cur);
+			}
+			else {
+				char c1 = pq.top();
+				pq.pop();
+				char c2 = pq.top();
+				pq.pop();
+				ans += c1;
+				ans += c2;
+				cs[c1]--;
+				cs[c2]--;
+				if (cs[c1] > 0) pq.push(c1);
+				if (cs[c2] > 0) pq.push(c2);
+			}
+		}
+		return ans;
+	}
+};

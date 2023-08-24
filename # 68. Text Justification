@@ -43,3 +43,63 @@ class Solution {
         return ans;
     }
 }
+
+
+
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	vector<string> fullJustify(vector<string>& words, int maxWidth) {
+		int i = 0;
+		vector<string> ans;
+		while (i < size(words)) {
+			vector<string> vec;
+			int cur = 0;
+			int j = i;
+			for (; j < size(words); ) {
+				if (cur + size(words[j]) + j - i <= maxWidth) {
+					vec.push_back(words[j]);
+					cur += size(words[j]);
+					j++;
+				}
+				else break;
+			}
+			i = j;
+			if (i >= size(words) || size(vec) == 1) ans.push_back(processLast(vec, maxWidth));
+			else ans.push_back(processRegular(vec, cur, maxWidth));
+		}
+		return ans;
+	}
+private:
+	string processLast(vector<string>& vec, int maxWidth) {
+		string ans = "";
+		for (int i = 0; i < size(vec) - 1; i++) {
+			ans += vec[i];
+			ans += " ";
+		}
+		ans += vec[size(vec) - 1];
+		for (int i = size(ans); i < maxWidth; i++) {
+			ans += " ";
+		}
+		return ans;
+	}
+	string processRegular(vector<string>& vec, int cur, int maxWidth) {
+		int extra = maxWidth - cur, slots = size(vec) - 1;
+		int div = extra / slots, rem = extra % slots;
+		string ans = "";
+		for (int i = 0; i < size(vec) - 1; i++) {
+			ans += vec[i];
+			for (int j = 0; j < div; j++) ans += " ";
+			if (rem > 0) {
+				ans += " ";
+				rem--;
+			}
+		}
+		ans += vec[size(vec) - 1];
+		return ans;
+	}
+};

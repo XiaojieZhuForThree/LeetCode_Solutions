@@ -58,3 +58,26 @@ class Solution:
             return ans
 
         return dfs(0, 0, 0)
+
+
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+	bool isInterleave(string s1, string s2, string s3) {
+		if (size(s3) != size(s1) + size(s2)) return false;
+		std::vector<std::vector<bool>> dp(size(s1) + 1, std::vector<bool>(size(s2) + 1, false));
+		dp[0][0] = true;
+		for (int i = 1; i <= size(s3); i++) {
+			for (int j = 0; j <= std::min(int(size(s1)), i); j++) {
+				int k = i - j;
+				if (k > size(s2)) continue;
+				if (j > 0 && s1[j - 1] == s3[i - 1]) dp[j][k] = dp[j][k] || dp[j - 1][k];
+				if (k > 0 && s2[k - 1] == s3[i - 1]) dp[j][k] = dp[j][k] || dp[j][k - 1];
+			}
+		}
+		return dp[size(s1)][size(s2)];
+	}
+};

@@ -58,3 +58,33 @@ class Solution {
         return false;
     }
 }
+
+
+
+#include <unordered_set>
+#include <unordered_map>
+#include <string>
+
+class Solution {
+public:
+	std::unordered_map<std::string, bool> dp;
+	bool canCross(std::vector<int>& stones) {
+		std::unordered_set<long long> s;
+		for (int i : stones) s.insert(i);
+		return dfs(s, 0, 0, stones[size(stones) - 1]);
+	}
+
+private:
+	bool dfs(std::unordered_set<long long>& s, long long cur, int k, int target) {
+		if (cur > target) return false;
+		if (cur == target) return true;
+		std::string key = std::to_string(cur) + ", " + std::to_string(k);
+		if (dp.count(key)) return dp[key];
+		bool ans = false;
+		if (k - 1 > 0 && s.count(cur + k - 1)) ans |= dfs(s, cur + k - 1, k - 1, target);
+		if (k > 0 && s.count(cur + k)) ans |= dfs(s, cur + k, k, target);
+		if (s.count(cur + k + 1)) ans |= dfs(s, cur + k + 1, k + 1, target);
+		dp[key] = ans;
+		return ans;
+	}
+};

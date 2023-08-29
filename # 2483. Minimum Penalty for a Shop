@@ -1,0 +1,23 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	int bestClosingTime(string customers) {
+		int ys = 0;
+		for (char c : customers) {
+			if (c == 'Y') ys++;
+		}
+		int cur = 0, cs = ys, ns = 0;
+		for (int i = 1; i <= size(customers); i++) {
+			if (customers[i - 1] == 'Y') ys--;
+			else ns++;
+			int cand = ys + ns;
+			if (cand < cs) {
+				cur = i;
+				cs = cand;
+			}
+		}
+		return cur;
+	}
+};

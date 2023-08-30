@@ -1,0 +1,20 @@
+class Solution {
+public:
+    long long minimumReplacement(vector<int>& nums) {
+        long long ans = 0;
+        int cur = nums[size(nums) - 1];
+        for (int i = size(nums) - 2; i >= 0; i--) {
+            int target = nums[i];
+            if (target <= cur) cur = target;
+            else {
+                if (target % cur == 0) {
+                    ans += (target / cur) - 1;
+                } else {
+                    ans += target / cur;
+                    cur = target / ((target / cur) + 1);
+                }
+            }
+        }
+        return ans;
+    }
+};

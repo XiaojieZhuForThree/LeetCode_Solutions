@@ -1,0 +1,32 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+	int minTaps(int n, vector<int>& ranges) {
+		vector<std::pair<int, int>> pumpRange(ranges.size());
+		int i = 0;
+		for (auto range : ranges) {
+			pumpRange[i++] = { i - range, i + range };
+		}
+		i = 0;
+		sort(pumpRange.begin(), pumpRange.end());
+		int start = 0;
+		int end = 0;
+		int count = 0;
+		while (end < n) {
+			while (i < pumpRange.size() && pumpRange[i].first <= start) {
+				end = std::max(end, pumpRange[i].second);
+				i++;
+			}
+			count++;
+
+			if (start == end) {
+				return -1;
+			}
+			start = end;
+		}
+		return count;
+	}
+};

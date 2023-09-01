@@ -45,3 +45,27 @@ class Solution:
             else:
                 ans.append(ans[i - (exp // 2)] + 1)
         return ans
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> countBits(int n) {
+		vector<int> ans;
+		ans.push_back(0);
+		int cur = 1, next = 2;
+		for (int i = 1; i <= n; i++) {
+			if (i == next) {
+				ans.push_back(1);
+				cur = next;
+				next *= 2;
+			}
+			else {
+				ans.push_back(1 + ans[i - cur]);
+			}
+		}
+		return ans;
+	}
+};

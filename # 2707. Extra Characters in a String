@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+	int minExtraChar(string s, vector<string>& dictionary) {
+		std::unordered_set<string> seen;
+		std::unordered_map<string, int> dp;
+		for (string d : dictionary) seen.insert(d);
+		return dfs(s, 0, seen, dp);
+	}
+private:
+	int dfs(string& s, int i, std::unordered_set<string>& seen, std::unordered_map<string, int>& dp) {
+		if (i >= size(s)) return 0;
+		string key = s.substr(i, size(s) - i);
+		if (dp.count(key)) return dp[key];
+		int ans = size(s);
+		for (int j = i; j < size(s); j++) {
+			if (seen.count(s.substr(i, j - i + 1))) ans = std::min(ans, dfs(s, j + 1, seen, dp));
+			else ans = std::min(ans, j - i + 1 + dfs(s, j + 1, seen, dp));
+		}
+		dp[key] = ans;
+		return ans;
+	}
+};

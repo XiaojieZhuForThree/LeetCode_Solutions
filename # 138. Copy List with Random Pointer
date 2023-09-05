@@ -30,3 +30,38 @@ public class Question138 {
 		}
 	}
 }
+
+
+#include <unordered_map>
+class Node {
+public:
+	int val;
+	Node* next;
+	Node* random;
+
+	Node(int _val) {
+		val = _val;
+		next = NULL;
+		random = NULL;
+	}
+};
+
+class Solution {
+public:
+	Node* copyRandomList(Node* head) {
+		std::unordered_map<Node*, Node*> map;
+		Node* ptr = head;
+		while (ptr) {
+			Node* cpy = new Node(ptr->val);
+			map[ptr] = cpy;
+			ptr = ptr->next;
+		}
+		ptr = head;
+		while (ptr) {
+			map[ptr]->next = map[ptr->next];
+			if (ptr->random) map[ptr]->random = map[ptr->random];
+			ptr = ptr->next;
+		}
+		return map[head];
+	}
+};

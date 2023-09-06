@@ -1,0 +1,38 @@
+#include <vector>
+#include "ListNode.h"
+
+using std::vector;
+
+class Solution {
+public:
+	vector<ListNode*> splitListToParts(ListNode* head, int k) {
+		vector<ListNode*> ans(k, nullptr);
+		if (!head) return ans;
+		int cnt = 0;
+		ListNode* tmp = head;
+		while (tmp) {
+			cnt++;
+			tmp = tmp->next;
+		}
+
+		int div = cnt / k, mod = cnt % k;
+		ListNode* s = head;
+
+		for (int i = 0; i < k; i++) {
+			if (!s) continue;
+			ListNode* e = s;
+			int j = 1, target = div;
+			if (mod > 0) {
+				target++;
+				mod--;
+			}
+			for (; j < target; j++) {
+				e = e->next;
+			}
+			ans[i] = s;
+			s = e->next;
+			e->next = nullptr;
+		}
+		return ans;
+	}
+};

@@ -33,3 +33,15 @@ class Solution:
     
     def get_sum(self, n):
         return (1 + n) * n // 2
+
+
+class Solution {
+public:
+	int countOrders(int n) {
+		if (n == 1) return 1;
+		int prev = countOrders(n - 1);
+		int slots = 2 * n - 1;
+		long long val = (slots + 1) * slots / 2;
+		return ((prev % 1000000007) * (val % 1000000007)) % 1000000007;
+	}
+};

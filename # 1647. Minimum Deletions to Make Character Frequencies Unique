@@ -14,3 +14,41 @@ class Solution:
             else:
                 target = max(cur - 1, 0)
         return ans
+
+
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+using std::string;
+
+class Solution {
+public:
+	int minDeletions(string s) {
+		std::unordered_map<char, int> m;
+		for (char c : s) {
+			if (!m.count(c)) m[c] = 0;
+			m[c]++;
+		}
+		std::unordered_map<int, int> cnts;
+		std::unordered_set<int> used;
+		for (auto& p : m) {
+			if (!cnts.count(p.second)) cnts[p.second] = 0;
+			cnts[p.second]++;
+			used.insert(p.second);
+		}
+		int ans = 0;
+		for (auto& p : cnts) {
+			if (p.second == 1) continue;
+			for (int i = p.second; i > 1; i--) {
+				for (int j = p.first - 1; j >= 0; j--) {
+					if (!used.count(j)) {
+						ans += p.first - j;
+						if (j > 0) used.insert(j);
+						break;
+					}
+				}
+			}
+		}
+		return ans;
+	}
+};

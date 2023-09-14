@@ -24,3 +24,50 @@ class Solution {
         itr.add(0, start);
     }
 }
+
+
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	vector<string> findItinerary(vector<vector<string>>& tickets) {
+		vector<string>ans;
+		int n = tickets.size();
+		string src = "JFK";
+		sort(tickets.begin(), tickets.end());
+		std::unordered_map<string, vector<string>>mp;
+		for (int i = 0; i < n; i++) {
+			mp[tickets[i][0]].push_back(tickets[i][1]);
+
+		}
+		ans.push_back(src);
+		dfs(mp, ans, src, n);
+		return ans;
+	}
+private:
+	bool dfs(std::unordered_map<string, vector<string>>& mp, vector<string>& ans, string& src, int n) {
+		if (ans.size() == n + 1) {
+			return true;
+		}
+		if (mp[src].size() == 0) {
+			return false;
+		}
+		for (int i = 0; i < mp[src].size(); i++) {
+			string temp = mp[src][i];
+			ans.push_back(temp);
+			mp[src].erase(mp[src].begin() + i);
+			bool x = dfs(mp, ans, temp, n);
+			if (x) {
+				return true;
+			}
+			mp[src].insert(mp[src].begin() + i, temp);
+			ans.pop_back();
+		}
+		return false;
+	}
+};

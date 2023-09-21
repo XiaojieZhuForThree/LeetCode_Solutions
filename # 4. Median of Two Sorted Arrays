@@ -104,3 +104,61 @@ class Solution {
         return (double)(-1);
     }
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+		if (size(nums1) > size(nums2)) {
+			return findMedianSortedArrays(nums2, nums1);
+		}
+		int half = (size(nums1) + size(nums2) + 1) / 2;
+		int lo = 0, hi = size(nums1);
+		while (lo <= hi) {
+			int mid1 = (lo + hi) / 2, mid2 = half - mid1;
+			if (mid1 != 0 && mid2 != size(nums2) && nums1[mid1 - 1] > nums2[mid2]) {
+				hi = mid1 - 1;
+			}
+			else if (mid2 != 0 && mid1 != size(nums1) && nums2[mid2 - 1] > nums1[mid1]) {
+				lo = mid1 + 1;
+			}
+			else if ((size(nums1) + size(nums2)) % 2 == 1) {
+				if (mid1 == 0) {
+					return (double)nums2[mid2 - 1];
+				}
+				else if (mid2 == 0) {
+					return (double)nums1[mid1 - 1];
+				}
+				else {
+					return (double)std::max(nums1[mid1 - 1], nums2[mid2 - 1]);
+				}
+			}
+			else {
+				int left = 0, right = 0;
+				if (mid1 == 0) {
+					left = nums2[mid2 - 1];
+				}
+				else if (mid2 == 0) {
+					left = nums1[mid1 - 1];
+				}
+				else {
+					left = std::max(nums1[mid1 - 1], nums2[mid2 - 1]);
+				}
+				if (mid1 == size(nums1)) {
+					right = nums2[mid2];
+				}
+				else if (mid2 == size(nums2)) {
+					right = nums1[mid1];
+				}
+				else {
+					right = std::min(nums1[mid1], nums2[mid2]);
+				}
+				return (double)(left + right) / 2;
+			}
+		}
+		return (double)(-1);
+	}
+};

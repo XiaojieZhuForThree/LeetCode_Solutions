@@ -44,3 +44,20 @@ class Solution:
             if s[ptr] == c:
                 ptr += 1
         return ptr == len(s)
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	bool isSubsequence(string s, string t) {
+		if (s.empty()) return true;
+		int ptr = 0;
+		for (char c : t) {
+			if (c == s[ptr]) ptr++;
+			if (ptr == size(s)) break;
+		}
+		return ptr == size(s);
+	}
+};

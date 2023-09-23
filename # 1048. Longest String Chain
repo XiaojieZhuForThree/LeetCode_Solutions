@@ -107,3 +107,40 @@ class Solution:
                 p1 += 1
                 p2 += 1
         return True
+
+
+#include <vector>
+#include <string>
+#include <algorithm>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	int longestStrChain(vector<string>& words) {
+		sort(words.begin(), words.end(), [](string a, string b) {
+			return size(a) < size(b);
+			});
+		vector<int> dp(size(words), 1);
+		int ans = 1;
+		for (int i = 0; i < size(words); i++) {
+			for (int j = i - 1; j >= 0; j--) {
+				if (isPred(words[i], words[j])) {
+					dp[i] = std::max(dp[i], dp[j] + 1);
+					ans = std::max(ans, dp[i]);
+				}
+			}
+		}
+		return ans;
+	}
+private:
+	bool isPred(string& a, string& b) {
+		if (size(a) - 1 != size(b)) return false;
+		int ptr = 0;
+		for (char c : a) {
+			if (c == b[ptr]) ptr++;
+			if (ptr == size(b))  return true;
+		}
+		return ptr == size(b);
+	}
+};

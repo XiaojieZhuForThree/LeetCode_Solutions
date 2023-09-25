@@ -49,3 +49,18 @@ class Solution:
             if b[k] != a[k]:
                 return k
         return None
+
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	char findTheDifference(string s, string t) {
+		int a = 0, b = 0;
+		for (char c : s) a += (c - 'a');
+		for (char c : t) b += (c - 'a');
+		return char('a' + b - a);
+	}
+};

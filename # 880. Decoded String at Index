@@ -27,3 +27,31 @@ public class Question880 {
 		}
 	}
 }
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	string decodeAtIndex(string s, int k) {
+		long long len = 0;
+		for (char c : s) {
+			if (isdigit(c)) len *= c - '0';
+			else len++;
+		}
+		for (int i = size(s) - 1; i >= 0; i--) {
+			if (isdigit(s[i])) {
+				len /= s[i] - '0';
+				k %= len;
+			}
+			else {
+				if (k == 0 || len == k) {
+					return string(1, s[i]);
+				}
+				len--;
+			}
+		}
+		return "";
+	}
+};

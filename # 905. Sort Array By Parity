@@ -51,3 +51,24 @@ public class Question905 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> sortArrayByParity(vector<int>& nums) {
+		int l = 0, r = size(nums) - 1;
+		while (l < r) {
+			if (nums[l] % 2 == 0) l++;
+			else {
+				int t = nums[r];
+				nums[r] = nums[l];
+				nums[l] = t;
+				r--;
+			}
+		}
+		return nums;
+	}
+};

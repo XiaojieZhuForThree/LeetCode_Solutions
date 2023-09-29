@@ -22,3 +22,32 @@ class Solution {
         return true;
     }
 }
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	bool isMonotonic(vector<int>& nums) {
+		if (size(nums) < 3) return true;
+		return monos(nums) || monol(nums);
+	}
+private:
+	bool monos(vector<int>& nums) {
+		int val = nums[0];
+		for (int i = 1; i < size(nums); i++) {
+			if (nums[i] > val) return false;
+			val = nums[i];
+		}
+		return true;
+	}
+
+	bool monol(vector<int>& nums) {
+		int val = nums[0];
+		for (int i = 1; i < size(nums); i++) {
+			if (nums[i] < val) return false;
+			val = nums[i];
+		}
+		return true;
+	}
+};

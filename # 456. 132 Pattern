@@ -44,3 +44,31 @@ class Solution:
             stack.append((i, cur_min))
         return False
 
+
+
+#include <vector>
+#include <set>
+
+using std::vector;
+
+class Solution {
+public:
+	bool find132pattern(vector<int>& nums) {
+		int n = size(nums);
+		vector<int> ls(n, INT_MAX);
+		int cur = nums[0];
+		for (int i = 1; i < n; i++) {
+			ls[i] = cur;
+			cur = std::min(cur, nums[i]);
+		}
+		std::set<int, std::greater<int>> rs;
+		rs.insert(nums[n - 1]);
+		for (int i = n - 2; i > 0; i--) {
+			if (rs.upper_bound(nums[i]) != rs.end()) {
+				if (*rs.upper_bound(nums[i]) > ls[i]) return true;
+			}
+			rs.insert(nums[i]);
+		}
+		return false;
+	}
+};

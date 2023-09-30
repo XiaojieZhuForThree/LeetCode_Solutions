@@ -72,3 +72,27 @@ public:
 		return false;
 	}
 };
+
+
+#include <vector>
+#include <deque>
+
+using std::vector;
+
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        int thrd = INT_MIN;
+        std::deque<int> stack;
+        reverse(nums.begin(), nums.end());
+        for (int i : nums) {
+            if (i < thrd) return true;
+            while (!stack.empty() && stack.back() < i) {
+                thrd = stack.back();
+                stack.pop_back();
+            }
+            stack.push_back(i);
+        }
+        return false;
+    }
+};

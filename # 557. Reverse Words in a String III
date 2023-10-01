@@ -26,3 +26,29 @@ public:
         return s;
     }
 };
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	string reverseWords(string s) {
+		string ans;
+		int l = 0, r = 0;
+		for (; r < size(s); r++) {
+			if (s[r] != ' ') continue;
+			string cur = s.substr(l, r - l);
+			reverse(cur.begin(), cur.end());
+			ans += cur;
+			ans += ' ';
+			l = r + 1;
+		}
+		if (l != size(s)) {
+			string cur = s.substr(l, r - l);
+			reverse(cur.begin(), cur.end());
+			ans += cur;
+		}
+		return ans;
+	}
+};

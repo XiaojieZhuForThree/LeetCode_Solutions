@@ -13,3 +13,21 @@ public class Question1512 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int numIdenticalPairs(vector<int>& nums) {
+		vector<int> cnts(101, 0);
+		int ans = 0;
+		for (int i : nums) cnts[i]++;
+		for (int i : cnts) {
+			if (i < 2) continue;
+			ans += i * (i - 1) / 2;
+		}
+		return ans;
+	}
+};

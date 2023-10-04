@@ -69,3 +69,35 @@ class MyHashMap:
 # obj.put(key,value)
 # param_2 = obj.get(key)
 # obj.remove(key)
+
+
+
+#include <vector>
+
+class MyHashMap {
+public:
+	std::vector<int> tab;
+	MyHashMap() {
+		for (int i = 0; i < 1000001; i++) tab.push_back(-1);
+	}
+
+	void put(int key, int value) {
+		tab[key] = value;
+	}
+
+	int get(int key) {
+		return tab[key];
+	}
+
+	void remove(int key) {
+		tab[key] = -1;
+	}
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */

@@ -65,3 +65,25 @@ public class Question229 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        std::unordered_map<int, int> m;
+        vector<int> ans;
+        int cnt = size(nums) / 3;
+        for (int i : nums) {
+            if (!m.count(i)) m[i] = 1;
+            else m[i]++;
+        }
+        for (auto& p : m) {
+            if (p.second > cnt) ans.push_back(p.first);
+        }
+        return ans;
+    }
+};

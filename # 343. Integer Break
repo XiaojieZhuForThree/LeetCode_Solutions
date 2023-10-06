@@ -12,3 +12,17 @@ class Solution {
         return prevs[n];
     }
 }
+
+#include <unordered_map>
+class Solution {
+public:
+	std::unordered_map<int, int> dp;
+	int integerBreak(int n) {
+		if (n == 2) return 1;
+		if (dp.count(n)) return dp[n];
+		int ans = 1;
+		for (int i = 2; i < n; i++) ans = std::max(ans, std::max(i * integerBreak(n - i), i * (n - i)));
+		dp[n] = ans;
+		return ans;
+	}
+};

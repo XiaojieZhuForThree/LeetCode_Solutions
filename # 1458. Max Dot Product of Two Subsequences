@@ -37,3 +37,29 @@ public class Question1458 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+		vector<vector<int>>dp(size(nums1), vector<int>(size(nums2), INT_MIN));
+		for (int i = 0; i < size(nums1); i++) {
+			for (int j = 0; j < size(nums2); j++) {
+				dp[i][j] = nums1[i] * nums2[j];
+				if (i > 0 && j > 0) {
+					dp[i][j] += std::max(dp[i - 1][j - 1], 0);
+				}
+				if (i > 0) {
+					dp[i][j] = std::max(dp[i][j], dp[i - 1][j]);
+				}
+				if (j > 0) {
+					dp[i][j] = std::max(dp[i][j], dp[i][j - 1]);
+				}
+			}
+		}
+		return dp[size(nums1) - 1][size(nums2) - 1];
+	}
+};

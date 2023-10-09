@@ -114,3 +114,37 @@ class Solution:
         elif nums[l - 1] == target:
             ans[1] = l - 1
         return ans
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> searchRange(vector<int>& nums, int target) {
+		int l = findL(nums, target);
+		int r = findR(nums, target);
+		return { l, r };
+	}
+private:
+	int findL(vector<int>& nums, int target) {
+		if (nums.empty()) return -1;
+		int l = 0, r = size(nums) - 1;
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (nums[m] < target) l = m + 1;
+			else r = m;
+		}
+		return nums[l] == target ? l : -1;
+	}
+	int findR(vector<int>& nums, int target) {
+		if (nums.empty()) return -1;
+		int l = 0, r = size(nums) - 1;
+		while (l < r) {
+			int m = r - (r - l) / 2;
+			if (nums[m] > target) r = m - 1;
+			else l = m;
+		}
+		return nums[r] == target ? r : -1;
+	}
+};

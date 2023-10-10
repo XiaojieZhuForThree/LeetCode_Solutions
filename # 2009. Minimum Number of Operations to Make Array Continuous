@@ -41,3 +41,25 @@ public:
 		return mn;
 	}
 };
+
+
+#include <vector>
+#include <algorithm>
+#include <set>
+using std::vector;
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        std::set<int> s(nums.begin(), nums.end());
+        vector<int> v;
+        for (int i : s) v.push_back(i);
+        int n = size(nums);
+        int l = 0, ans = n;
+        for (int r = 0; r < size(v); r++) {
+            while (l < r && v[r] - v[l] > n - 1) l++;
+            ans = std::min(ans, n - (r - l + 1));
+        }
+        return ans;
+    }
+};

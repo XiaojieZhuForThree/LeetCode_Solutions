@@ -23,3 +23,24 @@ public class Question119 {
 		}
 	}
 }
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> getRow(int rowIndex) {
+		vector<int> row = { 1 };
+		for (int i = 1; i <= rowIndex; i++) {
+			vector<int> nxt;
+			for (int j = 0; j <= i; j++) {
+				int cur = 0;
+				if (j < size(row)) cur += row[j];
+				if (j > 0) cur += row[j - 1];
+				nxt.push_back(cur);
+			}
+			row = nxt;
+		}
+		return row;
+	}
+};

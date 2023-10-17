@@ -1,0 +1,57 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        vector<bool> hasParent(n, false);
+        for (int i = 0; i < n; i++) {
+            if (leftChild[i] != -1) {
+                hasParent[leftChild[i]] = true;
+            }
+            if (rightChild[i] != -1) {
+                hasParent[rightChild[i]] = true;
+            }
+        }
+
+        // start bfs on root node
+        int root = 0;
+        for (int i = 0; i < n; i++) {
+            if (!hasParent[i]) {
+                root = i;
+                break;
+            }
+        }
+
+        vector<bool> visited(n, false);
+        std::queue<int> next_q;
+
+        next_q.push(root);
+
+        while (!next_q.empty()) {
+            int curr = next_q.front();
+            next_q.pop();
+            if (visited[curr]) {
+                return false;
+            }
+
+            visited[curr] = true;
+
+            if (leftChild[curr] != -1) {
+                next_q.push(leftChild[curr]);
+            }
+            if (rightChild[curr] != -1) {
+                next_q.push(rightChild[curr]);
+            }
+        }
+
+        for (bool ele : visited) {
+            if (!ele) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};

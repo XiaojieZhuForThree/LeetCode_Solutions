@@ -22,3 +22,26 @@ class Solution:
             else:
                 l2.append(c)
         return ''.join(l1) == ''.join(l2)
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	bool backspaceCompare(string s, string t) {
+		return processed(s) == processed(t);
+	}
+
+private:
+	string processed(string& s) {
+		string ans = "";
+		for (char c : s) {
+			if (c == '#') {
+				if (!ans.empty()) ans.pop_back();
+			}
+			else ans.push_back(c);
+		}
+		return ans;
+	}
+};

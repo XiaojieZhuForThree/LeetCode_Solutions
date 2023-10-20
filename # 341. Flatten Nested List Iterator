@@ -122,3 +122,38 @@ class NestedIterator:
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
 # while i.hasNext(): v.append(i.next())
+
+
+#include <vector>
+#include "NestedInteger.h"
+using std::vector;
+
+class NestedIterator {
+public:
+    vector<int> nums;
+    int ptr = 0;
+    NestedIterator(vector<NestedInteger>& nestedList) {
+        process(nums, nestedList);
+    }
+
+    int next() {
+        return nums[ptr++];
+    }
+
+    bool hasNext() {
+        return ptr < size(nums);
+    }
+private:
+    void process(vector<int>& nums, vector<NestedInteger>& nestedList) {
+        for (auto& ni : nestedList) {
+            if (ni.isInteger()) nums.push_back(ni.getInteger());
+            else process(nums, ni.getList());
+        }
+    }
+};
+
+/**
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i(nestedList);
+ * while (i.hasNext()) cout << i.next();
+ */

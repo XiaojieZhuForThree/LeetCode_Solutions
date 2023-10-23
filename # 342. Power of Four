@@ -21,3 +21,17 @@ class Solution:
         if n <= 0:
             return False
         return 4 ** int(math.log(n, 4)) == n
+
+
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n <= 0) return false;
+        while (n != 1) {
+            int div = n / 4, rem = n % 4;
+            if (rem != 0) return false;
+            n = div;
+        }
+        return true;
+    }
+};

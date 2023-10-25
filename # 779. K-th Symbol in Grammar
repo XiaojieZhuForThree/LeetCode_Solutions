@@ -1,0 +1,12 @@
+class Solution {
+public:
+	int kthGrammar(int n, int k) {
+		int cnt = 0;
+		k--;
+		while (k > 0) {
+			cnt += k % 2;
+			k /= 2;
+		}
+		return cnt % 2;
+	}
+};

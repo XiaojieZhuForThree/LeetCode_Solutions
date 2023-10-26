@@ -56,3 +56,31 @@ class Solution:
                         rec[i] += rec[j] * rec[k]
                 rec[i] %= 1_000_000_007
         return (sum(rec.values()) % 1_000_000_007)
+
+
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        std::sort(arr.begin(), arr.end());
+        int ans = 0;
+        std::unordered_map<int, long long> dp;
+        for (int i = 0; i < size(arr); i++) {
+            long long cur = 1;
+            for (int j = 0; j <= i; j++) {
+                if (arr[i] % arr[j] == 0 && dp.count(arr[i] / arr[j])) {
+                    cur += dp[arr[j]] * dp[arr[i] / arr[j]];
+                    cur %= 1000000007;
+                }
+            }
+            ans += cur;
+            ans %= 1000000007;
+            dp[arr[i]] = cur;
+        }
+        return ans;
+    }
+};

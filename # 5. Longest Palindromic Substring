@@ -26,3 +26,39 @@ public class Question5 {
 		}
 	}
 }
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	string longestPalindrome(string s) {
+		int cur = 0;
+		string cand = "";
+		for (int i = 0; i < size(s); i++) {
+			string s1 = getS(s, i, i);
+			string s2 = "";
+			if (i + 1 < size(s) && s[i] == s[i + 1]) s2 = getS(s, i, i + 1);
+			if (size(s1) > cur) {
+				cur = size(s1);
+				cand = s1;
+			}
+			if (size(s2) > cur) {
+				cur = size(s2);
+				cand = s2;
+			}
+		}
+		return cand;
+	}
+private:
+	string getS(string& s, int i, int j) {
+		while (i >= 0 && j < size(s) && s[i] == s[j]) {
+			i--;
+			j++;
+		}
+		i++;
+		j--;
+		return s.substr(i, j - i + 1);
+	}
+};

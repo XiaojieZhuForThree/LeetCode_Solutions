@@ -1,0 +1,28 @@
+#include <unordered_map>
+#include <vector>
+#include "TreeNode.h"
+using std::vector;
+
+class Solution {
+public:
+	std::unordered_map<int, int> cnt;
+	int cur = 0;
+	vector<int> findMode(TreeNode* root) {
+		vector<int> ans;
+		dfs(root);
+		for (auto p : cnt) {
+			if (p.second == cur) ans.push_back(p.first);
+		}
+		return ans;
+	}
+
+private:
+	void dfs(TreeNode* node) {
+		if (!node) return;
+		if (!cnt.count(node->val)) cnt[node->val] = 0;
+		cnt[node->val]++;
+		if (cnt[node->val] > cur) cur = cnt[node->val];
+		dfs(node->left);
+		dfs(node->right);
+	}
+};

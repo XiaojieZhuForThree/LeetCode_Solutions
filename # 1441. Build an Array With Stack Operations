@@ -24,3 +24,29 @@ public class Question1441 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	vector<string> buildArray(vector<int>& target, int n) {
+		vector<string> ans;
+		int ptr = 0;
+		for (int i = 1; i <= n; i++) {
+			if (ptr == size(target)) break;
+			if (i == target[ptr]) {
+				ans.push_back("Push");
+				ptr++;
+			}
+			else if (i < target[ptr]) {
+				ans.push_back("Push");
+				ans.push_back("Pop");
+			}
+		}
+		return ans;
+	}
+};

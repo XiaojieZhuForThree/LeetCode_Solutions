@@ -1,0 +1,15 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+	int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+		sort(left.begin(), left.end());
+		sort(right.begin(), right.end());
+		int ans = 0;
+		if (!left.empty()) ans = std::max(ans, left[size(left) - 1]);
+		if (!right.empty()) ans = std::max(ans, n - right[0]);
+		return ans;
+	}
+};

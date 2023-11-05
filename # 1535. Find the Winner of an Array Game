@@ -1,0 +1,19 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int getWinner(vector<int>& arr, int k) {
+        int cur = 0;
+        int m = arr[0];
+        for (int i = 1; i < size(arr); i++) {
+            if (cur == k) return m;
+            if (arr[i] < m) cur++;
+            else {
+                m = arr[i];
+                cur = 1;
+            }
+        }
+        return *max_element(arr.begin(), arr.end());
+    }
+};

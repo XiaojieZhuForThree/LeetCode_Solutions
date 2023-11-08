@@ -1,0 +1,11 @@
+#include <stdlib.h>
+#include <utility>
+class Solution {
+public:
+	bool isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
+		int dx = abs(fx - sx), dy = abs(fy - sy);
+		int mt = std::min(dx, dy) + abs(dx - dy);
+		if (mt == 0 && t == 1) return false;
+		return mt <= t;
+	}
+};

@@ -1,0 +1,32 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        std::unordered_map<int, vector<int>> m;
+        for (auto& p : adjacentPairs) {
+            m[p[0]].push_back(p[1]);
+            m[p[1]].push_back(p[0]);
+        }
+        for (auto& i : m) {
+            if (size(i.second) == 1) return helper(m, i.first);
+        }
+        return {};
+    }
+private:
+    vector<int> helper(std::unordered_map<int, vector<int>>& m, int i) {
+        vector<int> ans;
+        std::unordered_set<int> seen;
+        for (int k = 0; k < size(m); k++) {
+            ans.push_back(i);
+            seen.insert(i);
+            for (int j : m[i]) {
+                if (!seen.count(j)) i = j;
+            }
+        }
+        return ans;
+    }
+};

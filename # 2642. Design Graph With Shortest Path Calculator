@@ -1,0 +1,53 @@
+#include <vector>
+#include <queue>
+#include <unordered_map>
+using std::vector;
+
+class Graph {
+public:
+    vector<vector<std::pair<int, int>>> graph;
+    Graph(int n, vector<vector<int>>& edges) {
+        for (int i = 0; i < n; i++) graph.push_back({});
+        for (auto& e : edges) {
+            graph[e[0]].push_back({ e[1], e[2] });
+        }
+    }
+
+    void addEdge(vector<int> edge) {
+        graph[edge[0]].push_back({ edge[1], edge[2] });
+    }
+
+    int shortestPath(int node1, int node2) {
+        if (node1 == node2) return 0;
+        std::priority_queue<std::pair<int, int>, vector<std::pair<int, int>>, Compare> pq;
+        std::unordered_map<int, int> seen;
+        for (auto& p : graph[node1]) {
+            pq.push(p);
+            seen[p.first] = p.second;
+        }
+        while (!pq.empty()) {
+            auto cur = pq.top();
+            pq.pop();
+            if (cur.first == node2) return cur.second;
+            for (auto& p : graph[cur.first]) {
+                if (seen.count(p.first) && seen[p.first] < p.second + cur.second) continue;
+                pq.push({ p.first, p.second + cur.second });
+                seen[p.first] = p.second + cur.second;
+            }
+        }
+        return -1;
+    }
+private:
+    struct Compare {
+        bool operator() (std::pair<int, int>& a, std::pair<int, int>& b) {
+            return a.second > b.second;
+        }
+    };
+};
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph* obj = new Graph(n, edges);
+ * obj->addEdge(edge);
+ * int param_2 = obj->shortestPath(node1,node2);
+ */

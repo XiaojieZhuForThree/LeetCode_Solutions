@@ -1,0 +1,48 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
+
+using std::vector;
+
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if (source == target) return 0;
+        std::unordered_map<int, std::unordered_set<int>> r;
+        for (int i = 0; i < size(routes); i++) r[i] = std::unordered_set<int>(routes[i].begin(), routes[i].end());
+        std::deque<int> dq;
+        std::unordered_set<int> seen;
+        for (auto& p : r) {
+            if (p.second.count(source)) {
+                dq.push_back(p.first);
+                seen.insert(p.first);
+            }
+        }
+        int cnt = 0;
+        while (!dq.empty()) {
+            cnt++;
+            for (int i = size(dq); i > 0; i--) {
+                int cur = dq.front();
+                dq.pop_front();
+                if (r[cur].count(target)) return cnt;
+                for (auto& p : r) {
+                    if (!seen.count(p.first) && intersected(p.first, cur, r)) {
+                        dq.push_back(p.first);
+                        seen.insert(p.first);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+private:
+    bool intersected(int a, int b, std::unordered_map<int, std::unordered_set<int>>& r) {
+        if (a == b) return false;
+        for (int i : r[a]) {
+            if (r[b].count(i)) return true;
+        }
+        return false;
+    }
+};

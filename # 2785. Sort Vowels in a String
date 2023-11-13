@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <unordered_set>
+#include <algorithm>
+using std::string;
+
+class Solution {
+public:
+    string sortVowels(string s) {
+        std::vector<int> v;
+        std::unordered_set<char> vs({ 'a', 'e', 'i', 'o', 'u' });
+        for (int i = 0; i < size(s); i++) {
+            if (vs.count(tolower(s[i]))) v.push_back(i);
+        }
+        sort(v.begin(), v.end(), [&s](int a, int b) {
+            return s[a] < s[b];
+            });
+        string ans = "";
+        int ptr = 0;
+        for (char c : s) {
+            if (!vs.count(tolower(c))) ans += c;
+            else ans += s[v[ptr++]];
+        }
+        return ans;
+    }
+};

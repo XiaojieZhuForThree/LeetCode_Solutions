@@ -1,0 +1,16 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
+        std::sort(arr.begin(), arr.end());
+        int base = 0;
+        for (int i : arr) {
+            if (i <= base + 1) base = i;
+            else base++;
+        }
+        return base;
+    }
+};

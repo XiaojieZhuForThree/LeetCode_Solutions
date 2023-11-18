@@ -1,0 +1,24 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int prev = nums[0], ptr = 0, cur = 1, ans = 1;
+        long long rem = k;
+        for (int i = 1; i < size(nums); i++) {
+            cur++;
+            rem -= (long long)(cur - 1) * (nums[i] - prev);
+            while (rem < 0) {
+                rem += nums[i] - nums[ptr++];
+                cur--;
+                if (rem > k) rem = k;
+            }
+            ans = std::max(ans, cur);
+            prev = nums[i];
+        }
+        return ans;
+    }
+};

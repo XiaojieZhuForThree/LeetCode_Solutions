@@ -1,0 +1,16 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int reductionOperations(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int ans = 0, weight = 0;
+        for (int i = 1; i < size(nums); i++) {
+            if (nums[i] > nums[i - 1]) weight++;
+            ans += weight;
+        }
+        return ans;
+    }
+};

@@ -27,3 +27,32 @@ public class Question1160 {
 		}
 	}
 }
+
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    int countCharacters(vector<string>& words, string chars) {
+        std::unordered_map<char, int> m;
+        int ans = 0;
+        for (char c : chars) m[c]++;
+        for (string& w : words) {
+            std::unordered_map<char, int> mw;
+            for (char c : w) mw[c]++;
+            bool good = true;
+            for (auto& p : mw) {
+                if (!m.count(p.first) || m[p.first] < p.second) {
+                    good = false;
+                    break;
+                }
+            }
+            if (good) ans += size(w);
+        }
+        return ans;
+    }
+};

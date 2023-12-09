@@ -68,3 +68,21 @@ public:
         return ans;
     }
 };
+
+
+
+#include <vector>
+#include "TreeNode.h"
+
+using std::vector;
+
+class Solution {
+public:
+	vector<int> inorderTraversal(TreeNode* root) {
+		if (!root) return {};
+		vector<int> ans = inorderTraversal(root->left);
+		ans.push_back(root->val);
+		for (int i : inorderTraversal(root->right)) ans.push_back(i);
+		return ans;
+	}
+};

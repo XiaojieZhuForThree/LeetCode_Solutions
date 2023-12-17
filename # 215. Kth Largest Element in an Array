@@ -34,3 +34,58 @@ public:
 		return nums[k - 1];
 	}
 };
+
+
+#include <algorithm>
+#include <vector>
+using std::vector;
+
+class Solution1 {
+public:
+	int findKthLargest(vector<int>& nums, int k) {
+		sort(nums.begin(), nums.end(), std::greater<int>());
+		return nums[k - 1];
+	}
+};
+
+class Solution2 {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int l = 0, r = size(nums) - 1;
+        return qs(nums, l, r, k);
+    }
+private:
+    int qs(vector<int>& nums, int l, int r, int k) {
+        if (l == r) return nums[l];
+        int p = rand() % (r - l + 1) + l;
+        swap(nums, p, r);
+        int v = part(nums, l, r);
+        if (v == k - 1) return nums[v];
+        else if (v < k - 1) return qs(nums, v + 1, r, k);
+        return qs(nums, l, v - 1, k);
+    }
+    void swap(vector<int>& nums, int l, int r) {
+        int t = nums[l];
+        nums[l] = nums[r];
+        nums[r] = t;
+    }
+    int part(vector<int>& nums, int l, int r) {
+        int i = l, cnt = 0;
+        for (int j = l; j < r; j++) {
+            if (nums[j] < nums[r]) continue;
+            else if (nums[j] == nums[r]) {
+                if (cnt % 2 == 0) {
+                    swap(nums, i, j);
+                    i++;
+                }
+                cnt++;
+            }
+            else {
+                swap(nums, i, j);
+                i++;
+            }
+        }
+        swap(nums, i, r);
+        return i;
+    }
+};

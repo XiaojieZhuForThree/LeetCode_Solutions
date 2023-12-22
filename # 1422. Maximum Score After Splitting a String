@@ -22,3 +22,23 @@ public class Question1422 {
 		}
 	}
 }
+
+
+#include <string>
+using std::string;
+class Solution {
+public:
+    int maxScore(string s) {
+        int z = 0, o = 0;
+        for (char c : s) {
+            if (c == '1') o++;
+        }
+        int ans = 0;
+        for (int i = 1; i < size(s); i++) {
+            if (s[i - 1] == '0') z++;
+            else o--;
+            ans = std::max(ans, z + o);
+        }
+        return ans;
+    }
+};

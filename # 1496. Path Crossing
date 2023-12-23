@@ -33,3 +33,27 @@ public class Question1496 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+using std::string;
+
+class Solution {
+public:
+    bool isPathCrossing(string path) {
+        std::unordered_map<int, std::unordered_set<int>> visited;
+        int x = 0, y = 0;
+        visited[x].insert(y);
+        for (char c : path) {
+            if (c == 'N') y++;
+            else if (c == 'S') y--;
+            else if (c == 'E') x++;
+            else x--;
+            if (visited.count(x) && visited[x].count(y)) return true;
+            visited[x].insert(y);
+        }
+        return false;
+    }
+};

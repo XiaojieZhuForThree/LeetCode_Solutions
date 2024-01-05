@@ -37,3 +37,24 @@ class Solution:
                     cur = max(cur, ans[j] + 1)
             ans.append(cur)
         return max(ans)
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int lengthOfLIS(vector<int>& nums) {
+		vector<int> dp(size(nums), 1);
+		int ans = 1;
+		for (int i = 1; i < size(nums); i++) {
+			int cur = 1;
+			for (int j = 0; j < i; j++) {
+				if (nums[j] < nums[i]) cur = std::max(cur, 1 + dp[j]);
+			}
+			ans = std::max(ans, cur);
+			dp[i] = cur;
+		}
+		return ans;
+	}
+};

@@ -18,3 +18,31 @@ private:
         getSeq(node->right, seq);
     }
 };
+
+
+
+#include "TreeNode.h"
+#include <vector>
+
+class Solution {
+public:
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        return comp(getLeaf(root1), getLeaf(root2));
+    }
+private:
+    std::vector<int> getLeaf(TreeNode* node) {
+        if (!node) return {};
+        if (!node->left && !node->right) return { node->val };
+        std::vector<int> l = getLeaf(node->left), r = getLeaf(node->right);
+        l.insert(l.end(), r.begin(), r.end());
+        return l;
+    }
+private:
+    bool comp(std::vector<int> a, std::vector<int> b) {
+        if (size(a) != size(b)) return false;
+        for (int i = 0; i < size(a); i++) {
+            if (a[i] != b[i]) return false;
+        }
+        return true;
+    }
+};

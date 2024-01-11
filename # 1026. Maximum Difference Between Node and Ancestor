@@ -68,9 +68,8 @@ public class Question1026 {
 
 
 #include "TreeNode.h"
-#include <climits>
+#include <stdlib.h>
 #include <utility>
-using namespace std;
 
 class Solution {
 public:
@@ -79,12 +78,21 @@ public:
         dfs(root);
         return ans;
     }
-    pair<int, int> dfs(TreeNode* node) {
-        if (!node) return { INT_MAX, INT_MIN };
-        pair<int, int> left = dfs(node->left), right = dfs(node->right);
-        int minval = min({ left.first, right.first, node->val }), maxval = max({ left.second, right.second, node->val });
-        int cand = max(abs(node->val - minval), abs(node->val - maxval));
-        ans = max(ans, cand);
-        return { min(minval, node->val), max(maxval, node->val) };
+
+private:
+    std::pair<int, int> dfs(TreeNode* node) {
+        if (!node) return { 10001, -1 };
+        auto l = dfs(node->left);
+        auto r = dfs(node->right);
+        if (l.first == 10001) l.first = node->val;
+        if (l.second == -1) l.second = node->val;
+        if (r.first == 10001) r.first = node->val;
+        if (r.second == -1) r.second = node->val;
+        int val1 = abs(node->val - l.first), val2 = abs(l.second - node->val);
+        int val3 = abs(node->val - r.first), val4 = abs(r.second - node->val);
+        ans = std::max(ans, std::max(std::max(val1, val2), std::max(val3, val4)));
+        int s = std::min(l.first, r.first), b = std::max(l.second, r.second);
+        s = std::min(s, node->val), b = std::max(b, node->val);
+        return { s, b };
     }
 };

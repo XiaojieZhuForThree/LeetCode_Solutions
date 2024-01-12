@@ -25,20 +25,19 @@ public class Question1704 {
 
 #include <unordered_set>
 #include <string>
-using namespace std;
+using std::string;
 
 class Solution {
 public:
-	bool halvesAreAlike(string s) {
-		unordered_set<char> vowels = { 'a', 'e', 'i', 'o', 'u' };
-		int n = s.size() / 2;
-		int cnt = 0;
-		for (int i = 0; i < n; i++) {
-			if (vowels.find(tolower(s[i])) != vowels.end()) cnt++;
-		}
-		for (int i = n; i < 2 * n; i++) {
-			if (vowels.find(tolower(s[i])) != vowels.end()) cnt--;
-		}
-		return cnt == 0;
-	}
+    bool halvesAreAlike(string s) {
+        int l = 0, r = size(s) - 1, lc = 0, rc = 0;
+        std::unordered_set<char> v({ 'a', 'e', 'i', 'o', 'u' });
+        while (l < r) {
+            if (v.count(tolower(s[l]))) lc++;
+            if (v.count(tolower(s[r]))) rc++;
+            l++;
+            r--;
+        }
+        return lc == rc;
+    }
 };

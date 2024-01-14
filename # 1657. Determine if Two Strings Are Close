@@ -71,3 +71,37 @@ public:
 		return true;
 	}
 };
+
+
+#include <string>
+#include <unordered_map>
+using std::string;
+
+
+class Solution {
+public:
+	bool closeStrings(string word1, string word2) {
+		if (size(word1) != size(word2)) return false;
+		std::unordered_map<char, int> m1, m2;
+		std::unordered_map<int, int> c1, c2;
+		for (int i = 0; i < size(word1); i++) {
+			m1[word1[i]]++;
+			m2[word2[i]]++;
+		}
+		for (auto& p : m1) {
+			if (!m2.count(p.first)) return false;
+			c1[p.second]++;
+		}
+		for (auto& p : m2) {
+			if (!m1.count(p.first)) return false;
+			c2[p.second]++;
+		}
+		for (auto& p : c1) {
+			if (!c2.count(p.first) || c2[p.first] != p.second) return false;
+		}
+		for (auto& p : c2) {
+			if (!c1.count(p.first) || c1[p.first] != p.second) return false;
+		}
+		return true;
+	}
+};

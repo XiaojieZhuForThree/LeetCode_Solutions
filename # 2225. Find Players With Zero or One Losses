@@ -23,3 +23,29 @@ public:
 		return { all_win, lose_one };
 	}
 };
+
+
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        std::unordered_map<int, int> l;
+        for (auto& m : matches) l[m[1]]++;
+        std::unordered_set<int> f, s;
+        for (auto& m : matches) {
+            for (int i : m) {
+                if (!l.count(i)) f.insert(i);
+                else if (l[i] == 1) s.insert(i);
+            }
+        }
+        vector<int> a(f.begin(), f.end()), b(s.begin(), s.end());
+        sort(a.begin(), a.end());
+        sort(b.begin(), b.end());
+        return { a, b };
+    }
+};

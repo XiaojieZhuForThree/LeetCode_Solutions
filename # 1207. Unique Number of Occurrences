@@ -39,3 +39,23 @@ public:
 		return true;
 	}
 };
+
+
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        std::unordered_map<int, int> m;
+        for (int i : arr) m[i]++;
+        std::unordered_set<int> seen;
+        for (auto& p : m) {
+            if (seen.count(p.second)) return false;
+            seen.insert(p.second);
+        }
+        return true;
+    }
+};

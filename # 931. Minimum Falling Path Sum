@@ -91,3 +91,25 @@ public:
 		return ans;
 	}
 };
+
+
+#include <vector>
+using std::vector;
+
+
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        for (int i = 1; i < size(matrix); i++) {
+            for (int j = 0; j < size(matrix[0]); j++) {
+                int cand = matrix[i - 1][j];
+                if (j > 0) cand = std::min(cand, matrix[i - 1][j - 1]);
+                if (j < size(matrix[0]) - 1) cand = std::min(cand, matrix[i - 1][j + 1]);
+                matrix[i][j] += cand;
+            }
+        }
+        int ans = INT_MAX;
+        for (int i : matrix[size(matrix) - 1]) ans = std::min(ans, i);
+        return ans;
+    }
+};

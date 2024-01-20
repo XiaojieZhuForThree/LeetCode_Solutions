@@ -33,3 +33,39 @@ public class Question907 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        std::deque<int> q;
+        vector<int> l(size(arr), -1), r(size(arr), -1);
+        for (int i = 0; i < size(arr); i++) {
+            int ll = 1;
+            while (!q.empty() && arr[q.back()] >= arr[i]) q.pop_back();
+            if (q.empty()) ll = i + 1;
+            else ll += i - q.back() - 1;
+            l[i] = ll;
+            q.push_back(i);
+        }
+        q.clear();
+        for (int i = size(arr) - 1; i >= 0; i--) {
+            int rl = 1;
+            while (!q.empty() && arr[q.front()] > arr[i]) q.pop_front();
+            if (q.empty()) rl = size(arr) - i;
+            else rl += q.front() - i - 1;
+            r[i] = rl;
+            q.push_front(i);
+        }
+        long long ans = 0, mod = 1000000007;
+        for (int i = 0; i < size(arr); i++) {
+            ans += (long long)l[i] * r[i] * arr[i];
+            ans %= mod;
+        }
+        return ans;
+    }
+};

@@ -69,3 +69,19 @@ public:
         return max(nums[n - 1], nums[n - 2]);
     }
 };
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int rob(vector<int>& nums) {
+		if (size(nums) == 1) return nums[0];
+		nums[1] = std::max(nums[0], nums[1]);
+		for (int i = 2; i < size(nums); i++) {
+			nums[i] = std::max(nums[i] + nums[i - 2], nums[i - 1]);
+		}
+		return std::max(nums[size(nums) - 1], nums[size(nums) - 2]);
+	}
+};

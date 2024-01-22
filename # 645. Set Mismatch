@@ -38,3 +38,21 @@ public:
 		return ans;
 	}
 };
+
+
+# include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        int n = size(nums);
+        vector<int> seen(n + 1, 0), ans(2, 0);
+        for (int i : nums) seen[i]++;
+        for (int i = 1; i <= n; i++) {
+            if (seen[i] == 0) ans[1] = i;
+            else if (seen[i] == 2) ans[0] = i;
+        }
+        return ans;
+    }
+};

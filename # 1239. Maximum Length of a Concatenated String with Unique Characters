@@ -95,3 +95,38 @@ private:
 		return true;
 	}
 };
+
+
+#include <unordered_set>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    int maxLength(vector<string>& arr) {
+        std::unordered_set<char> s;
+        return dfs(arr, 0, 0, s);
+    }
+private:
+    int dfs(vector<string>& arr, int i, int cur, std::unordered_set<char>& s) {
+        if (i == size(arr)) return cur;
+        int val = dfs(arr, i + 1, cur, s);
+        if (canAdd(arr[i], s)) {
+            for (char c : arr[i]) s.insert(c);
+            val = std::max(val, dfs(arr, i + 1, cur + size(arr[i]), s));
+            for (char c : arr[i]) s.erase(c);
+        }
+        return val;
+    }
+    bool canAdd(string& st, std::unordered_set<char>& s) {
+        if (!valid(st)) return false;
+        for (char c : st) {
+            if (s.count(c)) return false;
+        }
+        return true;
+    }
+    bool valid(string& st) {
+        return size(std::unordered_set<char>(st.begin(), st.end())) == size(st);
+    }
+};

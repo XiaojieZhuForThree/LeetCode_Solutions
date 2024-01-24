@@ -80,3 +80,40 @@ private:
         return 1;
     }
 };
+
+
+#include "TreeNode.h"
+#include <vector>
+
+class Solution {
+public:
+    int cnt = 0;
+    int pseudoPalindromicPaths(TreeNode* root) {
+        std::vector<int> v(10, 0);
+        dfs(root, v);
+        return cnt;
+    }
+private:
+    void dfs(TreeNode* node, std::vector<int>& v) {
+        if (!node) return;
+        v[node->val]++;
+        if (!node->left && !node->right) {
+            cnt += check(v);
+        }
+        else {
+            dfs(node->left, v);
+            dfs(node->right, v);
+        }
+        v[node->val]--;
+        return;
+    }
+    int check(std::vector<int>& v) {
+        int odd = 0;
+        for (int i : v) {
+            if (i % 2 == 0) continue;
+            if (odd == 1) return 0;
+            odd++;
+        }
+        return 1;
+    }
+};

@@ -58,3 +58,32 @@ class Solution:
             seen[key] = ans % 1_000_000_007
             return seen[key]
         return dfs(startRow, startColumn, maxMove)
+
+
+
+#include <vector>
+
+class Solution {
+public:
+	std::vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+	std::vector<std::vector<std::vector<long long>>> dp;
+	long long mod = 1000000007;
+
+	int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+		dp = std::vector<std::vector<std::vector<long long>>>(m + 1, std::vector<std::vector<long long>>(n + 1, std::vector<long long>(maxMove + 1, -1)));
+		return dfs(m, n, maxMove, startRow, startColumn);
+	}
+private:
+	long long dfs(int m, int n, int cur, int r, int c) {
+		if (r < 0 || r >= m || c < 0 || c >= n) return 1;
+		if (cur == 0) return 0;
+		if (dp[r][c][cur] != -1) return dp[r][c][cur];
+		long long ans = 0;
+		for (auto& p : dirs) {
+			ans += dfs(m, n, cur - 1, r + p.first, c + p.second);
+			ans %= mod;
+		}
+		dp[r][c][cur] = ans;
+		return ans;
+	}
+};

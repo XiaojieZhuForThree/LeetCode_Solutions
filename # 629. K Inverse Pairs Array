@@ -16,3 +16,30 @@ class Solution:
                 nxt[j] = cur
             dp = nxt
         return dp[k]
+
+
+#include <vector>
+class Solution {
+public:
+    long long mod = 1000000007;
+    std::vector<std::vector<int>> dp;
+    int kInversePairs(int n, int k) {
+        dp = std::vector<std::vector<int>>(n + 1, std::vector<int>(k + 1, -1));
+        return helper(n, k);
+    }
+
+private:
+    int helper(int n, int k) {
+        if (k == 0) return 1;
+        if (n == 0) return 0;
+        if (dp[n][k] != -1) return dp[n][k];
+        long long ans = 0;
+        for (int i = k; i >= 0 && i + n - 1 >= k; i--) {
+            int cand = helper(n - 1, i);
+            ans += cand;
+            ans %= mod;
+        }
+        dp[n][k] = ans;
+        return ans;
+    }
+};

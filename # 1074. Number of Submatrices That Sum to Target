@@ -86,3 +86,34 @@ class Solution:
             for j in range(n):
                 if i > 0:
                     matrix[i][j] += matrix[i-1][j]
+
+
+class Solution {
+public:
+    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+        int m = size(matrix), n = size(matrix[0]);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) matrix[i][j] += helper(matrix, i, j - 1);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                unordered_map<int, int> seen;
+                seen[0] = 1;
+                int cur = 0;
+                for (int k = 0; k < m; k++) {
+                    cur += helper(matrix, k, i) - helper(matrix, k, j - 1);
+                    if (seen.count(cur - target)) ans += seen[cur - target];
+                    seen[cur]++;                    
+                }
+            }
+        }
+        return ans;
+    }
+
+private:
+    int helper(vector<vector<int>>& matrix, int i, int j) {
+        if (i < 0 || i >= size(matrix) || j < 0 || j >= size(matrix[0])) return 0;
+        return matrix[i][j];
+    }
+};

@@ -1,45 +1,41 @@
-#include <stack>
-using namespace std;
+#include <deque>
 
 class MyQueue {
 public:
-    int size;
-    stack<int> for_push, for_pop;
-    MyQueue() {
-        size = 0;
-    }
+	std::deque<int> s1, s2;
+	MyQueue() {
 
-    void push(int x) {
-        for_push.push(x);
-        size++;
-    }
+	}
 
-    int pop() {
-        if (for_pop.empty()) {
-            while (!for_push.empty()) {
-                for_pop.push(for_push.top());
-                for_push.pop();
-            }
-        }
-        int ans = for_pop.top();
-        for_pop.pop();
-        size--;
-        return ans;
-    }
+	void push(int x) {
+		s1.push_back(x);
+	}
 
-    int peek() {
-        if (for_pop.empty()) {
-            while (!for_push.empty()) {
-                for_pop.push(for_push.top());
-                for_push.pop();
-            }
-        }
-        return for_pop.top();
-    }
+	int pop() {
+		if (s2.empty()) {
+			while (!s1.empty()) {
+				s2.push_back(s1.back());
+				s1.pop_back();
+			}
+		}
+		int val = s2.back();
+		s2.pop_back();
+		return val;
+	}
 
-    bool empty() {
-        return size == 0;
-    }
+	int peek() {
+		if (s2.empty()) {
+			while (!s1.empty()) {
+				s2.push_back(s1.back());
+				s1.pop_back();
+			}
+		}
+		return s2.back();
+	}
+
+	bool empty() {
+		return s1.empty() && s2.empty();
+	}
 };
 
 /**

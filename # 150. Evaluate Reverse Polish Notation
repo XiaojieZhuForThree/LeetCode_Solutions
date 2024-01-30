@@ -79,3 +79,49 @@ public:
 		return stack.top();
 	}
 };
+
+
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+#include <deque>
+class Solution {
+public:
+	int evalRPN(vector<string>& tokens) {
+		std::deque<int> st;
+		for (string& s : tokens) {
+			if (s == "+") {
+				int val1 = st.back();
+				st.pop_back();
+				int val2 = st.back();
+				st.pop_back();
+				st.push_back(val1 + val2);
+			}
+			else if (s == "-") {
+				int val1 = st.back();
+				st.pop_back();
+				int val2 = st.back();
+				st.pop_back();
+				st.push_back(val2 - val1);
+			}
+			else if (s == "*") {
+				int val1 = st.back();
+				st.pop_back();
+				int val2 = st.back();
+				st.pop_back();
+				st.push_back(val1 * val2);
+			}
+			else if (s == "/") {
+				int val1 = st.back();
+				st.pop_back();
+				int val2 = st.back();
+				st.pop_back();
+				st.push_back(val2 / val1);
+			}
+			else st.push_back(std::stoi(s));
+		}
+		return st.back();
+	}
+};

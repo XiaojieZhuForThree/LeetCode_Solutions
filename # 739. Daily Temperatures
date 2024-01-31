@@ -34,3 +34,25 @@ public:
 		return ans;
 	}
 };
+
+
+#include <deque>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	vector<int> dailyTemperatures(vector<int>& T) {
+		std::deque<int> s;
+		vector<int> ans;
+		for (int i = size(T) - 1; i >= 0; i--) {
+			while (!s.empty() && T[s.back()] <= T[i]) s.pop_back();
+			if (s.empty()) ans.push_back(0);
+			else ans.push_back(s.back() - i);
+			s.push_back(i);
+		}
+		std::reverse(ans.begin(), ans.end());
+		return ans;
+	}
+};

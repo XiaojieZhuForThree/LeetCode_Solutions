@@ -46,3 +46,25 @@ public class Question1291 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> sequentialDigits(int low, int high) {
+		vector<int> ans;
+		for (int i = 1; i < 10; i++) {
+			long long cur = 0, ctr = i;
+			while (cur * 10 + ctr <= high && ctr < 10) {
+				cur = cur * 10 + ctr;
+				ctr++;
+				if (cur >= low) ans.push_back(cur);
+			}
+		}
+		sort(ans.begin(), ans.end());
+		return ans;
+	}
+};

@@ -16,3 +16,22 @@ public class Question1043 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        vector<int> ans(size(arr) + 1, 0);
+        for (int i = 1; i <= size(arr); i++) {
+            int cur = arr[i - 1];
+            for (int j = 0; j < k && i - 1 - j >= 0; j++) {
+                cur = std::max(cur, arr[i - 1 - j]);
+                ans[i] = std::max(ans[i], cur * (j + 1) + ans[i - j - 1]);
+            }
+        }
+        return ans[size(arr)];
+    }
+};

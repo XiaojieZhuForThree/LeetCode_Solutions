@@ -94,3 +94,49 @@ private:
 		return false;
 	}
 };
+
+
+#include <string>
+#include <unordered_map>
+using std::string;
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        std::unordered_map<char, int> ms;
+        std::unordered_map<char, int> mt = getM(t);
+        int l = 0, r = 0;
+        string ans = "";
+        for (; r < size(s); r++) {
+            ms[s[r]]++;
+            while (matchAfterRemove(ms, mt, s[l])) {
+                ms[s[l]]--;
+                l++;
+            }
+            if (match(ms, mt) && ans == "" || size(ans) > r - l + 1) ans = s.substr(l, r - l + 1);
+        }
+        return ans;
+    }
+
+private:
+    std::unordered_map<char, int> getM(string& s) {
+        std::unordered_map<char, int> m;
+        for (char c : s) m[c]++;
+        return m;
+    }
+
+    bool matchAfterRemove(std::unordered_map<char, int>& a, std::unordered_map<char, int>& b, char c) {
+        a[c]--;
+        bool ans = match(a, b);
+        a[c]++;
+        return ans;
+    }
+
+    bool match(std::unordered_map<char, int>& a, std::unordered_map<char, int>& b) {
+        for (auto& p : b) {
+            if (!a.count(p.first)) return false;
+            if (a[p.first] < p.second) return false;
+        }
+        return true;
+    }
+};

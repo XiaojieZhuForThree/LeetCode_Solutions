@@ -26,3 +26,23 @@ class Solution:
             else:
                 freq -= 1
         return cand
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int majorityElement(vector<int>& nums) {
+		int ans = nums[0], cnt = 1;
+		for (int i = 1; i < size(nums); i++) {
+			if (nums[i] == ans) cnt++;
+			else if (cnt == 0) {
+				ans = nums[i];
+				cnt = 1;
+			}
+			else cnt--;
+		}
+		return ans;
+	}
+};

@@ -27,3 +27,29 @@ public class Question1481 {
 		}
 	}
 }
+
+
+#include <unordered_map>
+#include <vector>
+#include <queue>
+
+using std::vector;
+
+class Solution {
+public:
+    int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+        std::unordered_map<int, int> m;
+        for (int i : arr) m[i]++;
+        std::priority_queue<int, vector<int>, std::greater<int>> pq;
+        for (auto& p : m) pq.push(p.second);
+        while (k > 0) {
+            int cur = pq.top();
+            pq.pop();
+            int ded = std::min(k, cur);
+            k -= ded;
+            cur -= ded;
+            if (cur > 0) pq.push(cur);
+        }
+        return size(pq);
+    }
+};

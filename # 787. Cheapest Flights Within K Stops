@@ -30,3 +30,38 @@ public:
 		return map.count(dst) ? map[dst] : -1;
 	}
 };
+
+
+#include <vector>
+#include <queue>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        std::priority_queue<vector<int>, vector<vector<int>>, std::greater<vector<int>>> pq;
+        std::unordered_map<int, vector<std::pair<int, int>>> m;
+        for (auto& f : flights) {
+            m[f[0]].push_back({ f[1], f[2] });
+        }
+        std::unordered_map<int, std::pair<int, int>> cur;
+        cur[src] = { 0, -1 };
+        for (auto& p : m[src]) {
+            pq.push({ p.second, p.first, 0 });
+            cur[p.first] = { p.second, 0 };
+        }
+        while (!pq.empty()) {
+            auto c = pq.top();
+            pq.pop();
+            if (c[1] == dst) return c[0];
+            if (c[2] == k) continue;
+            for (auto& p : m[c[1]]) {
+                if (cur.count(p.first) && cur[p.first].first <= c[0] + p.second && cur[p.first].second <= c[2] + 1) continue;
+                pq.push({ c[0] + p.second, p.first, c[2] + 1 });
+                cur[p.first] = { c[0] + p.second, c[2] + 1 };
+            }
+        }
+        return -1;
+    }
+};

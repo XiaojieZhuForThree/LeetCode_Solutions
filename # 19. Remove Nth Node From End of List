@@ -55,3 +55,29 @@ public:
         return head;
     }
 };
+
+
+#include "ListNode.h"
+#include <vector>
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        std::vector<ListNode*> v;
+        while (head) {
+            v.push_back(head);
+            head = head->next;
+        }
+        int idx = size(v) - n;
+        if (idx == 0) {
+            v[idx]->next = nullptr;
+            return  size(v) == 1 ? nullptr : v[1];
+        }
+        else if (idx == size(v) - 1) {
+            v[idx - 1]->next = nullptr;
+            return size(v) == 1 ? nullptr : v[0];
+        }
+        v[idx - 1]->next = v[idx + 1];
+        return v[0];
+    }
+};

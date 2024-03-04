@@ -61,3 +61,30 @@ public:
         return ans;
     }
 };
+
+
+#include <vector>
+#include <algorithm>
+
+using std::vector;
+
+class Solution {
+public:
+	int bagOfTokensScore(vector<int>& tokens, int power) {
+		std::sort(tokens.begin(), tokens.end());
+		int ans = 0, l = 0, r = size(tokens) - 1;
+		for (; l <= r; l++) {
+			if (power >= tokens[l]) {
+				ans++;
+				power -= tokens[l];
+			}
+			else if (ans == 0) break;
+			else if (power >= power + tokens[r] - tokens[l]) break;
+			else {
+				power += tokens[r] - tokens[l];
+				r--;
+			}
+		}
+		return ans;
+	}
+};

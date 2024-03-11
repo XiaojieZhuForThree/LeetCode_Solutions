@@ -27,3 +27,28 @@ public class Question791 {
 		}
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+using std::string;
+
+class Solution {
+public:
+	string customSortString(string order, string s) {
+		int o = 0;
+		std::unordered_map<char, int> m;
+		for (char c : order) {
+			m[c] = o++;
+		}
+		std::sort(s.begin(), s.end(), [&m](char a, char b) {
+			int ao = 27, bo = 27;
+			if (m.count(a)) ao = m[a];
+			if (m.count(b)) bo = m[b];
+			return ao < bo;
+			});
+		return s;
+	}
+};

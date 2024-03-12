@@ -37,3 +37,44 @@ public class Question1171 {
 		}
 	}
 }
+
+
+#include "ListNode.h"
+#include <unordered_map>
+#include <deque>
+
+class Solution {
+public:
+	ListNode* removeZeroSumSublists(ListNode* head) {
+		ListNode* h = new ListNode(0), * d = head, * p = h;
+		std::unordered_map<int, ListNode*> il;
+		std::unordered_map<ListNode*, int> li;
+		std::deque<ListNode*> st;
+		il[0] = h;
+		li[h] = 0;
+		st.push_back(h);
+		int s = 0;
+		while (d) {
+			s += d->val;
+			if (il.count(s)) {
+				p = il[s];
+				while (st.back() != p) {
+					int v = li[st.back()];
+					il.erase(v);
+					li.erase(st.back());
+					st.pop_back();
+				}
+				p->next = nullptr;
+			}
+			else {
+				p->next = d;
+				p = p->next;
+				il[s] = d;
+				li[d] = s;
+				st.push_back(d);
+			}
+			d = d->next;
+		}
+		return h->next;
+	}
+};

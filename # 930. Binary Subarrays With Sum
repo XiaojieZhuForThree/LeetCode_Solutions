@@ -38,3 +38,24 @@ public class Question930 {
 		}
 	}
 }
+
+
+#include <unordered_map>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int numSubarraysWithSum(vector<int>& nums, int goal) {
+		std::unordered_map<int, int> m;
+		m[0] = 1;
+		int cur = 0, ans = 0;
+		for (int i : nums) {
+			cur += i;
+			if (m.count(cur - goal)) ans += m[cur - goal];
+			m[cur]++;
+		}
+		return ans;
+	}
+};

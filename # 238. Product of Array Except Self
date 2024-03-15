@@ -13,3 +13,31 @@ class Solution {
         return ans;
     }
 }
+
+
+#include <vector>
+#include <deque>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        std::deque<int> l, r;
+        vector<int> ans;
+        l.push_back(1);
+        r.push_front(1);
+        int cur = 1;
+        for (int i = 1; i < size(nums); i++) {
+            cur *= nums[i - 1];
+            l.push_back(cur);
+        }
+        cur = 1;
+        for (int i = size(nums) - 2; i >= 0; i--) {
+            cur *= nums[i + 1];
+            r.push_front(cur);
+        }
+        for (int i = 0; i < size(nums); i++) ans.push_back(l[i] * r[i]);
+        return ans;
+    }
+};

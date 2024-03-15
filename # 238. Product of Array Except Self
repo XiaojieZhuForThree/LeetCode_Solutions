@@ -38,6 +38,31 @@ public:
             r.push_front(cur);
         }
         for (int i = 0; i < size(nums); i++) ans.push_back(l[i] * r[i]);
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        vector<int> ans;
+        ans.push_back(1);
+        int cur = 1;
+        for (int i = 1; i < size(nums); i++) {
+            cur *= nums[i - 1];
+            ans.push_back(cur);
+        }
+        cur = 1;
+        for (int i = size(nums) - 2; i >= 0; i--) {
+            cur *= nums[i + 1];
+            ans[i] *= cur;
+        }
+        return ans;
+    }
+};
+
         return ans;
     }
 };

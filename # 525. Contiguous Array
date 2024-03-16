@@ -16,3 +16,25 @@ class Solution:
                 ref[diff] = i + 1
         return ans
                 
+
+
+#include <unordered_map>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int findMaxLength(vector<int>& nums) {
+		std::unordered_map<int, int> m;
+		m[0] = 0;
+		int diff = 0, ans = 0;
+		for (int i = 0; i < size(nums); i++) {
+			if (nums[i] == 0) diff++;
+			else diff--;
+			if (m.count(diff)) ans = std::max(ans, i + 1 - m[diff]);
+			else m[diff] = i + 1;
+		}
+		return ans;
+	}
+};

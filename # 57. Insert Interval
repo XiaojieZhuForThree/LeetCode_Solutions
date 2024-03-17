@@ -66,3 +66,35 @@ public:
 		return ans;
 	}
 };
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        int l = newInterval[0], r = newInterval[1];
+        bool added = false;
+        vector<vector<int>> ans;
+        for (auto& i : intervals) {
+            if (i[1] < l) ans.push_back(i);
+            else if (i[0] > r) {
+                if (!added) {
+                    ans.push_back({ l, r });
+                    added = true;
+                }
+                ans.push_back(i);
+            }
+            else {
+                l = std::min(l, i[0]);
+                r = std::max(r, i[1]);
+            }
+        }
+        if (!added) {
+            ans.push_back({ l, r });
+        }
+        return ans;
+    }
+};

@@ -66,3 +66,23 @@ public:
 		return ans;
 	}
 };
+
+
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+        std::sort(points.begin(), points.end());
+        int ans = 1, l = points[0][0], r = points[0][1];
+        for (auto& p : points) {
+            if (p[0] > r) {
+                ans++;
+                l = p[0];
+                r = p[1];
+            } else {
+                l = std::max(l, p[0]);
+                r = std::min(r, p[1]);
+            }
+        }
+        return ans;
+    }
+};

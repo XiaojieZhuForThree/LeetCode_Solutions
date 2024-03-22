@@ -61,3 +61,28 @@ class Solution:
             l += 1
             r -= 1
         return True
+
+
+
+#include "ListNode.h"
+#include <vector>
+
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        std::vector<int> v;
+        while (head) {
+            v.push_back(head->val);
+            head = head->next;
+        }
+        return isPali(v);
+    }
+private:
+    bool isPali(std::vector<int>& v) {
+        int l = 0, r = size(v) - 1;
+        while (l < r) {
+            if (v[l++] != v[r--]) return false;
+        }
+        return true;
+    }
+};

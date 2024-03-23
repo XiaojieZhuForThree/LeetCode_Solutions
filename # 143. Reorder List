@@ -91,3 +91,34 @@ public class Question143 {
 	}
 }
 
+#include "ListNode.h"
+#include <deque>
+
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        std::deque<ListNode*> v;
+        while (head) {
+            v.push_back(head);
+            head = head->next;
+        }
+        bool s = true;
+        ListNode* d = new ListNode(-1);
+        while (!v.empty()) {
+            if (s) {
+                ListNode* cur = v.front();
+                d->next = cur;
+                v.pop_front();
+            }
+            else {
+                ListNode* cur = v.back();
+                d->next = cur;
+                v.pop_back();
+            }
+            s = !s;
+            d = d->next;
+        }
+        d->next = nullptr;
+    }
+};
+

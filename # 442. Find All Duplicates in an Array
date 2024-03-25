@@ -32,3 +32,34 @@ public class Question442 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	vector<int> findDuplicates(vector<int>& nums) {
+		vector<int> ans;
+		for (int i = 0; i < size(nums); i++) {
+			int c = abs(nums[i]);
+			if (c == i + 1) continue;
+			else {
+				int t = nums[c - 1];
+				if (abs(nums[c - 1]) == c) {
+					nums[c - 1] = -c;
+				}
+				else {
+					nums[c - 1] = c;
+					nums[i] = t;
+					i--;
+				}
+			}
+		}
+		for (int i : nums) {
+			if (i < 0) ans.push_back(-i);
+		}
+		return ans;
+	}
+};

@@ -38,3 +38,28 @@ public class Question41 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int firstMissingPositive(vector<int>& nums) {
+		int n = size(nums);
+		for (int i = 0; i < n; i++) {
+			if (nums[i] <= 0 || nums[i] > n) continue;
+			if (nums[i] == i + 1) continue;
+			if (nums[nums[i] - 1] == nums[i]) continue;
+			int t = nums[nums[i] - 1];
+			nums[nums[i] - 1] = nums[i];
+			nums[i] = t;
+			i--;
+		}
+		for (int i = 0; i < n; i++) {
+			if (nums[i] != i + 1) return i + 1;
+		}
+		return n + 1;
+	}
+};

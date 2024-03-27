@@ -47,3 +47,22 @@ public class Question713 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int ans = 0;
+        int l = 0, r = 0, cur = 1;
+        for (; r < size(nums); r++) {
+            cur *= nums[r];
+            while (cur >= k && l <= r) cur /= nums[l++];
+            if (cur < k) ans += (r - l + 1);
+        }
+        return ans;
+    }
+};

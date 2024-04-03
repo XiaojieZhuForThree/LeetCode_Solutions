@@ -31,3 +31,34 @@ public class Question79 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <string>
+
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	bool exist(vector<vector<char>>& board, string word) {
+		for (int i = 0; i < size(board); i++) {
+			for (int j = 0; j < size(board[0]); j++) {
+				if (board[i][j] == word[0] && helper(board, word, 0, i, j)) return true;
+			}
+		}
+		return false;
+	}
+private:
+	bool helper(vector<vector<char>>& board, string& word, int cur, int i, int j) {
+		if (cur == size(word)) return true;
+		if (i < 0 || i >= size(board) || j < 0 || j >= size(board[0]) || board[i][j] != word[cur]) return false;
+		board[i][j] = '&';
+		bool ans = helper(board, word, cur + 1, i + 1, j)
+			|| helper(board, word, cur + 1, i - 1, j)
+			|| helper(board, word, cur + 1, i, j + 1)
+			|| helper(board, word, cur + 1, i, j - 1);
+		board[i][j] = word[cur];
+		return ans;
+	}
+};

@@ -13,3 +13,23 @@ public:
         return string(stack.begin(), stack.end());
     }
 };
+
+
+#include <string>
+#include <deque>
+
+using std::string;
+
+class Solution {
+public:
+    string makeGood(string s) {
+        std::deque<char> q;
+        for (char c : s) {
+            if (!q.empty() && tolower(q.back()) == tolower(c) && q.back() != c) q.pop_back();
+            else q.push_back(c);
+        }
+        string ans;
+        for (char c : q) ans += c;
+        return ans;
+    }
+};

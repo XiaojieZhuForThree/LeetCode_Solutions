@@ -17,3 +17,29 @@ class Solution {
         return deck;
     }
 }
+
+
+#include <vector>
+#include <queue>
+
+using std::vector;
+
+class Solution {
+public:
+	vector<int> deckRevealedIncreasing(vector<int>& deck) {
+		std::sort(deck.begin(), deck.end(), std::greater<int>());
+		std::deque<int> q;
+		vector<int> ans;
+		for (int i : deck) {
+			if (q.empty()) q.push_front(i);
+			else {
+				int cur = q.back();
+				q.pop_back();
+				q.push_front(cur);
+				q.push_front(i);
+			}
+		}
+		for (int i : q) ans.push_back(i);
+		return ans;
+	}
+};

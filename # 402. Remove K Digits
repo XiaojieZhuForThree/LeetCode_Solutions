@@ -40,4 +40,32 @@ class Solution:
         res = "".join(ans).lstrip('0')
         return '0' if not res else res
             
-            
+
+
+#include <string>
+#include <deque>
+
+using std::string;
+
+class Solution {
+public:
+	string removeKdigits(string num, int k) {
+		std::deque<char> q;
+		for (char c : num) {
+			while (k > 0 && !q.empty() && q.back() > c) {
+				q.pop_back();
+				k--;
+			}
+			q.push_back(c);
+		}
+		while (k > 0) {
+			q.pop_back();
+			k--;
+		}
+		while (!q.empty() && q.front() == '0') q.pop_front();
+		if (q.empty()) return "0";
+		string ans;
+		for (char c : q) ans += c;
+		return ans;
+	}
+};

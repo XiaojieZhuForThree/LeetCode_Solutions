@@ -50,3 +50,35 @@ public:
         return ans;
     }
 };
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = size(height), ans = 0;
+        int a[n];
+        for (int i = 0; i < n; i++) a[i] = 0;
+        int h = height[0];
+        for (int i = 1; i < n - 1; i++) {
+            if (height[i] <= h) a[i] = h - height[i];
+            else {
+                a[i] = 0;
+                h = height[i];
+            }
+        }
+        h = height[n - 1];
+        for (int i = n - 2; i > 0; i--) {
+            if (height[i] <= h) a[i] = std::min(a[i], h - height[i]);
+            else {
+                a[i] = 0;
+                h = height[i];
+            }
+        }
+        for (int i : a) ans += i;
+        return ans;
+    }
+};

@@ -72,3 +72,33 @@ public:
         }
     }
 };
+
+
+#include "TreeNode.h"
+
+class Solution {
+public:
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if (depth == 1) {
+            TreeNode* n = new TreeNode(val);
+            n->left = root;
+            return n;
+        }
+        helper(root, 1, val, depth);
+        return root;
+    }
+private:
+    void helper(TreeNode* node, int cur, int val, int depth) {
+        if (!node || cur >= depth) return;
+        if (cur == depth - 1) {
+            TreeNode* l = new TreeNode(val), * r = new TreeNode(val);
+            l->left = node->left;
+            r->right = node->right;
+            node->left = l;
+            node->right = r;
+            return;
+        }
+        helper(node->left, cur + 1, val, depth);
+        helper(node->right, cur + 1, val, depth);
+    }
+};

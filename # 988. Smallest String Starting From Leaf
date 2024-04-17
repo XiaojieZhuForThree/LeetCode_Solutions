@@ -85,3 +85,34 @@ public class Question988 {
 	}
 
 }
+
+
+#include <string>
+#include "TreeNode.h"
+#include <vector>
+
+using std::string;
+
+class Solution {
+public:
+	string smallestFromLeaf(TreeNode* root) {
+		if (!root) return "";
+		std::vector<string> cand = helper(root);
+		string ans = cand[0];
+		for (string& s : cand) ans = min(ans, s);
+		return ans;
+	}
+private:
+	std::vector<string> helper(TreeNode* node) {
+		if (!node) return {};
+		if (!node->left && !node->right) return { string(1, char(int('a') + node->val)) };
+		std::vector<string> ans;
+		if (node->left) {
+			for (auto& s : helper(node->left)) ans.push_back(s + char(int('a') + node->val));
+		}
+		if (node->right) {
+			for (auto& s : helper(node->right)) ans.push_back(s + char(int('a') + node->val));
+		}
+		return ans;
+	}
+};

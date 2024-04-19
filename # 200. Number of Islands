@@ -54,3 +54,31 @@ class Solution:
         grid[i][j] = '0'
         for d in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
             self.dfs(grid, i + d[0], j + d[1])
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int numIslands(vector<vector<char>>& grid) {
+		int ans = 0;
+		vector<std::pair<int, int>> dir = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+		for (int i = 0; i < size(grid); i++) {
+			for (int j = 0; j < size(grid[0]); j++) {
+				if (grid[i][j] == '1') {
+					ans++;
+					dfs(grid, dir, i, j);
+				}
+			}
+		}
+		return ans;
+	}
+
+private:
+	void dfs(vector<vector<char>>& g, vector<std::pair<int, int>>& dir, int i, int j) {
+		if (i < 0 || i >= size(g) || j < 0 || j >= size(g[0]) || g[i][j] == '0') return;
+		g[i][j] = '0';
+		for (auto& p : dir) dfs(g, dir, i + p.first, j + p.second);
+	}
+};

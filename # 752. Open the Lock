@@ -48,3 +48,48 @@ public class Question752 {
 		}
 	}
 }
+
+
+#include <string>
+#include <vector>
+#include <deque>
+#include <unordered_set>
+
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        std::deque<string> q;
+        std::unordered_set<string> used;
+        for (string s : deadends) used.insert(s);
+        if (used.count("0000")) return -1;
+        q.push_back("0000");
+        used.insert("0000");
+        int s = 0;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                string c = q.front();
+                q.pop_front();
+                if (c == target) return s;
+                string n = c;
+                for (int j = 0; j < size(c); j++) {
+                    n[j] = char('0' + (10 + (c[j] - '0') + 1) % 10);
+                    if (!used.count(n)) {
+                        q.push_back(n);
+                        used.insert(n);
+                    }
+                    n[j] = char('0' + (10 + (c[j] - '0') - 1) % 10);
+                    if (!used.count(n)) {
+                        q.push_back(n);
+                        used.insert(n);
+                    }
+                    n[j] = c[j];
+                }
+            }
+            s++;
+        }
+        return -1;
+    }
+};

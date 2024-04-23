@@ -46,3 +46,43 @@ public class Question310 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+#include <deque>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if (n == 1) return { 0 };
+        std::unordered_map<int, vector<int>> m;
+        std::unordered_map<int, int> ind;
+        for (auto& e : edges) {
+            m[e[0]].push_back(e[1]);
+            m[e[1]].push_back(e[0]);
+            ind[e[0]]++;
+            ind[e[1]]++;
+        }
+        vector<int> ans;
+        std::deque<int> q;
+        for (auto& p : ind) {
+            if (p.second == 1) q.push_back(p.first);
+        }
+        while (!q.empty()) {
+            ans.clear();
+            for (int i = size(q); i > 0; i--) {
+                int c = q.front();
+                q.pop_front();
+                ans.push_back(c);
+                for (int j : m[c]) {
+                    ind[j]--;
+                    if (ind[j] == 1) q.push_back(j);
+                }
+            }
+        }
+        return ans;
+    }
+};

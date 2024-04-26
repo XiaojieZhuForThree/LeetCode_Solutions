@@ -81,3 +81,27 @@ public class Question1289 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int m = size(grid), n = size(grid[0]);
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int cur = INT_MAX;
+                for (int k = 0; k < n; k++) {
+                    if (k == j) continue;
+                    cur = std::min(cur, grid[i][j] + grid[i - 1][k]);
+                }
+                grid[i][j] = cur;
+            }
+        }
+        int ans = INT_MAX;
+        for (int i = 0; i < n; i++) ans = std::min(ans, grid[m - 1][i]);
+        return ans;
+    }
+};

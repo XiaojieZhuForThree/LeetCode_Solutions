@@ -50,3 +50,74 @@ public class Question834 {
 
 	}
 }
+
+
+
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+using std::vector;
+class Solution {
+public:
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<int> ans(n, 0), cnt(n, 0);
+        std::unordered_map<int, vector<int>> m;
+        std::unordered_set<int> seen;
+        for (auto& e : edges) {
+            m[e[0]].push_back(e[1]);
+            m[e[1]].push_back(e[0]);
+        }
+        getSub(0, m, seen, cnt);
+        getSum(0, 0, 0, m, seen, ans);
+        dfs(0, 0, n, m, seen, ans, cnt);
+        return ans;
+    }
+private:
+    int getSub(int i,
+        std::unordered_map<int, vector<int>>& m, 
+        std::unordered_set<int>& seen, 
+        vector<int>& cnt) {
+        int c = 1;
+        seen.insert(i);
+        for (int j : m[i]) {
+            if (seen.count(j)) continue;
+            seen.insert(j);
+            c += getSub(j, m, seen, cnt);
+        }
+        cnt[i] = c;
+        seen.erase(i);
+        return c;
+    }
+    void getSum(int i, 
+        int c,
+        int v,
+        std::unordered_map<int, vector<int>>& m,
+        std::unordered_set<int>& seen, 
+        vector<int>& ans) {
+        seen.insert(c);
+        ans[i] += v;
+        for (int j : m[c]) {
+            if (seen.count(j)) continue;
+            seen.insert(j);
+            getSum(i, j, v + 1, m, seen, ans);
+        }
+        seen.erase(c);
+        return;
+    }
+    void dfs(int i, 
+        int j,
+        int n,
+        std::unordered_map<int, vector<int>>& m, 
+        std::unordered_set<int>& seen, 
+        vector<int>& ans, 
+        vector<int>& cnt) {
+        seen.insert(j);
+        if (i != j) ans[j] = ans[i] + n - 2 * cnt[j];
+        for (int k : m[j]) {
+            if (seen.count(k)) continue;
+            dfs(j, k, n, m, seen, ans, cnt);
+        }
+        seen.erase(j);
+        return;
+    }
+};

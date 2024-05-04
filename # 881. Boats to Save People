@@ -45,3 +45,24 @@ public:
 		return ans;
 	}
 };
+
+
+#include <algorithm>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(), people.end());
+        int l = 0, r = size(people) - 1;
+        int ans = 0;
+        while (l <= r) {
+            ans++;
+            if (people[l] <= limit - people[r]) l++;
+            r--;
+        }
+        return ans;
+    }
+};

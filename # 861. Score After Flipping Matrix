@@ -45,3 +45,47 @@ public class Question861 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int matrixScore(vector<vector<int>>& grid) {
+		int m = size(grid), n = size(grid[0]);
+		for (int i = 0; i < m; i++) {
+			if (grid[i][0] == 1) continue;
+			flipR(grid, i);
+		}
+		for (int j = 0; j < n; j++) {
+			if (shouldFC(grid, j)) flipC(grid, j);
+		}
+		return getAns(grid);
+	}
+private:
+	void flipR(vector<vector<int>>& grid, int i) {
+		for (int j = 0; j < size(grid[0]); j++) grid[i][j] = 1 - grid[i][j];
+	}
+	bool shouldFC(vector<vector<int>>& grid, int j) {
+		int o = 0, z = 0;
+		for (int i = 0; i < size(grid); i++) {
+			if (grid[i][j] == 0) z++;
+			else o++;
+		}
+		return z > o;
+	}
+	void flipC(vector<vector<int>>& grid, int j) {
+		for (int i = 0; i < size(grid); i++) grid[i][j] = 1 - grid[i][j];
+	}
+	int getAns(vector<vector<int>>& grid) {
+		int ans = 0;
+		for (int i = 0; i < size(grid); i++) {
+			int cur = 0;
+			for (int j : grid[i]) cur = cur * 2 + j;
+			ans += cur;
+		}
+		return ans;
+	}
+};

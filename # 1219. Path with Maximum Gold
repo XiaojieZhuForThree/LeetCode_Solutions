@@ -34,3 +34,35 @@ public class Question1219 {
 		}
 	}
 }
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int m = size(grid), n = size(grid[0]);
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) continue;
+                ans = std::max(ans, dfs(grid, i, j));
+            }
+        }
+        return ans;
+    }
+private:
+    int dfs(vector<vector<int>>& grid, int i, int j) {
+        if (i < 0 || i >= size(grid) || j < 0 || j >= size(grid[0])) return 0;
+        if (grid[i][j] == 0) return 0;
+        int ans = grid[i][j], t = grid[i][j];
+        grid[i][j] = 0;
+        int n = 0;
+        for (auto& d : dirs) n = std::max(n, dfs(grid, i + d.first, j + d.second));
+        grid[i][j] = t;
+        return ans + n;
+    }
+};

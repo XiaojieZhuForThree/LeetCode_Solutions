@@ -51,3 +51,27 @@ class Solution:
         for i in prev:
             ans.append([nums[0]] + i.copy())
         return prev + ans
+
+
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	vector<vector<int>> subsets(vector<int>& nums) {
+		return dfs(nums, 0);
+	}
+private:
+	vector<vector<int>> dfs(vector<int>& nums, int i) {
+		if (i == size(nums)) return { {} };
+		vector<vector<int>> ans;
+		vector<vector<int>> r = dfs(nums, i + 1);
+		for (auto& v : r) ans.push_back(v);
+		for (auto v : r) {
+			v.push_back(nums[i]);
+			ans.push_back(v);
+		}
+		return ans;
+	}
+};

@@ -16,3 +16,26 @@ public class Question1442 {
 		}
 	}
 }
+
+
+#include <unordered_map>
+#include<vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int countTriplets(vector<int>& arr) {
+		int ans = 0, cur = 0;
+		std::unordered_map<int, vector<int>> m;
+		m[0].push_back(0);
+		for (int i = 0; i < size(arr); i++) {
+			cur ^= arr[i];
+			if (m.count(cur)) {
+				for (int j : m[cur]) ans += i - j;
+			}
+			m[cur].push_back(i + 1);
+		}
+		return ans;
+	}
+};

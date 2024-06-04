@@ -33,3 +33,25 @@ public class Question409 {
 
 	}
 }
+
+
+#include <string>
+#include <unordered_map>
+using std::string;
+
+class Solution {
+public:
+	int longestPalindrome(string s) {
+		std::unordered_map<char, int> m;
+		for (char c : s) m[c]++;
+		int odd = 0, even = 0;
+		for (auto& p : m) {
+			if (p.second % 2 == 0) even += p.second;
+			else {
+				odd = 1;
+				even += p.second - 1;
+			}
+		}
+		return even + odd;
+	}
+};

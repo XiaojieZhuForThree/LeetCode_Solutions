@@ -56,3 +56,27 @@ public class Question846 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <map>
+using std::vector;
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        if (size(hand) % groupSize != 0) return false;
+        std::map<int, int> m;
+        for (int i : hand) m[i]++;
+        while (!m.empty()) {
+            int s = m.begin()->first, c = m.begin()->second;
+            for (int j = s; j < s + groupSize; j++) {
+                if (!m.count(j)) return false;
+                if (m[j] < c) return false;
+                m[j] -= c;
+                if (m[j] == 0) m.erase(j);
+            }
+        }
+        return true;
+    }
+};

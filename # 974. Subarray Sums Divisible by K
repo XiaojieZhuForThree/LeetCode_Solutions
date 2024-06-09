@@ -32,3 +32,25 @@ public:
 		return ans;
 	}
 };
+
+
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        std::unordered_map<int, int> m;
+        m[0] = 1;
+        int s = 0, ans = 0;
+        for (int i : nums) {
+            s += i;
+            int r = s % k;
+            if (r < 0) r += k;
+            if (m.count(r)) ans += m[r];
+            m[r]++;
+        }
+        return ans;
+    }
+};

@@ -17,3 +17,21 @@ public class Question1051 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) {
+        vector<int> c(heights.begin(), heights.end());
+        std::sort(c.begin(), c.end());
+        int ans = 0;
+        for (int i = 0; i < size(heights); i++) {
+            if (heights[i] != c[i]) ans++;
+        }
+        return ans;
+    }
+};

@@ -38,3 +38,24 @@ class Solution {
         return ans;
     }
 }
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int minIncrementForUnique(vector<int>& nums) {
+        std::sort(nums.begin(), nums.end());
+        int ans = 0, c = nums[0];
+        for (int i : nums) {
+            if (i < c) {
+                ans += c - i;
+                c++;
+            }
+            else c = i + 1;
+        }
+        return ans;
+    }
+};

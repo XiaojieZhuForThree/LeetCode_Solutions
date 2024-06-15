@@ -19,3 +19,34 @@ public:
 		return w;
 	}
 };
+
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        auto comp = [&capital](int a, int b) {
+            return capital[a] > capital[b];
+            };
+        auto pc = [&profits](int a, int b) {
+            return profits[a] < profits[b];
+            };
+        std::priority_queue<int, vector<int>, decltype(comp)> c(comp);
+        std::priority_queue<int, vector<int>, decltype(pc)> p(pc);
+        for (int i = 0; i < size(capital); i++) c.push(i);
+        int ans = w;
+        for (int i = 0; i < k; i++) {
+            while (!c.empty() && capital[c.top()] <= ans) {
+                int j = c.top();
+                p.push(j);
+                c.pop();
+            }
+            if (p.empty()) continue;
+            int j = p.top();
+            ans += profits[j];
+            p.pop();
+        }
+        return ans;
+    }
+};

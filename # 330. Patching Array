@@ -26,3 +26,31 @@ public class Question330 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        int pat = 0;
+        long cur = 0;
+        for (int i : nums) {
+            if (cur >= n) break;
+            if (cur >= i - 1) cur += i;
+            else {
+                while (cur < std::min(i - 1, n)) {
+                    pat++;
+                    cur = cur * 2 + 1;
+                }
+                cur += i;
+            }
+        }
+        while (cur < n) {
+            pat++;
+            cur = cur * 2 + 1;
+        }
+        return pat;
+    }
+};

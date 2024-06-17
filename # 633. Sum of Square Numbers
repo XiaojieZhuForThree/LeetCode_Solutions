@@ -34,3 +34,19 @@ public class Question633 {
 		}
 	}
 }
+
+
+#include <unordered_set>
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        std::unordered_set<int> s;
+        for (int i = 0; (long long)(i)*i <= c; i++) {
+            s.insert(i * i);
+        }
+        for (int i = 0; (long long)(i)*i <= c; i++) {
+            if (s.count(c - (long long)(i)*i)) return true;
+        }
+        return false;
+    }
+};

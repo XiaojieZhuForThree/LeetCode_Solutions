@@ -45,3 +45,30 @@ public class Question1052 {
 		}
 	}
 }
+
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int ans = 0;
+        for (int i = 0; i < size(customers); i++) {
+            if (grumpy[i] == 0) ans += customers[i];
+        }
+        for (int i = 0; i < minutes; i++) {
+            if (grumpy[i] == 1) ans += customers[i];
+        }
+        int l = 0;
+        int cand = ans;
+        for (int r = minutes; r < size(customers); r++) {
+            if (grumpy[r] == 1) cand += customers[r];
+            if (grumpy[l] == 1) cand -= customers[l];
+            l++;
+            ans = std::max(ans, cand);
+        }
+        return ans;
+    }
+};

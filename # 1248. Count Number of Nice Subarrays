@@ -46,3 +46,33 @@ public class Question1248 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        std::deque<int> q;
+        int ans = 0, s = 0;
+        for (int i = 0; i < size(nums); i++) {
+            if (nums[i] % 2 == 0) continue;
+            if (size(q) == k) {
+                int l = q.front();
+                int r = q.back();
+                ans += (l - s + 1) * (i - r);
+                s = l + 1;
+                q.pop_front();
+            }
+            q.push_back(i);
+        }
+        if (size(q) == k) {
+            int l = q.front();
+            int r = q.back();
+            ans += (l - s + 1) * (size(nums) - r);
+        }
+        return ans;
+    }
+};

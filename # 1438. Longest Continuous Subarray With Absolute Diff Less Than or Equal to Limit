@@ -32,3 +32,26 @@ public class Question1438 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <map>
+using std::vector;
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        std::map<int, int> m;
+        int ans = 0, l = 0, r = 0;
+        for (; r < size(nums); r++) {
+            m[nums[r]]++;
+            while (abs(m.begin()->first - m.rbegin()->first) > limit) {
+                m[nums[l]]--;
+                if (m[nums[l]] == 0) m.erase(nums[l]);
+                l++;
+            }
+            ans = std::max(ans, r - l + 1);
+        }
+        return ans;
+    }
+};

@@ -46,3 +46,20 @@ public class Question1038 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+
+class Solution {
+public:
+	TreeNode* bstToGst(TreeNode* root) {
+		helper(root, 0);
+		return root;
+	}
+private:
+	int helper(TreeNode* node, int c) {
+		if (!node) return c;
+		node->val += helper(node->right, c);
+		return node->val + helper(node->left, node->val) - node->val;
+	}
+};

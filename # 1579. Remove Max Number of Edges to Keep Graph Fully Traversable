@@ -1,62 +1,62 @@
 #include <unordered_map>
+#include <vector>
 #include <algorithm>
-using namespace std;
+using std::vector;
 
 struct UF {
-	unordered_map<int, int> parA, parB, cntA, cntB;
-	UF(int n) {
-		for (int i = 1; i <= n; i++) {
-			parA[i] = i;
-			parB[i] = i;
-			cntA[i] = 1;
-			cntB[i] = 1;
-		}
-	}
-	int find(unordered_map<int, int>& par, int i) {
-		if (par[i] == i) return i;
-		return par[i] = find(par, par[i]);
-	}
-	void merge(unordered_map<int, int>& par, unordered_map<int, int>& cnt, int i, int j) {
-		int pi = find(par, i), pj = find(par, j);
-		if (pi == pj) return;
-		if (pi < pj) {
-			par[pj] = pi;
-			cnt[pi] += cnt[pj];
-		}
-		else {
-			par[pi] = pj;
-			cnt[pj] += cnt[pi];
-		}
-	}
+    std::unordered_map<int, int> par;
+    vector<int> checked;
+    UF(int n) {
+        for (int i = 1; i <= n; i++) par[i] = i;
+        checked.resize(n, false);
+    }
+    int find(int a) {
+        if (par[a] == a) return a;
+        par[a] = find(par[a]);
+        return par[a];
+    }
+    void merge(int a, int b) {
+        checked[a - 1] = true;
+        checked[b - 1] = true;
+        int pa = find(a), pb = find(b);
+        par[pb] = pa;
+    }
+    bool need(int a, int b) {
+        return find(a) != find(b);
+    }
+    bool allChecked() {
+        for (int i = 0; i < size(checked); i++) {
+            if (find(i + 1) != find(1)) return false;
+        }
+        return true;
+    }
 };
-
 class Solution {
 public:
-	int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
-		sort(edges.begin(), edges.end(), [](auto& a, auto& b) {
-			return a[0] > b[0];
-			});
-		UF uf(n);
-		int ans = 0;
-		for (auto& e : edges) {
-			int t = e[0], i = e[1], j = e[2];
-			if (t == 3) {
-				if (uf.find(uf.parA, i) == uf.find(uf.parA, j) && uf.find(uf.parB, i) == uf.find(uf.parB, j)) ans++;
-				else {
-					if (uf.find(uf.parA, i) != uf.find(uf.parA, j)) uf.merge(uf.parA, uf.cntA, i, j);
-					if (uf.find(uf.parB, i) != uf.find(uf.parB, j)) uf.merge(uf.parB, uf.cntB, i, j);
-				}
-			}
-			else if (t == 2) {
-				if (uf.find(uf.parB, i) == uf.find(uf.parB, j)) ans++;
-				else uf.merge(uf.parB, uf.cntB, i, j);
-			}
-			else {
-				if (uf.find(uf.parA, i) == uf.find(uf.parA, j)) ans++;
-				else uf.merge(uf.parA, uf.cntA, i, j);
-			}
-		}
-		if (uf.cntA[1] < n || uf.cntB[1] < n) return -1;
-		return ans;
-	}
+    int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
+        UF a(n), b(n);
+        int ans = 0;
+        sort(edges.begin(), edges.end(), [](vector<int>& a, vector<int>& b) {
+            return a[0] > b[0];
+            });
+        for (auto& e : edges) {
+            if (e[0] == 1) {
+                if (!a.need(e[1], e[2])) ans++;
+                else a.merge(e[1], e[2]);
+            }
+            else if (e[0] == 2) {
+                if (!b.need(e[1], e[2])) ans++;
+                else b.merge(e[1], e[2]);
+            }
+            else {
+                if (!a.need(e[1], e[2]) && !b.need(e[1], e[2])) ans++;
+                else {
+                    a.merge(e[1], e[2]);
+                    b.merge(e[1], e[2]);
+                }
+            }
+        }
+        if (a.allChecked() && b.allChecked()) return ans;
+        return -1;
+    }
 };

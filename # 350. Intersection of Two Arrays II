@@ -25,3 +25,23 @@ public class Question350 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        std::unordered_map<int, int> a, b;
+        for (int i : nums1) a[i]++;
+        for (int i : nums2) b[i]++;
+        vector<int> ans;
+        for (auto& p : a) {
+            if (!b.count(p.first)) continue;
+            for (int i = 0; i < std::min(p.second, b[p.first]); i++) ans.push_back(p.first);
+        }
+        return ans;
+    }
+};

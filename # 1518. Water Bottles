@@ -14,3 +14,16 @@ public class Question1518 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    int numWaterBottles(int numBottles, int numExchange) {
+        int ans = numBottles, rem = numBottles;
+        while (rem >= numExchange) {
+            ans += rem / numExchange;
+            rem = rem / numExchange + rem % numExchange;
+        }
+        return ans;
+    }
+};

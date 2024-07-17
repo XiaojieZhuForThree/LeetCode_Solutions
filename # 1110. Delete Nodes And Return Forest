@@ -41,3 +41,45 @@ public class Question1110 {
 		}
 	}
 }
+
+
+#include <vector>
+#include "TreeNode.h"
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    vector<TreeNode*> ans;
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        std::unordered_set<int> set(to_delete.begin(), to_delete.end());
+        TreeNode* head = dfs(root, set);
+        if (head) {
+            ans.push_back(head);
+        }
+        return ans;
+    }
+
+private:
+    TreeNode* dfs(TreeNode* node, std::unordered_set<int>& set) {
+        if (!node) {
+            return nullptr;
+        }
+        if (set.count(node->val)) {
+            TreeNode* l = dfs(node->left, set);
+            TreeNode* r = dfs(node->right, set);
+            if (l) {
+                ans.push_back(l);
+            }
+            if (r) {
+                ans.push_back(r);
+            }
+            node->left = nullptr;
+            node->right = nullptr;
+            return nullptr;
+        }
+        node->left = dfs(node->left, set);
+        node->right = dfs(node->right, set);
+        return node;
+    }
+};

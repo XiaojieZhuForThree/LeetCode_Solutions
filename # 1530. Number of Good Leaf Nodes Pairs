@@ -56,3 +56,37 @@ public class Question1530 {
 
 	}
 }
+
+
+#include "TreeNode.h"
+#include <unordered_map>
+
+class Solution {
+public:
+    int ans = 0;
+    int countPairs(TreeNode* root, int distance) {
+        dfs(root, distance);
+        return ans;
+    }
+private:
+    std::unordered_map<int, int> dfs(TreeNode* node, int d) {
+        if (!node) return {};
+        if (!node->left && !node->right) return { {0, 1} };
+        auto l = dfs(node->left, d), r = dfs(node->right, d);
+        for (auto& p : l) {
+            for (auto& q : r) {
+                if (p.first + q.first + 2 <= d) ans += p.second * q.second;
+            }
+        }
+        std::unordered_map<int, int> ans;
+        for (auto& p : l) {
+            if (p.first + 1 > d) continue;
+            ans[p.first + 1] += p.second;
+        }
+        for (auto& p : r) {
+            if (p.first + 1 > d) continue;
+            ans[p.first + 1] += p.second;
+        }
+        return ans;
+    }
+};

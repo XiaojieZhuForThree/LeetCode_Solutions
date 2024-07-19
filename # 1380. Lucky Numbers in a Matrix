@@ -28,3 +28,33 @@ public class Question1380 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+        std::unordered_map<int, int> r, c;
+        for (int i = 0; i < size(matrix); i++) {
+            int v = 100001;
+            for (int j : matrix[i]) v = std::min(v, j);
+            r[i] = v;
+        }
+        for (int j = 0; j < size(matrix[0]); j++) {
+            int v = 0;
+            for (int i = 0; i < size(matrix); i++) v = std::max(v, matrix[i][j]);
+            c[j] = v;
+        }
+        vector<int> ans;
+        for (int i = 0; i < size(matrix); i++) {
+            for (int j = 0; j < size(matrix[0]); j++) {
+                int v = matrix[i][j];
+                if (r[i] == v && c[j] == v) ans.push_back(v);
+            }
+        }
+        return ans;
+    }
+};

@@ -66,3 +66,70 @@ public:
         return ans;
     }
 };
+
+
+
+#include <vector>
+#include <unordered_set>
+#include <queue>
+#include <unordered_map>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
+        std::unordered_map<int, vector<int>> rm, cm;
+        std::unordered_map<int, int> indr, indc;
+        vector<int> rs(k + 1, -1), cs(k + 1, -1);
+        for (int i = 1; i <= k; i++) {
+            indr[i] = 0;
+            indc[i] = 0;
+        }
+        for (auto& r : rowConditions) {
+            rm[r[1]].push_back(r[0]);
+            indr[r[0]]++;
+        }
+        for (auto& c : colConditions) {
+            cm[c[1]].push_back(c[0]);
+            indc[c[0]]++;
+        }
+        std::deque<int> q;
+        for (auto& p : indr) {
+            if (p.second == 0) q.push_back(p.first);
+        }
+        int r = k - 1;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                rs[cur] = r--;
+                for (int j : rm[cur]) {
+                    indr[j]--;
+                    if (indr[j] == 0) q.push_back(j);
+                }
+            }
+        }
+        for (auto& p : indc) {
+            if (p.second == 0) q.push_back(p.first);
+        }
+        int c = k - 1;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                cs[cur] = c--;
+                for (int j : cm[cur]) {
+                    indc[j]--;
+                    if (indc[j] == 0) q.push_back(j);
+                }
+            }
+        }
+        vector<vector<int>> ans(k, vector<int>(k, 0));
+        for (int i = 1; i <= k; i++) {
+            if (rs[i] == -1 || cs[i] == -1) return {};
+            ans[rs[i]][cs[i]] = i;
+        }
+        return ans;
+    }
+};

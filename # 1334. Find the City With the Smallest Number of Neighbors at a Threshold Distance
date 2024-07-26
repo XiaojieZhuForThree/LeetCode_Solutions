@@ -44,3 +44,51 @@ public class Question1334 {
 		}
 	}
 }
+
+
+
+#include <vector>
+#include <unordered_map>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        std::unordered_map<int, vector<int>> m;
+        vector<vector<int>> v(n, vector<int>(n, -1));
+        for (auto& e : edges) {
+            m[e[0]].push_back(e[1]);
+            m[e[1]].push_back(e[0]);
+            v[e[0]][e[1]] = e[2];
+            v[e[1]][e[0]] = e[2];
+        }
+        int ans = -1, cur = n;
+        for (int i = 0; i < n; i++) {
+            int cand = bfs(i, distanceThreshold, m, v);
+            if (cand <= cur) {
+                ans = i;
+                cur = cand;
+            }
+        }
+        return ans;
+    }
+private:
+    int bfs(int i, int distanceThreshold, std::unordered_map<int, vector<int>>& m, vector<vector<int>>& v) {
+        std::unordered_map<int, int> seen;
+        std::deque<std::pair<int, int>> q;
+        q.push_back({ i, 0 });
+
+        while (!q.empty()) {
+            for (int s = size(q); s > 0; s--) {
+                auto cur = q.front();
+                q.pop_front();
+                if (cur.second > distanceThreshold) continue;
+                if (seen.count(cur.first) && seen[cur.first] < cur.second) continue;
+                seen[cur.first] = cur.second;
+                for (int j : m[cur.first]) q.push_back({ j, cur.second + v[cur.first][j] });
+            }
+        }
+        return size(seen);
+    }
+};

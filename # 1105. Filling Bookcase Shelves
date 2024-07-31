@@ -17,3 +17,27 @@ public class Question1105 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
+        vector<int> dp;
+        dp.push_back(0);
+        for (int i = 1; i <= size(books); i++) {
+            int j = i;
+            int cur = 0, h = 0, val = INT_MAX;
+            while (j > 0 && books[j - 1][0] + cur <= shelfWidth) {
+                cur += books[j - 1][0];
+                h = std::max(h, books[j - 1][1]);
+                j--;
+                val = std::min(val, h + dp[j]);
+            }
+            dp.push_back(val);
+        }
+        return dp[size(books)];
+    }
+};

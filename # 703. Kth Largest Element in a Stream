@@ -96,3 +96,33 @@ public:
  * KthLargest* obj = new KthLargest(k, nums);
  * int param_1 = obj->add(val);
  */
+
+
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using std::vector;
+
+class KthLargest {
+public:
+    std::priority_queue<int, vector<int>, std::greater<int>> pq;
+    int m;
+    KthLargest(int k, vector<int>& nums) {
+        m = k;
+        for (int i : nums) pq.push(i);
+        while (size(pq) > k) pq.pop();
+    }
+
+    int add(int val) {
+        pq.push(val);
+        if (size(pq) > m) pq.pop();
+        return pq.top();
+    }
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */

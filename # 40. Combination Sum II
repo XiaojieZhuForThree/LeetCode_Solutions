@@ -28,3 +28,34 @@ class Solution {
 		return new ArrayList<>(ans);
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> tmp;
+        vector<vector<int>> res;
+
+        dfs(candidates, 0, target, tmp, res);
+        return res;
+    }
+private:
+    void dfs(vector<int>& nums, int idx, int target, vector<int>& tmp, vector<vector<int>>& res) {
+        if (!target) {
+            res.push_back(tmp);
+            return;
+        }
+        for (int i = idx;
+            i < nums.size() && nums[i] <= target;
+            i = upper_bound(nums.begin() + i, nums.end(), nums[i]) - nums.begin()) {
+            tmp.push_back(nums[i]);
+            dfs(nums, i + 1, target - nums[i], tmp, res);
+            tmp.pop_back();
+        }
+    }
+};

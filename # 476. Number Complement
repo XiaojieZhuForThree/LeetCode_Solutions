@@ -28,3 +28,18 @@ public:
         return base - 1 - num;
     }
 };
+
+
+
+class Solution {
+public:
+    int findComplement(int num) {
+        int ans = 0, p = 0;
+        while (num > 0) {
+            if (num % 2 == 0) ans += (1 << p);
+            num >>= 1;
+            p++;
+        }
+        return ans;
+    }
+};

@@ -22,3 +22,20 @@ class Solution {
 		ans.add(root.val);
 	}
 }
+
+
+#include "TreeNode.h"
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        if (!root) return {};
+        vector<int> ans;
+        for (int i : postorderTraversal(root->left)) ans.push_back(i);
+        for (int i : postorderTraversal(root->right)) ans.push_back(i);
+        ans.push_back(root->val);
+        return ans;
+    }
+};

@@ -121,3 +121,40 @@ public:
 		return mx[end];
 	}
 };
+
+
+#include <vector>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+
+using std::vector;
+
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        std::unordered_map<int, vector<std::pair<int, double>>> m;
+        for (int i = 0; i < size(edges); i++) {
+            auto& e = edges[i];
+            double p = succProb[i];
+            m[e[0]].push_back({ e[1], p });
+            m[e[1]].push_back({ e[0], p });
+        }
+        std::priority_queue<std::pair<double, int>> pq;
+        std::unordered_set<int> processed;
+        processed.insert(start_node);
+        for (auto& p : m[start_node]) pq.push({ p.second, p.first });
+        while (!pq.empty()) {
+            auto cur = pq.top();
+            pq.pop();
+            if (cur.second == end_node) return cur.first;
+            if (processed.count(cur.second)) continue;
+            processed.insert(cur.second);
+            for (auto& p : m[cur.second]) {
+                if (processed.count(p.first)) continue;
+                pq.push({ cur.first * p.second, p.first });
+            }
+        }
+        return 0;
+    }
+};

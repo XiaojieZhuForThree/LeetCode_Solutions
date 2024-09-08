@@ -5,34 +5,34 @@ using std::vector;
 
 class Solution {
 public:
-	vector<ListNode*> splitListToParts(ListNode* head, int k) {
-		vector<ListNode*> ans(k, nullptr);
-		if (!head) return ans;
-		int cnt = 0;
-		ListNode* tmp = head;
-		while (tmp) {
-			cnt++;
-			tmp = tmp->next;
-		}
-
-		int div = cnt / k, mod = cnt % k;
-		ListNode* s = head;
-
-		for (int i = 0; i < k; i++) {
-			if (!s) continue;
-			ListNode* e = s;
-			int j = 1, target = div;
-			if (mod > 0) {
-				target++;
-				mod--;
-			}
-			for (; j < target; j++) {
-				e = e->next;
-			}
-			ans[i] = s;
-			s = e->next;
-			e->next = nullptr;
-		}
-		return ans;
-	}
+    vector<ListNode*> splitListToParts(ListNode* head, int k) {
+        int size = 0;
+        ListNode* d = head;
+        while (d) {
+            size++;
+            d = d->next;
+        }
+        int div = size / k, mod = size % k;
+        d = head;
+        ListNode* cur = head, * m = head;
+        int cnt = 1;
+        vector<ListNode*> ans;
+        while (cur) {
+            if (mod && cnt == div + 1 || !mod && cnt == div) {
+                m = cur;
+                cur = cur->next;
+                m->next = nullptr;
+                if (mod) mod--;
+                cnt = 1;
+                ans.push_back(d);
+                d = cur;
+            }
+            else {
+                cur = cur->next;
+                cnt++;
+            }
+        }
+        while (ans.size() < k) ans.push_back(nullptr);
+        return ans;
+    }
 };

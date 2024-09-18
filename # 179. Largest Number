@@ -17,3 +17,28 @@ public class Question179 {
 		}
 	}
 }
+
+#include <string>
+#include <vector>
+#include <queue>
+
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        auto comp = [](string a, string b) {
+            return a + b < b + a;
+            };
+        std::priority_queue<string, vector<string>, decltype(comp)> pq;
+        for (int i : nums) pq.push(std::to_string(i));
+        string ans = "";
+        while (!pq.empty()) {
+            string cur = pq.top();
+            pq.pop();
+            ans += cur;
+        }
+        return ans[0] == '0' ? "0" : ans;
+    }
+};

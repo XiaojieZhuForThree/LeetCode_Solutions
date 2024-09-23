@@ -27,3 +27,35 @@ private:
 		return ans;
 	}
 };
+
+
+
+#include <string>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    std::unordered_map<int, int> m;
+    int minExtraChar(string s, vector<string>& dictionary) {
+        std::unordered_set<string> ws;
+        for (auto& d : dictionary) ws.insert(d);
+        return helper(s, 0, ws);
+    }
+private:
+    int helper(string& s, int i, std::unordered_set<string>& ws) {
+        if (i >= size(s)) return 0;
+        if (m.count(i)) return m[i];
+        int ans = size(s);
+        for (int j = 1; i + j <= size(s); j++) {
+            if (ws.count(s.substr(i, j))) ans = std::min(ans, helper(s, i + j, ws));
+            else ans = std::min(ans, j + helper(s, i + j, ws));
+        }
+        m[i] = ans;
+        return ans;
+    }
+};

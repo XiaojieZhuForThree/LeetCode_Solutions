@@ -81,3 +81,44 @@ private:
         return ans;
     }
 };
+
+
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+using std::vector;
+using std::string;
+
+struct Trie {
+    int cnt = 0;
+    std::unordered_map<char, Trie*> m;
+};
+
+class Solution {
+public:
+    vector<int> sumPrefixScores(vector<string>& words) {
+        Trie trie;
+        for (auto& w : words) {
+            Trie* iteration = &trie;
+            for (char c : w) {
+                if (!iteration->m.count(c)) {
+                    iteration->m[c] = new Trie();
+                }
+                iteration = iteration->m[c];
+                iteration->cnt++;
+            }
+        }
+        vector<int> ans;
+        for (auto& w : words) {
+            int cur = 0;
+            Trie* iteration = &trie;
+            for (char c : w) {
+                iteration = iteration->m[c];
+                cur += iteration->cnt;
+            }
+            ans.push_back(cur);
+        }
+        return ans;
+    }
+};

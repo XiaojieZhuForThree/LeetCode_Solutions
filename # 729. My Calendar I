@@ -26,3 +26,29 @@ public class Question729 {
 	 * obj = new MyCalendar(); boolean param_1 = obj.book(start,end);
 	 */
 }
+
+
+#include <vector>
+using std::vector;
+
+class MyCalendar {
+public:
+    vector<std::pair<int, int>> v;
+    MyCalendar() {
+
+    }
+
+    bool book(int start, int end) {
+        for (auto& p : v) {
+            if (!(p.second <= start || end <= p.first)) return false;
+        }
+        v.push_back({ start, end });
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */

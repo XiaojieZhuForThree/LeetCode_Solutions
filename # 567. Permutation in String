@@ -67,3 +67,29 @@ private:
 		return true;
 	}
 };
+
+
+#include <string>
+#include <unordered_map>
+
+using std::string;
+
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        std::unordered_map<char, int> m, n;
+        for (char c : s1) m[c]++;
+        int l = 0, r = 0;
+
+        for (; r < size(s2); r++) {
+            char c = s2[r];
+            n[c]++;
+            while (l < size(s2) && l <= r && n[c] > m[c]) {
+                n[s2[l]]--;
+                l++;
+            }
+            if (r - l + 1 == size(s1)) return true;
+        }
+        return false;
+    }
+};

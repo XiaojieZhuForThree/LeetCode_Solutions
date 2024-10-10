@@ -59,3 +59,25 @@ public class Question962 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxWidthRamp(vector<int>& nums) {
+        int ans = 0;
+        vector<std::pair<int, int>> v;
+        for (int i = 0; i < size(nums); i++) v.push_back({ nums[i], i });
+        std::sort(v.begin(), v.end());
+        reverse(v.begin(), v.end());
+        int l = 0;
+        for (auto& p : v) {
+            while (nums[l] > p.first) l++;
+            ans = std::max(ans, p.second - l);
+        }
+        return ans;
+    }
+};

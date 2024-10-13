@@ -30,3 +30,40 @@ public class Question632 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        int l = nums[0][0];
+        auto comp = [&nums] (pair<int, int> a, pair<int, int> b) {
+            return nums[a.first][a.second] > nums[b.first][b.second];
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(comp)> pq(comp);
+        for (int i = 0; i < size(nums); i++) {
+            pq.push({i, 0});
+            l = std::max(l, nums[i][0]);
+        }
+        int s = nums[pq.top().first][pq.top().second];
+        vector<int> ans = {s, l};
+        while (!pq.empty()) {
+            auto cur = pq.top();
+            pq.pop();
+            int i = cur.first, j = cur.second;
+            if (helper(ans[0], ans[1], nums[i][j], l)) {
+                ans[0] = nums[i][j];
+                ans[1] = l;
+            }
+            if (size(nums[i]) == j + 1) break;
+            l = std::max(l, nums[i][j + 1]);
+            pq.push({i, j + 1});
+        }
+        return ans;
+    }
+private:
+    bool helper(int a, int b, int c, int d) {
+        if (d - c < b - a) return true;
+        else if (d - c == b - a && c < a) return true;
+        return false;
+    }
+};

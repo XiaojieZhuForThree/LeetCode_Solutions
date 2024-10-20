@@ -65,3 +65,64 @@ public class Question1106 {
 		}
 	}
 }
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    bool parseBoolExpr(string A) {
+        if (A == "t") return true;
+        if (A == "f") return false;
+        string s = helper(A.substr(1, size(A) - 1));
+        if (A[0] == '!') return !(parseBoolExpr(s));
+        if (A[0] == '&') {
+            bool base = true;
+            int l = 0, r = 0, c = 0;
+            while (r < size(s)) {
+                if (s[r] == '(') c++;
+                else if (s[r] == ')') c--;
+                if (s[r] == ',' && c == 0) {
+                    string cur = s.substr(l, r - l);
+                    base &= parseBoolExpr(cur);
+                    l = r + 1;
+                }
+                r++;
+            }
+            string cur = s.substr(l, r - l);
+            base &= parseBoolExpr(cur);
+            return base;
+        }
+        else {
+            bool base = false;
+            int l = 0, r = 0, c = 0;
+            while (r < size(s)) {
+                if (s[r] == '(') c++;
+                else if (s[r] == ')') c--;
+                if (s[r] == ',' && c == 0) {
+                    string cur = s.substr(l, r - l);
+                    base |= parseBoolExpr(cur);
+                    l = r + 1;
+                }
+                r++;
+            }
+            string cur = s.substr(l, r - l);
+            base |= parseBoolExpr(cur);
+            return base;
+
+        }
+    }
+
+private:
+    string helper(string s) {
+        int cnt = 0;
+        for (int i = 0; i < size(s); i++) {
+            if (s[i] == '(') cnt++;
+            else if (s[i] == ')') cnt--;
+            if (cnt == 0)
+                return s.substr(1, i - 1);
+        }
+        return s.substr(1, size(s) - 2);
+    }
+};

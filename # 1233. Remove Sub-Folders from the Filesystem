@@ -76,3 +76,49 @@ public class Question1233 {
 		}
 	}
 }
+
+
+#include <string>
+#include <vector>
+#include <algorithm>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> removeSubfolders(vector<string>& folder) {
+        sort(folder.begin(), folder.end());
+        vector<string> ans;
+        ans.push_back(folder[0]);
+        string& cur = folder[0];
+        for (int i = 1; i < size(folder); i++) {
+            if (!isSub(cur, folder[i])) {
+                ans.push_back(folder[i]);
+                cur = folder[i];
+            }
+        }
+        return ans;
+    }
+private:
+    bool isSub(string& a, string& b) {
+        vector<string> va = helper(a), vb = helper(b);
+        if (size(va) > size(vb)) return false;
+        for (int i = 0; i < size(va); i++) {
+            if (va[i] != vb[i]) return false;
+        }
+        return true;
+    }
+    vector<string> helper(string& s) {
+        int l = 1, r = 1;
+        vector<string> ans;
+        while (r <= size(s)) {
+            if (r < size(s) && s[r] != '/') r++;
+            else {
+                ans.push_back(s.substr(l, r - l));
+                l = r + 1;
+                r++;
+            }
+        }
+        return ans;
+    }
+};

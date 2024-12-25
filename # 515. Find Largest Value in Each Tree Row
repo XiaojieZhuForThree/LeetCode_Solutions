@@ -3,22 +3,30 @@
 #include <deque>
 using std::vector;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> largestValues(TreeNode* root) {
-        std::deque<TreeNode*> q;
+    vector<int> largestValues(TreeNode *root)
+    {
+        if (!root)
+            return {};
         vector<int> ans;
-        if (root) q.push_back(root);
-        while (!q.empty()) {
-            int m = INT_MIN;
-            for (int i = size(q); i > 0; i--) {
-                TreeNode* cur = q.front();
+        std::deque<TreeNode *> q;
+        q.push_back(root);
+        while (!q.empty())
+        {
+            int v = INT_MIN;
+            for (int i = size(q); i > 0; i--)
+            {
+                TreeNode *cur = q.front();
                 q.pop_front();
-                m = std::max(m, cur->val);
-                if (cur->left) q.push_back(cur->left);
-                if (cur->right) q.push_back(cur->right);
+                v = std::max(v, cur->val);
+                if (cur->left)
+                    q.push_back(cur->left);
+                if (cur->right)
+                    q.push_back(cur->right);
             }
-            ans.push_back(m);
+            ans.push_back(v);
         }
         return ans;
     }

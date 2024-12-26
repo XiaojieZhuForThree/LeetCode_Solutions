@@ -34,3 +34,20 @@ class Solution {
         return dp[nums.length-1][1000+S];
     }
 }
+
+
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        return dfs(nums, 0, 0, target);
+    }
+
+private:
+    int dfs(vector<int>& n, int i, int cur, int target) {
+        if (i == size(n)) return cur == target;
+        return dfs(n, i + 1, cur + n[i], target) + dfs(n, i + 1, cur - n[i], target);
+    }
+};

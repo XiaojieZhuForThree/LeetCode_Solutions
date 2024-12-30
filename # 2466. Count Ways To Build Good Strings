@@ -1,22 +1,20 @@
-#include <unordered_map>
-using namespace std;
-
+#include <vector>
 class Solution {
-	unordered_map<int, int> dp;
 public:
-	int countGoodStrings(int low, int high, int zero, int one) {
-		return dfs(0, low, high, zero, one);
-	}
-private:
-	int dfs(int i, int l, int h, int z, int o) {
-		if (dp.count(i)) return dp[i];
-		if (i > h) return 0;
-		int val1 = dfs(i + z, l, h, z, o) % 1000000007;
-		int val2 = dfs(i + o, l, h, z, o) % 1000000007;
-		int ans = 0;
-		if (i >= l && i <= h) ans = (1 + val1 + val2) % 1000000007;
-		else ans = (val1 + val2) % 1000000007;
-		dp[i] = ans;
-		return ans;
-	}
+    int countGoodStrings(int low, int high, int zero, int one) {
+        std::vector<long long> dp(high + 1, 0);
+    	const int MOD = 1000000007;
+        dp[0] = 1;
+        long long ans = 0;
+        for (int i = 1; i <= high; i++) {
+            if (i - zero >= 0) dp[i] += dp[i - zero];
+            if (i - one >= 0) dp[i] += dp[i - one];
+            dp[i] %= MOD;
+            if (i >= low && i <= high) {
+                ans += dp[i];
+                ans %= MOD;
+            }
+        }
+        return ans;
+    }
 };

@@ -1,61 +1,22 @@
-package com.leetcode.problems;
-
-public class Question983 {
-	class Solution {
-		public int mincostTickets(int[] days, int[] costs) {
-			int[] allDaysCost = new int[366];
-			for (int i = 0; i < days.length; i++) {
-				int day = days[i];
-				int bestCost = getBestCost(allDaysCost, costs, day);
-				allDaysCost[day] = bestCost;
-				if (i < days.length - 1) {
-					fillUnusedDays(allDaysCost, day, days[i + 1]);
-				}
-			}
-			return allDaysCost[days[days.length - 1]];
-		}
-
-		private final int getBestCost(int[] allDaysCost, int[] costs, int day) {
-			int cost1 = day - 1 < 0 ? costs[0] : allDaysCost[day - 1] + costs[0];
-			int cost2 = day - 7 < 0 ? costs[1] : allDaysCost[day - 7] + costs[1];
-			int cost3 = day - 30 < 0 ? costs[2] : allDaysCost[day - 30] + costs[2];
-			return Math.min(cost1, Math.min(cost2, cost3));
-		}
-
-		private final void fillUnusedDays(int[] allDaysCost, int day, int nextDay) {
-			int bestCost = allDaysCost[day];
-			for (; day < nextDay; day++) {
-				allDaysCost[day] = bestCost;
-			}
-		}
-	}
-}
-
-
 #include <vector>
-using namespace std;
+using std::vector;
 
 class Solution {
 public:
-	int mincostTickets(vector<int>& days, vector<int>& costs) {
-		vector<int> dp;
-		dp.push_back(0);
-		int ptr = 0;
-		for (int i = 1; i <= 365; i++) {
-			if (ptr >= size(days)) break;
-			if (i < days[ptr]) dp.push_back(dp[i - 1]);
-			else {
-				int ans = INT_MAX;
-				if (i - 1 < 0) ans = min(ans, costs[0]);
-				else ans = min(ans, dp[i - 1] + costs[0]);
-				if (i - 7 < 0) ans = min(ans, costs[1]);
-				else ans = min(ans, dp[i - 7] + costs[1]);
-				if (i - 30 < 0) ans = min(ans, costs[2]);
-				else ans = min(ans, dp[i - 30] + costs[2]);
-				dp.push_back(ans);
-				ptr++;
-			}
-		}
-		return dp[days[size(days) - 1]];
-	}
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        vector<int> dp(366, 0);
+        int j = 0;
+        for (int i = 1; i <= days[size(days) - 1]; i++) {
+            if (i < days[j]) {
+                dp[i] = dp[i - 1];
+            } else {
+                int val1 = i - 1 <= 0 ? costs[0] : dp[i - 1] + costs[0];
+                int val2 = i - 7 <= 0 ? costs[1] : dp[i - 7] + costs[1];
+                int val3 = i - 30 <= 0 ? costs[2] : dp[i - 30] + costs[2];
+                dp[i] = std::min(val1, std::min(val2, val3));
+                j++;
+            }
+        }
+        return dp[days[size(days) - 1]];
+    }
 };

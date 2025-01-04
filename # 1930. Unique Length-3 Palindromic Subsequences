@@ -1,31 +1,29 @@
 #include <string>
-#include <unordered_set>
+#include <vector>
+#include <unordered_map>
 using std::string;
 
 class Solution {
 public:
     int countPalindromicSubsequence(string s) {
+        std::unordered_map<char, int> lm, rm;
+        std::vector<std::vector<bool>> dp(26, std::vector<bool>(26, false));
+        for (int i = 0; i < size(s); i++) {
+            if (!lm.count(s[i])) lm[s[i]] = i;
+        }
+        for (int i = size(s) - 1; i >= 0; i--) {
+            if (!rm.count(s[i])) rm[s[i]] = i;
+        }
         int ans = 0;
-        for (char c = 'a'; c <= 'z'; c++) {
-            int l = gl(s, c), r = gr(s, c);
-            if (l == r || l == r - 1) continue;
-            string sub = s.substr(l + 1, r - l - 1);
-            std::unordered_set<char> us(sub.begin(), sub.end());
-            ans += size(us);
+        for (int i = 0; i < size(s); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (!lm.count(c) || !rm.count(c)) continue;
+                if (lm[c] >= i || rm[c] <= i) continue;
+                if (dp[s[i] - 'a'][c - 'a']) continue;
+                dp[s[i] - 'a'][c - 'a'] = true;
+                ans++;
+            }
         }
         return ans;
-    }
-private:
-    int gl(string& s, char c) {
-        for (int i = 0; i < size(s); i++) {
-            if (s[i] == c) return i;
-        }
-        return -1;
-    }
-    int gr(string& s, char c) {
-        for (int i = size(s) - 1; i >= 0; i--) {
-            if (s[i] == c) return i;
-        }
-        return -1;
     }
 };

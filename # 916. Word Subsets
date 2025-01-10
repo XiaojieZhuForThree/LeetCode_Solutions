@@ -62,3 +62,30 @@ class Solution:
             if isCand:
                 ans.append(w)
         return ans
+
+
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+        vector<string> ans;
+        vector<int> tot(26, 0);
+        for (auto& s : words2) {
+            vector<int> cur(26, 0);
+            for (char c : s) cur[c - 'a']++;
+            for (int i = 0; i < 26; i++) tot[i] = std::max(tot[i], cur[i]);
+        }
+        for (auto& s : words1) {
+            vector<int> cur(26, 0);
+            bool yes = true;
+            for (char c : s) cur[c - 'a']++;
+            for (int i = 0; i < 26; i++) if (tot[i] > cur[i]) yes = false;
+            if (yes) ans.push_back(s);
+        }
+        return ans;
+    }
+};

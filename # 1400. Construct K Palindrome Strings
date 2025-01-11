@@ -20,3 +20,24 @@ public class Question1400 {
 		}
 	}
 }
+
+
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    bool canConstruct(string s, int k) {
+        vector<int> v(26, 0);
+        for (char c : s) v[c - 'a']++;
+        int o = 0, t = 0;
+        for (int i : v) {
+            t += i / 2;
+            o += i % 2;
+        }
+        if (o > k) return false;
+        return t * 2 >= k - o;
+    }
+};

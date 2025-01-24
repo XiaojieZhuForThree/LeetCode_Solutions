@@ -1,38 +1,38 @@
-#include <unordered_set>
-using namespace std;
+#include <vector>
+#include <unordered_map>
+#include <deque>
+#include <algorithm>
+
+using std::vector;
 
 class Solution {
 public:
-	vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-		int n = size(graph);
-		vector<int> vc(n, 0);
-		unordered_set<int> visited;
-		for (int i = 0; i < n; i++) {
-			visited.clear();
-			dfs(graph, vc, visited, i);
-		}
-		vector<int> ans;
-		for (int i = 0; i < n; i++) {
-			if (vc[i] == 2) ans.push_back(i);
-		}
-		return ans;
-	}
-private:
-	int dfs(vector<vector<int>>& graph, vector<int>& vc, unordered_set<int>& visited, int cur) {
-		if (vc[cur] != 0) return vc[cur];
-		visited.insert(cur);
-		for (int j : graph[cur]) {
-			if (visited.count(j)) {
-				vc[cur] = 1;
-				return 1;
-			}
-			if (dfs(graph, vc, visited, j) == 1) {
-				vc[cur] = 1;
-				return 1;
-			}
-		}
-		vc[cur] = 2;
-		visited.erase(cur);
-		return 2;
-	}
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        std::unordered_map<int, int> ind;
+        std::unordered_map<int, vector<int>> v;
+        int n = size(graph);
+        for (int i = 0; i < n; i++) {
+            auto& g = graph[i];
+            for (int j : g) {
+                v[j].push_back(i);
+                ind[i]++;
+            }
+        }
+        std::deque<int> q;
+        vector<int> ans;
+        for (int i = 0; i < n; i++) {
+            if (!ind.count(i)) q.push_back(i);
+        }
+        while (!q.empty()) {
+            int i = q.front();
+            q.pop_front();
+            ans.push_back(i);
+            for (int j : v[i]) {
+                ind[j]--;
+                if (ind[j] == 0) q.push_back(j);
+            }
+        }
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
 };

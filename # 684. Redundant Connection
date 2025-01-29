@@ -26,3 +26,38 @@ public class Question684 {
 		}
 	}
 }
+
+
+#include <vector>
+using std::vector;
+
+struct UF {
+    vector<int> par;
+    UF(int n) {
+        for (int i = 0; i < n; i++) {
+            par.push_back(i);
+        }
+    }
+    void merge(int i, int j) {
+        int pi = find(i), pj = find(j);
+        par[pj] = pi;
+    }
+    int find(int i) {
+        if (par[i] == i) return i;
+        par[i] = find(par[i]);
+        return par[i];
+    }
+};
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int p = -1, n = size(edges);
+        UF uf(n);
+        for (int i = 0; i < n; i++) {
+            auto& e = edges[i];
+            if (uf.find(e[0] - 1) == uf.find(e[1] - 1)) p = i;
+            else uf.merge(e[0] - 1, e[1] - 1);
+        }
+        return edges[p];
+    }
+};

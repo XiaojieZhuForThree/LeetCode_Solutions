@@ -37,3 +37,35 @@ public class Question1415 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <string>
+#include <algorithm>
+using std::string;
+
+class Solution {
+    public:
+        std::vector<char> v = {'a', 'b', 'c'};
+        std::vector<string> vs;
+        string getHappyString(int n, int k) {
+            string cur = "";
+            dfs(cur, n);
+            sort(vs.begin(), vs.end());
+            if (size(vs) < k) return "";
+            return vs[k - 1];
+        }
+    private:
+        void dfs(string& cur, int n) {
+            if (size(cur) == n) vs.push_back(cur);
+            else {
+                for (char c : v) {
+                    if (size(cur) == 0 || cur[size(cur) - 1] != c) {
+                        cur += c;
+                        dfs(cur, n);
+                        cur.pop_back();
+                    }
+                }
+            }
+        }
+    };

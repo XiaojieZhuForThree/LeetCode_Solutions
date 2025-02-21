@@ -65,3 +65,31 @@ public class Question1261 {
 	 * obj.find(target);
 	 */
 }
+
+#include "TreeNode.h"
+#include <unordered_set>
+class FindElements {
+    public:
+        TreeNode* r;
+        std::unordered_set<int> s;
+        FindElements(TreeNode* root) {
+            r = root;
+            r->val = 0;
+            recover(r);
+        }
+        
+        bool find(int target) {
+            return s.count(target);
+        }
+
+    private:
+        void recover(TreeNode* node) {
+            if (!node) return;
+            s.insert(node->val);
+            if (node->left) node->left->val = node->val * 2 + 1;
+            if (node->right) node->right->val = node->val * 2 + 2;
+            recover(node->left);
+            recover(node->right);
+        }
+    };
+

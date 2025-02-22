@@ -116,3 +116,35 @@ public class Question1028 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+    public:
+        TreeNode* recoverFromPreorder(string traversal) {
+            int l = 0, r = 0, dep = 0;
+            std::deque<std::pair<int, TreeNode*>> q;
+            while (r < size(traversal)) {
+                while (r < size(traversal) && isdigit(traversal[r])) r++;
+                int val = stoi(traversal.substr(l, r - l));
+                TreeNode* n = new TreeNode(val);
+                while (!q.empty() && q.back().first != dep - 1) q.pop_back();
+                if (!q.empty()){            
+                    if (q.back().second->left != nullptr) q.back().second->right = n;
+                    else q.back().second->left = n;
+                }
+                q.push_back({dep, n});
+                dep = 0;
+                while (r < size(traversal) && traversal[r] == '-') {
+                    dep++;
+                    r++;
+                }
+                l = r;
+            }
+            return q.front().second;
+        }
+    };

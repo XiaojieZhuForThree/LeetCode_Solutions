@@ -35,3 +35,29 @@ class Solution {
     	return root;
     }
 }
+
+
+
+
+#include "TreeNode.h"
+#include <vector>
+using std::vector;
+
+class Solution {
+    public:
+        TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+            return helper(preorder, postorder, 0, size(preorder) - 1, 0, size(preorder) - 1);
+        }
+    private:
+        TreeNode* helper(vector<int>& pre, vector<int>& post, int prel, int prer, int postl, int postr) {
+            if (prel > prer) return nullptr;
+            TreeNode* n = new TreeNode(pre[prel]);
+            if (prel == prer) return n;
+            int l = 0;
+            while (post[postl + l] != pre[prel + 1]) l++;
+            l++;
+            n->left = helper(pre, post, prel + 1, prel + l, postl, postl + l - 1);
+            n->right = helper(pre, post, prel + l + 1, prer, postl + l, postr - 1);
+            return n;
+        }
+    };

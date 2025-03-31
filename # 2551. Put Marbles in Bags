@@ -19,3 +19,27 @@ public:
 		return ans;
 	}
 };
+
+
+class Solution {
+public:
+    long long putMarbles(vector<int>& weights, int k) {
+        int n = size(weights);
+        vector<int> d;
+        for (int i = 0; i < n - 1; i++) d.push_back(weights[i] + weights[i + 1]);
+        priority_queue<int, vector<int>, std::greater<int>> q1;
+        priority_queue<int, vector<int>, std::less<int>> q2;
+        for (int i : d) {
+            q1.push(i);
+            q2.push(i);
+        }
+        long long val1 = weights[0] + weights[n - 1], val2 = val1;
+        for (int i = 1; i < k; i++) {
+            val1 += q1.top();
+            val2 += q2.top();
+            q1.pop();
+            q2.pop();
+        }
+        return val2 - val1;
+    }
+};

@@ -26,3 +26,29 @@ public class Question1123 {
 		}
 	}
 }
+
+
+#include "TreeNode.h"
+#include <utility>
+
+class Solution {
+public:
+    TreeNode* ans;
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        int d = helper1(root);
+        helper2(root, 0, d);
+        return ans;
+    }
+private:
+    int helper1(TreeNode* n) {
+        if (!n) return 0;
+        int l = helper1(n->left), r = helper1(n->right);
+        return std::max(l, r) + 1;
+    }
+    int helper2(TreeNode* node, int c, int d) {
+        if (!node) return c;
+        int l = helper2(node->left, 1 + c, d), r = helper2(node->right, 1 + c, d);
+        if (l == d && r == d) ans = node;
+        return std::max(l, r);
+    }
+};

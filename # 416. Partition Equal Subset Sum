@@ -51,3 +51,28 @@ public class Question416 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <numeric>
+using std::vector;
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int s = std::accumulate(begin(nums), end(nums), 0);
+        if (s % 2) return false;
+        int t = s / 2;
+        vector<vector<int>> dp(size(nums), vector<int>(t + 1, -1));
+        return dfs(nums, 0, 0, t, dp);
+    }
+private:
+    bool dfs(vector<int>& nums, int i, int c, int t, vector<vector<int>>& dp) {
+        if (i >= size(nums)) return false;
+        if (c > t) return false;
+        if (c == t) return true;
+        if (dp[i][c] != -1) return dp[i][c];
+        bool inc = dfs(nums, i + 1, c + nums[i], t, dp), exc = dfs(nums, i + 1, c, t, dp);
+        return dp[i][c] = inc || exc;
+    }
+};

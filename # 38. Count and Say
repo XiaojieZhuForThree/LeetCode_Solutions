@@ -25,3 +25,27 @@ public:
 		return ans;
 	}
 };
+
+
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    string countAndSay(int n) {
+        if (n == 1) return "1";
+        string prev = countAndSay(n - 1), ans = "";
+        int cnt = 1;
+        char c = prev[0];
+        for (int i = 1; i < size(prev); i++) {
+            if (prev[i] == c) cnt++;
+            else {
+                ans += std::to_string(cnt) + c;
+                cnt = 1;
+                c = prev[i];
+            }
+        }
+        ans += std::to_string(cnt) + c;
+        return ans;
+    }
+};

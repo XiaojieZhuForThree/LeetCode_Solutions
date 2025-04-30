@@ -22,3 +22,19 @@ public class Question1295 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <string>
+using std::vector;
+
+class Solution {
+public:
+    int findNumbers(vector<int>& nums) {
+        int ans = 0;
+        for (int i : nums) {
+            if (size(std::to_string(i)) % 2 == 0) ans++;
+        }
+        return ans;
+    }
+};

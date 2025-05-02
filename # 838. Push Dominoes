@@ -79,3 +79,45 @@ public:
 		return ans;
 	}
 };
+
+
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    string pushDominoes(string dominoes) {
+        int n = size(dominoes);
+        std::vector<int> rs(n, 0), ls(n, 0);
+        int cur = 0;
+        for (int i = 0; i < n; i++) {
+            if (dominoes[i] == '.') {
+                if (cur == 0) continue;
+                else cur--;
+            }
+            else if (dominoes[i] == 'L') cur = 0;
+            else cur = -1;
+            rs[i] = cur;
+        }
+        cur = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (dominoes[i] == '.') {
+                if (cur == 0) continue;
+                else cur--;
+            }
+            else if (dominoes[i] == 'R') cur = 0;
+            else cur = -1;
+            ls[i] = cur;
+        }
+        string ans;
+        for (int i = 0; i < n; i++) {
+            if (ls[i] == rs[i]) ans.push_back('.');
+            else if (ls[i] == 0 && rs[i] < 0) ans.push_back('R');
+            else if (ls[i] < 0 && rs[i] == 0) ans.push_back('L');
+            else if (ls[i] < rs[i]) ans.push_back('R');
+            else ans.push_back('L');
+        }
+        return ans;
+    }
+};

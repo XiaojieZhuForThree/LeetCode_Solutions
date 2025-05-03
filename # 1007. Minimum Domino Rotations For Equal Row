@@ -27,3 +27,27 @@ public class Question1007 {
 		}
 	}
 }
+
+
+class Solution {
+public:
+    int minDominoRotations(vector<int>& tops, vector<int>& bottoms) {
+        int ans = INT_MAX;
+        for (int i = 1; i <= 6; i++) ans = min(ans, helper(tops, bottoms, i));
+        return ans == INT_MAX ? -1 : ans;
+    }
+private:
+    int helper(vector<int>& tops, vector<int>& bottoms, int i) {
+        int upper = 0, lower = 0;
+        for (int j = 0; j < size(tops); j++) {
+            if (tops[j] != i && bottoms[j] != i) {
+                upper = INT_MAX;
+                lower= INT_MAX;
+                break;
+            }
+            if (tops[j] == i && bottoms[j] != i) lower++;
+            else if (tops[j] != i && bottoms[j] == i) upper++;
+        }
+        return min(upper, lower);
+    }
+};

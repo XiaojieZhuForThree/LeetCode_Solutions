@@ -28,3 +28,30 @@ public class Question73 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int m = size(matrix), n = size(matrix[0]);
+        std::unordered_set<int> r, c;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    r.insert(i);
+                    c.insert(j);
+                }
+            }
+        }
+        for (int i : r) {
+            for (int j = 0; j < n; j++) matrix[i][j] = 0;
+        }
+        for (int j : c) {
+            for (int i = 0; i < m; i++) matrix[i][j] = 0;
+        }
+    }
+};

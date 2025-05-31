@@ -53,3 +53,38 @@ public:
 		return -1;
 	}
 };
+
+
+#include <vector>
+#include <unordered_set>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = size(board);
+        int ans = 0;
+        std::unordered_set<int> seen;
+        seen.insert(1);
+        std::deque<int> q;
+        q.push_back(1);
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                if (cur == n * n) return ans;
+                for (int j = 1; j <= 6 && cur + j <= n * n; j++) {
+                    int k = cur + j;
+                    int x = (k - 1) / n, y = (k - 1) % n;
+                    if (board[n - 1 - x][x % 2 == 0 ? y : n - 1 - y] != -1) k = board[n - 1 - x][x % 2 == 0 ? y : n - 1 - y];
+                    if (seen.count(k)) continue;
+                    seen.insert(k);
+                    q.push_back(k);
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};

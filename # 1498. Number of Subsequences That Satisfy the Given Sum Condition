@@ -29,3 +29,32 @@ private:
 		return ans;
 	}
 };
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int mod = 1000000007;
+    int numSubseq(vector<int>& nums, int target) {
+        sort(begin(nums), end(nums));
+        int ans = 0;
+        int l = 0, r = size(nums) - 1;
+        vector<int> dp;
+        dp.push_back(0);
+        for (int i = 1; i <= size(nums); i++) {
+            int prev = dp[size(dp) - 1];
+            dp.push_back(((prev % mod) * 2) % mod + 1);
+        }
+        while (l <= r) {
+            while (r >= l && nums[r] + nums[l] > target) r--;
+            if (r < l) break;
+            ans += 1 + dp[r - l];
+            ans %= mod;
+            l++;
+        }
+        return ans;
+    }
+};

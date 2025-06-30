@@ -21,3 +21,20 @@ public class Question594 {
 		}
 	}
 }
+
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int findLHS(vector<int>& nums) {
+        std::unordered_map<int, int> m;
+        for (int i : nums) m[i]++;
+        int ans = 0;
+        for (auto& p : m) {
+            if (m.count(p.first - 1)) ans = std::max(ans, p.second + m[p.first - 1]);
+        }
+        return ans;
+    }
+};

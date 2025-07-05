@@ -16,3 +16,22 @@ public class Question1394 {
 		}
 	}
 }
+
+
+#include <vector>
+#include <unordered_map>
+
+using std::vector;
+
+class Solution {
+public:
+    int findLucky(vector<int>& arr) {
+        std::unordered_map<int, int> m;
+        for (int i : arr) m[i]++;
+        int ans = -1;
+        for (auto& p : m) {
+            if (p.second == p.first) ans = std::max(ans, p.first);
+        }
+        return ans;
+    }
+};

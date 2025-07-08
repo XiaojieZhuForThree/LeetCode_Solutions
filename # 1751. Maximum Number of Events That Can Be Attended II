@@ -1,36 +1,35 @@
-#include <vector>
 #include <algorithm>
-using namespace std;
+#include <vector>
+using std::vector;
 
 class Solution {
 public:
-	int maxValue(vector<vector<int>>& events, int k) {
-		sort(events.begin(), events.end(), comp);
-		vector<vector<int>> dp(size(events), vector<int>(k + 1, -1));
-		return dfs(events, dp, 0, k);
-	}
-
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(events.begin(), events.end(), comp);
+        vector<vector<int>> dp(size(events), vector<int>(k + 1, -1));
+        return dfs(events, dp, 0, k);
+    }
 private:
-	bool static comp(vector<int>& a, vector<int>& b) {
-		if (a[0] == b[0]) return a[1] < b[1];
-		return a[0] < b[0];
-	}
-	int dfs(vector<vector<int>>& events, vector<vector<int>>& dp, int i, int k) {
-		if (i == size(events)) return 0;
-		if (k == 0) return 0;
-		if (dp[i][k] != -1) return dp[i][k];
-		int a1 = dfs(events, dp, i + 1, k);
-		int a2 = events[i][2] + dfs(events, dp, bs(events, events[i][1], i + 1), k - 1);
-		dp[i][k] = max(a1, a2);
-		return dp[i][k];
-	}
-	int bs(vector<vector<int>>& events, int val, int l) {
-		int r = size(events) - 1;
-		while (l <= r) {
-			int m = l + (r - l) / 2;
-			if (events[m][0] <= val) l = m + 1;
-			else r = m - 1;
-		}
-		return l;
-	}
+    bool static comp(vector<int>& a, vector<int>& b) {
+        if (a[0] == b[0]) return a[1] < b[1];
+        return a[0] < b[0];
+    }
+    int dfs(vector<vector<int>>& events, vector<vector<int>>& dp, int i, int k) {
+        if (i == size(events)) return 0;
+        if (k == 0) return 0;
+        if (dp[i][k] != -1) return dp[i][k];
+        int a1 = dfs(events, dp, i + 1, k);
+        int a2 = events[i][2] + dfs(events, dp, bs(events, events[i][1], i + 1), k - 1);
+        dp[i][k] = std::max(a1, a2);
+        return dp[i][k];
+    }
+    int bs(vector<vector<int>>& events, int val, int l) {
+        int r = size(events) - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (events[m][0] <= val) l = m + 1;
+            else r = m - 1;
+        }
+        return l;
+    }
 };
